@@ -19,7 +19,11 @@ layui.config({
         skyeyeClassEnumUtil.showEnumDataListByClassName("promotionDiscountType", 'radio', "discountType", '', form);
         AjaxPostUtil.request({url: sysMainMation.erpBasePath + "queryAllShopMaterialListForChoose", params: {}, type: 'json', method: 'GET', callback: function (json) {
             dataShowType.showData(json, 'verificationSelect', 'couponMaterialList', '', form);
-        }});
+        }, async: false});
+        // 获取已启用的优惠券模板
+        AjaxPostUtil.request({url: sysMainMation.shopBasePath + "queryCouponListByState", params: {type: 0}, type: 'json', method: 'POST', callback: function (json) {
+            dataShowType.showData(json, 'select', 'templateId', '', form);
+        }, async: false});
     } else {
         AjaxPostUtil.request({url: sysMainMation.shopBasePath + "queryCouponById", params: {id: id}, type: 'json', method: 'POST', callback: function (json) {
             let data = json.bean;
