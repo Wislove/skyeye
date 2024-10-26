@@ -8,7 +8,12 @@
 </head>
 <div style="padding: 20px; margin: 0 auto;">
     <form class="layui-form" action="" id="showForm">
-        <div class="layui-form-item layui-col-xs12">
+
+    </form>
+</div>
+
+<script type="text/x-handlebars-template" id="formTemplate">
+    <div class="layui-form-item layui-col-xs12">
             <span class="hr-title">基本信息</span><hr>
         </div>
         <div class="layui-form-item layui-col-xs8">
@@ -167,8 +172,8 @@
                 <button class="winui-btn" lay-submit lay-filter="formWriteBean"><language showName="com.skyeye.save"></language></button>
             </div>
         </div>
-    </form>
-</div>
+</script>
+
 <script src="../../assets/lib/layui/layui.js"></script>
 <script src="../../assets/lib/layui/custom.js"></script>
 <script type="text/javascript">
