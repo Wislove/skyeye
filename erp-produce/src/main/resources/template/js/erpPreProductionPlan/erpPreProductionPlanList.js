@@ -85,6 +85,8 @@ layui.config({
             revoke(data);
         } else if (layEvent === 'turnProductionPlan') { //转生产计划
             turnProductionPlan(data);
+        } else if (layEvent === 'turnPurchaseOrder') { // 转采购订单
+            turnPurchaseOrder(data);
         }
     });
 
@@ -162,6 +164,19 @@ layui.config({
                 loadTable();
             }});
         });
+    }
+
+    // 转采购订单
+    function turnPurchaseOrder(data) {
+        parent._openNewWindows({
+            url: "../../tpl/erpPreProductionPlan/preProductionTurnToPurchaseOrder.html?id=" + data.id,
+            title: '转采购订单',
+            pageId: "preProductionTurnToPurchaseOrder",
+            area: ['90vw', '90vh'],
+            callBack: function (refreshCode) {
+                winui.window.msg(systemLanguage["com.skyeye.successfulOperation"][languageType], {icon: 1, time: 2000});
+                loadTable();
+            }});
     }
 
     // 转生产计划
