@@ -18,7 +18,11 @@ layui.config({
     // 出货计划转采购订单
     AjaxPostUtil.request({url: sysMainMation.erpBasePath + "queryProductionPlanTransPurchaseOrderById", params: {id: id}, type: 'json', method: 'GET', callback: function (json) {
         let data = json.bean;
-        data.erpOrderItemList = data.supplierContractChildList
+        data.erpOrderItemList = data.productionPlanChildList;
+        data.erpOrderItemList.forEach(function (item) {
+            item.unitPrice = item.normsMation.estimatePurchasePrice;
+            item.taxRate = 0;
+        });
         // 采购订单的【编辑布局】
         dsFormUtil.initEditPageForStatic('content', 'FP2023042000002', data, {
             savePreParams: function (params) {
@@ -37,12 +41,6 @@ layui.config({
             },
             tableAddRowCallback: function (tableId) {
                 $("#addRow" + tableId).remove();
-                $("div[controlType='simpleTable']").find(".unitPrice").prop('disabled', true);
-                $("div[controlType='simpleTable']").find(".amountOfMoney").prop('disabled', true);
-                $("div[controlType='simpleTable']").find(".taxRate").prop('disabled', true);
-                $("div[controlType='simpleTable']").find(".taxMoney").prop('disabled', true);
-                $("div[controlType='simpleTable']").find(".taxUnitPrice").prop('disabled', true);
-                $("div[controlType='simpleTable']").find(".taxLastMoney").prop('disabled', true);
                 $("div[controlType='simpleTable']").find(".chooseProductBtn").prop('disabled', true);
                 $("div[controlType='simpleTable']").find(".normsId").prop('disabled', true);
             }

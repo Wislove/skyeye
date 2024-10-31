@@ -168,7 +168,7 @@ layui.config({
 
     // 转采购订单
     function turnPurchaseOrder(data) {
-        parent._openNewWindows({
+        _openNewWindows({
             url: "../../tpl/erpPreProductionPlan/preProductionTurnToPurchaseOrder.html?id=" + data.id,
             title: '转采购订单',
             pageId: "preProductionTurnToPurchaseOrder",

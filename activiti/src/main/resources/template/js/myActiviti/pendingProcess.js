@@ -36,7 +36,7 @@ layui.config({
 	        { field: 'taskType', title: '类型', width: 150, templet: function (d) {
 				return getNotUndefinedVal(d.processMation?.title);
 			}},
-	        { field: 'createName', title: '申请人', width: 120, templet: function (d) {
+	        { field: 'createName', title: '申请人', width: 140, templet: function (d) {
 				return getNotUndefinedVal(d.processMation?.createName);
 			}},
 	        { field: 'createTime', title: '申请时间', align: 'center', width: 150, templet: function (d) {
