@@ -31,9 +31,9 @@ layui.config({
                 saveData: function (params) {
                     // 保存数据
                     AjaxPostUtil.request({url: sysMainMation.erpBasePath + "insertReturnMaterialToTurnOut", params: params, type: 'json', method: "POST", callback: function(json) {
-                            parent.layer.close(index);
-                            parent.refreshCode = '0';
-                        }});
+                        parent.layer.close(index);
+                        parent.refreshCode = '0';
+                    }});
                 },
                 loadComponentCallback: function () {
                     $("select[attrkey='departmentId']").prop('disabled', true);

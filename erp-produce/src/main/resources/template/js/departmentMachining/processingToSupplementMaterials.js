@@ -19,6 +19,7 @@ layui.config({
     // 加工单转补料单
     AjaxPostUtil.request({url: sysMainMation.erpBasePath + "queryMachinTransRequestById", params: {id: id}, type: 'json', method: 'GET', callback: function (json) {
         let data = json.bean;
+        data.pickChildList = data.needRawMaterialList;
         // 领料的【编辑布局】
         dsFormUtil.initEditPageForStatic('content', 'FP2023100600002', data, {
             savePreParams: function (params) {
@@ -26,16 +27,16 @@ layui.config({
             saveData: function (params) {
                 // 保存数据
                 AjaxPostUtil.request({url: sysMainMation.erpBasePath + "insertMachinToPickPatch", params: params, type: 'json', method: "POST", callback: function(json) {
-                        parent.layer.close(index);
-                        parent.refreshCode = '0';
-                    }});
+                    parent.layer.close(index);
+                    parent.refreshCode = '0';
+                }});
 
             },
             loadComponentCallback: function () {
                 $("div[controlType='pickFromType']").remove();
             },
             tableDeleteRowCallback: function (tableId) {
-                if (!initFirst) {
+                if (!initFirst && data.pickChildList.length == 0) {
                     initFirst = true;
                     $("#addRow" + tableId).click();
                 }

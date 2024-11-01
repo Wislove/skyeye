@@ -19,6 +19,10 @@ layui.config({
     // 加工单转退料单
     AjaxPostUtil.request({url: sysMainMation.erpBasePath + "queryMachinTransReturnById", params: {id: id}, type: 'json', method: 'GET', callback: function (json) {
         let data = json.bean;
+        data.pickChildList = data.machinChildList;
+        data.pickChildList.forEach(item => {
+            item.needNum = item.operNumber;
+        });
         // 退料单的【编辑布局】
         dsFormUtil.initEditPageForStatic('content', 'FP2023100600006', data, {
             savePreParams: function (params) {
@@ -35,7 +39,7 @@ layui.config({
                 $("div[controlType='pickFromType']").remove();
             },
             tableDeleteRowCallback: function (tableId) {
-                if (!initFirst) {
+                if (!initFirst && data.pickChildList.length == 0) {
                     initFirst = true;
                     $("#addRow" + tableId).click();
                 }
