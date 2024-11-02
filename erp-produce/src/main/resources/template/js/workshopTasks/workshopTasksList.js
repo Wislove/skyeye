@@ -1,4 +1,5 @@
 
+// 车间任务
 layui.config({
     base: basePath,
     version: skyeyeVersion
@@ -25,7 +26,6 @@ layui.config({
         loadTable();
     });
 
-    // 车间任务
     function initTable() {
         table.render({
             id: 'messageTable',
@@ -40,31 +40,30 @@ layui.config({
             cols: [[
                 { title: systemLanguage["com.skyeye.serialNumber"][languageType], type: 'numbers' },
                 { field: 'id', title: '车间任务ID',width: 280, templet: function (d) {
-                        return '<a lay-event="details" class="notice-title-click">' + getNotUndefinedVal(d.id) + '</a>';
-                    }},
+                    return '<a lay-event="details" class="notice-title-click">' + getNotUndefinedVal(d.id) + '</a>';
+                }},
                 { field: 'state', title: '状态',  width: 90, templet: function (d) {
-                        return skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("machinProcedureFarmState", 'id', d.state, 'name');
-                    }},
+                    return skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("machinProcedureFarmState", 'id', d.state, 'name');
+                }},
                 { field: 'name', title: '部门', align: 'center', width: 90, templet: function (d) {
-                        return getNotUndefinedVal(d.farmMation?.departmentMation?.name);
-                    }},
+                    return getNotUndefinedVal(d.farmMation?.departmentMation?.name);
+                }},
                 { field: 'targetNum', title: '任务安排数量', align: 'center', width: 140 },
                 { field: 'planStartTime', title: '计划开始时间', align: 'center', width: 140, templet: function (d) {
-                        return getNotUndefinedVal(d.machinProcedureMation?.planStartTime);
-                    }},
+                    return getNotUndefinedVal(d.machinProcedureMation?.planStartTime);
+                }},
                 { field: 'planEndTime', title: '计划结束时间', align: 'center', width: 140, templet: function (d) {
-                        return getNotUndefinedVal(d.machinProcedureMation?.planEndTime);
-                    }},
+                    return getNotUndefinedVal(d.machinProcedureMation?.planEndTime);
+                }},
                 { field: 'actualStartTime', title: '实际开始时间', align: 'center', width: 140, templet: function (d) {
-                        return getNotUndefinedVal(d.machinProcedureMation?.actualStartTime);
-                    }},
+                    return getNotUndefinedVal(d.machinProcedureMation?.actualStartTime);
+                }},
                 { field: 'actualEndTime', title: '实际结束时间', align: 'center', width: 140, templet: function (d) {
-                        return getNotUndefinedVal(d.machinProcedureMation?.actualEndTime);
-                    }},
+                    return getNotUndefinedVal(d.machinProcedureMation?.actualEndTime);
+                }},
                 { field: 'createTime', title: '创建时间', align: 'center', width: 140, templet: function (d) {
-                        return getNotUndefinedVal(d.machinMation?.createTime);
-                    }},
-
+                    return getNotUndefinedVal(d.machinMation?.createTime);
+                }},
                 {title: systemLanguage["com.skyeye.operation"][languageType], rowspan: '2', fixed: 'right', align: 'center', width: 200, toolbar: '#tableBar' }
             ]],
             done: function (json) {
@@ -108,25 +107,25 @@ layui.config({
     // 接收
     function receive(data) {
         layer.confirm('确认要接收该车间任务吗？', { icon: 3, title: '接收任务操作' }, function (index) {
-                var params = {
-                    id: data.id,
-                };
-                AjaxPostUtil.request({url: sysMainMation.erpBasePath + "receiveMachinProcedureFarm", params: params, type: 'json', method: 'POST', callback: function (json) {
-                    winui.window.msg("接收成功", {icon: 1, time: 2000});
-                    loadTable();
-                }});
+            var params = {
+                id: data.id,
+            };
+            AjaxPostUtil.request({url: sysMainMation.erpBasePath + "receiveMachinProcedureFarm", params: params, type: 'json', method: 'POST', callback: function (json) {
+                winui.window.msg("接收成功", {icon: 1, time: 2000});
+                loadTable();
+            }});
         });
     }
 
     function antiReception(data) {
         layer.confirm('确认要反接收该车间任务吗？', { icon: 3, title: '反接收任务操作' }, function (index) {
-                var params = {
-                    id: data.id,
-                };
-                AjaxPostUtil.request({url: sysMainMation.erpBasePath + "receptionReceiveMachinProcedureFarm", params: params, type: 'json', method: 'POST', callback: function (json) {
-                    winui.window.msg("反接收成功", {icon: 1, time: 2000});
-                    loadTable();
-                }});
+            var params = {
+                id: data.id,
+            };
+            AjaxPostUtil.request({url: sysMainMation.erpBasePath + "receptionReceiveMachinProcedureFarm", params: params, type: 'json', method: 'POST', callback: function (json) {
+                winui.window.msg("反接收成功", {icon: 1, time: 2000});
+                loadTable();
+            }});
         });
     }
 
