@@ -27,10 +27,10 @@ layui.config({
         });
     } else {
         AjaxPostUtil.request({
-            url: sysMainMation.shopBasePath + "getDelivery",
+            url: sysMainMation.shopBasePath + "queryDeliveryById",
             params: {id: id},
             type: 'json',
-            method: 'GET',
+            method: 'POST',
             callback: function (json) {
                 let data = json.bean;
                 storeId = json.bean.storeId;
