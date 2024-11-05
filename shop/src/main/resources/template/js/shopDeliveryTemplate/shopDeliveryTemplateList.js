@@ -32,7 +32,7 @@ layui.config({
             id: 'messageTable',
             elem: '#messageTable',
             method: 'post',
-            url: sysMainMation.shopBasePath + 'queryShopDeliveryTemplate',
+            url: sysMainMation.shopBasePath + 'queryShopDeliveryTemplateList',
             where: getTableParams(),
             page: true,
             limits: getLimits(),
