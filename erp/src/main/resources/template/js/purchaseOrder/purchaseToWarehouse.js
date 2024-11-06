@@ -21,8 +21,8 @@ layui.config({
         // 采购入库的【编辑布局】
         dsFormUtil.initEditPageForStatic('content', 'FP2023042300002', data, {
             savePreParams: function (params) {
-                params.holderId=data.holderId
-                params.holderKey=data.holderKey
+                params.holderId = data.holderId
+                params.holderKey = data.holderKey
             },
             saveData: function (params) {
                 // 保存数据
@@ -33,7 +33,7 @@ layui.config({
             },
             loadComponentCallback: function () {
                 $("div[controlType='supplier']").remove();
-                $("div[controlType='purchaseOrderFromType']").remove();
+                $("div[controlType='purchasePutFromType']").remove();
             },
             tableAddRowCallback: function (tableId) {
                 $("#addRow" + tableId).remove();

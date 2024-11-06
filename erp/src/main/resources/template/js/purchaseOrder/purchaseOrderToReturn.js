@@ -21,15 +21,15 @@ layui.config({
             // 采购退货的【编辑布局】
             dsFormUtil.initEditPageForStatic('content', 'FP2023042400002', data, {
                 savePreParams: function (params) {
-                    params.holderId=data.holderId
-                    params.holderKey=data.holderKey
+                    params.holderId = data.holderId
+                    params.holderKey = data.holderKey
                 },
                 saveData: function (params) {
                     // 保存数据
                     AjaxPostUtil.request({url: sysMainMation.erpBasePath + "insertPurchaseOrderToReturns", params: params, type: 'json', method: "POST", callback: function(json) {
-                            parent.layer.close(index);
-                            parent.refreshCode = '0';
-                        }});
+                        parent.layer.close(index);
+                        parent.refreshCode = '0';
+                    }});
                 },
                 loadComponentCallback: function () {
                     $("div[controlType='supplier']").remove();
