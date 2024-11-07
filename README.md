@@ -131,7 +131,8 @@
 
 | 框架 | 技术 | 版本 | 学习指南 |
 |---|---|---|---|
-|[layui](https://layui.uimaker.com/)|模块化前端UI| 2.6.7 | [文档](https://layui.uimaker.com/doc/index.html) |
+|[layui](https://layui.uimaker.com/)|模块化前端UI，已经开发完成| 2.6.7 | [文档](https://layui.uimaker.com/doc/index.html) |
+|Vue 3 + TypeScript 5 + Vite 5 + Ant Design Vue 4| **开发中** | - | - |
 |winui|win10风格UI|自研|-|
 |[uni-app](https://uniapp.dcloud.net.cn/)|一个使用Vue.js开发所有前端应用的框架，开发者编写一套代码，可发布到iOS、Android、Web（响应式）、以及各种小程序、快应用等多个平台。| VUE3 |[文档](https://uniapp.dcloud.net.cn/component/)|
 
