@@ -142,6 +142,7 @@ layui.config({
                         id: isNull(json.bean.id) ? '' : json.bean.id,
                         materialId: id,
                         logo: $("#materialLogo").find("input[type='hidden'][name='upload']").attr("oldurl"),
+                        carouselImg: $("#materialCarouselImg").find("input[type='hidden'][name='upload']").attr("oldurl"),
                         content: encodeURIComponent(ue.getContent()),
                         remark: $("#remark").val(),
                         orderBy: $("#orderBy").val(),
