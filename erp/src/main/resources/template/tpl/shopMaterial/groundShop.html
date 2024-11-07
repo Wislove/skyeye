@@ -91,8 +91,9 @@
                 <span class="hr-title">规格信息</span><hr/>
             </div>
             <div class="winui-tip alert-info layui-col-xs12">
-                1. 如果规格选择了上架并且Logo类型选择了【单独设置】，那么这个规格Logo将会单独设置并且为必填，否则将会使用商品的Logo。<br>
-                2. 未上架的商品规格选择【默认】时，将不生效。
+                1. 当商品规格的Logo类型选择为【跟随商品】的时候，那么这个规格的logo以及轮播图使用的是商品的logo以及轮播图。当商品规格的logo类型选择为【单独设置】的时候，那么这个规格的logo以及轮播图使用的就是自身的。<br>
+                2. 当商品由上架修改为下架的时候，商品规格的logo以及轮播图信息将恢复为ERP【商品管理】的图片信息，商品的logo以及轮播图信息不会清空。<br>
+                3. 未上架的商品规格信息修改后不会生效，只有上架的商品规格信息才会生效。
             </div>
             <div class="layui-form-item layui-col-xs12" id="skyNorms">
 
