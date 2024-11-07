@@ -899,25 +899,31 @@ function show(_object, url) {
 	} else {
 		imgs = layui.$(_object).find("input[type='hidden'][name='upload']").val().split(",");
 	}
-	showPicDisk(imgs);
+	showPicDisk(imgs, url);
 }
 
 /**
  * 展示图片,支持多张图片切换展示
  * @param {} imgs
+ * @param {} defaultUrl 默认展示的图片地址
  */
-function showPicDisk(imgs){
+function showPicDisk(imgs, defaultUrl){
 	var data = [];
-	layui.$.each(imgs, function (k, v) {
-		var suffix = v.substring(v.lastIndexOf(".") + 1);
+	let startIndex = 0;
+	imgs = imgs.filter(img => !isNull(img));
+	layui.$.each(imgs, function (index, img) {
+		var suffix = img.substring(img.lastIndexOf(".") + 1);
 		if (imageType.indexOf(suffix.toLowerCase()) > -1) {
 			var json = {
 				"alt": "",
-				"pid": k, //图片id
-				"src": v, //原图地址
+				"pid": index, //图片id
+				"src": img, //原图地址
 				"thumb": "" //缩略图地址
 			}
 			data.push(json);
+			if (!isNull(defaultUrl) && img.indexOf(defaultUrl) > -1) {
+				startIndex = index;
+			}
 		}
 	})
 
@@ -925,7 +931,7 @@ function showPicDisk(imgs){
 		photos: {
 			"title": "", //相册标题
 			"id": 123, //相册id
-			"start": 0, //初始显示的图片序号，默认0
+			"start": startIndex, //初始显示的图片序号
 			"data": data
 		}, //格式见API文档手册页
 		anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机
