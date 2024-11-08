@@ -39,8 +39,8 @@ layui.config({
             limit: getLimit(),
             cols: [[
                 { title: systemLanguage["com.skyeye.serialNumber"][languageType], type: 'numbers' },
-                { field: 'id', title: '车间任务ID',width: 280, templet: function (d) {
-                    return '<a lay-event="details" class="notice-title-click">' + getNotUndefinedVal(d.id) + '</a>';
+                { field: 'id', title: '任务编号',width: 280, templet: function (d) {
+                    return '<a lay-event="details" class="notice-title-click">' + getNotUndefinedVal(d.oddNumber) + '</a>';
                 }},
                 { field: 'state', title: '状态',  width: 90, templet: function (d) {
                     return skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("machinProcedureFarmState", 'id', d.state, 'name');
