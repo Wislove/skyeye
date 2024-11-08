@@ -12,19 +12,26 @@
         <div class="layui-form-item layui-col-xs12">
             <span class="hr-title">基本信息</span><hr>
         </div>
-        <div class=" layui-form-item layui-col-xs6">
+        <div class="layui-form-item layui-col-xs8">
+            <label class="layui-form-label">应用<i class="red">*</i></label>
+            <div class="layui-input-block">
+                <select id="appId" name="appId" win-verify="required" lay-filter="appId" lay-search="">
+                </select>
+            </div>
+        </div>
+        <div class=" layui-form-item layui-col-xs4">
             <label class="layui-form-label">状态<i class="red">*</i></label>
             <div class="layui-input-block layui-form winui-radio" id="enabled">
             </div>
         </div>
-        <div class="layui-form-item layui-col-xs4">
+        <div class="layui-form-item layui-col-xs6">
             <label class="layui-form-label">渠道编码<i class="red">*</i></label>
             <div class="layui-input-block">
                 <select id="codeNum" name="codeNum" win-verify="required" lay-filter="codeNum" lay-search="">
                 </select>
             </div>
         </div>
-        <div class="layui-form-item layui-col-xs4">
+        <div class="layui-form-item layui-col-xs6">
             <label class="layui-form-label">渠道费率<i class="red">*</i></label>
             <div class="layui-input-block">
                 <input type="text" id="feeRate" name="feeRate" win-verify="required" placeholder="请输入渠道费率" class="layui-input"/>
@@ -33,53 +40,97 @@
         <!-- 添加微信相关输入框 -->
         <div class="wx-input-fields ">
             <div class="layui-form-item layui-col-xs6">
-            <label class="layui-form-label">appId：</label>
-                <div class="layui-input-block">
-                <input type="text" id="appId" class="layui-input" />
-                </div>
-            </div>
-            <div class="layui-form-item layui-col-xs6">
             <label class="layui-form-label">商户号：</label>
                 <div class="layui-input-block">
-                <input type="text" id="mchId" class="layui-input" />
+                <input type="text" id="mchId" class="layui-input" placeholder="请输入商户号" />
                 </div>
             </div>
-
             <div class="layui-form-item layui-col-xs6">
             <label class="layui-form-label">版本：</label>
                 <div class="layui-input-block">
-                <input type="text" id="apiVersion" class="layui-input" />
+                <input type="text" id="apiVersion" class="layui-input" placeholder="请输入版本" />
                 </div>
             </div>
             <div class="layui-form-item layui-col-xs6">
             <label class="layui-form-label">商户密钥：</label>
                 <div class="layui-input-block">
-                <input type="text" id="mchKey" class="layui-input" />
+                <input type="text" id="mchKey" class="layui-input" placeholder="请输入商户密钥" />
                 </div>
            </div>
             <div class="layui-form-item layui-col-xs6">
             <label class="layui-form-label">keyContent：</label>
                 <div class="layui-input-block">
-                <input type="text" id="keyContent" class="layui-input" />
+                <input type="text" id="keyContent" class="layui-input"  placeholder="请输入keyContent"/>
                 </div>
             </div>
             <div class="layui-form-item layui-col-xs6">
             <label class="layui-form-label">privateKeyContent：</label>
                 <div class="layui-input-block">
-                <input type="text" id="privateKeyContent" class="layui-input"/>
+                <input type="text" id="privateKeyContent" class="layui-input" placeholder="请输入privateKeyContent"/>
                 </div>
             </div>
              <div class="layui-form-item layui-col-xs6">
             <label class="layui-form-label">密钥值：</label>
                  <div class="layui-input-block">
-                 <input type="text" id="apiV3Key" class="layui-input" />
+                 <input type="text" id="apiV3Key" class="layui-input" placeholder="请输入密钥值"/>
                  </div>
             </div>
              <div class="layui-form-item layui-col-xs6">
             <label class="layui-form-label">证书序列号：</label>
                  <div class="layui-input-block">
-                 <input type="text" id="certSerialNo" class="layui-input" />
+                 <input type="text" id="certSerialNo" class="layui-input" placeholder="请输入证书序列号" />
                  </div>
+            </div>
+        </div>
+        <!-- 添加支付宝相关输入框 -->
+        <div class="zfb-input-fields ">
+            <div class="layui-form-item layui-col-xs6">
+                <label class="layui-form-label">网关地址：</label>
+                <div class="layui-input-block">
+                    <input type="text" id="serverUrl" class="layui-input" placeholder="请输入网关地址" />
+                </div>
+            </div>
+            <div class="layui-form-item layui-col-xs6">
+                <label class="layui-form-label">签名算法类型：</label>
+                <div class="layui-input-block">
+                    <input type="text" id="signType" class="layui-input" placeholder="请输入签名算法类型"/>
+                </div>
+            </div>
+            <div class="layui-form-item layui-col-xs6">
+                <label class="layui-form-label">公钥类型：</label>
+                <div class="layui-input-block">
+                    <input type="text" id="mode" class="layui-input" placeholder="请输入公钥类型"/>
+                </div>
+            </div>
+            <div class="layui-form-item layui-col-xs6">
+                <label class="layui-form-label">商户私钥：</label>
+                <div class="layui-input-block">
+                    <input type="text" id="privateKey" class="layui-input" placeholder="请输入商户私钥"/>
+                </div>
+            </div>
+            <div class="layui-form-item layui-col-xs6">
+                <label class="layui-form-label">支付宝公钥：</label>
+                <div class="layui-input-block">
+                    <input type="text" id="alipayPublicKey" class="layui-input" placeholder="请输入支付宝公钥"/>
+                </div>
+            </div>
+            <div class="layui-form-item layui-col-xs6">
+                <label class="layui-form-label">商户公钥应用证书：</label>
+                <div class="layui-input-block">
+                    <input type="text" id="appCertContent" class="layui-input" placeholder="请输入商户公钥应用证书"/>
+                </div>
+            </div>
+            <div class="layui-form-item layui-col-xs6">
+                <label class="layui-form-label">指定支付宝公钥证书内容：</label>
+                <div class="layui-input-block">
+                    <input type="text" id="alipayPublicCertContent" class="layui-input" placeholder="请输入指定支付宝公钥证书内容"/>
+                </div>
+            </div>
+            <div class="layui-form-item layui-col-xs6">
+                <label class="layui-form-label">指定根证书内容：</label>
+                <div class="layui-input-block">
+                    <input type="text" id="rootCertContent" class="layui-input" placeholder="请输入指定根证书内容"/>
+                </div>
             </div>
         </div>
         <div class="layui-form-item layui-col-xs12">

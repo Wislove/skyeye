@@ -22,7 +22,7 @@ layui.config({
         appHtml = getDataUseHandlebars(selTemplate, json);
         initTable();
     }});
-
+    
     form.on('select(appId)', function (data) {
         var thisRowValue = data.value;
         appId = isNull(thisRowValue) ? "" : thisRowValue;
@@ -41,15 +41,18 @@ layui.config({
             limit: getLimit(),
             cols: [[
                 { title: systemLanguage["com.skyeye.serialNumber"][languageType], type: 'numbers' },
-                { field: 'codeNum', title: '渠道编码', align: 'center', width: 80, templet: function (d) {
+                { field: 'codeNum', title: '渠道编码', align: 'left', width: 80, templet: function (d) {
                         return skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("payType", 'id', d.codeNum, 'name');
                     }},
                 { field: 'enabled', title: '状态', align: 'center', width: 100, templet: function (d) {
                         return skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("commonEnable", 'id', d.enabled, 'name');
                     }},
-                { field: 'feeRate', title: '渠道费率', align: 'center', width: 120 },
-                { field: 'remark', title: '备注', align: 'center', width: 80, templet: function (d) {
-                        return  d.remark;
+                { field: 'appMation', title: '应用信息', align: 'left', width: 120, templet: function (d){
+                        d.appMation = isNull(d.appMation) ? "" : d.appMation;
+                        return  d.appMation.appKey;
+                    }},
+                { field: 'feeRate', title: '渠道费率', align: 'left', width: 120, templet: function (d){
+                        return  d.feeRate+"%";
                     }},
                 { field: 'createName', title: systemLanguage["com.skyeye.createName"][languageType], width: 120 },
                 { field: 'createTime', title: systemLanguage["com.skyeye.createTime"][languageType], align: 'center', width: 150 },
@@ -61,10 +64,7 @@ layui.config({
                 matchingLanguage();
                 initTableSearchUtil.initAdvancedSearch(this, json.searchFilter, form, "暂不支持搜索功能", function () {
                     table.reloadData("messageTable", {page: {curr: 1}, where: getTableParams()});
-                }, `<label class="layui-form-label">应用</label><div class="layui-input-inline">
-                        <select id="appId" name="appId" lay-filter="appId" lay-search="">
-                        ${appHtml}
-                    </select></div>`);
+                },);
             }
         });
         table.on('tool(messageTable)', function (obj) {

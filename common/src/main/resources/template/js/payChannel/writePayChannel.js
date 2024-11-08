@@ -12,8 +12,22 @@ layui.config({
     var selOption = getFileContent('tpl/template/select-option.tpl');
     var className = GetUrlParam("className");
     var appId = GetUrlParam("appId");
-
     var id = GetUrlParam("id");
+
+    function initPayAppSelect(defaultAppId) {
+        AjaxPostUtil.request({
+            url: reqBasePath + "queryAllEnabledPayAppList",
+            type: 'json',
+            method: 'POST',
+            callback: function (json) {
+                $("#appId").html(getDataUseHandlebars(selOption, json));
+                if (!isNull(defaultAppId)) {
+                    $("#appId").val(defaultAppId)
+                }
+                form.render('select');
+            }
+        });
+    }
 
     if (!isNull(id)) {
         AjaxPostUtil.request({
@@ -31,6 +45,7 @@ layui.config({
                 initData(json);
                 textool.init({eleId: 'remark', maxlength: 200});
                 form.render();
+                initPayAppSelect(json.bean.appId);
             }
         });
     } else {
@@ -38,13 +53,21 @@ layui.config({
         skyeyeClassEnumUtil.showEnumDataListByClassName("payType", 'select', "codeNum", '', form);
         textool.init({eleId: 'remark', maxlength: 200});
         form.render();
+        initPayAppSelect();
     }
 
     function loadByCodeNum() {
         let codeNum = $("#codeNum").val()
         if (['wx_pub', 'wx_lite', 'wx_app', 'wx_native', 'wx_wap', 'wx_bar'].includes(codeNum)) {
             $('.wx-input-fields').show();
-        } else {
+            $('.zfb-input-fields').hide();
+            $('.mn-input-fields').hide();
+        } else if (['alipay_pc','alipay_wap','alipay_app','alipay_qr','alipay_bar'].includes(codeNum)) {
+            $('.zfb-input-fields').show();
+            $('.wx-input-fields').hide();
+        }
+        else {
+            $('.zfb-input-fields').hide();
             $('.wx-input-fields').hide();
         }
     }
@@ -59,6 +82,15 @@ layui.config({
             $("#privateKeyContent").val(json.bean.configMation.privateKeyContent);
             $("#apiV3Key").val(json.bean.configMation.apiV3Key);
             $("#certSerialNo").val(json.bean.configMation.certSerialNo);
+        }else if (['alipay_pc','alipay_wap','alipay_app','alipay_qr','alipay_bar'].includes(codeNum)) {
+            $("#serverUrl").val(json.bean.configMation.serverUrl);
+            $("#signType").val(json.bean.configMation.signType);
+            $("#mode").val(json.bean.configMation.mode);
+            $("#privateKey").val(json.bean.configMation.privateKey);
+            $("#alipayPublicKey").val(json.bean.configMation.alipayPublicKey);
+            $("#appCertContent").val(json.bean.configMation.appCertContent);
+            $("#alipayPublicCertContent").val(json.bean.configMation.alipayPublicCertContent);
+            $("#rootCertContent").val(json.bean.configMation.rootCertContent);
         }
     }
 
@@ -77,10 +109,11 @@ layui.config({
                 enabled: dataShowType.getData('enabled'),
                 codeNum: $("#codeNum").val(),
                 feeRate: $("#feeRate").val(),
-                id: isNull(id)? '' : id
+                id: isNull(id)? '' : id,
+
             };
 
-                if (['wx_pub', 'wx_lite', 'wx_app', 'wx_native', 'wx_wap', 'wx_bar'].includes(params.codeNum)) {
+                if (['wx_pub', 'wx_lite', 'wx_app', 'wx_native', 'wx_wap', 'wx_bar'].includes(params.codeNum)) {//
                     let config = {
                         appId: $("#appId").val(),
                         mchId: $("#mchId").val(),
@@ -91,6 +124,25 @@ layui.config({
                         apiV3Key: $("#apiV3Key").val(),
                         certSerialNo: $("#certSerialNo").val()
                     }
+                    params.config = JSON.stringify(config)
+                }else if (['alipay_pc','alipay_wap','alipay_app','alipay_qr','alipay_bar'].includes(params.codeNum)){
+                    let config = {
+                        serverUrl: $("#serverUrl").val(),
+                        signType: $("#signType").val(),
+                        mode:$("#mode").val(),
+                        privateKey: $("#privateKey").val(),
+                        alipayPublicKey: $("#alipayPublicKey").val(),
+                        appCertContent: $("#appCertContent").val(),
+                        alipayPublicCertContent: $("#alipayPublicCertContent").val(),
+                        rootCertContent: $("#rootCertContent").val(),
+                    }
+                    params.appId = config.appId
+                    params.config = JSON.stringify(config)
+                }else if (['mock'].includes(params.codeNum)){
+                    let config = {
+                        appId: $("#appId").val(),
+                    }
+                    params.appId = config.appId
                     params.config = JSON.stringify(config)
                 }
 
@@ -114,5 +166,8 @@ layui.config({
 
     // 隐藏微信相关输入框初始状态
     $('.wx-input-fields').hide();
+
+    //隐藏支付宝相关输入框初始状态
+    $('.zfb-input-fields').hide();
 
 });
