@@ -51,8 +51,9 @@ layui.config({
                     width: 120
                 },
                 {
-                    field: 'type', title: '计费方式', align: 'center', width: 120, templet: function (d) {
-                        return d.type;
+                    field: 'type', title: '配送计费方式', align: 'center', width: 120, templet: function (d) {
+                        return skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("deliveryExpressType", 'id', d.type, 'name');
+
                     }
                 },
                 {
