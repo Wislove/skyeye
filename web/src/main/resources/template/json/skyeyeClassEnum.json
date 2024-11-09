@@ -23,8 +23,9 @@
     "userIsTermOfValidity": {"name": "用户是否长期有效", "className": "skyeye-pro#com.skyeye.personnel.classenum.UserIsTermOfValidity"},
     "payType": {"name": "支付渠道编码", "className": "skyeye-pro#com.skyeye.pay.enums.PayType"},
     "deliveryExpressType": {"name": "配送计费方式", "className": "skyeye-shop#com.skyeye.delivery.enums.DeliveryExpressType"},
-
     "menuType": {"name": "APP菜单类型", "className": "skyeye-pro#com.skyeye.menu.classenum.MenuType"},
+
+    "smsSceneEnum": {"name": "模版编码", "className": "skyeye-pro#com.skyeye.common.enumeration.SmsSceneEnum"},
     "urlType": {"name": "APP菜单URL类型", "className": "skyeye-pro#com.skyeye.menu.classenum.UrlType"},
 
     "bossInterviewArrangementState": {"name": "面试安排状态", "className": "skyeye-boss#com.skyeye.arrangement.classenum.ArrangementState"},
