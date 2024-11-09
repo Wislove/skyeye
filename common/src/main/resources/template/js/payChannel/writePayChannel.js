@@ -136,7 +136,6 @@ layui.config({
                         alipayPublicCertContent: $("#alipayPublicCertContent").val(),
                         rootCertContent: $("#rootCertContent").val(),
                     }
-                    params.appId = config.appId
                     params.config = JSON.stringify(config)
                 }else if (['mock'].includes(params.codeNum)){
                     let config = {
