@@ -25,6 +25,10 @@
     "deliveryExpressType": {"name": "配送计费方式", "className": "skyeye-shop#com.skyeye.delivery.enums.DeliveryExpressType"},
     "menuType": {"name": "APP菜单类型", "className": "skyeye-pro#com.skyeye.menu.classenum.MenuType"},
 
+    "fileStorageEnum": {"name": "存储器", "className": "skyeye-pro#com.skyeye.upload.enums.FileStorageEnum"},
+
+    "fileFtpMode": {"name": "连接模式", "className": "skyeye-pro#com.skyeye.upload.enums.FileFtpMode"},
+
     "smsSceneEnum": {"name": "模版编码", "className": "skyeye-pro#com.skyeye.common.enumeration.SmsSceneEnum"},
     "urlType": {"name": "APP菜单URL类型", "className": "skyeye-pro#com.skyeye.menu.classenum.UrlType"},
 
