@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link href="../../assets/lib/layui/css/layui.css" rel="stylesheet" />
+    <link href="../../assets/lib/winui/css/winui.css" rel="stylesheet" />
+</head>
+<body>
+<div style="padding:20px; margin:0 auto;">
+    <form class="layui-form" action="" id="showForm">
+        <div class="layui-form-item layui-col-xs12">
+            <span class="hr-title">基本信息</span><hr>
+        </div>
+        <div class="layui-form-item layui-col-xs6">
+            <label class="layui-form-label">名称<i class="red">*</i></label>
+            <div class="layui-input-block">
+                <input type="text" id="name" name="name" win-verify="required" placeholder="请输入名称" class="layui-input"/>
+            </div>
+        </div>
+        <div class=" layui-form-item layui-col-xs4">
+            <label class="layui-form-label">是否默认<i class="red">*</i></label>
+            <div class="layui-input-block layui-form winui-radio" id="isDefault">
+            </div>
+        </div>
+        <div class="layui-form-item layui-col-xs6">
+            <label class="layui-form-label">存储器<i class="red">*</i></label>
+            <div class="layui-input-block">
+                <select id="storage" name="storage" win-verify="required" lay-filter="storage" lay-search="">
+                </select>
+            </div>
+        </div>
+        <!--        数据库存储相关的信息-->
+        <div class="db-input-fields ">
+            <div class="layui-form-item layui-col-xs6">
+                <label class="layui-form-label">自定义域名<i class="red">*</i></label>
+                <div class="layui-input-block">
+                    <input type="text" id="domain_db" class="layui-input"  placeholder="请输入自定义域名" />
+                </div>
+            </div>
+        </div>
+        <!--        本地存储相关的信息-->
+        <div class="local-input-fields">
+            <div class="layui-form-item layui-col-xs6">
+                <label class="layui-form-label">基础路径<i class="red">*</i></label>
+                <div class="layui-input-block">
+                    <input type="text" id="basePath_local" class="layui-input"  placeholder="请输入基础路径" />
+                </div>
+            </div>
+            <div class="layui-form-item layui-col-xs6">
+                <label class="layui-form-label">自定义域名<i class="red">*</i></label>
+                <div class="layui-input-block">
+                    <input type="text" id="domain_local" class="layui-input"  placeholder="请输入自定义域名" />
+                </div>
+            </div>
+        </div>
+        <!--        Ftp存储相关的信息-->
+        <div class="ftp-input-fields">
+            <div class="layui-form-item layui-col-xs6">
+                <label class="layui-form-label">基础路径<i class="red">*</i></label>
+                <div class="layui-input-block">
+                    <input type="text" id="basePath_ftp" class="layui-input"  placeholder="请输入基础路径" />
+                </div>
+            </div>
+            <div class="layui-form-item layui-col-xs6">
+                <label class="layui-form-label">自定义域名<i class="red">*</i></label>
+                <div class="layui-input-block">
+                    <input type="text" id="domain_ftp" class="layui-input"  placeholder="请输入自定义域名" />
+                </div>
+            </div>
+            <div class="layui-form-item layui-col-xs6">
+                <label class="layui-form-label">主机地址<i class="red">*</i></label>
+                <div class="layui-input-block">
+                    <input type="text" id="host_ftp" class="layui-input"  placeholder="请输入主机地址" />
+                </div>
+            </div>
+            <div class="layui-form-item layui-col-xs6">
+                <label class="layui-form-label">主机端口<i class="red">*</i></label>
+                <div class="layui-input-block">
+                    <input type="text" id="port_ftp" class="layui-input"  placeholder="请输入主机端口" />
+                </div>
+            </div>
+            <div class="layui-form-item layui-col-xs6">
+                <label class="layui-form-label">用户名<i class="red">*</i></label>
+                <div class="layui-input-block">
+                    <input type="text" id="username_ftp" class="layui-input"  placeholder="请输入用户名" />
+                </div>
+            </div>
+            <div class="layui-form-item layui-col-xs6">
+                <label class="layui-form-label">密码<i class="red">*</i></label>
+                <div class="layui-input-block">
+                    <input type="text" id="password_ftp" class="layui-input"  placeholder="请输入密码" />
+                </div>
+            </div>
+            <div class="layui-form-item layui-col-xs6">
+                <label class="layui-form-label">连接模式<i class="red">*</i></label>
+                <div class="layui-input-block">
+                    <select id="mode" name="mode" class="layui-input-block winui-select"  lay-filter="mode" lay-search="">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <!--        Sftp存储相关的信息-->
+        <div class="sftp-input-fields">
+            <div class="layui-form-item layui-col-xs6">
+                <label class="layui-form-label">基础路径<i class="red">*</i></label>
+                <div class="layui-input-block">
+                    <input type="text" id="basePath_sftp" class="layui-input"  placeholder="请输入基础路径" />
+                </div>
+            </div>
+            <div class="layui-form-item layui-col-xs6">
+                <label class="layui-form-label">自定义域名<i class="red">*</i></label>
+                <div class="layui-input-block">
+                    <input type="text" id="domain_sftp" class="layui-input"  placeholder="请输入自定义域名" />
+                </div>
+            </div>
+            <div class="layui-form-item layui-col-xs6">
+                <label class="layui-form-label">主机地址<i class="red">*</i></label>
+                <div class="layui-input-block">
+                    <input type="text" id="host_sftp" class="layui-input"  placeholder="请输入主机地址" />
+                </div>
+            </div>
+            <div class="layui-form-item layui-col-xs6">
+                <label class="layui-form-label">主机端口<i class="red">*</i></label>
+                <div class="layui-input-block">
+                    <input type="text" id="port_sftp" class="layui-input"  placeholder="请输入主机端口" />
+                </div>
+            </div>
+            <div class="layui-form-item layui-col-xs6">
+                <label class="layui-form-label">用户名<i class="red">*</i></label>
+                <div class="layui-input-block">
+                    <input type="text" id="username_sftp" class="layui-input"  placeholder="请输入用户名" />
+                </div>
+            </div>
+            <div class="layui-form-item layui-col-xs6">
+                <label class="layui-form-label">密码<i class="red">*</i></label>
+                <div class="layui-input-block">
+                    <input type="text" id="password_sftp" class="layui-input"  placeholder="请输入密码" />
+                </div>
+            </div>
+        </div>
+        <!--        S3存储相关的信息-->
+        <div class="s3-input-fields">
+            <div class="layui-form-item layui-col-xs6">
+                <label class="layui-form-label">节点地址<i class="red">*</i></label>
+                <div class="layui-input-block">
+                    <input type="text" id="endpoint" class="layui-input"  placeholder="请输入节点地址" />
+                </div>
+            </div>
+            <div class="layui-form-item layui-col-xs6">
+                <label class="layui-form-label">自定义域名<i class="red">*</i></label>
+                <div class="layui-input-block">
+                    <input type="text" id="domain_s3" class="layui-input"  placeholder="请输入自定义域名" />
+                </div>
+            </div>
+            <div class="layui-form-item layui-col-xs6">
+                <label class="layui-form-label">存储Bucket<i class="red">*</i></label>
+                <div class="layui-input-block">
+                    <input type="text" id="bucket" class="layui-input"  placeholder="请输入存储Bucket" />
+                </div>
+            </div>
+            <div class="layui-form-item layui-col-xs6">
+                <label class="layui-form-label">访问key<i class="red">*</i></label>
+                <div class="layui-input-block">
+                    <input type="text" id="accessKey" class="layui-input"  placeholder="请输入访问key" />
+                </div>
+            </div>
+            <div class="layui-form-item layui-col-xs6">
+                <label class="layui-form-label">访问Secret<i class="red">*</i></label>
+                <div class="layui-input-block">
+                    <input type="text" id="accessSecret" class="layui-input"  placeholder="请输入访问Secret" />
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item layui-col-xs12" controltype="enclosureUpload" contentid="enclosureInfo">
+            <label class="layui-form-label">附件</label>
+            <div class="layui-input-block ver-center" id="enclosureInfo" skyeyejsonkey="[]">
+                <button type="button" class="layui-btn layui-btn-primary layui-btn-xs" id="enclosureUpload">附件上传</button>
+            </div>
+        </div>
+        <div class="layui-form-item layui-col-xs6">
+            <div class="layui-input-block">
+                <button class="winui-btn" id="cancle"><language showName="com.skyeye.cancel"></language></button>
+                <button class="winui-btn" lay-submit lay-filter="formWriteBean"><language showName="com.skyeye.save"></language></button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="../../assets/lib/layui/layui.js"></script>
+<script src="../../assets/lib/layui/custom.js"></script>
+<script type="text/javascript">
+    layui.config({base: '../../js/fileConfig/'}).use('writeFileConfig');
+</script>
+</body>
+</html>
