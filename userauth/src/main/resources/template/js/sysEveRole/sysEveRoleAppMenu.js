@@ -20,22 +20,22 @@ layui.config({
 	    form.on('submit(formEditBean)', function (data) {
 	        if (winui.verifyForm(data.elem)) {
 	        	var tree = $.fn.zTree.getZTreeObj("treeDemo");
-	    	    var nodes = tree.getCheckedNodes(true);
-	    	    if(isNull(nodes)){
+	    	    var nodes = tree.getNodesByParam("checked", true, null);
+	    	    if (isNull(nodes)) {
 	    	    	winui.window.msg('请选择菜单权限', {icon: 2, time: 2000});
 	    			return false;
 	    	    } else {
 	    	    	var menuIds = "";//菜单
                     var pointIds = "";//权限点
-	    	    	for(var i = 0; i < nodes.length; i++){
+	    	    	for (var i = 0; i < nodes.length; i++) {
 	    	    		if(i == nodes.length-1){
-                            if(nodes[i].type == "authPoint"){
+                            if (nodes[i].type == "authPoint") {
                                 pointIds += nodes[i].id;
                             } else {
                                 menuIds += nodes[i].id;
                             }
                         } else {
-                            if(nodes[i].type == "authPoint"){
+                            if (nodes[i].type == "authPoint") {
                                 pointIds += nodes[i].id + ",";
                             } else {
                                 menuIds += nodes[i].id + ",";
@@ -79,8 +79,8 @@ layui.config({
 				var zTreeObj = $.fn.zTree.getZTreeObj(id);
 				var zTree = zTreeObj.getCheckedNodes(false);
 				for (var i = 0; i < zTree.length; i++) {
-					for(var j = 0; j < checkeRows.length; j++){
-						if(zTree[i].id == checkeRows[j]){
+					for (var j = 0; j < checkeRows.length; j++) {
+						if (zTree[i].id == checkeRows[j]) {
 							zTreeObj.checkNode(zTree[i], true);
 						}
 					}
@@ -91,7 +91,7 @@ layui.config({
 					'<div class="diy">菜单类型</div>' +
 					'</a></li>';
 				var rows = $("#treeDemo").find('li');
-				if(rows.length > 0) {
+				if (rows.length > 0) {
 					rows.eq(0).before(li_head);
 				} else {
 					$("#" + treeId).append(li_head);
@@ -103,11 +103,11 @@ layui.config({
    		}});
 		
 		function getTree(treeId) {
-			if($.isEmpty(trees)) {
+			if ($.isEmpty(trees)) {
 				fsCommon.warnMsg("未配置tree！");
 				return;
 			}
-			if($.isEmpty(treeId)) {
+			if ($.isEmpty(treeId)) {
 				treeId = "treeDemo";
 			}
 			return trees[treeId];
@@ -170,9 +170,9 @@ layui.config({
 			//查找不符合条件的叶子节点
 		    function filterFunc(node){
 		        var _keywords = $("#menuName").val();
-		        if(node.name.indexOf(_keywords) != -1) 
+		        if (node.name.indexOf(_keywords) != -1)
 		        	return false;
-		        if(node.isParent) {
+		        if (node.isParent) {
 		    		//是父节点时需要判断子节点是否符合条件，是的话则父节点需要保留
 		    		var bl = CheckChildNodesIsContainKeyword(node);
 		    		return bl;
@@ -189,7 +189,7 @@ layui.config({
 		    zTreeObj.hideNodes(hiddenNodes);
 		    if (lastValue === value) return;  
 		    lastValue = value;  
-		    if (value === ""){  
+		    if (value === "") {
 		        updateNodes(false);  
 		        return;  
 		    };
@@ -202,15 +202,15 @@ layui.config({
 	    function CheckChildNodesIsContainKeyword(pNode) {
 	    	var childs = pNode.children;
 	    	var isexit = true;
-	    	if (!isNull(childs)){
-	    		for(var i = 0; i < childs.length; i++) {
+	    	if (!isNull(childs)) {
+	    		for (var i = 0; i < childs.length; i++) {
 	    			if(childs[i].isParent) {
 	    				isexit = CheckChildNodesIsContainKeyword(childs[i]);
-	    				if(!isexit)
+	    				if (!isexit)
 	    					return isexit;
 	    			} else {
 	    				var _keywords = $("#menuName").val();
-	    				if(childs[i].name.indexOf(_keywords) != -1)
+	    				if (childs[i].name.indexOf(_keywords) != -1)
 	    					return false;
 	    			}
 	    		}
@@ -222,7 +222,7 @@ layui.config({
 	    //tree 搜索时：子节点时，需要判断父节点是否符合条件，是的话则子节点需要保留
 	    function CheckParentNodesIsContainKeyword(cNode) {
 	    	var pnode = cNode.getParentNode();
-	    	if(pnode != null) {
+	    	if (pnode != null) {
 	    		var _keywords = $("#menuName").val();
 	    		if(pnode.name.indexOf(_keywords) != -1)
 	    			return false;
@@ -237,7 +237,7 @@ layui.config({
 		//高亮显示被搜索到的节点  
 		function updateNodes(highlight) {  
 		    var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-		    for( var i = 0; i < nodeList.length; i++) {  
+		    for (var i = 0; i < nodeList.length; i++) {
 		        nodeList[i].highlight = highlight;//高亮显示搜索到的节点(highlight是自己设置的一个属性)
 		        zTree.expandNode(nodeList[i].getParentNode(), true, false, false);//将搜索到的节点的父节点展开  
 		        zTree.updateNode(nodeList[i]);//更新节点数据，主要用于该节点显示属性的更新

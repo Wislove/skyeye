@@ -19,9 +19,9 @@ layui.config({
 	form.on('submit(formEditBean)', function (data) {
 		if (winui.verifyForm(data.elem)) {
 			var tree = $.fn.zTree.getZTreeObj("treeDemo");
-			var nodes = tree.getCheckedNodes(true);
+			var nodes = tree.getNodesByParam("checked", true, null);
 			var menuIds = new Array();
-			for(var i = 0; i < nodes.length; i++){
+			for (var i = 0; i < nodes.length; i++) {
 				menuIds.push(nodes[i].id);
 			}
 			var params = {
