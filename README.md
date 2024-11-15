@@ -11,7 +11,7 @@
 
 **3. [常见问题](https://gitee.com/dromara/skyeye/blob/company_server/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98.md)，优先看这个。《《《《《《《《《《《《《《这个文件必看，有`移动端`的详细说明。**
 
-**4. **体验地址** ：右上角`Star`后，关注下方微信公众号，回复`skyeye`获取**
+**4. **体验地址** ：关注下方微信公众号，回复`skyeye`获取**
 
 **5. 同时，星球内富含Java、消息队列、数据库、缓存、Spring等后端以及Vue、React等前端的高频面试题，并有人会讲解每个知识点的实战使用。**
 
@@ -23,7 +23,9 @@
 
 ③ 具备低代码、功能全面、快速便捷开发、无需重复的CRUD等优点，短时间内可完成一款系统的开发。
 
-④ [国产开源项目对比](https://docs.qq.com/sheet/DYUtPdWhTbVBITlpL?tab=000001)。
+④ 为什么购买`Skyeye云`，请参考：https://mp.weixin.qq.com/s/l5xPR8tVMFzQlfaQZ2xEpw
+
+⑤ [国产开源项目对比](https://docs.qq.com/sheet/DYUtPdWhTbVBITlpL?tab=000001)。
 
 ![输入图片说明](images/mindMap/compare.png)
 
