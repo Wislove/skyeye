@@ -48,7 +48,7 @@ layui.config({
 
 		 		// 菜单类型
 				$("input:radio[name='level'][value='" + json.bean.level + "']").attr("checked", true);
-		 		if(json.bean.level == '0'){
+		 		if (json.bean.level == '0') {
 		 			$("#parentIdBox").addClass("layui-hide");
 		 		} else {
 					loadChildMenu();

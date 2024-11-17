@@ -185,8 +185,9 @@ layui.define(['table', 'jquery', 'form'], function (exports) {
 			
             //关键词搜索
             form.on('submit(tableSelect_btn_search)', function(data) {
+                let params = $.extend(true, opt.table.where, data.field);
                 tableSelect_table.reload({
-                    where: data.field,
+                    where: params,
                     page: {
                       curr: 1
                     }

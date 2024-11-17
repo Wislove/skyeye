@@ -1,8 +1,5 @@
 var staffId = "";
 
-// 员工详情id
-var rowId = "";
-
 layui.config({
 	base: basePath, 
 	version: skyeyeVersion
@@ -82,10 +79,12 @@ layui.config({
  		tableSelect.render({
  	    	elem: '#userName',	//定义输入框input对象
  	    	checkedKey: 'id', //表格的唯一键值，非常重要，影响到选中状态 必填
- 	    	searchKey: 'userName',	//搜索输入框的name值 默认keyword
- 	    	searchPlaceholder: '员工姓名搜索',	//搜索输入框的提示文字 默认关键词搜索
+ 	    	searchPlaceholder: '员工姓名/工号搜索',	//搜索输入框的提示文字 默认关键词搜索
+			where: {
+				bindAccount: 0
+			},
  	    	table: {	//定义表格参数，与LAYUI的TABLE模块一致，只是无需再定义表格elem
- 	    		url: reqBasePath + 'sys034',
+ 	    		url: reqBasePath + 'querySysUserStaffList',
  	    		method: 'post',
  	    		page: true,
  	    	    limits: [8, 16, 24, 32, 40, 48, 56],
@@ -94,7 +93,7 @@ layui.config({
  	    		    { type: 'radio'},
  					{ title: systemLanguage["com.skyeye.serialNumber"][languageType], type: 'numbers' },
 					{ field: 'jobNumber', title: '员工工号', width: 100, templet: function (d) {
-						return '<a rowId="' + d.id + '" class="notice-title-click">' + d.jobNumber + '</a>';
+						return '<a staffId="' + d.id + '" staffServiceClassName="' + d.serviceClassName + '" class="notice-title-click">' + d.jobNumber + '</a>';
 					}},
  					{ field: 'userName', title: '员工姓名', width: 100 },
 					{ field: 'userSex', title: '性别', width: 60, rowspan: '2', templet: function (d) {
@@ -113,9 +112,10 @@ layui.config({
 
 		// 员工详情
 		$("body").on("click", ".notice-title-click", function() {
-			rowId = $(this).attr("rowId");
+			let staffId = $(this).attr("staffId");
+			let staffServiceClassName = $(this).attr("staffServiceClassName");
 			_openNewWindows({
-				url: "../../tpl/sysEveUserStaff/sysEveUserStaffDetails.html",
+				url: "../../tpl/sysEveUserStaff/userStaffManage.html?objectId=" + staffId + "&objectKey=" + staffServiceClassName,
 				title: systemLanguage["com.skyeye.detailsPageTitle"][languageType],
 				pageId: "sysEveUserStaffDetails",
 				area: ['90vw', '90vh'],

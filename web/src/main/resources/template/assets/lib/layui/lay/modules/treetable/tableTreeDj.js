@@ -373,7 +373,7 @@ layui.define(['table', 'jquery'], function (exports) {
                 const id = obj[keyId];
                 const pid = obj[keyPid];
 
-                if (this.run.idArr.indexOf(id) !== -1 && this.run.pidArr.indexOf(pid) !== -1) {
+                if (this.run.idArr.indexOf(id) !== -1 && this.run.pidArr.indexOf(pid) !== -1 && pid !== id) {
                     // 整理子级与父级对应关系
                     this.run.childParent[id] = pid;
 

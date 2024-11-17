@@ -23,7 +23,7 @@
             <div class="layui-input-block layui-form winui-radio" id="isDefault">
             </div>
         </div>
-        <div class="layui-form-item layui-col-xs6">
+        <div class="layui-form-item layui-col-xs12">
             <label class="layui-form-label">存储器<i class="red">*</i></label>
             <div class="layui-input-block">
                 <select id="storage" name="storage" win-verify="required" lay-filter="storage" lay-search="">
@@ -32,7 +32,7 @@
         </div>
         <!--        数据库存储相关的信息-->
         <div class="db-input-fields ">
-            <div class="layui-form-item layui-col-xs6">
+            <div class="layui-form-item layui-col-xs8">
                 <label class="layui-form-label">自定义域名<i class="red">*</i></label>
                 <div class="layui-input-block">
                     <input type="text" id="domain_db" class="layui-input"  placeholder="请输入自定义域名" />
@@ -92,7 +92,7 @@
                     <input type="text" id="password_ftp" class="layui-input"  placeholder="请输入密码" />
                 </div>
             </div>
-            <div class="layui-form-item layui-col-xs6">
+            <div class="layui-form-item layui-col-xs8">
                 <label class="layui-form-label">连接模式<i class="red">*</i></label>
                 <div class="layui-input-block">
                     <select id="mode" name="mode" class="layui-input-block winui-select"  lay-filter="mode" lay-search="">
@@ -165,17 +165,11 @@
                     <input type="text" id="accessKey" class="layui-input"  placeholder="请输入访问key" />
                 </div>
             </div>
-            <div class="layui-form-item layui-col-xs6">
+            <div class="layui-form-item layui-col-xs8">
                 <label class="layui-form-label">访问Secret<i class="red">*</i></label>
                 <div class="layui-input-block">
                     <input type="text" id="accessSecret" class="layui-input"  placeholder="请输入访问Secret" />
                 </div>
-            </div>
-        </div>
-        <div class="layui-form-item layui-col-xs12" controltype="enclosureUpload" contentid="enclosureInfo">
-            <label class="layui-form-label">附件</label>
-            <div class="layui-input-block ver-center" id="enclosureInfo" skyeyejsonkey="[]">
-                <button type="button" class="layui-btn layui-btn-primary layui-btn-xs" id="enclosureUpload">附件上传</button>
             </div>
         </div>
         <div class="layui-form-item layui-col-xs6">

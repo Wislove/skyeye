@@ -24,7 +24,6 @@ layui.config({
                 skyeyeClassEnumUtil.showEnumDataListByClassName("commonIsDefault", 'radio',"isDefault", json.bean.isDefault, form);
                 skyeyeClassEnumUtil.showEnumDataListByClassName("fileStorageEnum",'select',  "storage", json.bean.storage, form);
                 skyeyeClassEnumUtil.showEnumDataListByClassName("fileFtpMode",'select', "mode", json.bean.mode, form);
-                $("#enclosureInfo").val(json.bean.enclosureInfo);
                 loadByStorage();
                 initData(json);
                 form.render();
@@ -123,7 +122,6 @@ layui.config({
                 name: $("#name").val(),
                 isDefault: dataShowType.getData('isDefault'),
                 storage: $("#storage").val(),
-                enclosureInfo:$("#enclosureInfo").val(),
             id: isNull(id)? '' : id,
 
             };
