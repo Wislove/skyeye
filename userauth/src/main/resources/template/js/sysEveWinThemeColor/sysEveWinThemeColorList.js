@@ -19,7 +19,7 @@ layui.config({
 	    id: 'messageTable',
 	    elem: '#messageTable',
 	    method: 'post',
-	    url: reqBasePath + 'sysevewinthemecolor001',
+	    url: reqBasePath + 'querySysEveWinThemeColorList',
 	    where:{colorClass: $("#colorClass").val()},
 	    even: true,
 	    page: true,
