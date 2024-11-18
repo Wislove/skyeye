@@ -7,9 +7,7 @@ layui.config({
     winui.renderColor();
     var index = parent.layer.getFrameIndex(window.name);
     var $ = layui.$,
-        textool = layui.textool,
         form = layui.form;
-    var selOption = getFileContent('tpl/template/select-option.tpl');
     var className = GetUrlParam("className");
     var id = GetUrlParam("id");
 
