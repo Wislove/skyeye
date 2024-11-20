@@ -1388,6 +1388,12 @@ var commonHtml = {
                             <input type="text" id="pageUrl" name="pageUrl" placeholder="请输入页面地址" win-verify="required" class="layui-input" maxlength="200"/>
                             <div class="layui-form-mid layui-word-aux">如果不想跳转，可填写：--<br>如果想跳转,格式为：../../tpl/model/modellist.html</div>
                         </div>
+                    </div>
+                    <div class="layui-form-item layui-col-xs12">
+                        <label class="layui-form-label">vue路由</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="path" name="path" placeholder="请输入vue路由" class="layui-input" maxlength="200"/>
+                        </div>
                     </div>`,
     'dsFormPage': `<div class="layui-form-item layui-col-xs12">
                         <label class="layui-form-label">表单布局<i class="red">*</i></label>
