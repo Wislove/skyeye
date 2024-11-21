@@ -24,6 +24,7 @@
     "payType": {"name": "支付渠道编码", "className": "skyeye-pro#com.skyeye.pay.enums.PayType"},
     "deliveryExpressType": {"name": "配送计费方式", "className": "skyeye-shop#com.skyeye.delivery.enums.DeliveryExpressType"},
     "menuType": {"name": "APP菜单类型", "className": "skyeye-pro#com.skyeye.menu.classenum.MenuType"},
+    "floorInfoEnum": {"name": "楼层、教室、服务类型", "className": "skyeye-pro#com.skyeye.school.building.floorenum.FloorInfoEnum"},
 
     "fileStorageEnum": {"name": "存储器", "className": "skyeye-pro#com.skyeye.upload.enums.FileStorageEnum"},
 

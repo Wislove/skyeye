@@ -21,16 +21,23 @@
     <div class="winui-toolbar">
         <div class="winui-tool">
             <button id="reloadTable" class="winui-toolbtn search-table-btn-right"><i class="fa fa-refresh" aria-hidden="true"></i><language showName="com.skyeye.refreshDataBtn"></language></button>
-            <button id="addBean" class="winui-toolbtn search-table-btn-right" auth="1656776769966"><i class="fa fa-plus" aria-hidden="true"></i><language showName="com.skyeye.addBtn"></language></button>
+            <button id="addBean" class="winui-toolbtn search-table-btn-right" auth="1731659909121"><i class="fa fa-plus" aria-hidden="true"></i><language showName="com.skyeye.addBtn"></language></button>
         </div>
     </div>
 
     <div class="layui-row" style="height: calc(100% - 50px);">
         <div style="width: 240px; float: left; height: 100%; overflow: auto; padding: 5px;">
+            <form class="layui-form" action="" id="showForm" autocomplete="off">
+                <div class="layui-input-block" style="margin-left: 0px; width: 100%;">
+                    <select id="schoolId" name="schoolId" lay-filter="schoolId" lay-search=""></select>
+                </div>
+            </form>
             <input type="text" id="name" name="name" placeholder="请输入要搜索的地点" class="layui-input" />
-            <ul id="treeDemo" class="ztree fsTree" method="get" isRoot="1"
+            <ul id="treeDemo" class="ztree fsTree" method="get" isRoot="0"
                 treeIdKey="id" inputs="parentId" treePIdKey="pId" clickCallbackInputs="parentId:$id" treeName="name"></ul>
         </div>
+
+
 
 
         <div style="width: calc(100% - 250px); float: left;">
@@ -41,11 +48,10 @@
     </div>
 
     <script type="text/html" id="tableBar">
-        {{# if(auth('1731834093847') && auth('1731834152576')){ }}
+        {{# if(auth('1731659909121') &&( d.level == 1 || d.level == 2)){ }}
         <a class="layui-btn layui-btn-xs" lay-event="add">新增子节点</a>
-        <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="move">移动</a>
         {{# } }}
-        {{# if(auth('1731834093847')){ }}
+        {{# if(auth('1731659909121')){ }}
         <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="edit"><language showName="com.skyeye.editBtn"></language></a>
         {{# } }}
         {{# if(auth('1731812925049')){ }}
@@ -62,7 +68,7 @@
     <script type="text/javascript" src="../../assets/lib/layui/lay/modules/ztree/js/jquery.ztree.exhide.min.js"></script>
     <script type="text/javascript" src="../../assets/lib/layui/lay/modules/ztree/js/fuzzysearch.js"></script>
     <script type="text/javascript">
-        layui.config({base: '../../js/floorServiceManagement/'}).use('FloorServiceList');
+        layui.config({base: '../../js/floorServiceManagement/'}).use('floorServiceList');
     </script>
 </body>
 </html>
