@@ -41,7 +41,7 @@ layui.config({
             limit: getLimit(),
             cols: [[
                 { title: systemLanguage["com.skyeye.serialNumber"][languageType], type: 'numbers' },
-                { field: 'codeNum', title: '渠道编码', align: 'left', width: 80, templet: function (d) {
+                { field: 'codeNum', title: '渠道编码', align: 'left', width: 150, templet: function (d) {
                         return skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("payType", 'id', d.codeNum, 'name');
                     }},
                 { field: 'enabled', title: '状态', align: 'center', width: 100, templet: function (d) {

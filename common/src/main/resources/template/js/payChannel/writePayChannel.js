@@ -11,7 +11,6 @@ layui.config({
         form = layui.form;
     var selOption = getFileContent('tpl/template/select-option.tpl');
     var className = GetUrlParam("className");
-    var appId = GetUrlParam("appId");
     var id = GetUrlParam("id");
 
     function initPayAppSelect(defaultAppId) {
@@ -39,6 +38,7 @@ layui.config({
                 $("#appId").val(json.bean.appId);
                 skyeyeClassEnumUtil.showEnumDataListByClassName("commonEnable", 'radio',"enabled", json.bean.enabled, form);
                 skyeyeClassEnumUtil.showEnumDataListByClassName("payType",'select',  "codeNum", json.bean.codeNum, form);
+                skyeyeClassEnumUtil.showEnumDataListByClassName("payChannelVersion",'select',  "apiVersion", json.bean.apiVersion, form);
                 loadByCodeNum();
                 $("#feeRate").val(json.bean.feeRate);
                 $("#remark").val(json.bean.remark);
@@ -46,14 +46,18 @@ layui.config({
                 textool.init({eleId: 'remark', maxlength: 200});
                 form.render();
                 initPayAppSelect(json.bean.appId);
+                loadByApiVersion();
+
             }
         });
     } else {
         skyeyeClassEnumUtil.showEnumDataListByClassName("commonEnable", 'radio', "enabled", '', form);
         skyeyeClassEnumUtil.showEnumDataListByClassName("payType", 'select', "codeNum", '', form);
+        skyeyeClassEnumUtil.showEnumDataListByClassName("payChannelVersion",'select',  "apiVersion", '', form);
         textool.init({eleId: 'remark', maxlength: 200});
         form.render();
         initPayAppSelect();
+        loadByApiVersion();
     }
 
     function loadByCodeNum() {
@@ -69,6 +73,17 @@ layui.config({
         else {
             $('.zfb-input-fields').hide();
             $('.wx-input-fields').hide();
+
+        }
+    }
+    function loadByApiVersion(){
+        let apiVersion = $("#apiVersion").val();
+        if (apiVersion == 'V2') {
+            $('.v2-input-fields').show();
+            $('.v3-input-fields').hide();
+        } else if (apiVersion == 'V3') {
+            $('.v2-input-fields').hide();
+            $('.v3-input-fields').show();
         }
     }
 
@@ -99,7 +114,13 @@ layui.config({
         loadByCodeNum();
     });
 
-    matchingLanguage();
+    //添加apiVersion的监听
+    form.on('select(apiVersion)', function (data) {
+        loadByApiVersion();
+
+    })
+
+    matchingLanguage()
     form.render();
     form.on('submit(formWriteBean)', function (data) {
         if (winui.verifyForm(data.elem)) {
@@ -112,8 +133,11 @@ layui.config({
                 id: isNull(id)? '' : id,
 
             };
+            var params1 = {
+                apiV3Key: $("#apiV3Key").val()
+            }
 
-                if (['wx_pub', 'wx_lite', 'wx_app', 'wx_native', 'wx_wap', 'wx_bar'].includes(params.codeNum)) {//
+                if (['wx_pub', 'wx_lite', 'wx_app', 'wx_native', 'wx_wap', 'wx_bar'].includes(params.codeNum)) {
                     let config = {
                         appId: $("#appId").val(),
                         mchId: $("#mchId").val(),
@@ -145,6 +169,21 @@ layui.config({
                     params.config = JSON.stringify(config)
                 }
 
+            if (['V2'].includes(params1.apiV3Key)){
+                let config1 = {
+                    mchKey: $("#mchKey").val(),
+                    keyContent: $("#keyContent").val(),
+                }
+                params1.config = JSON.stringify(config1)
+            }else if (['V2'].includes(params1.apiV3Key)){
+                let config1 = {
+                    privateKeyContent: $("#privateKeyContent").val(),
+                    apiV3Key: $("#apiV3Key").val(),
+                    certSerialNo: $("#certSerialNo").val()
+                }
+                params1.config = JSON.stringify(config1)
+            }
+
             AjaxPostUtil.request({
                 url: reqBasePath + "writePayChannel",
                 params: params,
@@ -168,5 +207,10 @@ layui.config({
 
     //隐藏支付宝相关输入框初始状态
     $('.zfb-input-fields').hide();
+
+    //隐藏微信V2相关输入框初始状态
+    $('.v2-input-fields').hide();
+    //隐藏微信V3相关输入框初始状态
+    $('.v3-input-fields').hide();
 
 });
