@@ -22,11 +22,15 @@
     "pageOpenType": {"name": "页面布局打开方式", "className": "skyeye-pro#com.skyeye.operate.classenum.PageOpenType"},
     "userIsTermOfValidity": {"name": "用户是否长期有效", "className": "skyeye-pro#com.skyeye.personnel.classenum.UserIsTermOfValidity"},
     "payType": {"name": "支付渠道编码", "className": "skyeye-pro#com.skyeye.pay.enums.PayType"},
+    "payChannelVersion": {"name": "支付渠道版本", "className": "skyeye-pro#com.skyeye.pay.enums.PayChannelVersion"},
+
     "deliveryExpressType": {"name": "配送计费方式", "className": "skyeye-shop#com.skyeye.delivery.enums.DeliveryExpressType"},
     "menuType": {"name": "APP菜单类型", "className": "skyeye-pro#com.skyeye.menu.classenum.MenuType"},
 
     "fileStorageEnum": {"name": "存储器", "className": "skyeye-pro#com.skyeye.upload.enums.FileStorageEnum"},
+    "shopOrderTerminal": {"name": "订单来源", "className": "skyeye-shop#com.skyeye.order.enums.ShopOrderTerminal"},
 
+    "shopOrderType": {"name": "订单类型", "className": "skyeye-shop#com.skyeye.order.enums.ShopOrderType"},
     "fileFtpMode": {"name": "连接模式", "className": "skyeye-pro#com.skyeye.upload.enums.FileFtpMode"},
 
     "smsSceneEnum": {"name": "模版编码", "className": "skyeye-pro#com.skyeye.common.enumeration.SmsSceneEnum"},
