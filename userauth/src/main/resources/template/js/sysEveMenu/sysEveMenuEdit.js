@@ -63,6 +63,7 @@ layui.config({
 				if (type == 1) {
 					$('#typeChangeBox').html(commonHtml['customPageUrl']);
 					$("#pageUrl").val(json.bean.pageUrl);
+					$("#path").val(json.bean.path);
 				} else if (type == 2) {
 					$('#typeChangeBox').html(commonHtml['dsFormPage']);
 					dsFormUtil.dsFormChooseMation = json.bean.dsFormPage;
@@ -112,6 +113,7 @@ layui.config({
 							desktopId: $("#desktop").val(),
 							pageType: pageType,
 							pageUrl: getPageTypeForUrl(pageType),
+							path: $("#path").val(),
 							type: $("input[name='type']:checked").val(),
 							level: level,
 							parentId: level == 0 ? "0" : $("#menuParent").val(),

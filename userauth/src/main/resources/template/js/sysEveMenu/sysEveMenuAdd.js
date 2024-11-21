@@ -73,6 +73,7 @@ layui.config({
 					desktopId: $("#desktop").val(),
 					pageType: pageType,
 					pageUrl: getPageTypeForUrl(pageType),
+					path: $("#path").val(),
 					type: $("input[name='type']:checked").val(),
 					level: level,
 					parentId: level == 0 ? "0" : $("#menuParent").val(),

@@ -101,6 +101,7 @@ layui.config({
 				if (type == 1) {
 					$('#typeChangeBox').html(commonHtml['customPageUrl']);
 					$("#pageUrl").val(operateOpenPage.pageUrl);
+					$("#path").val(operateOpenPage.path);
 				} else if (type == 2) {
 					$('#typeChangeBox').html(commonHtml['dsFormPage']);
 					dsFormUtil.dsFormChooseMation = operateOpenPage.dsFormPage;
@@ -238,6 +239,7 @@ layui.config({
 					name: $("#openPageName").val(),
 					type: type,
 					pageUrl: getPageTypeForUrl(type),
+					path: $("#path").val(),
 					params: pageParams
 				};
 				params.operateOpenPage = JSON.stringify(operateOpenPage);

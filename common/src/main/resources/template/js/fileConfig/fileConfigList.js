@@ -1,17 +1,13 @@
-var rowId = "";
 layui.config({
     base: basePath,
     version: skyeyeVersion
 }).extend({
     window: 'js/winui.window'
-}).define(['window', 'table', 'jquery', 'winui', 'form', 'soulTable'], function (exports) {
+}).define(['window', 'table', 'jquery', 'winui', 'form'], function (exports) {
     winui.renderColor();
     var $ = layui.$,
         form = layui.form,
-        table = layui.table,
-        soulTable = layui.soulTable;
-
-    var selTemplate = getFileContent('tpl/template/select-option-must.tpl');
+        table = layui.table;
 
     var appId = "";
     appId = GetUrlParam("appId");
@@ -77,7 +73,6 @@ layui.config({
 
     // 编辑
     function edit(data) {
-        rowId = data.id;
         _openNewWindows({
             url: "../../tpl/fileConfig/writeFileConfig.html?id=" + data.id,
             title: systemLanguage["com.skyeye.recordPageTitle"][languageType],
