@@ -23,7 +23,7 @@
 
 ④ 为什么购买`Skyeye云`，请参考：https://mp.weixin.qq.com/s/l5xPR8tVMFzQlfaQZ2xEpw
 
-⑤ [国产开源项目对比](https://docs.qq.com/sheet/DYUtPdWhTbVBITlpL?tab=000001)。
+⑤ [国产开源项目对比--以及Skyeye云功能点](https://docs.qq.com/sheet/DYUtPdWhTbVBITlpL?tab=000001)。
 
 ![输入图片说明](images/mindMap/compare.png)
 
@@ -94,12 +94,6 @@
 |skyeye-project |8109 |PM项目管理模块 |project-web.jar |
 |skyeye-erp |8106 |ERP+生产模块+仓库 |erp-web.jar |
 |skyeye-seal-service |8108 |售后服务模块 |seal-service-web.jar |
-
-## 系统功能结构图
-
-> 功能结构图内容较多，加载可能会有点慢，请耐心等待。
-
-![输入图片说明](images/mindMap/out_www.yalijuda.com_%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240730093239_Ee37d6NUHo.png)
 
 ##  :tw-1f31e:  架构介绍
 
