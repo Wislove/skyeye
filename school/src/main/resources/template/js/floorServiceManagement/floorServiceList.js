@@ -16,8 +16,6 @@ layui.config({
         tableTree = layui.tableTreeDj;
     var placeTypeId = '';
     var selTemplate = getFileContent('tpl/template/select-option-must.tpl');
-    // 新增
-    // authBtn('1731659909121');
 
     var schoolId = "";
     // 加载学校列表
@@ -29,7 +27,6 @@ layui.config({
         $("#schoolId").val(schoolId);
         form.render('select');
         schoolLocation();
-        // initLoadTable()
         }});
     // 监听下拉框
     form.on('select(schoolId)', function (data) {
