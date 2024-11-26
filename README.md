@@ -11,7 +11,7 @@
 
 **3. [常见问题](https://gitee.com/dromara/skyeye/blob/company_server/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98.md)，优先看这个。《《《《《《《《《《《《《《这个文件必看，有`移动端`的详细说明。**
 
-**4. **体验地址** ：关注下方微信公众号，回复`skyeye`获取**
+**4. **体验地址** ：出于各种原因，我们不提供体验地址，我们的功能多达500个功能点，包含PC和移动端。本着`姜太公钓鱼愿者上钩`的心态来开放星球用户，如果你买了之后觉得不划算，那么进入星球后1个月内你可以找一套具备相同功能的软件源码提供给作者，并给作者提供一年的免费更新和维护，作者会原价退还给您。**
 
 **为什么推荐使用本项目？**
 
@@ -23,7 +23,7 @@
 
 ④ 为什么购买`Skyeye云`，请参考：https://mp.weixin.qq.com/s/l5xPR8tVMFzQlfaQZ2xEpw
 
-⑤ [国产开源项目对比](https://docs.qq.com/sheet/DYUtPdWhTbVBITlpL?tab=000001)。
+⑤ [国产开源项目对比--以及Skyeye云功能点](https://docs.qq.com/sheet/DYUtPdWhTbVBITlpL?tab=000001)。
 
 ![输入图片说明](images/mindMap/compare.png)
 
@@ -94,12 +94,6 @@
 |skyeye-project |8109 |PM项目管理模块 |project-web.jar |
 |skyeye-erp |8106 |ERP+生产模块+仓库 |erp-web.jar |
 |skyeye-seal-service |8108 |售后服务模块 |seal-service-web.jar |
-
-## 系统功能结构图
-
-> 功能结构图内容较多，加载可能会有点慢，请耐心等待。
-
-![输入图片说明](images/mindMap/out_www.yalijuda.com_%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240730093239_Ee37d6NUHo.png)
 
 ##  :tw-1f31e:  架构介绍
 

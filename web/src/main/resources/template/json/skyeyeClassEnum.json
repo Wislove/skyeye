@@ -30,8 +30,12 @@
 
     "fileStorageEnum": {"name": "存储器", "className": "skyeye-pro#com.skyeye.upload.enums.FileStorageEnum"},
     "shopOrderTerminal": {"name": "订单来源", "className": "skyeye-shop#com.skyeye.order.enums.ShopOrderTerminal"},
-
+    "shopOrderState": {"name": "订单状态", "className": "skyeye-shop#com.skyeye.order.enums.ShopOrderState"},
     "shopOrderType": {"name": "订单类型", "className": "skyeye-shop#com.skyeye.order.enums.ShopOrderType"},
+
+    "orderCommentType": {"name": "订单评价方式", "className": "skyeye-shop#com.skyeye.order.enums.OrderCommentType"},
+    "shopOrderCommentState": {"name": "订单评价状态", "className": "skyeye-shop#com.skyeye.order.enums.ShopOrderCommentState"},
+
     "fileFtpMode": {"name": "连接模式", "className": "skyeye-pro#com.skyeye.upload.enums.FileFtpMode"},
 
     "smsSceneEnum": {"name": "模版编码", "className": "skyeye-pro#com.skyeye.common.enumeration.SmsSceneEnum"},
