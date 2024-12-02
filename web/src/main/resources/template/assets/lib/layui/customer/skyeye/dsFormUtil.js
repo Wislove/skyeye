@@ -9,7 +9,7 @@ var dsFormUtil = {
         '1': `{{#bean}}
                 <div class="layui-form-item {{width}}" controlType="{{dsFormComponent.numCode}}" contentId="{{id}}">
                     <label class="layui-form-label">{{title}}：</label>
-                    <div class="layui-input-block ver-center">{{value}}</div>
+                    <div class="layui-input-block ver-center">{{{value}}}</div>
                 </div>
              {{/bean}}`, // 文本展示
         '2': `{{#bean}}
