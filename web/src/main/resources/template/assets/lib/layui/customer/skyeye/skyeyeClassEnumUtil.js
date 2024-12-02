@@ -40,6 +40,16 @@ var skyeyeClassEnumUtil = {
         }
         return skyeyeClassEnumUtil.classEnumMap[code];
     },
+    getEnumDataListByClassNameStr: function (className) {
+        var params = {
+            className: encodeURIComponent(className)
+        };
+        let result = [];
+        AjaxPostUtil.request({url: reqBasePath + "getEnumDataByClassName", params: params, type: 'json', method: "POST", callback: function(json) {
+            result = json.rows;
+        }, async: false});
+        return result;
+    },
 
     getEnumDataNameByCodeAndKey: function (code, idKey, key, displayNameKey) {
         var json = skyeyeClassEnumUtil.getEnumDataListByClassName(code);
