@@ -117,6 +117,8 @@ layui.config({
             del(data);
         } else if (layEvent === 'edit') {
             edit(data);
+        }else if (layEvent === 'details') { //详情
+            details(data);
         }
     });
 
@@ -156,6 +158,18 @@ layui.config({
                 }});
         });
     }
+
+    // 详情
+    function details(data) {
+        _openNewWindows({
+            url:  systemCommonUtil.getUrl('FP2024100400005&id=' + data.id, null),
+            title: systemLanguage["com.skyeye.detailsPageTitle"][languageType],
+            pageId: "storeTypeServiceDetails",
+            area: ['90vw', '90vh'],
+            callBack: function (refreshCode) {
+            }});
+    }
+
     form.render();
     $("body").on("click", "#reloadTable", function () {
         loadTable();
