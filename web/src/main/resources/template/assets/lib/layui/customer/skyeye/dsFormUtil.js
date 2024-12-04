@@ -1457,12 +1457,10 @@ var dsFormColumnUtil = {
         var id = _this.attr('cus-id');
         var key = _this.attr('id').replace(id, '');
         $.each(dsFormColumnUtil.tableDataList, function (j, item) {
-            if (key.startsWith('value')) {
-                item['value'] = _this.val();
-                item['displayValue'] = _this.val();
-            } else {
-                if (item.id == id) {
-                    item[key] = _this.val();
+            if (item.id == id) {
+                item[key] = _this.val();
+                if (key.startsWith('value')) {
+                    item['displayValue'] = _this.val();
                 }
             }
         });
