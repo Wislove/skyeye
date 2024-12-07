@@ -26,7 +26,9 @@
 
     "deliveryExpressType": {"name": "配送计费方式", "className": "skyeye-shop#com.skyeye.delivery.enums.DeliveryExpressType"},
     "menuType": {"name": "APP菜单类型", "className": "skyeye-pro#com.skyeye.menu.classenum.MenuType"},
+
     "floorInfoEnum": {"name": "楼层、教室、服务类型", "className": "skyeye-school#com.skyeye.school.building.floorenum.FloorInfoEnum"},
+    "routeTypeEnum": {"name": "路线类型", "className": "skyeye-school#com.skyeye.school.route.routeenum.RouteTypeEnum"},
 
     "fileStorageEnum": {"name": "存储器", "className": "skyeye-pro#com.skyeye.upload.enums.FileStorageEnum"},
     "shopOrderTerminal": {"name": "订单来源", "className": "skyeye-shop#com.skyeye.order.enums.ShopOrderTerminal"},

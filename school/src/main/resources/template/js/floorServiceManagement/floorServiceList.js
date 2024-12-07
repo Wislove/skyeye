@@ -82,7 +82,6 @@ layui.config({
                 { field: 'name', title: '名称', width: 120 },
                 { field: 'sortOrder', title: '排序', width: 60 },
                 { field: 'nodeType', title: '类型', align: 'center', width: 80, templet: function (d) {
-                    console.log(d)
                         return skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("floorInfoEnum", 'id', d.nodeType, 'name');
                     }},
                 { field: 'status', title: '状态', align: 'center', width: 80, templet: function (d) {
