@@ -20,7 +20,6 @@ layui.config({
         }});
 
     form.on('select(schoolId)', function (data) {
-        console.log(data)
         var thisRowValue = data.value;
         schoolId = isNull(thisRowValue) ? "" : thisRowValue;
         loadTable();
@@ -40,12 +39,12 @@ layui.config({
                 {title: systemLanguage["com.skyeye.serialNumber"][languageType], type: 'numbers'},
                 {
                     field: 'startName', title: '起点名称', width: 150, align: 'center', templet: function (d) {
-                        return  d.startName ;
+                        return  d.startMation.name ;
                     }
                 },
                 {
                     field: 'endName', title: '终点名称', width: 150, align: 'center', templet: function (d) {
-                        return  d.endName ;
+                        return  d.endMation.name ;
                     }
                 },
                 {
@@ -120,33 +119,31 @@ layui.config({
     // 新增
     $("body").on("click", "#addBean", function () {
         _openNewWindows({
-            url: "../../tpl/routeManagement/routeManagementWrite.html?schoolId=" + schoolId,
+            url: systemCommonUtil.getUrl('FP2024120400003'),
             title: systemLanguage["com.skyeye.addPageTitle"][languageType],
             pageId: "routeManagementAdd",
-            area: ['90vw', '90vh'],//宽度和高度
-            callBack: function () {
+            area: ['90vw', '90vh'],
+            callBack: function (refreshCode) {
                 winui.window.msg(systemLanguage["com.skyeye.successfulOperation"][languageType], {icon: 1, time: 2000});
                 loadTable();
-            }
-        });
+            }});
     });
+
     // 编辑
     function edit(data) {
-        _openNewWindows({
-            url: "../../tpl/routeManagement/routeManagementWrite.html?id=" + data.id,
+       _openNewWindows({
+            url: systemCommonUtil.getUrl('FP2024120700001&id=' + data.id),
             title: systemLanguage["com.skyeye.editPageTitle"][languageType],
             pageId: "routeManagementEdit",
             area: ['90vw', '90vh'],
-            callBack: function () {
+            callBack: function (refreshCode) {
                 winui.window.msg(systemLanguage["com.skyeye.successfulOperation"][languageType], {icon: 1, time: 2000});
                 loadTable();
-            }
-        });
+            }});
     }
 
     // 删除
     function del(data, obj) {
-        console.log(data);
         layer.confirm(systemLanguage["com.skyeye.deleteOperationMsg"][languageType], {icon: 3, title: systemLanguage["com.skyeye.deleteOperation"][languageType]}, function (index) {
             layer.close(index);
             AjaxPostUtil.request({url: sysMainMation.schoolBasePath + "deleteRouteById", params: {id: data.id}, type: 'json', method: 'DELETE', callback: function (json) {
