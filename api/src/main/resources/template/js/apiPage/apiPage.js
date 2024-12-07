@@ -284,6 +284,36 @@ layui.config({
 		}
 	});
 
+	$("body").on("click", ".enum-click", function() {
+		let enumClassStr = $(this).attr("enumClass");
+		let enumClassArr = skyeyeClassEnumUtil.getEnumDataListByClassNameStr(enumClassStr);
+		layer.open({
+			type: 1,
+			title: 'JSON 数据',
+			content: buildTable(enumClassArr), // 将JSON数据转换为HTML表格
+			area: ['500px', '300px'] // 设置页面尺寸
+		});
+		table.init('enum-table-demo', { //转化静态表格
+			limit: 100,
+		});
+	});
+
+	function buildTable(json) {
+		var table = `<table lay-filter="enum-table-demo">
+		<thead>
+			<tr>
+				<th lay-data="{field:'id', width: 120}">ID</th>
+				<th lay-data="{field:'name', width: 150}">名称</th>
+			</tr>
+		</thead>
+		<tbody>`;
+		json.forEach(function(item) {
+			table += '<tr><td>' + item.id + '</td><td>' + item.name + '</td></tr>';
+		});
+		table += '</tbody></table>';
+		return table;
+	}
+
 	// 保存高级查询参数
 	$("body").on("click", "#saveAdvancedSearch", function() {
 		var params = {

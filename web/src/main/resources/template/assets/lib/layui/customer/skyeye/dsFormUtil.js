@@ -9,7 +9,7 @@ var dsFormUtil = {
         '1': `{{#bean}}
                 <div class="layui-form-item {{width}}" controlType="{{dsFormComponent.numCode}}" contentId="{{id}}">
                     <label class="layui-form-label">{{title}}：</label>
-                    <div class="layui-input-block ver-center">{{value}}</div>
+                    <div class="layui-input-block ver-center">{{{value}}}</div>
                 </div>
              {{/bean}}`, // 文本展示
         '2': `{{#bean}}
@@ -1457,12 +1457,10 @@ var dsFormColumnUtil = {
         var id = _this.attr('cus-id');
         var key = _this.attr('id').replace(id, '');
         $.each(dsFormColumnUtil.tableDataList, function (j, item) {
-            if (key.startsWith('value')) {
-                item['value'] = _this.val();
-                item['displayValue'] = _this.val();
-            } else {
-                if (item.id == id) {
-                    item[key] = _this.val();
+            if (item.id == id) {
+                item[key] = _this.val();
+                if (key.startsWith('value')) {
+                    item['displayValue'] = _this.val();
                 }
             }
         });

@@ -277,6 +277,7 @@
 						<th lay-data="{field:'ref', minWidth: 100}">限制条件</th>
 						<th lay-data="{field:'default', width: 150}">默认值</th>
 						<th lay-data="{field:'exampleDefault', width:150}">示例值</th>
+						<th lay-data="{field:'enumClassStr', width:400}">枚举值</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -289,6 +290,7 @@
 							<td>{{ref}}</td>
 							<td>{{default}}</td>
 							<td>{{exampleDefault}}</td>
+							<td><a href="javascript:;" class="enum-click" style="color: cadetblue" enumClass="{{enumClassStr}}">{{enumClassStr}}</a></td>
 						</tr>
 						{{#each children}}
 							<tr>
@@ -299,6 +301,7 @@
 								<td>{{ref}}</td>
 								<td>{{default}}</td>
 								<td>{{exampleDefault}}</td>
+								<td><a href="javascript:;" class="enum-click" style="color: cadetblue" enumClass="{{enumClassStr}}">{{enumClassStr}}</a></td>
 							</tr>
 						{{/each}}
 					{{/each}}
