@@ -114,6 +114,13 @@
             <div class="layui-input-block winui-radio" id="discountType">
             </div>
         </div>
+        <div class="layui-form-item layui-col-xs6">
+            <label class="layui-form-label">满减金额<i class="red">*</i></label>
+            <div class="layui-input-block">
+                <input type="text" id="usePrice" name="usePrice" win-verify="money" placeholder="请输入满减金额" class="layui-input"/>
+                <div class="layui-form-mid layui-word-aux">单位：分。0 - 不限制，大于 0 - 多少金额可用</div>
+            </div>
+        </div>
         <div id="percentBox" style="display: none;">
             <div class="layui-form-item layui-col-xs6">
                 <label class="layui-form-label">折扣百分比<i class="red">*</i></label>
@@ -122,22 +129,8 @@
                     <div class="layui-form-mid layui-word-aux">折扣百分比，例如，80% 为 80</div>
                 </div>
             </div>
-            <div class="layui-form-item layui-col-xs6">
-                <label class="layui-form-label">满减金额<i class="red">*</i></label>
-                <div class="layui-input-block">
-                    <input type="text" id="usePrice" name="usePrice" win-verify="money" placeholder="请输入满减金额" class="layui-input"/>
-                    <div class="layui-form-mid layui-word-aux">单位：分。0 - 不限制，大于 0 - 多少金额可用</div>
-                </div>
-            </div>
         </div>
         <div id="priceBox">
-            <div class="layui-form-item layui-col-xs6">
-                <label class="layui-form-label">满减金额<i class="red">*</i></label>
-                <div class="layui-input-block">
-                    <input type="text" id="usePrice" name="usePrice" win-verify="money" placeholder="请输入满减金额" class="layui-input"/>
-                    <div class="layui-form-mid layui-word-aux">单位：分。0 - 不限制，大于 0 - 多少金额可用</div>
-                </div>
-            </div>
             <div class="layui-form-item layui-col-xs6">
                 <label class="layui-form-label">优惠金额<i class="red">*</i></label>
                 <div class="layui-input-block">
