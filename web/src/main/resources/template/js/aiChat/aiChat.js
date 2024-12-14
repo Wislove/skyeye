@@ -149,7 +149,7 @@ layui.config({
             $('.chat-box').scrollTop($('.chat-box').prop('scrollHeight'));
             // 发送请求
             AjaxPostUtil.request({
-                url: "http://192.168.3.8:8120/" + "sendChatMessage",
+                url: sysMainMation.aiBasePath + "sendChatMessage",
                 params: params,
                 type: 'json',
                 method: 'POST',
