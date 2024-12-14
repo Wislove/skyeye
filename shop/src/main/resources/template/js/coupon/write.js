@@ -10,7 +10,7 @@ layui.config({
         form = layui.form,
         laydate = layui.laydate;
     let id = GetUrlParam("id");
-    var storeId = "";
+    //var storeId = "";
     $("#showForm").html($("#formTemplate").html());
     if (isNull(id)) {
         skyeyeClassEnumUtil.showEnumDataListByClassName("commonEnable", 'radio', "enabled", '', form);
@@ -23,14 +23,14 @@ layui.config({
         }, async: false});
 
         loadCouponList('');
-        initstoreId('')
+        //initstoreId('')
     } else {
         AjaxPostUtil.request({url: sysMainMation.shopBasePath + "queryCouponById", params: {id: id}, type: 'json', method: 'POST', callback: function (json) {
             let data = json.bean;
             resetDataOrTemplate(data);
 
             loadCouponList(data.templateId);
-            initstoreId('')
+            //initstoreId('')
         }});
     }
     initDataEvent();
@@ -141,7 +141,7 @@ layui.config({
             AjaxPostUtil.request({url: sysMainMation.shopBasePath + "queryCouponById", params: {id: val}, type: 'json', method: 'POST', callback: function (json) {
                 let data = json.bean;
                 resetDataOrTemplate(data);
-                initstoreId('')
+                //initstoreId('')
                 loadCouponList(val);
                 matchingLanguage();
             }});
@@ -155,7 +155,7 @@ layui.config({
                 couponMaterialList: [],
             });
             loadCouponList('');
-            initstoreId('')
+            //initstoreId('')
             matchingLanguage();
         }
         initDataEvent();
@@ -167,23 +167,23 @@ layui.config({
             dataShowType.showData(json, 'select', 'templateId', val, form);
         }, async: false});
     }
-
-    //加载门店
-    function initstoreId(){
-        showGrid({
-            id: "storeId",
-            url: shopBasePath + "storeStaff005",
-            method: "Get",
-            params: {storeId: $("#storeId").val()},
-            pagination: false,
-            template: getFileContent('tpl/template/checkbox-property.tpl'),
-            ajaxSendLoadBefore: function(hdb) {
-            },
-            ajaxSendAfter:function (json) {
-                form.render('checkbox');
-            }
-        });
-    }
+    //
+    // //加载门店
+    // function initstoreId(){
+    //     showGrid({
+    //         id: "storeId",
+    //         url: shopBasePath + "storeStaff005",
+    //         method: "Get",
+    //         params: {storeId: $("#storeId").val()},
+    //         pagination: false,
+    //         template: getFileContent('tpl/template/checkbox-property.tpl'),
+    //         ajaxSendLoadBefore: function(hdb) {
+    //         },
+    //         ajaxSendAfter:function (json) {
+    //             form.render('checkbox');
+    //         }
+    //     });
+    // }
 
     // 适用产品范围
     form.on('radio(productScopeFilter)', function (data) {
