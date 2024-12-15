@@ -10,8 +10,8 @@ layui.config({
         form = layui.form,
         laydate = layui.laydate;
     let id = GetUrlParam("id");
-    var storeId = "";
     $("#showForm").html($("#formTemplate").html());
+
     if (isNull(id)) {
         skyeyeClassEnumUtil.showEnumDataListByClassName("commonEnable", 'radio', "enabled", '', form);
         skyeyeClassEnumUtil.showEnumDataListByClassName("couponTakeType", 'radio', "takeType", '', form);
@@ -31,17 +31,15 @@ layui.config({
             resetDataOrTemplate(data);
             loadCouponList(data.templateId);
             AjaxPostUtil.request({url: sysMainMation.shopBasePath + "queryStoreListByParams", params: {}, type: 'json', method: 'GET', callback: function (res) {
-                console.log(res);
                 let storeIdList = [];
                 if (!isNull(data.storeList)) {
                     for (let i = 0; i < data.storeList.length; i++) {
                         storeIdList.push(data.storeList[i].storeId);
                     }
                 }
-                    dataShowType.showData(res, 'verificationSelect', 'storeIdList', storeIdList.toString(), form);
+                    dataShowType.showData(res, 'verificationSelect', 'storeIdList', storeIdList, form);
             }});
         }});
-
     }
     initDataEvent();
 
@@ -94,16 +92,16 @@ layui.config({
             dataShowType.showData(json, 'verificationSelect', 'couponMaterialList', materialIdList.toString(), form);
         }, async: false});
         AjaxPostUtil.request({url: sysMainMation.shopBasePath + "queryStoreListByParams", params: {}, type: 'json', method: 'GET', callback: function (res) {
-                console.log(res);
                 let storeIdList = [];
                 if (!isNull(data.storeList)) {
                     for (let i = 0; i < data.storeList.length; i++) {
                         storeIdList.push(data.storeList[i].storeId);
                     }
                 }
-                dataShowType.showData(res, 'verificationSelect', 'storeIdList', storeIdList.toString(), form);
+                dataShowType.showData(res, 'verificationSelect', 'storeIdList', storeIdList, form);
             }, async: false});
     }
+
 
     function initDataEvent() {
         var startTime = laydate.render({
@@ -172,7 +170,6 @@ layui.config({
                 discountType: 1,
                 productScope: 1,
                 couponMaterialList: [],
-                storeIdList: [],
             });
             loadCouponList('');
             matchingLanguage();
@@ -223,9 +220,7 @@ layui.config({
             let couponStoreIdList = isNull($('#storeIdList').attr('value')) ? [] : JSON.parse($('#storeIdList').attr('value'));
             let storeList = [];
             for (let i = 0; i < couponStoreIdList.length; i++) {
-                storeList.push({
-                    storeId: couponStoreIdList[i],
-                });
+                storeList.push(couponStoreIdList[i]);
             }
             var params = {
                 id: isNull(id)? '' : id,
