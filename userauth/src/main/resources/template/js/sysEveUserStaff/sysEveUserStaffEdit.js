@@ -16,6 +16,7 @@ layui.config({
 	    var $ = layui.$,
 			laydate = layui.laydate,
 	    	dtree = layui.dtree;
+		let userMation = {};
 	    
 	    showGrid({
 		 	id: "showForm",
@@ -35,6 +36,7 @@ layui.config({
 		 	},
 		 	
 		 	ajaxSendAfter:function (json) {
+				userMation = json.bean;
 				// 参加工作时间
 				laydate.render({elem: '#workTime', range: false});
 
@@ -185,7 +187,7 @@ layui.config({
 		 	        	var params = {
 		 	        		id: parent.rowId,
 		 	        		userIdCard: $("#userIdCard").val(),
-							userName: $("#userName").html(),
+							userName: isNull(userMation.userName) ? "" : userMation.userName.replace(/[\n\t]/g, ""),
 		 	        		userSex: $("input[name='userSex']:checked").val(),
 		 	        		email: $("#email").val(),
 		 	        		qq: $("#qq").val(),
@@ -193,14 +195,14 @@ layui.config({
 		 	        		homePhone: $("#homePhone").val(),
 		 	        		userSign: $("#userSign").val(),
 							workTime: $("#workTime").val(),
-							entryTime: $("#entryTime").html(),
+							entryTime: isNull(userMation.entryTime)? "" : userMation.entryTime.replace(/[\n\t]/g, ""),
 		 	        		companyId: companyId,
 		 	        		departmentId: departmentId,
 		 	        		jobId: jobId,
 							jobScoreId: jobScoreId,
 							timeIdList: JSON.stringify(timeIds),
 							state: $("#state").attr("state"),
-							trialTime: $("#trialTime").html()
+							trialTime: isNull(userMation.trialTime)? "" : userMation.trialTime.replace(/[\n\t]/g, ""),
 		 	        	};
 		 	        	params.userPhoto = $("#userPhoto").find("input[type='hidden'][name='upload']").attr("oldurl");
 		 	        	if(isNull(params.userPhoto)){
