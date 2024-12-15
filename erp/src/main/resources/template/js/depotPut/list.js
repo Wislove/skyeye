@@ -32,28 +32,24 @@ layui.config({
                 return str;
             }},
             { field: 'processInstanceId', title: '流程ID', rowspan: '2', width: 100, templet: function (d) {
-                    return '<a lay-event="processDetails" class="notice-title-click">' + getNotUndefinedVal(d.processInstanceId) + '</a>';
-                }},
+                return '<a lay-event="processDetails" class="notice-title-click">' + getNotUndefinedVal(d.processInstanceId) + '</a>';
+            }},
+            { field: 'state', title: '状态', rowspan: '2', width: 90,rowspan: '2', templet: function (d) {
+                return skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("erpOrderStateEnum", 'id', d.state, 'name');
+            }},
             { colspan: '2', title: '来源单据信息', align: 'center' },
             { field: 'createName', title: '申请人', width: 120 ,rowspan: '2'},
             { field: 'createTime', title: '申请时间', align: 'center', width: 150 ,rowspan: '2'},
             { field: 'totalPrice', title: '合计金额', align: 'left', width: 120,rowspan: '2' },
             { field: 'operTime', title: '单据日期', align: 'center', width: 140,rowspan: '2' },
-            { field: 'state', title: '状态', rowspan: '2', width: 90,rowspan: '2', templet: function (d) {
-                    return skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("erpOrderStateEnum", 'id', d.state, 'name');
-                }},
-            { field: 'otherState', title: '入库状态', width: 90,rowspan: '2', templet: function (d) {
-                return skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("depotPutState", 'id', d.otherState, 'name');
-            }},
-
             { title: systemLanguage["com.skyeye.operation"][languageType], fixed: 'right', align: 'center', width: 200, toolbar: '#tableBar',rowspan: '2'}
         ], [
             { field: 'fromTypeId', title: '来源类型', width: 150, templet: function (d) {
-                    return skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("depotPutFromType", 'id', d.fromTypeId, 'name');
-                }},
+                return skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("depotPutFromType", 'id', d.fromTypeId, 'name');
+            }},
             { field: 'fromId', title: '单据编号', width: 200, templet: function (d) {
-                    return getNotUndefinedVal(d.fromMation?.oddNumber);
-                }}
+                return getNotUndefinedVal(d.fromMation?.oddNumber);
+            }}
         ]],
         done: function(json) {
             matchingLanguage();
