@@ -788,12 +788,15 @@ var dsFormUtil = {
                     url += `&${key}=${value}`;
                 });
             }
-            var teamAuth = dsFormUtil.pageMation.serviceBeanCustom.serviceBean.teamAuth;
-            if (teamAuth) {
-                // 开启团队权限
-                url += `&objectId=${objectId}`;
-                url += `&objectKey=${objectKey}`;
+            if (!isNull(dsFormUtil.pageMation.serviceBeanCustom.serviceBean)) {
+                var teamAuth = dsFormUtil.pageMation.serviceBeanCustom.serviceBean.teamAuth;
+                if (teamAuth) {
+                    // 开启团队权限
+                    url += `&objectId=${objectId}`;
+                    url += `&objectKey=${objectKey}`;
+                }
             }
+
             if (operate.openType == 1) {
                 // 正常打开
                 _openNewWindows({
