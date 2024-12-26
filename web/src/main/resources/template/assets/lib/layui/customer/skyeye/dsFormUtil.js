@@ -399,11 +399,13 @@ var dsFormUtil = {
             // 编辑布局
             params["id"] = GetUrlParam("id");
         }
-        var teamAuth = dsFormUtil.pageMation.serviceBeanCustom.serviceBean.teamAuth;
-        if (teamAuth) {
-            // 开启团队权限
-            params['objectId'] = objectId;
-            params['objectKey'] = objectKey;
+        if (!isNull(dsFormUtil.pageMation.serviceBeanCustom.serviceBean)) {
+            var teamAuth = dsFormUtil.pageMation.serviceBeanCustom.serviceBean.teamAuth;
+            if (teamAuth) {
+                // 开启团队权限
+                params['objectId'] = objectId;
+                params['objectKey'] = objectKey;
+            }
         }
 
         var flowable = dsFormUtil.getFlowable(dsFormUtil.pageMation);
