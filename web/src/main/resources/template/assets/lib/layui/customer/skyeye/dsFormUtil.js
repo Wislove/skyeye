@@ -344,6 +344,9 @@ var dsFormUtil = {
     temPage: null,
     getFlowable: function (pageMation) {
         if (isNull(serviceClassName)) {
+            if (isNull(pageMation.serviceBeanCustom.serviceBean)) {
+                return false;
+            }
             var flowable = pageMation.serviceBeanCustom.serviceBean.flowable;
             // 判断业务对象是否开启了工作流
             if (flowable) {
