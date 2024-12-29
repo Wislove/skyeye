@@ -50,31 +50,6 @@
 | nacos | 2.3.0 | 8848|
 | MySQL | 5.7或更高版本，[点我配置](https://blog.csdn.net/qq_42175986/article/details/82384160) | 3308 |
 
-### 微服务项目
-
-> 介绍整体微服务的目录结构以及端口的占用情况。
-
-| 工程 | 端口 | 介绍 | jar包名称 |
-|:---------------------:|:---------------------:|:---------------------:|:---------------------:|
-| - | - | 后台微服务公共配置项 |
-|skyeye-web |8080 | **前端工程**  |web.jar |
-|skyeye-promote |8081 | **基础工程** (包含用户、组织、权限、API、消息队列、Skyeye系列的服务注册等基础服务)， **优先启动该工程** 。 |skyeye-web.jar |
-|skyeye-shop |8082 |商城 |shop-web.jar |
-|skyeye-flowable |8083 |工作流 |flowable-web.jar |
-|skyeye-report |8085 |报表设计器 |report-web.jar |
-|xxl-job-2.3.0 |8200 |定时任务 |xxl-job-admin-2.3.0.jar |
-|skyeye-school |8084 |学校模块 |school-web.jar |
-|skyeye-wages |8101 |薪资模块 |wages-web.jar |
-|skyeye-deploy |8010 |部署模块 |deploy-web.war |
-|skyeye-adm |8103 |行政模块 |adm-web.jar |
-|skyeye-boss |8104 |招聘模块 |boss-web.jar |
-|skyeye-checkwork |8105 |考勤模块 |checkwork-web.jar |
-|skyeye-crm |8102 |客户管理模块 |crm-web.jar |
-|skyeye-ifs |8107 |财务模块 |ifs-web.jar |
-|skyeye-project |8109 |PM项目管理模块 |project-web.jar |
-|skyeye-erp |8106 |ERP+生产模块+仓库 |erp-web.jar |
-|skyeye-seal-service |8108 |售后服务模块 |seal-service-web.jar |
-
 ##  :tw-1f31e:  架构介绍
 
 ![输入图片说明](images/mindMap/image11.png)
@@ -105,9 +80,8 @@
 
 | 框架 | 技术 | 版本 | 学习指南 |
 |---|---|---|---|
-|[layui](https://layui.uimaker.com/)|模块化前端UI，已经开发完成| 2.6.7 | [文档](https://layui.uimaker.com/doc/index.html) |
-|Vue 3 + TypeScript 5 + Vite 5 + Ant Design Vue 4| **开发中** | - | - |
-|winui|win10风格UI|自研|-|
+|[layui](https://layui.uimaker.com/)|模块化前端UI，已经开发完成。**（持续更新中）**| 2.6.7 | [文档](https://layui.uimaker.com/doc/index.html) |
+|Vue 3 + JavaScript + Vite 5.0.0 + Ant Design Vue 4.2.6| **开发中，开发完成后，凡是采购了`管理端移动端`的VIP用户皆可免费获取该版本。** | - | - |
 |[uni-app](https://uniapp.dcloud.net.cn/)|一个使用Vue.js开发所有前端应用的框架，开发者编写一套代码，可发布到iOS、Android、Web（响应式）、以及各种小程序、快应用等多个平台。| VUE3 |[文档](https://uniapp.dcloud.net.cn/component/)|
 
 ##  :tw-1f30f:  PC端效果图
