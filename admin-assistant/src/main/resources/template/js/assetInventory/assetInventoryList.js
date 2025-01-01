@@ -21,7 +21,7 @@ layui.config({
         method: 'post',
         url: sysMainMation.admBasePath + 'queryAssetPurchasePutList',
         where: getTableParams(),
-        even: true,
+        even: false,
         page: true,
         limits: getLimits(),
         limit: getLimit(),

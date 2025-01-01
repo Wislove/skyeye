@@ -68,7 +68,7 @@ layui.config({
             method: 'post',
             url: sysMainMation.shopBasePath + 'storeStaff001',
             where: {objectId: storeId},
-            even: true,
+            even: false,
             page: true,
             limits: getLimits(),
             limit: getLimit(),

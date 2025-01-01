@@ -18,7 +18,7 @@ layui.config({
         method: 'post',
         url: sysMainMation.bossBasePath + 'queryMyChargePersonRequireList',
         where: getTableParams(),
-        even: true,
+        even: false,
         page: true,
         limits: getLimits(),
         limit: getLimit(),

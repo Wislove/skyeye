@@ -21,7 +21,7 @@ layui.config({
         method: 'post',
         url: flowableBasePath + 'activitiProcess002',
         where: getTableParams(),
-        even: true,
+        even: false,
         page: false,
         limits: getLimits(),
         limit: getLimit(),

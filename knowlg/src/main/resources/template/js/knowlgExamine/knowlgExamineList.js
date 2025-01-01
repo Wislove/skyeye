@@ -30,7 +30,7 @@ layui.config({
 		    method: 'post',
 		    url: sysMainMation.knowlgBasePath + 'knowledgecontent010',
 		    where: getTableParams(),
-		    even: true,
+		    even: false,
 		    page: true,
 			limits: getLimits(),
 			limit: getLimit(),

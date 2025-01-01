@@ -19,7 +19,7 @@ layui.config({
         method: 'post',
         url: sysMainMation.reportBasePath + 'queryReportDataFromList',
         where: getTableParams(),
-        even: true,
+        even: false,
         page: true,
         limits: getLimits(),
         limit: getLimit(),

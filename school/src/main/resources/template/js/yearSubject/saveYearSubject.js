@@ -90,7 +90,7 @@ layui.config({
                 elem: '#messageTable',
                 method: 'get',
                 data: tableDataList,
-                even: true,
+                even: false,
                 page: false,
                 limit: 100,
                 cols: [[

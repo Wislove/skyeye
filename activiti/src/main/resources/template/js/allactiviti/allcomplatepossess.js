@@ -17,7 +17,7 @@ layui.config({
 	    method: 'post',
 	    url: flowableBasePath + 'activitimode018',
 	    where: getTableParams(),
-	    even: true,
+	    even: false,
 	    page: true,
 		limits: getLimits(),
 		limit: getLimit(),

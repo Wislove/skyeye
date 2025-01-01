@@ -43,7 +43,7 @@ layui.config({
 	    method: 'post',
 	    url: reqBasePath + 'queryDocumentList',
 	    where: getTableParams(),
-	    even: true,
+	    even: false,
 	    page: true,
 	    limits: getLimits(),
 	    limit: getLimit(),

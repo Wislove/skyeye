@@ -56,7 +56,7 @@ layui.config({
             method: 'post',
             url: sysMainMation.erpBasePath + 'queryDepotStaffList',
             where: {objectId: depotId},
-            even: true,
+            even: false,
             page: true,
             limits: getLimits(),
             limit: getLimit(),

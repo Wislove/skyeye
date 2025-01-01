@@ -17,7 +17,7 @@ layui.config({
 	    method: 'post',
 	    url: reqBasePath + 'queryAttrByComponentId',
 	    where: getTableParams(),
-	    even: true,
+	    even: false,
 		page: false,
 	    cols: [[
 	        { title: systemLanguage["com.skyeye.serialNumber"][languageType], type: 'numbers' },

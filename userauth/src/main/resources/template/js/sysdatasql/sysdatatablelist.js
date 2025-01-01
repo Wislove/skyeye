@@ -16,7 +16,7 @@ layui.config({
 	    method: 'post',
 	    url: reqBasePath + 'sysdatasqlbackups002',
 	    where:{},
-	    even: true,
+	    even: false,
 	    page: false,
 	    cols: [[
 	        { title: systemLanguage["com.skyeye.serialNumber"][languageType], type: 'numbers' },

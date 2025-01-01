@@ -70,7 +70,7 @@ layui.config({
 		    method: 'post',
 		    url: schoolBasePath + 'schoolquestionbank019',
 		    where: getTableParams(),
-		    even: true,
+		    even: false,
 		    page: true,
 		    limits: getLimits(),
 	    	limit: getLimit(),

@@ -89,7 +89,7 @@ layui.config({
 			method: 'post',
 			url: sysMainMation.checkworkBasePath + 'checkwork015',
 			where: getTableParams(),
-			even: true,
+			even: false,
 			page: true,
 			limits: [10, 20, 30, 40, 50, 100],
 			limit: 10,

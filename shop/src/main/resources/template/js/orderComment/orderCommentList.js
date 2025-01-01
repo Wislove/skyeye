@@ -21,7 +21,7 @@ layui.config({
             method: 'POST',
             url: shopBasePath + 'queryOrderCommentPageListPC',
             where: getTableParams(),
-            even: true,
+            even: false,
             page: true,
             limits: getLimits(),
             limit: getLimit(),

@@ -16,7 +16,7 @@ layui.config({
         method: 'post',
         url: sysMainMation.scheduleBasePath + 'syseveschedule019',
         where: getTableParams(),
-        even: true,
+        even: false,
         page: true,
         limits: getLimits(),
         limit: getLimit(),

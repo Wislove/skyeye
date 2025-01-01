@@ -19,7 +19,7 @@ layui.config({
         url: sysMainMation.reportBasePath + 'queryReportImportModelList',
         where: getTableParams(),
         toolbar: true,
-        even: true,
+        even: false,
         page: true,
         limits: getLimits(),
         limit: getLimit(),

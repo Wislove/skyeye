@@ -20,7 +20,7 @@ layui.config({
 		method: 'post',
 		url: sysMainMation.admBasePath + 'sealborrow001',
 		where: getTableParams(),
-		even: true,
+		even: false,
 		page: true,
 		limits: getLimits(),
 		limit: getLimit(),

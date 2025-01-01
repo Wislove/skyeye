@@ -55,7 +55,7 @@ layui.config({
             method: 'post',
             url: sysMainMation.erpBasePath + 'queryFarmStaffList',
             where: {objectId: workshopId},
-            even: true,
+            even: false,
             page: true,
             limits: getLimits(),
             limit: getLimit(),

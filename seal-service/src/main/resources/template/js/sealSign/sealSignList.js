@@ -31,7 +31,7 @@ layui.config({
 	    method: 'post',
 	    url: sysMainMation.sealServiceBasePath + 'querySealSignList',
 	    where: getTableParams(),
-	    even: true,
+	    even: false,
 	    page: true,
 	    limits: getLimits(),
 	    limit: getLimit(),

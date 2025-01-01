@@ -21,7 +21,7 @@ layui.config({
 	    method: 'post',
 	    url: reqBasePath + 'codemodel006',
 	    where: {groupId: groupId},
-	    even: true,
+	    even: false,
 	    page: true,
 		limits: getLimits(),
 		limit: getLimit(),

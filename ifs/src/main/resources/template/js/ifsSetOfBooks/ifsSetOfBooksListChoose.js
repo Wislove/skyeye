@@ -19,7 +19,7 @@ layui.config({
         method: 'post',
         url: sysMainMation.ifsBasePath + 'ifssetofbooks001',
         where: getTableParams(),
-        even: true,
+        even: false,
         page: true,
         limits: getLimits(),
         limit: getLimit(),

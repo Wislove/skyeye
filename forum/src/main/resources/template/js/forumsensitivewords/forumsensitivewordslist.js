@@ -20,7 +20,7 @@ layui.config({
 	    method: 'post',
 	    url: sysMainMation.forumBasePath + 'sensitiveword001',
 	    where: {sensitiveWord: $("#sensitiveWord").val()},
-	    even: true,
+	    even: false,
 	    page: true,
 	    limits: [8, 16, 24, 32, 40, 48, 56],
 	    limit: 8,

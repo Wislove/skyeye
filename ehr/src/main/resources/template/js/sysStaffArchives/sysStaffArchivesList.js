@@ -25,7 +25,7 @@ layui.config({
 		method: 'post',
 		url: sysMainMation.ehrBasePath + 'querySysStaffArchivesList',
 		where: getTableParams(),
-		even: true,
+		even: false,
 		page: true,
 		limits: getLimits(),
 		limit: getLimit(),

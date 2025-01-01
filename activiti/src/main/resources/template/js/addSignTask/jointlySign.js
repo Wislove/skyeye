@@ -33,7 +33,7 @@ layui.config({
         elem: '#messageTable',
         method: 'get',
         data: chooseUserList,
-        even: true,
+        even: false,
         page: false,
         cols: [[
             { type: 'checkbox', align: 'center' },

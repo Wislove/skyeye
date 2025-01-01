@@ -24,7 +24,7 @@ layui.config({
 	    method: 'post',
 	    url: flowableBasePath + 'queryActFlowListByClassName',
 	    where: {className: objectId},
-	    even: true,
+	    even: false,
 	    page: false,
 	    limits: getLimits(),
 	    limit: getLimit(),

@@ -27,7 +27,7 @@ layui.config({
 	    method: 'post',
 	    url: sysMainMation.crmBasePath + 'queryCrmContractList',
 	    where: getTableParams(),
-	    even: true,
+	    even: false,
 	    page: true,
 	    limits: getLimits(),
 	    limit: getLimit(),

@@ -36,7 +36,7 @@ layui.config({
 		    method: 'post',
 		    url: sysMainMation.flowableBasePath + 'queryUserInfoOnActGroup',
 		    where: getTableParams(),
-		    even: true,
+		    even: false,
 		    page: true,
 			limits: getLimits(),
 			limit: getLimit(),

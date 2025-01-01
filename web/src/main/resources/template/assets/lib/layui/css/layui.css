@@ -2033,19 +2033,15 @@ hr,
 
 
 /*
- 
-  按钮 
-
+  按钮
 */
-
 .layui-btn {
     display: inline-block;
     vertical-align: middle;
     height: 38px;
     line-height: 38px;
     padding: 0 18px;
-    background-color: #009688;
-    color: #fff;
+    color: #009688;
     white-space: nowrap;
     text-align: center;
     font-size: 14px;
@@ -2060,7 +2056,6 @@ hr,
 .layui-btn:hover {
     opacity: 0.8;
     filter: alpha(opacity=80);
-    color: #fff;
 }
 
 .layui-btn:active {
@@ -2094,7 +2089,6 @@ hr,
 
 
 /* 圆角 */
-
 .layui-btn-radius {
     border-radius: 100px;
 }
@@ -2106,9 +2100,7 @@ hr,
     vertical-align: middle \0;
 }
 
-
 /* 原始 */
-
 .layui-btn-primary {
     border: 1px solid #C9C9C9;
     background-color: #fff;
@@ -2122,28 +2114,24 @@ hr,
 
 
 /* 百搭 */
-
 .layui-btn-normal {
-    background-color: #1E9FFF;
+    color: #1E9FFF;
 }
 
 
 /* 暖色 */
-
 .layui-btn-warm {
-    background-color: #FFB800;
+    color: #FFB800;
 }
 
 
 /* 警告 */
-
 .layui-btn-danger {
-    background-color: #FF5722;
+    color: #FF5722;
 }
 
 
 /* 禁用 */
-
 .layui-btn-disabled,
 .layui-btn-disabled:hover,
 .layui-btn-disabled:active {
@@ -2156,7 +2144,6 @@ hr,
 
 
 /* 大型 */
-
 .layui-btn-lg {
     height: 44px;
     line-height: 44px;
@@ -2166,7 +2153,6 @@ hr,
 
 
 /* 小型 */
-
 .layui-btn-sm {
     height: 30px;
     line-height: 30px;

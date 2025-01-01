@@ -38,7 +38,7 @@ layui.config({
         method: 'post',
         url: sysMainMation.shopBasePath + 'queryRefundMealOrderList',
         where: getTableParams(),
-        even: true,
+        even: false,
         page: true,
         toolbar: true,
         limits: getLimits(),

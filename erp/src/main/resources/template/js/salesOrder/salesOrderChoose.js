@@ -69,7 +69,7 @@ layui.config({
 		    method: 'post',
 		    url: sysMainMation.erpBasePath + 'salesorder012',
 		    where: getTableParams(),
-			even: true,
+			even: false,
 		    page: false,
 		    cols: [[
 		    	{ type: 'radio'},

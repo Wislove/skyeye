@@ -18,7 +18,7 @@ layui.config({
 	    method: 'post',
 	    url: sysMainMation.checkworkBasePath + 'checkwork018',
 	    where: params,
-	    even: true,
+	    even: false,
 	    page: true,
 	    limits: [8, 16, 24, 32, 40, 48, 56],
 	    limit: 8,

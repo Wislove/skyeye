@@ -81,7 +81,7 @@ layui.config({
 		    method: 'post',
 		    url: schoolBasePath + 'exam001',
 		    where: getTableParams(),
-		    even: true,
+		    even: false,
 		    page: true,
 		    limits: getLimits(),
 	    	limit: getLimit(),

@@ -81,7 +81,7 @@ layui.config({
 		    method: 'post',
 		    url: schoolBasePath + 'schoolteacher006',
 		    where: getTableParams(),
-			even: true,
+			even: false,
 		    page: true,
 		    limits: [8, 16, 24, 32, 40, 48, 56],
 		    limit: 8,

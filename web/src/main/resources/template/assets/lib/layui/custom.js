@@ -251,7 +251,7 @@ function getLimit(){
 		- (isNull(winuiTip) ? 0 : winuiTip)
 		- (isNull(tabTtileHeight) ? 0 : tabTtileHeight);
 	// 计算limit
-	var limit = decimerFiveOrZero(Math.floor(realHeight / 35));
+	var limit = decimerFiveOrZero(Math.floor(realHeight / 48));
 	return limit == 0 ? 5 : limit;
 }
 

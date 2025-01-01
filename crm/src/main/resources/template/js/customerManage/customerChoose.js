@@ -22,7 +22,7 @@ layui.config({
 	    method: 'post',
 	    url: sysMainMation.crmBasePath + 'customer001',
 	    where: getTableParams(),
-	    even: true,
+	    even: false,
 	    page: true,
 		limits: getLimits(),
 		limit: getLimit(),

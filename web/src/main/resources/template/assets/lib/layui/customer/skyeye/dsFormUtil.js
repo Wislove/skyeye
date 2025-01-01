@@ -883,7 +883,7 @@ var dsFormTableUtil = {
                 id: id,
                 elem: `#${id}`,
                 data: data,
-                even: true,
+                even: false,
                 overflow: {
                     type: 'tips',
                     header: true,
@@ -953,7 +953,7 @@ var dsFormTableUtil = {
                 toolbar: true,
                 // 开启表格选择功能的只显示过滤字段功能
                 defaultToolbar: pageMation.whetherChoose == 'close' ? ['filter', 'exports', 'print'] : ['filter'],
-                even: true,
+                even: false,
                 page: pageMation.isPage == 1 ? true : false,
                 overflow: {type: 'tips', header: true, total: true},
                 limits: getLimits(),
@@ -1328,7 +1328,7 @@ var dsFormColumnUtil = {
                 elem: '#messageTable',
                 method: 'get',
                 data: dsFormColumnUtil.tableDataList,
-                even: true,
+                even: false,
                 page: false,
                 limit: 100,
                 rowDrag: {

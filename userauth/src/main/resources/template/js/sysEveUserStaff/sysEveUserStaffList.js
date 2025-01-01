@@ -21,7 +21,7 @@ layui.config({
 	    method: 'post',
 	    url: reqBasePath + 'querySysUserStaffList',
 	    where: getTableParams(),
-	    even: true,
+	    even: false,
 	    page: true,
 		toolbar: true,
 	    limits: getLimits(),

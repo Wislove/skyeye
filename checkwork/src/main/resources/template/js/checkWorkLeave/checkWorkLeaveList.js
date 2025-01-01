@@ -20,7 +20,7 @@ layui.config({
         method: 'post',
         url: sysMainMation.checkworkBasePath + 'checkworkleave001',
         where: getTableParams(),
-        even: true,
+        even: false,
         page: true,
         limits: getLimits(),
         limit: getLimit(),

@@ -20,7 +20,7 @@ layui.config({
 		method: 'post',
 		url: sysMainMation.admBasePath + "vehicle014",
 		where: getTableParams(),
-		even: true,
+		even: false,
 		page: true,
 		limits: getLimits(),
 		limit: getLimit(),

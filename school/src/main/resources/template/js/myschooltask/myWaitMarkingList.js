@@ -52,7 +52,7 @@ layui.config({
 	        method: 'post',
 	        url: schoolBasePath + 'myschooltask002',
 	        where: getTableParams(),
-	        even: true,
+	        even: false,
 		    page: true,
 		    limits: getLimits(),
 	    	limit: getLimit(),

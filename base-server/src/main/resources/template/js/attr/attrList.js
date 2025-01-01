@@ -27,7 +27,7 @@ layui.config({
 	    method: 'post',
 	    url: reqBasePath + 'queryAttrDefinitionList',
 	    where: getTableParams(),
-	    even: true,
+	    even: false,
 	    page: false,
 		overflow: {
 			type: 'tips',

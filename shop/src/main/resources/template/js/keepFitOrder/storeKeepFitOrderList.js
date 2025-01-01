@@ -36,7 +36,7 @@ layui.config({
         method: 'post',
         url: shopBasePath + 'queryKeepFitOrderList',
         where: getTableParams(),
-        even: true,
+        even: false,
         page: true,
         toolbar: true,
         limits: getLimits(),

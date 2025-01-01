@@ -26,7 +26,7 @@ layui.config({
 	    method: 'post',
 	    url: sysMainMation.schoolBasePath + 'queryKnowledgePointsList',
 	    where: getTableParams(),
-	    even: true,
+	    even: false,
 	    page: true,
 	    limits: getLimits(),
 	    limit: getLimit(),

@@ -37,7 +37,7 @@ layui.config({
             method: 'post',
             url: sysMainMation.erpBasePath + 'queryNeedStoreConfirmDepotOutList',
             where: getTableParams(),
-            even: true,
+            even: false,
             page: true,
             limits: getLimits(),
             limit: getLimit(),

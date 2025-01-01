@@ -51,7 +51,7 @@ layui.config({
 	        method: 'post',
 	        url: schoolBasePath + 'myschooltask001',
 	        where:{gradeId: $("#gradeId").val(), schoolId: $("#schoolId").val()},
-	        even: true,
+	        even: false,
 		    page: true,
 		    limits: getLimits(),
 	    	limit: getLimit(),

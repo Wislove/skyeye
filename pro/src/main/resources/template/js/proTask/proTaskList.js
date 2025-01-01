@@ -75,7 +75,7 @@ layui.config({
 			method: 'post',
 			url: sysMainMation.projectBasePath + 'queryProTaskList',
 			where: getTableParams(),
-			even: true,
+			even: false,
 			page: true,
 			limits: getLimits(),
 			limit: getLimit(),

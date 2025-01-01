@@ -19,7 +19,7 @@ layui.config({
 		method: 'post',
 		url: sysMainMation.erpBasePath + 'erpproduction009---已删除',
 		where: getTableParams(),
-		even: true,
+		even: false,
 		page: false,
 		cols: [[
 			{ type: 'radio'},

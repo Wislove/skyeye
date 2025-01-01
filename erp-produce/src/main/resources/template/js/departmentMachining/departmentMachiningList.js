@@ -21,7 +21,7 @@ layui.config({
         // 获取加工单列表
         url: sysMainMation.erpBasePath + 'erpmachin001',
         where: getTableParams(),
-        even: true,
+        even: false,
         page: true,
         limits: getLimits(),
         limit: getLimit(),
