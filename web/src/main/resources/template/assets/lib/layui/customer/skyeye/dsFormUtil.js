@@ -662,8 +662,15 @@ var dsFormUtil = {
             var preAttributeVal = dsFormUtil.getPreAttributeVal(content);
             $.each(businessApi.params, function (key, value) {
                 if (!isNull(value)) {
+                    if (value && value.startsWith('${') && value.endsWith('}')) {
+                        value = value.slice(2, -1);
+                    }
                     var realValue = "";
-                    eval('realValue = ' + value);
+                    try {
+                        eval('realValue = ' + value);
+                    } catch (e) {
+                        realValue = value;
+                    }
                     params[key] = realValue;
                 } else {
                     params[key] = preAttributeVal;
@@ -1156,8 +1163,15 @@ var dsFormTableUtil = {
                 var businessApi = customAttr.businessApi;
                 var params = {};
                 $.each(businessApi.params, function (key, value) {
+                    if (value && value.startsWith('${') && value.endsWith('}')) {
+                        value = value.slice(2, -1);
+                    }
                     var realValue = "";
-                    eval('realValue = ' + value);
+                    try {
+                        eval('realValue = ' + value);
+                    } catch (e) {
+                        realValue = value;
+                    }
                     params[key] = realValue;
                 });
                 var url = "";
