@@ -45,7 +45,7 @@ layui.config({
                 return skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("productionPlanPurchaseState", 'id', d.purchaseState, 'name');
             }},
             { field: 'produceState', title: '生产状态', rowspan: '2', width: 90, templet: function (d) {
-                return skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("productionPlanProduceState", 'id', d.produceState   , 'name');
+                return skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("productionPlanProduceState", 'id', d.produceState, 'name');
             }},
             { field: 'createName', title: systemLanguage["com.skyeye.createName"][languageType], align: 'left', rowspan: '2',width: 120 },
             { field: 'createTime', title: systemLanguage["com.skyeye.createTime"][languageType], align: 'center', rowspan: '2',width: 150 },
