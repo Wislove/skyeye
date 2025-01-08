@@ -21,8 +21,8 @@ layui.config({
 
         // 返回的消息
         webSocketUtil.init({
-            // url: sysMainMation.aiSocketPath,
-            url: 'ws://192.168.3.8:8120/',
+            url: sysMainMation.aiSocketPath,
+            // url: 'ws://192.168.3.8:8120/',
             path: 'aiMessageWebSocket',
             userId: data.bean.id,
             onMessage: function (data) {

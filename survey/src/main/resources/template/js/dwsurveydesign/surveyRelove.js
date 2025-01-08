@@ -12,15 +12,9 @@ layui.config({
 		var index = parent.layer.getFrameIndex(window.name);
 	    var $ = layui.$,
 	    	form = layui.form;
-	    var rulYm = "";
-	    if(reqBasePath.indexOf("localhost") != -1){
-	    	rulYm = "http://127.0.0.1:8081/"
-	    } else {
-	    	rulYm = reqBasePath;
-	    }
-	    
+
 	    //刷新页面参数
-	    url = rulYm + 'tpl/dwsurveydesign/surveyTemplate.html?rowId=' + parent.rowId;
+	    url = sysMainMation.homePagePath + 'tpl/dwsurveydesign/surveyTemplate.html?rowId=' + parent.rowId;
 	    $("#pcAddress").val(url);
 	    $("#copyUrl").attr("data-clipboard-text", url);
 	    

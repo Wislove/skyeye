@@ -11,18 +11,19 @@ layui.config({
 	    	form = layui.form;
 		// 表格的序号
 		var rowNum = 1;
-
 		var holidaysTypeJsonTemplate = $("#holidaysTypeJsonTemplate").html(),
 			yearHolidaysMationTemplate = $("#yearHolidaysMationTemplate").html();
 
+		let id = null;
 		showGrid({
 		 	id: "showForm",
 		 	url: reqBasePath + "sysfdsettings001",
-		 	params: {rowId:parent.rowId},
+		 	params: {},
 		 	pagination: false,
 			method: "GET",
 		 	template: getFileContent('tpl/sysfdsettings/sysfdsettingsTemplate.tpl'),
 		 	ajaxSendAfter:function (json) {
+				 id = json.bean.id;
 		 		// 设置未指定负责人选中
 		 		$("input:radio[name=noChargeId][value=" + json.bean.noChargeId + "]").attr("checked", true);
 		 		
@@ -62,7 +63,7 @@ layui.config({
 		 */
 		function loadHolidayType(json) {
 			if (!isNull(json.bean.holidaysTypeJson)) {
-				$.each(JSON.parse(json.bean.holidaysTypeJson), function (i, item) {
+				$.each(json.bean.holidaysTypeJson, function (i, item) {
 					addHolidaysTypeJsonRow();
 					$("#holidayName" + (rowNum - 1)).val(item.holidayName);
 					$("#holidayNo" + (rowNum - 1)).val(item.holidayNo);
@@ -81,7 +82,7 @@ layui.config({
 		 */
 		function loadYearHolidays(json) {
 			if (!isNull(json.bean.yearHolidaysMation)) {
-				$.each(JSON.parse(json.bean.yearHolidaysMation), function (i, item) {
+				$.each(json.bean.yearHolidaysMation, function (i, item) {
 					addYearHolidaysMationRow();
 					$("#yearType" + (rowNum - 1)).val(item.yearType);
 					$("#yearHour" + (rowNum - 1)).val(item.yearHour);
@@ -97,7 +98,7 @@ layui.config({
 		 */
 		function loadAbnormal(json) {
 			if (!isNull(json.bean.abnormalMation)) {
-				$.each(JSON.parse(json.bean.abnormalMation), function (i, item) {
+				$.each(json.bean.abnormalMation, function (i, item) {
 					$("#abnormal" + (i + 1)).val(item.abnormal);
 					$("#abnormalRemark" + (i + 1)).val(item.remark);
 					if (item.abnormal === "1") {
@@ -119,7 +120,7 @@ layui.config({
 		 */
 		function loadSysOrderBasicDesign(json) {
 			if (!isNull(json.bean.sysOrderBasicDesign)) {
-				var sysOrderBasicDesign = JSON.parse(json.bean.sysOrderBasicDesign);
+				var sysOrderBasicDesign = json.bean.sysOrderBasicDesign;
 				$("#sysOrderBasicDesignMationBox").append(getDataUseHandlebars($("#sysOrderBasicDesignMationTemplate").html(), {rows: sysOrderBasicDesign}));
 				$.each(sysOrderBasicDesign, function (i, item) {
 					if(item.examineSwitch){
@@ -161,7 +162,8 @@ layui.config({
 						emailSendServer: $("#emailSendServer").val(),
 						emailSendServerPort: $("#emailSendServerPort").val(),
 						noChargeId: $("input[name='noChargeId']:checked").val(),
-						noDocumentaryDayNum: $("#noDocumentaryDayNum").val()
+						noDocumentaryDayNum: $("#noDocumentaryDayNum").val(),
+						id: id
 					};
 
 					// 获取假期信息
