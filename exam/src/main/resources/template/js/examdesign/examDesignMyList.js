@@ -24,37 +24,91 @@ layui.config({
 		$("#schoolId").html(getDataUseHandlebars(getFileContent('tpl/template/select-option-must.tpl'), json));
 		form.render("select");
 		// 加载年级
-		initGradeId();
+		// initGradeId();
 		initTable();
+
+		initFaculty();
 	});
 
+	// 学校监听事件
 	form.on('select(schoolId)', function(data) {
-		//加载年级
- 		initGradeId();
+		if(isNull(data.value) || data.value === '请选择'){
+			$("#schoolId").html("");
+			form.render('select');
+		} else {
+			// 加载院系
+			initFaculty();
+		}
 	});
 	
 	//所属年级
-    function initGradeId(){
+    // function initGradeId(){
+	//     showGrid({
+    // 	 	id: "gradeId",
+    // 	 	url: schoolBasePath + "grademation006",
+    // 	 	params: {schoolId: $("#schoolId").val()},
+    // 	 	pagination: false,
+    // 	 	template: getFileContent('tpl/template/select-option.tpl'),
+    // 	 	ajaxSendLoadBefore: function(hdb) {
+    // 	 	},
+    // 	 	ajaxSendAfter:function (json) {
+    // 	 		form.render('select');
+    // 	 	}
+    //     });
+    // }
+
+	//所属院系
+	function initFaculty(){
 	    showGrid({
-    	 	id: "gradeId",
-    	 	url: schoolBasePath + "grademation006",
-    	 	params: {schoolId: $("#schoolId").val()},
-    	 	pagination: false,
-    	 	template: getFileContent('tpl/template/select-option.tpl'),
-    	 	ajaxSendLoadBefore: function(hdb) {
-    	 	},
-    	 	ajaxSendAfter:function (json) {
-    	 		form.render('select');
-    	 	}
-        });
-    }
-    
-    form.on('select(gradeId)', function(data) {
+		 	id: "facultyId",
+		 	url: schoolBasePath + "queryFacultyListBySchoolId",
+		 	params: {schoolId: $("#schoolId").val()},
+			method: "GET",
+		 	pagination: false,
+		 	template: getFileContent('tpl/template/select-option.tpl'),
+		 	ajaxSendLoadBefore: function(hdb) {
+		 	},
+		 	ajaxSendAfter:function (json) {
+		 		form.render('select');
+		 	}
+	    });
+	}
+
+	// 院系监听事件
+	form.on('select(facultyId)', function(data) {
 		if(isNull(data.value) || data.value === '请选择'){
-			$("#subjectId").html("");
+			$("#facultyId").html("");
 			form.render('select');
 		} else {
-			//加载科目
+			// 加载专业
+			initMajor();
+		}
+	});
+
+	// 初始化专业
+	function initMajor(){
+		showGrid({
+			id: "majorId",
+			url: schoolBasePath + "queryMajorListByFacultyId",
+			method: "GET",
+			params: {facultyId: $("#facultyId").val()},
+			pagination: false,
+			template: getFileContent('tpl/template/select-option.tpl'),
+			ajaxSendLoadBefore: function(hdb) {
+			},
+			ajaxSendAfter:function (json) {
+				form.render('select');
+			}
+		});
+	}
+
+	// 专业监听事件
+	form.on('select(majorId)', function(data) {
+		if(isNull(data.value) || data.value === '请选择'){
+			$("#majorId").html("");
+			form.render('select');
+		} else {
+			// 加载科目
 			initSubject();
 		}
 	});
@@ -63,8 +117,9 @@ layui.config({
 	function initSubject(){
 		showGrid({
 		 	id: "subjectId",
-		 	url: schoolBasePath + "schoolsubjectmation007",
-		 	params: {gradeId: $("#gradeId").val()},
+		 	url: schoolBasePath + "querySubjectListByMajorId",
+			params: {majorId: $("#majorId").val()},
+			method: "GET",
 		 	pagination: false,
 		 	template: getFileContent('tpl/template/select-option.tpl'),
 		 	ajaxSendLoadBefore: function(hdb) {},
@@ -79,7 +134,7 @@ layui.config({
 		    id: 'messageTable',
 		    elem: '#messageTable',
 		    method: 'post',
-		    url: schoolBasePath + 'exam001-my',
+			url: schoolBasePath + 'queryFryAllExamList',
 		    where: getTableParams(),
 		    even: false,
 		    page: true,
