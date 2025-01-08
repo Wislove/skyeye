@@ -9,35 +9,42 @@
 <body>
 	<form class="layui-form layui-form-pane" action="" autocomplete="off" style="height: 100%; overflow: hidden;">
 		<div class="layui-row layui-col-space10" style="height: 100%;">
+		    <!-- 院系选择 -->
 		    <div class="layui-col-xs2" style="height: 100%; width: 200px;">
-				<!-- 填充内容 -->
 				<div class="layui-card" style="height: 100%;">
-					<div class="layui-card-header" style="text-align: left;">年级</div>
+					<div class="layui-card-header" style="text-align: left;">院系</div>
 					<div class="layui-card-body light-app-left" style="height: auto;">
 						<div class="layui-input-inline">
 		                    <select id="schoolId" lay-filter="schoolId" lay-search="">
-				                    
 		                    </select>
 		                </div>
 						<div class="setting" id="setting">
-							
 						</div>
 					</div>
 				</div>
 		    </div>
+		    <!-- 专业选择 -->
 		    <div class="layui-col-xs2" style="height: 100%; width: 200px;">
-				<!-- 填充内容 -->
+				<div class="layui-card" style="height: 100%;">
+					<div class="layui-card-header" style="text-align: left;">专业</div>
+					<div class="layui-card-body light-app-left" style="height: auto; position: absolute;">
+						<div class="setting" id="setting1">
+						</div>
+					</div>
+				</div>
+		    </div>
+		    <!-- 科目选择 -->
+		    <div class="layui-col-xs2" style="height: 100%; width: 200px;">
 				<div class="layui-card" style="height: 100%;">
 					<div class="layui-card-header" style="text-align: left;">科目</div>
 					<div class="layui-card-body light-app-left" style="height: auto; position: absolute;">
-						<div class="setting" id="setting1">
-							
+						<div class="setting" id="setting3">
 						</div>
 					</div>
 				</div>
 		    </div>
-		    <div class="layui-col-xs8" style="height: 100%; width: calc(100% - 400px)">
-				<!-- 填充内容 -->
+		    <!-- 试题列表 -->
+		    <div class="layui-col-xs8" style="height: 100%; width: calc(100% - 600px)">
 				<div class="layui-card" style="height: 100%;">
 					<div class="layui-card-header" style="text-align: left;">试题</div>
 					<div class="layui-card-body">
@@ -49,8 +56,9 @@
 		    </div>
 		</div>
 	</form>
-	
-	<script type="text/x-handlebars-template" id="gradeTemplate">
+
+	<!-- 院系模板 -->
+	<script type="text/x-handlebars-template" id="facultyTemplate">
 		<a class="setting-a selected" title="所有" rowid="">
 			<span>所有</span>
 		</a>
@@ -60,7 +68,20 @@
 			</a>
 		{{/each}}
 	</script>
-	
+
+	<!-- 专业模板 -->
+	<script type="text/x-handlebars-template" id="majorTemplate">
+		<a class="setting-a selected" title="所有" rowid="">
+			<span>所有</span>
+		</a>
+		{{#each rows}}
+			<a class="setting-a" title="{{name}}" rowid="{{id}}">
+				<span>{{name}}</span>
+			</a>
+		{{/each}}
+	</script>
+
+	<!-- 科目模板 -->
 	<script type="text/x-handlebars-template" id="subjectTemplate">
 		<a class="setting-a selected" title="所有" rowid="">
 			<span>所有</span>
@@ -71,7 +92,7 @@
 			</a>
 		{{/each}}
 	</script>
-	
+
     <script src="../../assets/lib/layui/layui.js"></script>
     <script src="../../assets/lib/layui/custom.js"></script>
     <script type="text/javascript">
