@@ -107,22 +107,6 @@ layui.config({
 			}
 		});
 	}
-	
-	//所属年级
-    // function initGradeId(){
-	//     showGrid({
-    // 	 	id: "gradeId",
-    // 	 	url: schoolBasePath + "grademation006",
-    // 	 	params: {schoolId: $("#schoolId").val()},
-    // 	 	pagination: false,
-    // 	 	template: getFileContent('tpl/template/select-option.tpl'),
-    // 	 	ajaxSendLoadBefore: function(hdb) {
-    // 	 	},
-    // 	 	ajaxSendAfter:function (json) {
-    // 	 		form.render('select');
-    // 	 	}
-    //     });
-    // }
 
 	function initTable(){
 		table.render({
@@ -140,7 +124,6 @@ layui.config({
 	        	{ title: systemLanguage["com.skyeye.serialNumber"][languageType], rowspan: '2', type: 'numbers' },
 	        	{ field: 'studentName', rowspan: '2', width: 80, title: '姓名'},
 	        	{ field: 'studentNo', rowspan: '2', width: 140, align: 'center', title: '学号'},
-		        { field: 'sessionYear', rowspan: '2', width: 80, align: 'center', title: '所属届'},
 	            { field: 'schoolName', rowspan: '2', width: 150, title: '学校'},
 	            { field: 'gradeName', rowspan: '2', width: 80, align: 'center', title: '年级'},
 	            { field: 'surveyName', rowspan: '2', width: 200, title: '试卷名称', templet: function (d) {
