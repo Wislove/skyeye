@@ -1,4 +1,3 @@
-
 var rowId = "";
 
 var surveyName = "";
@@ -23,50 +22,110 @@ layui.config({
 	schoolUtil.queryMyBelongSchoolList(function (json) {
 		$("#schoolId").html(getDataUseHandlebars(getFileContent('tpl/template/select-option-must.tpl'), json));
 		form.render("select");
+		// 加载院系
+		initFacultyId();
 		// 加载年级
-		initGradeId();
+		// initGradeId();
 		initTable();
 	});
 
 	form.on('select(schoolId)', function(data) {
+		// 加载院系
+		initFacultyId();
 		//加载年级
- 		initGradeId();
+ 		// initGradeId();
 	});
-	
-	//所属年级
-    function initGradeId(){
-	    showGrid({
-    	 	id: "gradeId",
-    	 	url: schoolBasePath + "grademation006",
-    	 	params: {schoolId: $("#schoolId").val()},
-    	 	pagination: false,
-    	 	template: getFileContent('tpl/template/select-option.tpl'),
-    	 	ajaxSendLoadBefore: function(hdb) {
-    	 	},
-    	 	ajaxSendAfter:function (json) {
-    	 		form.render('select');
-    	 	}
-        });
-    }
-    
-    form.on('select(gradeId)', function(data) {
+
+	// 所属院系
+	function initFacultyId(){
+		showGrid({
+			id: "facultyId",
+			url: schoolBasePath + "queryFacultyListBySchoolId",
+			params: {schoolId: $("#schoolId").val()},
+			pagination: false,
+			template: getFileContent('tpl/template/select-option.tpl'),
+			method: 'GET',
+			ajaxSendLoadBefore: function(hdb) {},
+			ajaxSendAfter:function (json) {
+				form.render('select');
+			}
+		});
+	}
+
+	// 院系选择事件
+	form.on('select(facultyId)', function(data) {
+		if(isNull(data.value) || data.value === '请选择'){
+			$("#majorId").html("");  // 清空专业
+			$("#subjectId").html("");  // 清空科目
+			form.render('select');
+		} else {
+			facultyId = data.value;  // 设置当前选中的院系ID
+			initMajor();  // 加载专业
+		}
+	});
+
+	// 初始化专业
+	function initMajor(){
+		showGrid({
+			id: "majorId",
+			url: schoolBasePath + "queryMajorListByFacultyId",
+			params: {facultyId: facultyId},
+			pagination: false,
+			template: getFileContent('tpl/template/select-option.tpl'),
+			method: 'GET',
+			ajaxSendLoadBefore: function(hdb) {},
+			ajaxSendAfter:function (json) {
+				form.render('select');
+			}
+		});
+	}
+
+	// 专业选择事件
+	form.on('select(majorId)', function(data) {
 		if(isNull(data.value) || data.value === '请选择'){
 			$("#subjectId").html("");
 			form.render('select');
 		} else {
-			//加载科目
+			majorId = data.value;  // 设置当前选中的专业ID
 			initSubject();
 		}
 	});
+	//所属年级
+    // function initGradeId(){
+	//     showGrid({
+    // 	 	id: "gradeId",
+    // 	 	url: schoolBasePath + "grademation006",
+    // 	 	params: {schoolId: $("#schoolId").val()},
+    // 	 	pagination: false,
+    // 	 	template: getFileContent('tpl/template/select-option.tpl'),
+    // 	 	ajaxSendLoadBefore: function(hdb) {
+    // 	 	},
+    // 	 	ajaxSendAfter:function (json) {
+    // 	 		form.render('select');
+    // 	 	}
+    //     });
+    // }
+    //
+    // form.on('select(gradeId)', function(data) {
+	// 	if(isNull(data.value) || data.value === '请选择'){
+	// 		$("#subjectId").html("");
+	// 		form.render('select');
+	// 	} else {
+	// 		//加载科目
+	// 		initSubject();
+	// 	}
+	// });
+
 	
 	//初始化科目
 	function initSubject(){
 		showGrid({
 		 	id: "subjectId",
-		 	url: schoolBasePath + "schoolsubjectmation007",
-		 	params: {gradeId: $("#gradeId").val()},
+		 	url: schoolBasePath + "querySubjectListByMajorId",
+		 	params: {majorId: $("#majorId").val()},  // 修正参数名
 		 	pagination: false,
 		 	template: getFileContent('tpl/template/select-option.tpl'),
+		 	method: 'GET',
 		 	ajaxSendLoadBefore: function(hdb) {},
 		 	ajaxSendAfter:function (json) {
 		 		form.render('select');

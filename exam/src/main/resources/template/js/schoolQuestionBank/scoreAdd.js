@@ -28,55 +28,86 @@ layui.config({
 			form.render("select");
 			loadData();
 		});
-	    // 学校监听事件
+		// 学校监听事件
 		form.on('select(schoolId)', function(data) {
 			if(isNull(data.value) || data.value === '请选择'){
 				$("#schoolId").html("");
 				form.render('select');
 			} else {
-				// 加载年级
-				initGrade();
+				// 加载院系
+				initFaculty();
 			}
 		});
-		
-		// 初始化年级
-		function initGrade(){
+
+		// 初始化院系
+		function initFaculty(){
 			showGrid({
-			 	id: "gradeId",
-			 	url: schoolBasePath + "grademation006",
-			 	params: {schoolId: $("#schoolId").val()},
-			 	pagination: false,
-			 	template: getFileContent('tpl/template/select-option.tpl'),
-			 	ajaxSendLoadBefore: function(hdb) {},
-			 	ajaxSendAfter:function (json) {
-			 		form.render('select');
-			 	}
-		    });
+				id: "facultyId",
+				url: schoolBasePath + "queryFacultyListBySchoolId",
+				params: {schoolId: $("#schoolId").val()},
+				method: "GET",
+				pagination: false,
+				template: getFileContent('tpl/template/select-option.tpl'),
+				ajaxSendLoadBefore: function(hdb) {},
+				ajaxSendAfter:function (json) {
+					form.render('select');
+				}
+			});
 		}
-		// 年级监听事件
-		form.on('select(gradeId)', function(data) {
+
+		// 院系监听事件
+		form.on('select(facultyId)', function(data) {
 			if(isNull(data.value) || data.value === '请选择'){
-				$("#subjectId").html("");
+				$("#facultyId").html("");
+				form.render('select');
+			} else {
+				// 加载专业
+				initMajor();
+			}
+		});
+
+		// 初始化专业
+		function initMajor(){
+			showGrid({
+				id: "majorId",
+				url: schoolBasePath + "queryMajorListByFacultyId",
+				method: "GET",
+				params: {facultyId: $("#facultyId").val()},
+				pagination: false,
+				template: getFileContent('tpl/template/select-option.tpl'),
+				ajaxSendLoadBefore: function(hdb) {
+				},
+				ajaxSendAfter:function (json) {
+					form.render('select');
+				}
+			});
+		}
+
+		// 专业监听事件
+		form.on('select(majorId)', function(data) {
+			if(isNull(data.value) || data.value === '请选择'){
+				$("#majorId").html("");
 				form.render('select');
 			} else {
 				// 加载科目
 				initSubject();
 			}
 		});
-		
+
 		// 初始化科目
 		function initSubject(){
 			showGrid({
-			 	id: "subjectId",
-			 	url: schoolBasePath + "schoolsubjectmation007",
-			 	params: {gradeId: $("#gradeId").val()},
-			 	pagination: false,
-			 	template: getFileContent('tpl/template/select-option.tpl'),
-			 	ajaxSendLoadBefore: function(hdb) {},
-			 	ajaxSendAfter:function (json) {
-			 		form.render('select');
-			 	}
-		    });
+				id: "subjectId",
+				url: schoolBasePath + "querySubjectByMajorId",
+				params: {majorId: $("#majorId").val()},
+				method: "GET",
+				pagination: false,
+				template: getFileContent('tpl/template/select-option.tpl'),
+				ajaxSendLoadBefore: function(hdb) {},
+				ajaxSendAfter:function (json) {
+					form.render('select');
+				}
+			});
 		}
 		
 		function loadData(){

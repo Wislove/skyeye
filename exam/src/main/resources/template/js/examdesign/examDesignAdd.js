@@ -15,9 +15,9 @@ layui.config({
 			$("#schoolId").html(getDataUseHandlebars(getFileContent('tpl/template/select-option-must.tpl'), json));
 			form.render("select");
 			// 加载年级
-			initGrade();
+			// initGrade();
 			// 加载学期
-			initSemester();
+			// initSemester();
 		});
 	    //学校监听事件
 		form.on('select(schoolId)', function(data) {
@@ -26,26 +26,26 @@ layui.config({
 				form.render('select');
 			} else {
 				//加载年级
-				initGrade();
+				// initGrade();
 				//加载学期
-				initSemester();
+				// initSemester();
 			}
 		});
 		
 		//初始化年级
-		function initGrade(){
-			showGrid({
-			 	id: "gradeId",
-			 	url: schoolBasePath + "grademation006",
-			 	params: {schoolId: $("#schoolId").val()},
-			 	pagination: false,
-			 	template: getFileContent('tpl/template/select-option.tpl'),
-			 	ajaxSendLoadBefore: function(hdb) {},
-			 	ajaxSendAfter:function (json) {
-			 		form.render('select');
-			 	}
-		    });
-		}
+		// function initGrade(){
+		// 	showGrid({
+		// 	 	id: "gradeId",
+		// 	 	url: schoolBasePath + "grademation006",
+		// 	 	params: {schoolId: $("#schoolId").val()},
+		// 	 	pagination: false,
+		// 	 	template: getFileContent('tpl/template/select-option.tpl'),
+		// 	 	ajaxSendLoadBefore: function(hdb) {},
+		// 	 	ajaxSendAfter:function (json) {
+		// 	 		form.render('select');
+		// 	 	}
+		//     });
+		// }
 		//年级监听事件
 		form.on('select(gradeId)', function(data) {
 			if(isNull(data.value) || data.value === '请选择'){
@@ -62,19 +62,19 @@ layui.config({
 		});
 		
 		//初始化学期
-		function initSemester(){
-			showGrid({
-			 	id: "semesterId",
-			 	url: schoolBasePath + "schoolsemester006",
-			 	params: {schoolId: $("#schoolId").val()},
-			 	pagination: false,
-			 	template: getFileContent('tpl/template/select-option.tpl'),
-			 	ajaxSendLoadBefore: function(hdb) {},
-			 	ajaxSendAfter:function (json) {
-			 		form.render('select');
-			 	}
-		    });
-		}
+		// function initSemester(){
+		// 	showGrid({
+		// 	 	id: "semesterId",
+		// 	 	url: schoolBasePath + "schoolsemester006",
+		// 	 	params: {schoolId: $("#schoolId").val()},
+		// 	 	pagination: false,
+		// 	 	template: getFileContent('tpl/template/select-option.tpl'),
+		// 	 	ajaxSendLoadBefore: function(hdb) {},
+		// 	 	ajaxSendAfter:function (json) {
+		// 	 		form.render('select');
+		// 	 	}
+		//     });
+		// }
 		
 		//初始化科目
 		function initSubject(){

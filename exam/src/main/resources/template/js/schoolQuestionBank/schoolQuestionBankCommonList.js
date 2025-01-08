@@ -1,4 +1,3 @@
-
 var rowId = "";
 
 layui.config({
@@ -12,54 +11,72 @@ layui.config({
 		form = layui.form,
 		table = layui.table;
 		
-	var gradeId = "";
+	var facultyId = "";
+	var majorId = "";
 	var subjectId = "";
 
 	// 获取当前登陆用户所属的学校列表
 	schoolUtil.queryMyBelongSchoolList(function (json) {
 		$("#schoolId").html(getDataUseHandlebars(getFileContent('tpl/template/select-option-must.tpl'), json));
 		form.render("select");
-		// 加载年级
-		initGradeId();
+		initFacultyId();
 		initTable();
 	});
 	form.on('select(schoolId)', function(data) {
-		// 加载年级
- 		initGradeId();
- 		gradeId = "";
+		initFacultyId();
+		facultyId = "";
+		majorId = "";
 		subjectId = "";
- 		$("#setting1").html("");
+		$("#setting1").html("");
+		$("#setting3").html("");
 	});
 	
-	// 所属年级
-    function initGradeId(){
-	    showGrid({
-    	 	id: "setting",
-    	 	url: schoolBasePath + "grademation006",
-    	 	params: {schoolId: $("#schoolId").val()},
-    	 	pagination: false,
-    	 	template: $("#gradeTemplate").html(),
-    	 	ajaxSendLoadBefore: function(hdb) {
-    	 	},
-    	 	ajaxSendAfter:function (json) {
-    	 		form.render('select');
-    	 	}
-        });
-    }
-    
+	// 所属院系
+	function initFacultyId(){
+		showGrid({
+			id: "setting",
+			url: schoolBasePath + "queryFacultyListBySchoolId",
+			params: {schoolId: $("#schoolId").val()},
+			pagination: false,
+			template: $("#facultyTemplate").html(),
+			method: 'GET',
+			ajaxSendLoadBefore: function(hdb) {},
+			ajaxSendAfter:function (json) {
+				form.render('select');
+			}
+		});
+	}
+	
+	// 初始化专业
+	function initMajor(){
+		showGrid({
+			id: "setting1",
+			url: schoolBasePath + "queryMajorListByFacultyId",
+			params: {facultyId: facultyId},
+			pagination: false,
+			template: $("#majorTemplate").html(),
+			method: 'GET',
+			ajaxSendLoadBefore: function(hdb) {},
+			ajaxSendAfter:function (json) {
+				form.render('select');
+			}
+		});
+	}
+	
 	// 初始化科目
 	function initSubject(){
 		showGrid({
-		 	id: "setting1",
-		 	url: schoolBasePath + "schoolsubjectmation007",
-		 	params: {gradeId: gradeId},
-		 	pagination: false,
-		 	template: $("#subjectTemplate").html(),
-		 	ajaxSendLoadBefore: function(hdb) {},
-		 	ajaxSendAfter:function (json) {
-		 		form.render('select');
-		 	}
-	    });
+			id: "setting3",
+			url: schoolBasePath + "querySubjectListByMajorId",
+			params: {majorId: majorId},
+			pagination: false,
+			template: $("#subjectTemplate").html(),
+			method: 'GET',
+			ajaxSendLoadBefore: function(hdb) {},
+			ajaxSendAfter:function (json) {
+				form.render('select');
+			}
+		});
 	}
 	
     function initTable(){
@@ -68,7 +85,7 @@ layui.config({
 		    id: 'messageTable',
 		    elem: '#messageTable',
 		    method: 'post',
-		    url: schoolBasePath + 'schoolquestionbank019',
+		    url: schoolBasePath + 'selectQuestionBySubjecId',
 		    where: getTableParams(),
 		    even: false,
 		    page: true,
@@ -88,7 +105,6 @@ layui.config({
 		        }},
 		        { field: 'cName', width: 100, title: '题型' },
 		        { field: 'schoolName', width: 150, title: '学校' },
-	            { field: 'gradeName', width: 80, align: 'center', title: '年级' },
 	            { field: 'subjectName', width: 80, align: 'center', title: '科目' },
 		        { field: 'createTime', title: systemLanguage["com.skyeye.createTime"][languageType], align: 'center', width: 140 }
 		    ]],
@@ -126,22 +142,36 @@ layui.config({
 			}});
 	}
 	
-    // 对左侧菜单项的点击事件--年级
+    // 对左侧菜单项的点击事件--院系
 	$("body").on("click", "#setting a", function (e) {
 		$("#setting a").removeClass("selected");
 		$(this).addClass("selected");
-		gradeId = $(this).attr("rowid");
-		if(isNull(gradeId)){
+		facultyId = $(this).attr("rowid");
+		if(isNull(facultyId)){
 			$("#setting1").html("");
+			$("#setting3").html("");
+		} else {
+			initMajor();
+		}
+		refreshTable();
+	});
+	
+	// 对左侧菜单项的点击事件--专业
+	$("body").on("click", "#setting1 a", function (e) {
+		$("#setting1 a").removeClass("selected");
+		$(this).addClass("selected");
+		majorId = $(this).attr("rowid");
+		if(isNull(majorId)){
+			$("#setting3").html("");
 		} else {
 			initSubject();
 		}
 		refreshTable();
 	});
-	
+
 	// 对左侧菜单项的点击事件--科目
-	$("body").on("click", "#setting1 a", function (e) {
-		$("#setting1 a").removeClass("selected");
+	$("body").on("click", "#setting3 a", function (e) {
+		$("#setting3 a").removeClass("selected");
 		$(this).addClass("selected");
 		subjectId = $(this).attr("rowid");
 		refreshTable();
@@ -153,9 +183,9 @@ layui.config({
     
     function getTableParams(){
     	return {
-    		schoolId: $("#schoolId").val(), 
-    		gradeId: gradeId, 
-    		subjectId: subjectId
+    		limit: getLimit(),
+    		page: 1,
+    		holderId: subjectId
     	};
     }
     
