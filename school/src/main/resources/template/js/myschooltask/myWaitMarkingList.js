@@ -20,7 +20,7 @@ layui.config({
 		$("#schoolId").html(getDataUseHandlebars(getFileContent('tpl/template/select-option-must.tpl'), json));
 		form.render("select");
 		// 加载年级
-		initGradeId();
+		// initGradeId();
 		initTable();
 	});
 
@@ -30,27 +30,28 @@ layui.config({
 	});
 	
 	//所属年级
-    function initGradeId(){
-	    showGrid({
-    	 	id: "gradeId",
-    	 	url: schoolBasePath + "grademation006",
-    	 	params: {schoolId: $("#schoolId").val()},
-    	 	pagination: false,
-    	 	template: getFileContent('tpl/template/select-option.tpl'),
-    	 	ajaxSendLoadBefore: function(hdb) {
-    	 	},
-    	 	ajaxSendAfter:function (json) {
-    	 		form.render('select');
-    	 	}
-        });
-    }
+    // function initGradeId(){
+	//     showGrid({
+    // 	 	id: "gradeId",
+    // 	 	url: schoolBasePath + "grademation006",
+    // 	 	params: {schoolId: $("#schoolId").val()},
+    // 	 	pagination: false,
+    // 	 	template: getFileContent('tpl/template/select-option.tpl'),
+    // 	 	ajaxSendLoadBefore: function(hdb) {
+    // 	 	},
+    // 	 	ajaxSendAfter:function (json) {
+    // 	 		form.render('select');
+    // 	 	}
+    //     });
+    // }
 
 	function initTable(){
 		table.render({
 	        id: 'messageTable',
 	        elem: '#messageTable',
 	        method: 'post',
-	        url: schoolBasePath + 'myschooltask002',
+			url: schoolBasePath + 'queryFryAllExamList',
+	        // url: schoolBasePath + 'myschooltask002',
 	        where: getTableParams(),
 	        even: false,
 		    page: true,
