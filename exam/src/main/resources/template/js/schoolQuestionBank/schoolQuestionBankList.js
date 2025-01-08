@@ -27,7 +27,7 @@ layui.config({
 		id: 'messageTable',
 		elem: '#messageTable',
 		method: 'post',
-		url: sysMainMation.schoolBasePath + 'schoolquestionbank001',
+		url: sysMainMation.schoolBasePath + 'queryQuestionList',
 		where: getTableParams(),
 		even: false,
 		page: true,
@@ -86,25 +86,25 @@ layui.config({
 		rowId = data.id;
 		var url = "";
 		var title = "编辑";
-		if (data.quType == '1'){
+		if (data.quType == '1'){//单选
 			url = "../../tpl/schoolQuestionBank/radioAdd.html";
-		} else if (data.quType == '2'){
+		} else if (data.quType == '2'){//多选
 			url = "../../tpl/schoolQuestionBank/checkBoxAdd.html";
-		} else if (data.quType == '3'){
+		} else if (data.quType == '3'){//填空
 			url = "../../tpl/schoolQuestionBank/fillblankAdd.html";
-		} else if (data.quType == '4'){
+		} else if (data.quType == '4'){//多项填空
 			url = "../../tpl/schoolQuestionBank/multiFillblankAdd.html";
-		} else if (data.quType == '8'){
+		} else if (data.quType == '8'){//评分
 			url = "../../tpl/schoolQuestionBank/scoreAdd.html";
-		} else if (data.quType == '9'){
+		} else if (data.quType == '9'){//排序
 			url = "../../tpl/schoolQuestionBank/orderbyAdd.html";
-		} else if (data.quType == '11'){
+		} else if (data.quType == '11'){//矩阵单选
 			url = "../../tpl/schoolQuestionBank/chenRadioAdd.html";
-		} else if (data.quType == '12'){
+		} else if (data.quType == '12'){//矩阵填空
 			url = "../../tpl/schoolQuestionBank/chenFbkAdd.html";
-		} else if (data.quType == '13'){
+		} else if (data.quType == '13'){//矩阵多选
 			url = "../../tpl/schoolQuestionBank/chenCheckBoxAdd.html";
-		} else if (data.quType == '18'){
+		} else if (data.quType == '18'){//矩阵评分
 			url = "../../tpl/schoolQuestionBank/chenScoreAdd.html";
 		}
 		title += data.cName;
@@ -271,5 +271,5 @@ layui.config({
 		return $.extend(true, {}, initTableSearchUtil.getSearchValue("messageTable"));
 	}
     
-    exports('schoolQuestionBankList', {});
+    exports('queryPageQuestionList', {});
 });

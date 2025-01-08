@@ -5,7 +5,7 @@ var schoolKnowledgeMationList = new Array();
 
 // 要删除的行id
 var deleteRowList = new Array();
-
+//新增/编辑单选
 layui.config({
 	base: basePath, 
 	version: skyeyeVersion
@@ -34,29 +34,59 @@ layui.config({
 				$("#schoolId").html("");
 				form.render('select');
 			} else {
-				// 加载年级
-				initGrade();
+				// 加载院系
+				initFaculty();
+			}
+		});
+
+		// 初始化院系
+		function initFaculty(){
+			showGrid({
+				id: "facultyId",
+				url: schoolBasePath + "queryFacultyListBySchoolId",
+				params: {schoolId: $("#schoolId").val()},
+				method: "GET",
+				pagination: false,
+				template: getFileContent('tpl/template/select-option.tpl'),
+				ajaxSendLoadBefore: function(hdb) {},
+				ajaxSendAfter:function (json) {
+					form.render('select');
+				}
+			});
+		}
+
+		// 院系监听事件
+		form.on('select(facultyId)', function(data) {
+			if(isNull(data.value) || data.value === '请选择'){
+				$("#facultyId").html("");
+				form.render('select');
+			} else {
+				// 加载专业
+				initMajor();
 			}
 		});
 		
-		// 初始化年级
-		function initGrade(){
+		// 初始化专业
+		function initMajor(){
 			showGrid({
-			 	id: "gradeId",
-			 	url: schoolBasePath + "grademation006",
-			 	params: {schoolId: $("#schoolId").val()},
-			 	pagination: false,
-			 	template: getFileContent('tpl/template/select-option.tpl'),
-			 	ajaxSendLoadBefore: function(hdb) {},
-			 	ajaxSendAfter:function (json) {
-			 		form.render('select');
-			 	}
+			 	id: "majorId",
+			 	url: schoolBasePath + "queryMajorListByFacultyId",
+				method: "GET",
+				params: {facultyId: $("#facultyId").val()},
+				pagination: false,
+				template: getFileContent('tpl/template/select-option.tpl'),
+				ajaxSendLoadBefore: function(hdb) {
+				},
+				ajaxSendAfter:function (json) {
+					form.render('select');
+				}
 		    });
 		}
-		// 年级监听事件
-		form.on('select(gradeId)', function(data) {
+
+		// 专业监听事件
+		form.on('select(majorId)', function(data) {
 			if(isNull(data.value) || data.value === '请选择'){
-				$("#subjectId").html("");
+				$("#majorId").html("");
 				form.render('select');
 			} else {
 				// 加载科目
@@ -68,8 +98,9 @@ layui.config({
 		function initSubject(){
 			showGrid({
 			 	id: "subjectId",
-			 	url: schoolBasePath + "schoolsubjectmation007",
-			 	params: {gradeId: $("#gradeId").val()},
+			 	url: schoolBasePath + "querySubjectListByMajorId",
+			 	params: {majorId: $("#majorId").val()},
+				method: "GET",
 			 	pagination: false,
 			 	template: getFileContent('tpl/template/select-option.tpl'),
 			 	ajaxSendLoadBefore: function(hdb) {},
@@ -85,26 +116,37 @@ layui.config({
 				AjaxPostUtil.request({url:schoolBasePath + "schoolquestionbank004", params: {rowId: parent.rowId}, type: 'json', callback: function (json) {
 					$("#schoolId").val(json.bean.schoolId);
 					showGrid({
-						id: "gradeId",
-						url: schoolBasePath + "grademation006",
+						id: "facultyId",
+						url: schoolBasePath + "queryFacultyListBySchoolId",//院系
 						params: {schoolId: $("#schoolId").val()},
 						pagination: false,
 						template: getFileContent('tpl/template/select-option.tpl'),
 						ajaxSendLoadBefore: function(hdb) {},
 						ajaxSendAfter:function(data) {
-							$("#gradeId").val(json.bean.gradeId);
+							$("#majorId").val(json.bean.majorId);
 							showGrid({
-								id: "subjectId",
-								url: schoolBasePath + "schoolsubjectmation007",
-								params: {gradeId: $("#gradeId").val()},
+								id: "majorId",
+								url: schoolBasePath + "queryMajorListByFacultyId",//专业
+								params: {facultyId: $("#facultyId").val()},
 								pagination: false,
 								template: getFileContent('tpl/template/select-option.tpl'),
-								ajaxSendLoadBefore: function(hdb) {},
-								ajaxSendAfter:function(data) {
-									$("#subjectId").val(json.bean.subjectId);
-									form.render();
+								ajaxSendLoadBefore: function (hdb) {},
+								ajaxSendAfter: function (data) {
+									$("#gradeId").val(json.bean.gradeId);
+									showGrid({
+										id: "subjectId",
+										url: schoolBasePath + "querySubjectListByMajorId",//科目
+										params: {majorId: $("#majorId").val()},
+										pagination: false,
+										template: getFileContent('tpl/template/select-option.tpl'),
+										ajaxSendLoadBefore: function (hdb) {},
+										ajaxSendAfter: function (data) {
+											$("#subjectId").val(json.bean.subjectId);
+											form.render();
+										}
+									});
 								}
-							});
+							})
 						}
 					});
 					$("input:radio[name=type][value=" + json.bean.type + "]").attr("checked", true);
@@ -135,8 +177,10 @@ layui.config({
 					pageLoadAfter();
 				}});
 			} else {
-				// 加载年级
-		 		initGrade();
+				// 加载院系
+				initFaculty();
+				// 加载专业
+				initMajor();
 		 		// 题目信息赋值
 				$(".surveyQuItemBody").html($("#noDataTemplate").html());
 				// 加载上传和切换监听事件
@@ -166,18 +210,23 @@ layui.config({
     				randOrder: quItemBody.find("input[name='randOrder']").val(),
     				cellCount: quItemBody.find("input[name='cellCount']").val(),
     				contactsAttr: quItemBody.find("input[name='contactsAttr']").val(),
-    				contactsField: quItemBody.find("input[name='contactsField']").val(),
+    				// contactsField: quItemBody.find("input[name='contactsField']").val(),还不知道为什么报错未定义,先注释，非必填
     				quTitle: encodeURI(quItemBody.find(".quCoTitleEdit").html()),
     				fraction: $("#fraction").val(),
     				schoolId: $("#schoolId").val(),
-        			gradeId: $("#gradeId").val(),
+					facultyId: $("#facultyId").val(),//院系
+        			majorId: $("#majorId").val(),//专业
         			subjectId: $("#subjectId").val(),
+					visibility:1,//是否显示题，1显示，
         			type: $("input[name='type']:checked").val(),
         			schoolKnowledgeMationList: JSON.stringify(schoolKnowledgeMationList),
         			deleteRowList: JSON.stringify(deleteRowList),
         			fileUrl: fileUrl,
-        			fileType: tabIndex,
-        			whetherUpload: data.field.whetherUpload
+        			fileType: tabIndex,//试题类型，0.默认没有，1.视频，2.音频，3.图片
+        			whetherUpload: data.field.whetherUpload,//是否允许拍照/上传图片选中，1.是，2.否
+
+					quType:1,//题目类型
+					// quTag:1,//是否是大小题 1默认题 2大题 3大题下面的小题
 	    		};
 	    		var quItemOptions = quItemBody.find(".quCoItem li.quCoItemUlLi");
 	    		if(quItemOptions.length == 0){
@@ -193,6 +242,11 @@ layui.config({
 	    				isDefaultAnswer = 1
 	    			}
     				var s = {
+						// optionTitle: encodeURI($.trim($(this).find("label.quCoOptionEdit").html())),
+						// orderById:,//排序
+						// visibility:,//是否显示
+						// optionName:,//选项内容
+
 						optionValue: encodeURI($.trim($(this).find("label.quCoOptionEdit").html())),
 						optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
 						isNote: $(this).find(".quItemInputCase input[name='isNote']").val(),
@@ -205,7 +259,7 @@ layui.config({
 	    		});
 	    		params.radioTd = JSON.stringify(radioTd);
 	    		
-    			AjaxPostUtil.request({url:schoolBasePath + "schoolquestionbank002", params: params, type: 'json', callback: function (json) {
+    			AjaxPostUtil.request({url:schoolBasePath + "writeQuestion", params: params, type: 'json', callback: function (json) {
 					parent.layer.close(index);
 					parent.refreshCode = '0';
     			}});
