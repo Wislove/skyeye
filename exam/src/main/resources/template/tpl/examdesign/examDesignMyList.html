@@ -67,7 +67,7 @@
 			{{# if(auth('1587278480940')){ }}
             	<a class="layui-btn layui-btn-xs" lay-event="fzWj">复制</a>
 			{{# } }}
-			{{# if(d.state == 0){ }}
+			{{# if(d.surveyState == 0){ }}
 				{{# if(auth('1587278545823')){ }}
 					<a class="layui-btn layui-btn-xs" lay-event="edit">设计</a>
 				{{# } }}
@@ -77,14 +77,14 @@
 				{{# if(auth('1587278577111')){ }}
           			<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><language showName="com.skyeye.deleteBtn"></language></a>
 				{{# } }}
-			{{# } else if(d.state == 1){ }}
+			{{# } else if(d.surveyState == 1){ }}
 				{{# if(auth('1587278595493')){ }}
 					<a class="layui-btn layui-btn-xs" lay-event="endSurvey">结束考试</a>
 				{{# } }}
 				{{# if(auth('1587278612806')){ }}
 					<a class="layui-btn layui-btn-xs" lay-event="fxWj">试题分析</a>
 				{{# } }}
-			{{# } else if(d.state == 2){ }}
+			{{# } else if(d.surveyState == 2){ }}
 				{{# if(auth('1587278612806')){ }}
 					<a class="layui-btn layui-btn-xs" lay-event="fxWj">试题分析</a>
 				{{# } }}

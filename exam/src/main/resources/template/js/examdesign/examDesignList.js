@@ -174,9 +174,7 @@ layui.config({
 	        	edit(data);
 	        } else if (layEvent === 'fzWj') { //复制试卷
 	        	fzWj(data);
-	        } else if (layEvent === 'fxWj') { //分析报告
-	        	fxWj(data);
-	        } else if (layEvent === 'showFb') { //发布
+	        }  else if (layEvent === 'showFb') { //发布
 	        	showFb(data, obj);
 	        } else if (layEvent === 'endSurvey') { //结束调查
 	        	endSurvey(data, obj);
@@ -185,6 +183,9 @@ layui.config({
 	        } else if (layEvent === 'markExam') { //阅卷人
 	        	markExam(data);
 	        }
+			// else if (layEvent === 'fxWj') { //分析报告
+			// 	fxWj(data);
+			// }
 	    });
 
 		form.render();
@@ -195,16 +196,24 @@ layui.config({
 	        return false;
 		});
     }
-	
+
 	//删除
 	function del(data, obj) {
 		var msg = obj ? '确认删除试卷【' + obj.data.surveyName + '】吗？' : '确认删除选中数据吗？';
-		layer.confirm(msg, { icon: 3, title: '删除试卷' }, function (index) {
+		layer.confirm(msg, {icon: 3, title: '删除试卷'}, function (index) {
 			layer.close(index);
-            AjaxPostUtil.request({url:schoolBasePath + "changeWhetherDeleteById", params: {rowId: data.id}, type: 'json', callback: function (json) {
-				winui.window.msg(systemLanguage["com.skyeye.deleteOperationSuccessMsg"][languageType], {icon: 1, time: 2000});
-				loadTable();
-    		}});
+			AjaxPostUtil.request({
+				url: schoolBasePath + "changeWhetherDeleteById",
+				params: {id: data.id},
+				type: 'json',
+				callback: function (json) {
+					winui.window.msg(systemLanguage["com.skyeye.deleteOperationSuccessMsg"][languageType], {
+						icon: 1,
+						time: 2000
+					});
+					loadTable();
+				}
+			});
 		});
 	}
 	
@@ -224,10 +233,12 @@ layui.config({
 	
 	//复制试卷
 	function fzWj(data) {
+		console.log(22222,data)
+		// id=data.id;
 		rowId = data.id;
 		surveyName = data.surveyName;
 		_openNewWindows({
-			url: "../../tpl/examdesigncopy/examDesignCopy.html", 
+			url: "../../tpl/examdesigncopy/examDesignCopy.html",
 			title: "复制试卷",
 			pageId: "examDesignCopy",
 			area: ['500px', '300px'],
@@ -248,16 +259,23 @@ layui.config({
 			callBack: function (refreshCode) {
 			}});
 	}
-	
+
 	//发布
-	function showFb(data, obj){
+	function showFb(data, obj) {
+		console.log(data, obj)
+		console.log(222)
 		var msg = obj ? '确认发布试卷【' + obj.data.surveyName + '】吗？' : '确认发布选中数据吗？';
-		layer.confirm(msg, { icon: 3, title: '试卷发布' }, function (index) {
+		layer.confirm(msg, {icon: 3, title: '试卷发布'}, function (index) {
 			layer.close(index);
-            AjaxPostUtil.request({url:schoolBasePath + "setUpExamDirectory", params: {rowId: data.id}, type: 'json', callback: function (json) {
-				winui.window.msg("发布成功", {icon: 1, time: 2000});
-				loadTable();
-    		}});
+			AjaxPostUtil.request({
+				url: schoolBasePath + "setUpExamDirectory",
+				params: {id: data.id},
+				type: 'json',
+				callback: function (json) {
+					winui.window.msg("发布成功", {icon: 1, time: 2000});
+					loadTable();
+				}
+			});
 		});
 	}
 	
