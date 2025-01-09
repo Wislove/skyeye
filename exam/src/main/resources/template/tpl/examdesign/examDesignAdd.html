@@ -59,6 +59,14 @@
 	            	</select>
                 </div>
 	        </div>
+			<div class="layui-form-item layui-col-xs6">
+				<label class="layui-form-label">审批人<i class="red">*</i></label>
+				<div class="layui-input-block">
+					<input type="text" id="approver" name="approver" class="layui-input" win-verify="required" placeholder="请选择阅卷人" readonly="readonly" />
+					<i class="fa fa-user-plus input-icon" id="approverSelPeople"></i>
+					<!--					<button type="button" id="approverSelPeople" class="layui-btn">选择审批人</button>-->
+				</div>
+			</div>
 	        <div class="layui-form-item layui-col-xs12">
 	            <label class="layui-form-label">考试班级<i class="red">*</i></label>
                	<div class="layui-input-block" id="classList">
@@ -79,7 +87,7 @@
 					<input type="radio" name="viewAnswer" value="1" title="公开" checked="checked"/>
 				</div>
 			</div>
-	        <div class="layui-form-item layui-col-xs12">
+			<div class="layui-form-item layui-col-xs12">
 		        <label class="layui-form-label">问卷模块<i class="red">*</i></label>
 		        <div class="layui-input-block winui-radio">
 		            <input type="radio" name="surveyModel" value="1" title="问卷模块" />
