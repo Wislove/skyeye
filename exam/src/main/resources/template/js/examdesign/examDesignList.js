@@ -329,6 +329,8 @@ layui.config({
 			holderId: $("#facultyId").val(),
 			objectKey: $("#majorId").val(),
 			objectId: $("#subjectId").val(),
+			keyword: $("#surveyName").val(),
+			state: $("#surveyState  ").val()
 			// gradeId: $("#gradeId").val(),
 			// schoolId: $("#schoolId").val(),
 			// subjectId: $("#subjectId").val()
