@@ -10,6 +10,9 @@ layui.config({
 	    var $ = layui.$,
 	    	form = layui.form;
 
+		// 定义全局变量
+		var readerList = '';  // 添加全局变量存储审批人ID列表
+
 		// 获取当前登陆用户所属的学校列表
 		schoolUtil.queryMyBelongSchoolList(function (json) {
 			$("#schoolId").html(getDataUseHandlebars(getFileContent('tpl/template/select-option-must.tpl'), json));
@@ -188,12 +191,42 @@ layui.config({
 		//     });
 		// }
 
+		// 审批人选择
+		$("body").on("click", "#approverSelPeople", function (e) {
+			systemCommonUtil.userReturnList = [];
+			systemCommonUtil.chooseOrNotMy = "1";
+			systemCommonUtil.chooseOrNotEmail = "2";
+			systemCommonUtil.checkType = "1";
+			systemCommonUtil.openSysUserStaffChoosePage(function (userReturnList) {
+				var approverNames = userReturnList.map(function(item) {
+					return item.name;
+				});
+				$("#approver").val(approverNames.join(", "));
+				
+				// 更新全局变量
+				readerList = userReturnList.map(function(item) {
+					return item.id;
+				}).join(",");
+
+				if (isNull(readerList)) {
+					winui.window.msg('请选择审批人', {icon: 2, time: 2000});
+					return false;
+				}
+			});
+		});
+
 		matchingLanguage();
 		form.render();
 	    form.on('submit(formAddBean)', function (data) {
 	        if (winui.verifyForm(data.elem)) {
+	        	// 检查是否选择了审批人
+	        	if (isNull(readerList)) {
+	        		winui.window.msg('请选择审批人', {icon: 2, time: 2000});
+	        		return false;
+	        	}
+
 	        	//获取选中的班级信息
- 	        	var propertyIds = "";
+	        	var propertyIds = "";
 	        	$.each($('input:checkbox:checked'),function(){
 	        		propertyIds = propertyIds + $(this).attr("rowId") + ",";
 	            });
@@ -207,12 +240,13 @@ layui.config({
         			schoolId: $("#schoolId").val(),
         			// gradeId: $("#gradeId").val(),
         			semesterId: $("#semesterId").val(),
-					classId: propertyIds,
+					classId: propertyIds.slice(0, -1),  // 移除最后的逗号
         			subjectId: $("#subjectId").val(),
 					whetherDelete: 1,
         			viewAnswer: $("input[name='viewAnswer']:checked").val(),
 					surveyModel: $("input[name='surveyModel']:checked").val(),
-					surveyState: 0
+					surveyState: 0,
+					readerList: readerList
         			// propertyIds: propertyIds
 	        	};
 	        	AjaxPostUtil.request({url:schoolBasePath + "writeExamDirectory", params: params, type: 'json', callback: function (json) {
