@@ -98,7 +98,7 @@ layui.config({
 		function initSubject(){
 			showGrid({
 				id: "subjectId",
-				url: schoolBasePath + "querySubjectByMajorId",
+				url: schoolBasePath + "querySubjectListByMajorId",
 				params: {majorId: $("#majorId").val()},
 				method: "GET",
 				pagination: false,
@@ -115,29 +115,40 @@ layui.config({
 			if (!isNull(parent.rowId)){
 				AjaxPostUtil.request({url:schoolBasePath + "schoolquestionbank010", params: {rowId: parent.rowId}, type: 'json', callback: function (json) {
 					$("#schoolId").val(json.bean.schoolId);
-					showGrid({
-						id: "gradeId",
-						url: schoolBasePath + "grademation006",
-						params: {schoolId: $("#schoolId").val()},
-						pagination: false,
-						template: getFileContent('tpl/template/select-option.tpl'),
-						ajaxSendLoadBefore: function(hdb) {},
-						ajaxSendAfter:function(data) {
-							$("#gradeId").val(json.bean.gradeId);
-							showGrid({
-								id: "subjectId",
-								url: schoolBasePath + "schoolsubjectmation007",
-								params: {gradeId: $("#gradeId").val()},
-								pagination: false,
-								template: getFileContent('tpl/template/select-option.tpl'),
-								ajaxSendLoadBefore: function(hdb) {},
-								ajaxSendAfter:function(data) {
-									$("#subjectId").val(json.bean.subjectId);
-									form.render();
-								}
-							});
-						}
-					});
+						showGrid({
+							id: "facultyId",
+							url: schoolBasePath + "queryFacultyListBySchoolId",//院系
+							params: {schoolId: $("#schoolId").val()},
+							pagination: false,
+							template: getFileContent('tpl/template/select-option.tpl'),
+							ajaxSendLoadBefore: function(hdb) {},
+							ajaxSendAfter:function(data) {
+								$("#majorId").val(json.bean.majorId);
+								showGrid({
+									id: "majorId",
+									url: schoolBasePath + "queryMajorListByFacultyId",//专业
+									params: {facultyId: $("#facultyId").val()},
+									pagination: false,
+									template: getFileContent('tpl/template/select-option.tpl'),
+									ajaxSendLoadBefore: function (hdb) {},
+									ajaxSendAfter: function (data) {
+										$("#gradeId").val(json.bean.gradeId);
+										showGrid({
+											id: "subjectId",
+											url: schoolBasePath + "querySubjectListByMajorId",//科目
+											params: {majorId: $("#majorId").val()},
+											pagination: false,
+											template: getFileContent('tpl/template/select-option.tpl'),
+											ajaxSendLoadBefore: function (hdb) {},
+											ajaxSendAfter: function (data) {
+												$("#subjectId").val(json.bean.subjectId);
+												form.render();
+											}
+										});
+									}
+								})
+							}
+						});
 					$("input:radio[name=type][value=" + json.bean.type + "]").attr("checked", true);
 					$("#fraction").val(json.bean.fraction);
 					// 知识点赋值
@@ -166,8 +177,10 @@ layui.config({
 					pageLoadAfter();
 				}});
 			} else {
-				// 加载年级
-		 		initGrade();
+				// 加载院系
+				initFaculty();
+				// 加载专业
+				initMajor();
 		 		// 题目信息赋值
 				$(".surveyQuItemBody").html($("#noDataTemplate").html());
 				// 加载上传和切换监听事件
