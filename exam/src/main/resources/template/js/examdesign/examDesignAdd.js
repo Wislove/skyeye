@@ -1,5 +1,5 @@
 layui.config({
-	base: basePath, 
+	base: basePath,
 	version: skyeyeVersion
 }).extend({
     window: 'js/winui.window'
@@ -16,8 +16,10 @@ layui.config({
 			form.render("select");
 			// 加载年级
 			// initGrade();
+			// 加载院系
+			initFacultyId();
 			// 加载学期
-			// initSemester();
+			initSemester();
 		});
 	    //学校监听事件
 		form.on('select(schoolId)', function(data) {
@@ -27,11 +29,69 @@ layui.config({
 			} else {
 				//加载年级
 				// initGrade();
+				// 加载院系
+				initFacultyId();
 				//加载学期
-				// initSemester();
+				initSemester();
 			}
 		});
-		
+
+		// 所属院系
+		function initFacultyId(){
+			showGrid({
+				id: "facultyId",
+				url: schoolBasePath + "queryFacultyListBySchoolId",
+				params: {schoolId: $("#schoolId").val()},
+				pagination: false,
+				template: getFileContent('tpl/template/select-option.tpl'),
+				method: 'GET',
+				ajaxSendLoadBefore: function(hdb) {},
+				ajaxSendAfter:function (json) {
+					form.render('select');
+				}
+			});
+		}
+
+		// 院系选择事件
+		form.on('select(facultyId)', function(data) {
+			if(isNull(data.value) || data.value === '请选择'){
+				$("#majorId").html("");  // 清空专业
+				$("#subjectId").html("");  // 清空科目
+				form.render('select');
+			} else {
+				facultyId = data.value;  // 设置当前选中的院系ID
+				initMajor();  // 加载专业
+			}
+		});
+
+		// 初始化专业
+		function initMajor(){
+			showGrid({
+				id: "majorId",
+				url: schoolBasePath + "queryMajorListByFacultyId",
+				params: {facultyId: facultyId},
+				pagination: false,
+				template: getFileContent('tpl/template/select-option.tpl'),
+				method: 'GET',
+				ajaxSendLoadBefore: function(hdb) {},
+				ajaxSendAfter:function (json) {
+					form.render('select');
+				}
+			});
+		}
+
+		// 专业选择事件
+		form.on('select(majorId)', function(data) {
+			if(isNull(data.value) || data.value === '请选择'){
+				$("#subjectId").html("");
+				form.render('select');
+			} else {
+				majorId = data.value;  // 设置当前选中的专业ID
+				initSubject();
+				initClass();
+			}
+		});
+
 		//初始化年级
 		// function initGrade(){
 		// 	showGrid({
@@ -47,70 +107,87 @@ layui.config({
 		//     });
 		// }
 		//年级监听事件
-		form.on('select(gradeId)', function(data) {
-			if(isNull(data.value) || data.value === '请选择'){
-				$("#subjectId").html("");
-				$("#sessionYear").html("");
-		 		$("#classList").html("");
-				form.render('select');
-			} else {
-				//加载科目
-				initSubject();
-				//加载班级
-				loadThisGradeNowYear();
-			}
-		});
-		
+		// form.on('select(gradeId)', function(data) {
+		// 	if(isNull(data.value) || data.value === '请选择'){
+		// 		$("#subjectId").html("");
+		// 		$("#sessionYear").html("");
+		//  		$("#classList").html("");
+		// 		form.render('select');
+		// 	} else {
+		// 		//加载科目
+		// 		initSubject();
+		// 		//加载班级
+		// 		loadThisGradeNowYear();
+		// 	}
+		// });
+
 		//初始化学期
-		// function initSemester(){
-		// 	showGrid({
-		// 	 	id: "semesterId",
-		// 	 	url: schoolBasePath + "schoolsemester006",
-		// 	 	params: {schoolId: $("#schoolId").val()},
-		// 	 	pagination: false,
-		// 	 	template: getFileContent('tpl/template/select-option.tpl'),
-		// 	 	ajaxSendLoadBefore: function(hdb) {},
-		// 	 	ajaxSendAfter:function (json) {
-		// 	 		form.render('select');
-		// 	 	}
-		//     });
-		// }
-		
-		//初始化科目
-		function initSubject(){
+		function initSemester(){
 			showGrid({
-			 	id: "subjectId",
-			 	url: schoolBasePath + "schoolsubjectmation007",
-			 	params: {gradeId: $("#gradeId").val()},
+			 	id: "semesterId",
+			 	url: schoolBasePath + "queryAllSemesterList",
+			 	params: {schoolId: $("#schoolId").val()},
 			 	pagination: false,
 			 	template: getFileContent('tpl/template/select-option.tpl'),
+				method: 'GET',
 			 	ajaxSendLoadBefore: function(hdb) {},
 			 	ajaxSendAfter:function (json) {
 			 		form.render('select');
 			 	}
 		    });
 		}
-		
-		//加载当前选中的年级是哪一届的以及这一届的班级信息
-		function loadThisGradeNowYear(){
+
+		//初始化科目
+		function initSubject(){
 			showGrid({
-			 	id: "classList",
-			 	url: schoolBasePath + "grademation009",
-			 	params: {gradeId: $("#gradeId").val()},
-			 	pagination: false,
-			 	template: getFileContent('tpl/template/checkbox-property.tpl'),
+			 	id: "subjectId",
+			 	url: schoolBasePath + "querySubjectListByMajorId",
+				params: {majorId: $("#majorId").val()},  // 修正参数名
+				pagination: false,
+			 	template: getFileContent('tpl/template/select-option.tpl'),
+				method: 'GET',
 			 	ajaxSendLoadBefore: function(hdb) {},
-			 	ajaxSendAfter:function(data) {
-			 		$("#sessionYear").html(data.bean.year + '届学生');
-			 		form.render('checkbox');
-			 	},
-			 	ajaxSendErrorAfter: function (json) {
-			 		$("#sessionYear").html("");
-			 		$("#classList").html("");
+			 	ajaxSendAfter:function (json) {
+			 		form.render('select');
 			 	}
 		    });
 		}
-	    
+
+		// 初始化班级
+		function initClass() {
+			showGrid({
+				id: "classList",
+				url: schoolBasePath + "queryClassListByMajorId",
+				params: {majorId: $("#majorId").val()},  // 修正参数名
+				pagination: false,
+				template: getFileContent('tpl/template/checkbox-property.tpl'),
+				method: 'GET',
+				ajaxSendLoadBefore: function(hdb) {},
+				ajaxSendAfter:function (json) {
+					form.render('checkbox');
+				}
+			});
+		}
+		//加载当前选中的年级是哪一届的以及这一届的班级信息
+		// function loadThisGradeNowYear(){
+		// 	showGrid({
+		// 	 	id: "classList",
+		// 	 	url: schoolBasePath + "grademation009",
+		// 	 	params: {gradeId: $("#gradeId").val()},
+		// 	 	pagination: false,
+		// 	 	template: getFileContent('tpl/template/checkbox-property.tpl'),
+		// 	 	ajaxSendLoadBefore: function(hdb) {},
+		// 	 	ajaxSendAfter:function(data) {
+		// 	 		$("#sessionYear").html(data.bean.year + '届学生');
+		// 	 		form.render('checkbox');
+		// 	 	},
+		// 	 	ajaxSendErrorAfter: function (json) {
+		// 	 		$("#sessionYear").html("");
+		// 	 		$("#classList").html("");
+		// 	 	}
+		//     });
+		// }
+
 		matchingLanguage();
 		form.render();
 	    form.on('submit(formAddBean)', function (data) {
@@ -124,28 +201,32 @@ layui.config({
 	            	winui.window.msg('请选择班级', {icon: 2, time: 2000});
 	            	return false;
 	            }
-	        	
+
 	        	var params = {
         			surveyName: $("#surveyName").val(),
         			schoolId: $("#schoolId").val(),
-        			gradeId: $("#gradeId").val(),
+        			// gradeId: $("#gradeId").val(),
         			semesterId: $("#semesterId").val(),
+					classId: propertyIds,
         			subjectId: $("#subjectId").val(),
+					whetherDelete: 1,
         			viewAnswer: $("input[name='viewAnswer']:checked").val(),
-        			propertyIds: propertyIds
+					surveyModel: $("input[name='surveyModel']:checked").val(),
+					surveyState: 0
+        			// propertyIds: propertyIds
 	        	};
-	        	AjaxPostUtil.request({url:schoolBasePath + "exam002", params: params, type: 'json', callback: function (json) {
+	        	AjaxPostUtil.request({url:schoolBasePath + "writeExamDirectory", params: params, type: 'json', callback: function (json) {
 					parent.layer.close(index);
 					parent.refreshCode = '0';
 	 	   		}});
 	        }
 	        return false;
 	    });
-	    
+
 	    // 取消
 	    $("body").on("click", "#cancle", function() {
 	    	parent.layer.close(index);
 	    });
 	});
-	    
+
 });

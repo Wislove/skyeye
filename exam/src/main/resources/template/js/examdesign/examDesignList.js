@@ -11,12 +11,9 @@ layui.config({
 	winui.renderColor();
 	var $ = layui.$,
 		form = layui.form,
-		table = layui.table,
-		laydate = layui.laydate;
-	
+		table = layui.table;
+
 	authBtn('1586066201570');
-	
-	laydate.render({elem: '#year', type: 'year', max: 'date'});
 
 	// 获取当前登陆用户所属的学校列表
 	schoolUtil.queryMyBelongSchoolList(function (json) {
@@ -159,7 +156,6 @@ layui.config({
 		        { field: 'schoolName', width: 200, title: '所属学校'},
 	            { field: 'gradeName', width: 80, align: 'center', title: '所属年级'},
 	            { field: 'subjectName', width: 80, align: 'center', title: '科目'},
-	            { field: 'sessionYear', width: 80, align: 'center', title: '所属届'},
 		        { field: 'userName', width: 120, title: systemLanguage["com.skyeye.createName"][languageType], align: 'left'},
 		        { field: 'createTime', title: systemLanguage["com.skyeye.createTime"][languageType], align: 'center', width: 140 },
 		        { title: systemLanguage["com.skyeye.operation"][languageType], fixed: 'right', align: 'center', width: 300, toolbar: '#tableBar'}
@@ -333,7 +329,6 @@ layui.config({
 			surveyState: $("#surveyState").val(),
 			gradeId: $("#gradeId").val(),
 			schoolId: $("#schoolId").val(),
-			year: $("#year").val(),
 			subjectId: $("#subjectId").val()
 		};
 	}
