@@ -67,7 +67,7 @@ layui.config({
 		        { field: 'actualNumber', width: 80, align: 'center', title: '实际人数', templet: function (d) {
 	        		return d.actualNumber + '人';
 		        }},
-	            { field: 'floorName', width: 120, title: '教学楼'}
+	            // { field: 'floorName', width: 120, title: '教学楼'}
 	        ]],
 		    done: function(json) {
 		    	matchingLanguage();
