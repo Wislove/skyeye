@@ -43,7 +43,7 @@ layui.config({
 		function initFaculty(){
 			showGrid({
 				id: "facultyId",
-				url: schoolBasePath + "queryFacultyList",
+				url: schoolBasePath + "queryFacultyListBySchoolId",
 				params: {schoolId: $("#schoolId").val()},
 				pagination: false,
 				template: getFileContent('tpl/template/select-option.tpl'),
@@ -68,8 +68,8 @@ layui.config({
 		function initGrade(){
 			showGrid({
 				id: "gradeId",
-				url: schoolBasePath + "queryMajorList",
-				params: {schoolId: $("#schoolId").val()},
+				url: schoolBasePath + "queryMajorListByFacultyId",
+				params: {facultyId: $("#facultyId").val()},
 				pagination: false,
 				template: getFileContent('tpl/template/select-option.tpl'),
 				ajaxSendLoadBefore: function(hdb) {},
@@ -93,8 +93,8 @@ layui.config({
 		function initSubject(){
 			showGrid({
 			 	id: "subjectId",
-			 	url: schoolBasePath + "querySubjectList",
-			 	params: {gradeId: $("#gradeId").val()},
+			 	url: schoolBasePath + "querySubjectListByMajorId",
+			 	params: {majorId: $("#majorId").val()},
 			 	pagination: false,
 			 	template: getFileContent('tpl/template/select-option.tpl'),
 			 	ajaxSendLoadBefore: function(hdb) {},

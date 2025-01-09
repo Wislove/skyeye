@@ -135,7 +135,7 @@ layui.config({
 		    id: 'messageTable',
 		    elem: '#messageTable',
 		    method: 'post',
-		    url: schoolBasePath + 'exam001',
+		    url: schoolBasePath + 'queryFilterExamLists',
 		    where: getTableParams(),
 		    even: false,
 		    page: true,
@@ -325,11 +325,13 @@ layui.config({
 
 	function getTableParams() {
 		return {
-			surveyName: $("#surveyName").val(),
-			surveyState: $("#surveyState").val(),
-			gradeId: $("#gradeId").val(),
-			schoolId: $("#schoolId").val(),
-			subjectId: $("#subjectId").val()
+			holderKey: $("#schoolId").val(),
+			holderId: $("#facultyId").val(),
+			objectKey: $("#majorId").val(),
+			objectId: $("#subjectId").val(),
+			// gradeId: $("#gradeId").val(),
+			// schoolId: $("#schoolId").val(),
+			// subjectId: $("#subjectId").val()
 		};
 	}
     
