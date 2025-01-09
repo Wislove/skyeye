@@ -25,19 +25,33 @@
 	            	</select>
                 </div>
 	        </div>
-	        <div class="layui-form-item layui-col-xs6">
-	            <label class="layui-form-label">考试年级<i class="red">*</i></label>
-	            <div class="layui-input-block">
-                	<select id="gradeId" lay-filter="gradeId" lay-search="" win-verify="required">
-	            	</select>
-                </div>
-	        </div>
-	        <div class="layui-form-item layui-col-xs6">
-	            <label class="layui-form-label">第几届：</label>
-	            <div class="layui-input-block ver-center" id="sessionYear">
-                	
-                </div>
-	        </div>
+			<div class="layui-form-item layui-col-xs6">
+				<label class="layui-form-label">所属院系<i class="red">*</i></label>
+				<div class="layui-input-block">
+					<select id="facultyId" lay-filter="facultyId" lay-search="" win-verify="required">
+					</select>
+				</div>
+			</div>
+			<div class="layui-form-item layui-col-xs6">
+				<label class="layui-form-label">考试专业<i class="red">*</i></label>
+				<div class="layui-input-block">
+					<select id="majorId" lay-filter="majorId" lay-search="" win-verify="required">
+					</select>
+				</div>
+			</div>
+<!--	        <div class="layui-form-item layui-col-xs6">-->
+<!--	            <label class="layui-form-label">考试年级<i class="red">*</i></label>-->
+<!--	            <div class="layui-input-block">-->
+<!--                	<select id="gradeId" lay-filter="gradeId" lay-search="" win-verify="required">-->
+<!--	            	</select>-->
+<!--                </div>-->
+<!--	        </div>-->
+<!--	        <div class="layui-form-item layui-col-xs6">-->
+<!--	            <label class="layui-form-label">第几届：</label>-->
+<!--	            <div class="layui-input-block ver-center" id="sessionYear">-->
+<!--                	-->
+<!--                </div>-->
+<!--	        </div>-->
 	        <div class="layui-form-item layui-col-xs6">
 	            <label class="layui-form-label">考试科目<i class="red">*</i></label>
 	            <div class="layui-input-block">
@@ -58,11 +72,18 @@
 	            	</select>
                 </div>
 	        </div>
+			<div class="layui-form-item layui-col-xs12">
+				<label class="layui-form-label">考试结果<i class="red">*</i></label>
+				<div class="layui-input-block winui-radio">
+					<input type="radio" name="viewAnswer" value="0" title="不公开" />
+					<input type="radio" name="viewAnswer" value="1" title="公开" checked="checked"/>
+				</div>
+			</div>
 	        <div class="layui-form-item layui-col-xs12">
-		        <label class="layui-form-label">考试结果<i class="red">*</i></label>
+		        <label class="layui-form-label">问卷模块<i class="red">*</i></label>
 		        <div class="layui-input-block winui-radio">
-		            <input type="radio" name="viewAnswer" value="0" title="不公开" />
-		            <input type="radio" name="viewAnswer" value="1" title="公开" checked="checked"/>
+		            <input type="radio" name="surveyModel" value="1" title="问卷模块" />
+		            <input type="radio" name="surveyModel" value="2" title="试卷模块" checked="checked"/>
 		        </div>
 		    </div>
 	        <div class="layui-form-item layui-col-xs12">
