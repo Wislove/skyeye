@@ -134,7 +134,7 @@ layui.config({
 		    id: 'messageTable',
 		    elem: '#messageTable',
 		    method: 'post',
-			url: schoolBasePath + 'queryFryAllExamList',
+			url: schoolBasePath + 'queryMyExamList',
 		    where: getTableParams(),
 		    even: false,
 		    page: true,
@@ -174,8 +174,6 @@ layui.config({
 	        	edit(data);
 	        } else if (layEvent === 'fzWj') { //复制试卷
 	        	fzWj(data);
-	        } else if (layEvent === 'fxWj') { //分析报告
-	        	fxWj(data);
 	        } else if (layEvent === 'showFb') { //发布
 	        	showFb(data, obj);
 	        } else if (layEvent === 'endSurvey') { //结束调查
@@ -185,6 +183,9 @@ layui.config({
 	        } else if (layEvent === 'markExam') { //阅卷人
 	        	markExam(data);
 	        }
+			// else if (layEvent === 'fxWj') { //分析报告
+			// 	fxWj(data);
+			// }
 	    });
 		
 		form.render();
@@ -240,23 +241,23 @@ layui.config({
 	}
 	
 	//分析报告
-	function fxWj(data) {
-		rowId = data.id;
-		_openNewWindows({
-			url: "../../tpl/examreport/examReport.html", 
-			title: "分析报告",
-			pageId: "examReport",
-			maxmin: true,
-			callBack: function (refreshCode) {
-			}});
-	}
+	// function fxWj(data) {
+	// 	rowId = data.id;
+	// 	_openNewWindows({
+	// 		url: "../../tpl/examreport/examReport.html",
+	// 		title: "分析报告",
+	// 		pageId: "examReport",
+	// 		maxmin: true,
+	// 		callBack: function (refreshCode) {
+	// 		}});
+	// }
 	
 	//发布
 	function showFb(data, obj){
 		var msg = obj ? '确认发布试卷【' + obj.data.surveyName + '】吗？' : '确认发布选中数据吗？';
 		layer.confirm(msg, { icon: 3, title: '试卷发布' }, function (index) {
 			layer.close(index);
-            AjaxPostUtil.request({url:schoolBasePath + "exam023", params: {rowId: data.id}, type: 'json', callback: function (json) {
+            AjaxPostUtil.request({url:schoolBasePath + "setUpExamDirectory", params: {rowId: data.id}, type: 'json', callback: function (json) {
 				winui.window.msg("发布成功", {icon: 1, time: 2000});
 				loadTable();
     		}});
@@ -268,7 +269,7 @@ layui.config({
 		var msg = obj ? '确认结束试卷【' + obj.data.surveyName + '】的考试吗？' : '确认结束选中数据吗？';
 		layer.confirm(msg, { icon: 3, title: '结束考试' }, function (index) {
 			layer.close(index);
-            AjaxPostUtil.request({url:schoolBasePath + "exam030", params: {surveyId: data.id}, type: 'json', callback: function (json) {
+            AjaxPostUtil.request({url:schoolBasePath + "updateExamMationEndById", params: {surveyId: data.id}, type: 'json', callback: function (json) {
 				winui.window.msg(systemLanguage["com.skyeye.successfulOperation"][languageType], {icon: 1, time: 2000});
 				loadTable();
     		}});
@@ -327,12 +328,15 @@ layui.config({
 
 	function getTableParams() {
 		return {
-			surveyName: $("#surveyName").val(),
-			surveyState: $("#surveyState").val(),
-			gradeId: $("#gradeId").val(),
-			schoolId: $("#schoolId").val(),
-			year: $("#year").val(),
-			subjectId: $("#subjectId").val()
+			holderKey: $("#schoolId").val(),//学校
+			holderId: $("#facultyId").val(),//院系
+			objectKey:$("#subjectId").val(),//专业
+			objectId: $("#subjectId").val(),//科目
+
+			// surveyName: $("#surveyName").val(),
+			// surveyState: $("#surveyState").val(),
+			// gradeId: $("#gradeId").val(),
+			// year: $("#year").val(),
 		};
 	}
     
