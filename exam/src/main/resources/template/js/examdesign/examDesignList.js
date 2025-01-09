@@ -187,11 +187,11 @@ layui.config({
 	        	fzWj(data);
 	        }  else if (layEvent === 'showFb') { //发布
 	        	showFb(data, obj);
-	        } else if (layEvent === 'endSurvey') { //结束调查
+	        } else if (layEvent === 'endSurvey') { //结束
 	        	endSurvey(data, obj);
 	        } else if (layEvent === 'details') { //详情
 	        	details(data);
-	        } else if (layEvent === 'markExam') { //阅卷人
+	        } else if (layEvent === 'markExam') { //编辑
 	        	markExam(data);
 	        }
 			// else if (layEvent === 'fxWj') { //分析报告
@@ -259,17 +259,17 @@ layui.config({
 			}});
 	}
 	
-	//分析报告
-	function fxWj(data) {
-		rowId = data.id;
-		_openNewWindows({
-			url: "../../tpl/examreport/examReport.html", 
-			title: "分析报告",
-			pageId: "examReport",
-			maxmin: true,
-			callBack: function (refreshCode) {
-			}});
-	}
+	// //分析报告
+	// function fxWj(data) {
+	// 	rowId = data.id;
+	// 	_openNewWindows({
+	// 		url: "../../tpl/examreport/examReport.html",
+	// 		title: "分析报告",
+	// 		pageId: "examReport",
+	// 		maxmin: true,
+	// 		callBack: function (refreshCode) {
+	// 		}});
+	// }
 
 	//发布
 	function showFb(data, obj) {
@@ -295,7 +295,7 @@ layui.config({
 		var msg = obj ? '确认结束试卷【' + obj.data.surveyName + '】的考试吗？' : '确认结束选中数据吗？';
 		layer.confirm(msg, { icon: 3, title: '结束考试' }, function (index) {
 			layer.close(index);
-            AjaxPostUtil.request({url:schoolBasePath + "exam030", params: {surveyId: data.id}, type: 'json', callback: function (json) {
+            AjaxPostUtil.request({url:schoolBasePath + "updateExamMationEndById", params: {id: data.id}, type: 'json', callback: function (json) {
 				winui.window.msg(systemLanguage["com.skyeye.successfulOperation"][languageType], {icon: 1, time: 2000});
 				loadTable();
     		}});

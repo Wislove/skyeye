@@ -95,35 +95,6 @@ layui.config({
 			}
 		});
 
-		//初始化年级
-		// function initGrade(){
-		// 	showGrid({
-		// 	 	id: "gradeId",
-		// 	 	url: schoolBasePath + "grademation006",
-		// 	 	params: {schoolId: $("#schoolId").val()},
-		// 	 	pagination: false,
-		// 	 	template: getFileContent('tpl/template/select-option.tpl'),
-		// 	 	ajaxSendLoadBefore: function(hdb) {},
-		// 	 	ajaxSendAfter:function (json) {
-		// 	 		form.render('select');
-		// 	 	}
-		//     });
-		// }
-		//年级监听事件
-		// form.on('select(gradeId)', function(data) {
-		// 	if(isNull(data.value) || data.value === '请选择'){
-		// 		$("#subjectId").html("");
-		// 		$("#sessionYear").html("");
-		//  		$("#classList").html("");
-		// 		form.render('select');
-		// 	} else {
-		// 		//加载科目
-		// 		initSubject();
-		// 		//加载班级
-		// 		loadThisGradeNowYear();
-		// 	}
-		// });
-
 		//初始化学期
 		function initSemester(){
 			showGrid({
@@ -171,25 +142,6 @@ layui.config({
 				}
 			});
 		}
-		//加载当前选中的年级是哪一届的以及这一届的班级信息
-		// function loadThisGradeNowYear(){
-		// 	showGrid({
-		// 	 	id: "classList",
-		// 	 	url: schoolBasePath + "grademation009",
-		// 	 	params: {gradeId: $("#gradeId").val()},
-		// 	 	pagination: false,
-		// 	 	template: getFileContent('tpl/template/checkbox-property.tpl'),
-		// 	 	ajaxSendLoadBefore: function(hdb) {},
-		// 	 	ajaxSendAfter:function(data) {
-		// 	 		$("#sessionYear").html(data.bean.year + '届学生');
-		// 	 		form.render('checkbox');
-		// 	 	},
-		// 	 	ajaxSendErrorAfter: function (json) {
-		// 	 		$("#sessionYear").html("");
-		// 	 		$("#classList").html("");
-		// 	 	}
-		//     });
-		// }
 
 		// 审批人选择
 		$("body").on("click", "#approverSelPeople", function (e) {

@@ -711,7 +711,11 @@
 						setCookie('userToken', userToken);
 					}
 					bgAnDate = getFormatDate();
-					AjaxPostUtil.request({url:schoolBasePath + "exam028", params: {surveyId: getUrlParam("rowId")}, type: 'json', callback: function (json) {
+
+                    // 获取其他页面跳转过来的参数
+                    // var a = GetUrlParam('surveyId');
+                    // console.log(111,a);
+					AjaxPostUtil.request({url:schoolBasePath + "takeExam", params: {id: getUrlParam("surveyId")}, type: 'json', callback: function (json) {
 						showGrid({
 							id: "wrap",
 							url: schoolBasePath + "exam024",

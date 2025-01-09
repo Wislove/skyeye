@@ -18,7 +18,7 @@ layui.config({
 		    form = layui.form;
 		    
 		//获取试卷详情信息以及阅卷人信息
-		AjaxPostUtil.request({url:schoolBasePath + "queryDirectoryById", params: {surveyId: parent.rowId}, type: 'json', callback: function (json) {
+		AjaxPostUtil.request({url:schoolBasePath + "queryDirectoryById", params: {id: parent.rowId}, type: 'json', callback: function (json) {
 			$("#showForm").html(getDataUseHandlebars($("#assignmentTemplate").html(), json));
 			//回显阅卷人
 			var str = "";
@@ -42,7 +42,7 @@ layui.config({
 						surveyId: parent.rowId,
 						arrayStr: JSON.stringify(array)
 					};
-					AjaxPostUtil.request({url:schoolBasePath + "exam037", params: params, type: 'json', callback: function (json) {
+					AjaxPostUtil.request({url:schoolBasePath + "editMarkPeopleMationDetailById", params: params, type: 'json', callback: function (json) {
 						parent.layer.close(index);
 						parent.refreshCode = '0';
 					}});
@@ -52,20 +52,45 @@ layui.config({
    		}});
    		
    		//阅卷人选择
- 	    $("body").on("click", "#markPeopleNameSel", function (e) {
- 	    	_openNewWindows({
- 				url: "../../tpl/schoolteacher/teacherChoose.html", 
- 				title: "选择阅卷人",
- 				pageId: "teacherChoose",
- 				area: ['90vw', '90vh'],
- 				callBack: function (refreshCode) {
-					var str = "";
-					$.each(chooseTeacherList, function(i, row){
-						str += row.userName + '(' + row.userSex + ')，';
-					});
-					$("#markPeople").val(str);
- 				}});
- 	    });
+ 	    // $("body").on("click", "#markPeopleNameSel", function (e) {
+ 	    // 	_openNewWindows({
+ 		// 		url: "../../tpl/schoolteacher/teacherChoose.html",
+ 		// 		title: "选择阅卷人",
+ 		// 		pageId: "teacherChoose",
+ 		// 		area: ['90vw', '90vh'],
+ 		// 		callBack: function (refreshCode) {
+			// 		var str = "";
+			// 		$.each(chooseTeacherList, function(i, row){
+			// 			str += row.userName + '(' + row.userSex + ')，';
+			// 		});
+			// 		$("#markPeople").val(str);
+ 		// 		}});
+ 	    // });
+		// 审批人选择
+		$("body").on("click", "#approverSelPeople", function (e) {
+			systemCommonUtil.userReturnList = [];
+			systemCommonUtil.chooseOrNotMy = "1";
+			systemCommonUtil.chooseOrNotEmail = "2";
+			systemCommonUtil.checkType = "1";
+			systemCommonUtil.openSysUserStaffChoosePage(function (userReturnList) {
+				var approverNames = userReturnList.map(function(item) {
+					return item.name;
+				});
+				$("#approver").val(approverNames.join(", "));
+
+				// 更新全局变量
+				readerList = userReturnList.map(function(item) {
+					return item.id;
+				}).join(",");
+
+				if (isNull(readerList)) {
+					winui.window.msg('请选择审批人', {icon: 2, time: 2000});
+					return false;
+				}
+			});
+		});
+
+
    		
 	});
 	    
