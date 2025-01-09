@@ -113,7 +113,7 @@ layui.config({
 	        id: 'messageTable',
 	        elem: '#messageTable',
 	        method: 'post',
-			url: schoolBasePath + 'queryFryAllExamList',
+			url: schoolBasePath + 'queryMyExamList',
 	        // url: schoolBasePath + 'myschooltask002',
 	        where: getTableParams(),
 	        even: false,

@@ -155,7 +155,6 @@ layui.config({
 		        { field: 'schoolName', width: 200, title: '所属学校'},
 	            { field: 'gradeName', width: 80, align: 'center', title: '所属年级'},
 	            { field: 'subjectName', width: 80, align: 'center', title: '科目'},
-	            { field: 'sessionYear', width: 80, align: 'center', title: '所属届'},
 		        { field: 'userName', width: 120, title: systemLanguage["com.skyeye.createName"][languageType], align: 'left'},
 		        { field: 'createTime', title: systemLanguage["com.skyeye.createTime"][languageType], align: 'center', width: 140 },
 		        { title: systemLanguage["com.skyeye.operation"][languageType], fixed: 'right', align: 'center', width: 300, toolbar: '#tableBar'}
