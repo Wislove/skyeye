@@ -19,9 +19,6 @@ layui.config({
 			form.render("select");
 			// 加载院系
 			initFacultyId();
-			// 加载学期
-			initSemester();
-
 			loadData();
 		});
 	    //学校监听事件
@@ -303,7 +300,7 @@ layui.config({
 					readerList: readerList
         			// propertyIds: propertyIds
 	        	};
-	        	AjaxPostUtil.request({url:schoolBasePath + "writeExamDirectory", params: params, type: 'json', callback: function (json) {
+	        	AjaxPostUtil.request({url:schoolBasePath + "createExamDirectory", params: params, type: 'json', callback: function (json) {
 					parent.layer.close(index);
 					parent.refreshCode = '0';
 	 	   		}});
