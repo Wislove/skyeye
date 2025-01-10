@@ -156,10 +156,10 @@ layui.config({
 		        { field: 'schoolMation.name', width: 200, title: '所属学校', templet: function (d) {
 		            return d.classesMation ? d.classesMation?.schoolMation?.name : '';
 		        }},
-	            { field: 'facultyMation.name', width: 80, align: 'center', title: '所属院系', templet: function (d) {
+	            { field: 'facultyMation.name', width: 200, align: 'center', title: '所属院系', templet: function (d) {
 	                return d.classesMation ? d.classesMation?.facultyMation?.name : '';
 	            }},
-				{ field: 'majorMation.name', width: 80, align: 'center', title: '所属专业', templet: function (d) {
+				{ field: 'majorMation.name', width: 200, align: 'center', title: '所属专业', templet: function (d) {
 					return d.classesMation ? d.classesMation?.majorMation?.name : '';
 				}},
 	            { field: 'subjectMation.name', width: 80, align: 'center', title: '科目', templet: function (d) {

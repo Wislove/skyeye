@@ -277,7 +277,7 @@ layui.config({
                     schoolId: $("#schoolId").val(),
                     facultyId:$("#facultyId").val(),
                     majorId:$("#majorId").val(),
-                    visibility:1,//是否显示题，1显示，
+                    visibility: 1, //是否显示题，1显示，
                     // gradeId: $("#gradeId").val(),
                     subjectId: $("#subjectId").val(),
                     type: $("input[name='type']:checked").val(),
