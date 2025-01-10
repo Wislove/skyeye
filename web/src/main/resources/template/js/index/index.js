@@ -1,5 +1,4 @@
-﻿
-var winBottomMenuIcon;//是否只展示图标，1是  0否
+﻿var winBottomMenuIcon;//是否只展示图标，1是  0否
 
 var friendList = null;//好友列表
 var friendChooseList = "";//已选中群组成员
@@ -51,6 +50,7 @@ layui.config({
         }
     });
 
+	var currentUserMation = {};
     $(function () {
     	var loadIndex = 20;
     	winuiLoad.animate(loadIndex);
@@ -62,7 +62,7 @@ layui.config({
     			clearInterval(loadInterval);
     		}
     	}, 10);
-    	var currentUserMation = {};
+    	
 		// 获取当前登录员工信息
 		systemCommonUtil.getSysCurrentLoginUserMation(function (data) {
 			currentUserMation = data.bean;
@@ -598,12 +598,46 @@ layui.config({
 		//监听聊天窗口的切换
 		layim.on('chatChange', function(res) {
 			var type = res.data.type;
-			console.log(res.data.id)
-			if(type === 'friend') {
-				//模拟标注好友状态
-			} else if(type === 'group') {
-				//模拟系统消息
-			}
+			var id = res.data.id;  // 获取当前聊天窗口ID（用户id或者群组id）
+			// 获取历史聊天记录
+			AjaxPostUtil.request({
+				url: reqBasePath + "companytalkgroup008",
+				params: {
+					receiveId: id,
+					chatType: type,
+					page: 1,
+					limit: 20
+				},
+				type: 'json',
+				method: "POST",
+				callback: function(result) {
+					if(result.rows && result.rows.length > 0) {
+						// 转换消息格式
+						var messages = result.rows.map(function(item) {
+							return {
+								username: item.sendName,  // 发送者名称
+								id: id,          // 会话id（群聊为群id，好友聊天为好友id）
+								type: type,              // 聊天类型
+								content: item.content,   // 消息内容
+								timestamp: new Date(item.createTime).getTime(), // 时间戳
+								mine: (item.sendId === userId), // 是否是我发送的
+								avatar: (item.sendId === userId) ? currentUserMation.userPhoto : res.data.avatar,  // 头像，如果后端返回则使用后端的
+								fromid: item.sendId      // 发送者id
+							};
+						});
+						
+						// 按时间正序排列
+						messages.sort(function(a, b) {
+							return a.timestamp - b.timestamp;
+						});
+						
+						// 逐条插入消息
+						messages.forEach(function(message) {
+							layim.getMessage(message);
+						});
+					}
+				}
+			});
 		});
     }
     
