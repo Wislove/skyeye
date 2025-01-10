@@ -96,6 +96,9 @@ layui.config({
 				scrollingSpeed: 500,
 				navigationTooltips: deskTopName,
 				resize: true,
+				normalScrollElements: '.layui-layim-chat,.layui-layer-content,.layui-layim,.layui-side-scroll', // 排除这些元素的滚动影响
+				// 或者使用选择器
+				// normalScrollElements: '[class*="layui-layim"],[class*="layui-layer"]',
 				afterLoad: function(anchorLink, index){
 					var id = $("#winui-desktop").find(".desktop-item-page").eq(index - 1).attr("id");
 					$("#desktop-sel").val(id);
@@ -484,6 +487,7 @@ layui.config({
     	layim.config({
 			brief: false,// 是否简约模式（如果true则不显示主面板）
 			title: '天眼',
+			voice: false, // 禁用全局提示音
 			init: {
 				url: reqBasePath + "companychat001",
 			},//好友接口
@@ -597,6 +601,8 @@ layui.config({
 
 		//监听聊天窗口的切换
 		layim.on('chatChange', function(res) {
+			// 禁用fullpage滚动
+			$.fn.fullpage.setAllowScrolling(false);
 			var type = res.data.type;
 			var id = res.data.id;  // 获取当前聊天窗口ID（用户id或者群组id）
 			// 获取历史聊天记录
@@ -622,7 +628,8 @@ layui.config({
 								timestamp: new Date(item.createTime).getTime(), // 时间戳
 								mine: (item.sendId === userId), // 是否是我发送的
 								avatar: (item.sendId === userId) ? currentUserMation.userPhoto : res.data.avatar,  // 头像，如果后端返回则使用后端的
-								fromid: item.sendId      // 发送者id
+								fromid: item.sendId,     // 发送者id
+								voice: false             // 只在加载历史消息时禁用提示音
 							};
 						});
 						
