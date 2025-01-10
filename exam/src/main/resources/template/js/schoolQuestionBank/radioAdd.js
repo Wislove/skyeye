@@ -1,4 +1,3 @@
-
 // 知识点选择必备参数
 var schoolKnowledgeCheckType = 2;// 知识点选择类型：1.单选schoolKnowledgeMation；2.多选schoolKnowledgeMationList
 var schoolKnowledgeMationList = new Array();
@@ -58,10 +57,11 @@ layui.config({
 		// 院系监听事件
 		form.on('select(facultyId)', function(data) {
 			if(isNull(data.value) || data.value === '请选择'){
-				$("#facultyId").html("");
+				$("#majorId").html("");
+				$("#subjectId").html("");
 				form.render('select');
 			} else {
-				// 加载专业
+				facultyId = data.value;
 				initMajor();
 			}
 		});
@@ -86,10 +86,10 @@ layui.config({
 		// 专业监听事件
 		form.on('select(majorId)', function(data) {
 			if(isNull(data.value) || data.value === '请选择'){
-				$("#majorId").html("");
+				$("#subjectId").html("");
 				form.render('select');
 			} else {
-				// 加载科目
+				majorId = data.value;
 				initSubject();
 			}
 		});
@@ -179,11 +179,8 @@ layui.config({
 			} else {
 				// 加载院系
 				initFaculty();
-				// 加载专业
-				initMajor();
-				//加载科目
-				initSubject();
-		 		// 题目信息赋值
+				
+				// 题目信息赋值
 				$(".surveyQuItemBody").html($("#noDataTemplate").html());
 				// 加载上传和切换监听事件
 				pageLoadAfter();

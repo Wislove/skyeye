@@ -185,7 +185,7 @@ layui.config({
     	return {
     		limit: getLimit(),
     		page: 1,
-    		holderId: subjectId
+			subjectId: subjectId
     	};
     }
     

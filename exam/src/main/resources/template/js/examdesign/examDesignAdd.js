@@ -141,7 +141,7 @@ layui.config({
 			});
 		}
 
-		// 审批人选择
+		// 阅卷人选择
 		$("body").on("click", "#approverSelPeople", function (e) {
 			systemCommonUtil.userReturnList = [];
 			systemCommonUtil.chooseOrNotMy = "1";
@@ -296,6 +296,8 @@ layui.config({
         			semesterId: $("#semesterId").val(),
 					classId: propertyIds.slice(0, -1),  // 移除最后的逗号
         			subjectId: $("#subjectId").val(),
+					facultyId: $("#facultyId").val(),
+					majorId: $("#majorId").val(),
 					whetherDelete: 1,
         			viewAnswer: $("input[name='viewAnswer']:checked").val(),
 					surveyModel: $("input[name='surveyModel']:checked").val(),
