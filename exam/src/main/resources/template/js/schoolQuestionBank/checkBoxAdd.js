@@ -285,6 +285,7 @@ layui.config({
                     deleteRowList: JSON.stringify(deleteRowList),
                     fileUrl: fileUrl,
                     quType:2,//题目类型
+                    tag:1 ,
                     fileType: tabIndex,
                     whetherUpload: data.field.whetherUpload
                 };
@@ -302,7 +303,7 @@ layui.config({
                         isDefaultAnswer = 1
                     }
                     var s = {
-                        optionValue: encodeURI($.trim($(this).find("label.quCoOptionEdit").html())),
+                        optionName: encodeURI($.trim($(this).find("label.quCoOptionEdit").html())),
                         optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
                         isNote: $(this).find(".quItemInputCase input[name='isNote']").val(),
                         checkType: $(this).find(".quItemInputCase input[name='checkType']").val(),

@@ -218,6 +218,7 @@ layui.config({
         			majorId: $("#majorId").val(),//专业
         			subjectId: $("#subjectId").val(),
 					visibility:1,//是否显示题，1显示，
+					tag:1, // 1题库里的题，2 试卷里的题
         			type: $("input[name='type']:checked").val(),
         			schoolKnowledgeMationList: JSON.stringify(schoolKnowledgeMationList),
         			deleteRowList: JSON.stringify(deleteRowList),

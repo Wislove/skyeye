@@ -210,6 +210,7 @@ layui.config({
         			schoolKnowledgeMationList: JSON.stringify(schoolKnowledgeMationList),
         			deleteRowList: JSON.stringify(deleteRowList),
         			fileUrl: fileUrl,
+					tag:1,
         			fileType: tabIndex,
         			whetherUpload: data.field.whetherUpload,
         			isDefaultAnswer: quItemBody.find("input[class='quFillblankAnswerInput']").val()
