@@ -1,4 +1,3 @@
-
 var rowId = "";
 
 var surveyName = "";
@@ -23,11 +22,10 @@ layui.config({
 	schoolUtil.queryMyBelongSchoolList(function (json) {
 		$("#schoolId").html(getDataUseHandlebars(getFileContent('tpl/template/select-option-must.tpl'), json));
 		form.render("select");
-		// 加载年级
-		// initGradeId();
+		// 加载院系
+		initFacultyId();
+		// 加载列表
 		initTable();
-
-		initFaculty();
 	});
 
 	// 学校监听事件
@@ -37,28 +35,12 @@ layui.config({
 			form.render('select');
 		} else {
 			// 加载院系
-			initFaculty();
+			initFacultyId();
 		}
 	});
 	
-	//所属年级
-    // function initGradeId(){
-	//     showGrid({
-    // 	 	id: "gradeId",
-    // 	 	url: schoolBasePath + "grademation006",
-    // 	 	params: {schoolId: $("#schoolId").val()},
-    // 	 	pagination: false,
-    // 	 	template: getFileContent('tpl/template/select-option.tpl'),
-    // 	 	ajaxSendLoadBefore: function(hdb) {
-    // 	 	},
-    // 	 	ajaxSendAfter:function (json) {
-    // 	 		form.render('select');
-    // 	 	}
-    //     });
-    // }
-
 	//所属院系
-	function initFaculty(){
+	function initFacultyId(){
 	    showGrid({
 		 	id: "facultyId",
 		 	url: schoolBasePath + "queryFacultyListBySchoolId",
@@ -77,9 +59,11 @@ layui.config({
 	// 院系监听事件
 	form.on('select(facultyId)', function(data) {
 		if(isNull(data.value) || data.value === '请选择'){
-			$("#facultyId").html("");
+			$("#majorId").html("");  // 清空专业
+			$("#subjectId").html("");  // 清空科目
 			form.render('select');
 		} else {
+			facultyId = data.value;  // 设置当前选中的院系ID
 			// 加载专业
 			initMajor();
 		}
@@ -105,9 +89,11 @@ layui.config({
 	// 专业监听事件
 	form.on('select(majorId)', function(data) {
 		if(isNull(data.value) || data.value === '请选择'){
+			$("#subjectId").html("");
 			$("#majorId").html("");
 			form.render('select');
 		} else {
+			majorId = data.value;  // 设置当前选中的专业ID
 			// 加载科目
 			initSubject();
 		}
@@ -134,7 +120,7 @@ layui.config({
 		    id: 'messageTable',
 		    elem: '#messageTable',
 		    method: 'post',
-			url: schoolBasePath + 'queryMyExamList',
+			url: schoolBasePath + 'queryMySurvey',
 		    where: getTableParams(),
 		    even: false,
 		    page: true,
@@ -186,7 +172,7 @@ layui.config({
 	        	fzWj(data);
 	        } else if (layEvent === 'showFb') { //发布
 	        	showFb(data, obj);
-	        } else if (layEvent === 'endSurvey') { //结束调查
+	        } else if (layEvent === 'endSurvey') { //结束
 	        	endSurvey(data, obj);
 	        } else if (layEvent === 'details') { //详情
 	        	details(data);
@@ -356,9 +342,10 @@ layui.config({
 		return {
 			holderKey: $("#schoolId").val(),//学校
 			holderId: $("#facultyId").val(),//院系
-			objectKey:$("#subjectId").val(),//专业
+			objectKey:$("#majorId").val(),//专业
 			objectId: $("#subjectId").val(),//科目
-
+			keyword: $("#surveyName").val(),
+			state: $("#surveyState").val()
 			// surveyName: $("#surveyName").val(),
 			// surveyState: $("#surveyState").val(),
 			// gradeId: $("#gradeId").val(),

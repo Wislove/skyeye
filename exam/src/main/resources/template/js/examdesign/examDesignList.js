@@ -22,7 +22,6 @@ layui.config({
 		// 加载院系
 		initFacultyId();
 		// 加载年级
-		// initGradeId();
 		initTable();
 	});
 
@@ -87,33 +86,7 @@ layui.config({
 			initSubject();
 		}
 	});
-	//所属年级
-    // function initGradeId(){
-	//     showGrid({
-    // 	 	id: "gradeId",
-    // 	 	url: schoolBasePath + "grademation006",
-    // 	 	params: {schoolId: $("#schoolId").val()},
-    // 	 	pagination: false,
-    // 	 	template: getFileContent('tpl/template/select-option.tpl'),
-    // 	 	ajaxSendLoadBefore: function(hdb) {
-    // 	 	},
-    // 	 	ajaxSendAfter:function (json) {
-    // 	 		form.render('select');
-    // 	 	}
-    //     });
-    // }
-    //
-    // form.on('select(gradeId)', function(data) {
-	// 	if(isNull(data.value) || data.value === '请选择'){
-	// 		$("#subjectId").html("");
-	// 		form.render('select');
-	// 	} else {
-	// 		//加载科目
-	// 		initSubject();
-	// 	}
-	// });
 
-	
 	//初始化科目
 	function initSubject(){
 		showGrid({
@@ -318,7 +291,7 @@ layui.config({
 	function markExam(data) {
 		rowId = data.id;
 		_openNewWindows({
-			url: "../../tpl/markExam/markExamPeople.html", 
+			// url: "../../tpl/markExam/markExamPeople.html", 可以看这个回显阅卷人代码写详情
 			url: "../../tpl/examdesign/examDesignAdd.html",
 			title: "编辑",
 			pageId: "markExamPeople",
@@ -362,7 +335,7 @@ layui.config({
 			objectKey: $("#majorId").val(),
 			objectId: $("#subjectId").val(),
 			keyword: $("#surveyName").val(),
-			state: $("#surveyState  ").val()
+			state: $("#surveyState").val()
 			// gradeId: $("#gradeId").val(),
 			// schoolId: $("#schoolId").val(),
 			// subjectId: $("#subjectId").val()
