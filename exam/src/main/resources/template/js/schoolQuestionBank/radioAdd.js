@@ -210,7 +210,7 @@ layui.config({
     				randOrder: quItemBody.find("input[name='randOrder']").val(),
     				cellCount: quItemBody.find("input[name='cellCount']").val(),
     				contactsAttr: quItemBody.find("input[name='contactsAttr']").val(),
-    				// contactsField: quItemBody.find("input[name='contactsField']").val(),还不知道为什么报错未定义,先注释，非必填
+    				contactsField: quItemBody.find("input[name='contactsField']").val(),
     				quTitle: encodeURI(quItemBody.find(".quCoTitleEdit").html()),
     				fraction: $("#fraction").val(),
     				schoolId: $("#schoolId").val(),
@@ -247,7 +247,7 @@ layui.config({
 						// visibility:,//是否显示
 						// optionName:,//选项内容
 
-						optionValue: encodeURI($.trim($(this).find("label.quCoOptionEdit").html())),
+						optionName: encodeURI($.trim($(this).find("label.quCoOptionEdit").html())),
 						optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
 						isNote: $(this).find(".quItemInputCase input[name='isNote']").val(),
 						checkType: $(this).find(".quItemInputCase input[name='checkType']").val(),

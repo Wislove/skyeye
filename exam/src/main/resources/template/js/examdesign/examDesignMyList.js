@@ -152,10 +152,21 @@ layui.config({
 		        		return d.surveyState;
 		        	}
 		        }},
-		        { field: 'schoolName', width: 200, title: '所属学校'},
-	            { field: 'gradeName', width: 80, align: 'center', title: '所属年级'},
-	            { field: 'subjectName', width: 80, align: 'center', title: '科目'},
-		        { field: 'userName', width: 120, title: systemLanguage["com.skyeye.createName"][languageType], align: 'left'},
+				{ field: 'schoolMation.name', width: 200, title: '所属学校', templet: function (d) {
+						return d.classesMation ? d.classesMation?.schoolMation?.name : '';
+					}},
+				{ field: 'facultyMation.name', width: 200, align: 'center', title: '所属院系', templet: function (d) {
+						return d.classesMation ? d.classesMation?.facultyMation?.name : '';
+					}},
+				{ field: 'majorMation.name', width: 200, align: 'center', title: '所属专业', templet: function (d) {
+						return d.classesMation ? d.classesMation?.majorMation?.name : '';
+					}},
+				{ field: 'subjectMation.name', width: 80, align: 'center', title: '科目', templet: function (d) {
+						return d.subjectMation ? d.subjectMation?.name : '';
+					}},
+				{ field: 'createName', width: 120, title: systemLanguage["com.skyeye.createName"][languageType], align: 'left', templet: function (d) {
+						return d.createName || '';
+					}},
 		        { field: 'createTime', title: systemLanguage["com.skyeye.createTime"][languageType], align: 'center', width: 140 },
 		        { title: systemLanguage["com.skyeye.operation"][languageType], fixed: 'right', align: 'center', width: 300, toolbar: '#tableBar'}
 		    ]],
