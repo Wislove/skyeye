@@ -14,7 +14,7 @@
 	            	<label class="layui-form-label">学校</label>
 	                <div class="layui-input-inline">
 	                    <select id="schoolId" lay-filter="schoolId" lay-search="">
-			                    
+
 	                    </select>
 	                </div>
 	                <label class="layui-form-label">院系</label>
@@ -66,7 +66,8 @@
 			{{# if(auth('1586066285170')){ }}
             	<a class="layui-btn layui-btn-xs" lay-event="fzWj">复制</a>
 			{{# } }}
-			{{# if(d.state == 0){ }}
+			<!--设计-->
+			{{# if(d.surveyState == 0){ }}
 				{{# if(auth('1586066414883')){ }}
 					<a class="layui-btn layui-btn-xs" lay-event="edit">设计</a>
 				{{# } }}
@@ -76,20 +77,22 @@
 				{{# if(auth('1586066262581')){ }}
           			<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><language showName="com.skyeye.deleteBtn"></language></a>
 				{{# } }}
-			{{# } else if(d.state == 1){ }}
+			<!--执行中-->
+			{{# } else if(d.surveyState == 1){ }}
 				{{# if(auth('1586066307061')){ }}
 					<a class="layui-btn layui-btn-xs" lay-event="endSurvey">结束考试</a>
 				{{# } }}
-				{{# if(auth('1586066273120')){ }}
-					<a class="layui-btn layui-btn-xs" lay-event="fxWj">试题分析</a>
-				{{# } }}
-			{{# } else if(d.state == 2){ }}
-				{{# if(auth('1586066273120')){ }}
-					<a class="layui-btn layui-btn-xs" lay-event="fxWj">试题分析</a>
-				{{# } }}
+<!--				{{# if(auth('1586066273120')){ }}-->
+<!--					<a class="layui-btn layui-btn-xs" lay-event="fxWj">试题分析</a>-->
+<!--				{{# } }}-->
+			<!--结束-->
+			{{# } else if(d.surveyState == 2){ }}
+<!--				{{# if(auth('1586066273120')){ }}-->
+<!--					<a class="layui-btn layui-btn-xs" lay-event="fxWj">试题分析</a>-->
+<!--				{{# } }}-->
 			{{# } }}
 			{{# if(auth('1588645479233')){ }}
-				<a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="markExam">阅卷人</a>
+				<a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="markExam">编辑</a>
 			{{# } }}
         </script>
     </div>

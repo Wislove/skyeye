@@ -190,7 +190,7 @@ layui.config({
 	        	endSurvey(data, obj);
 	        } else if (layEvent === 'details') { //详情
 	        	details(data);
-	        } else if (layEvent === 'markExam') { //阅卷人
+	        } else if (layEvent === 'markExam') { //编辑
 	        	markExam(data);
 	        }
 			// else if (layEvent === 'fxWj') { //分析报告
@@ -207,32 +207,41 @@ layui.config({
 	        return false;
 		});
     }
-	
+
 	//删除
 	function del(data, obj) {
 		var msg = obj ? '确认删除试卷【' + obj.data.surveyName + '】吗？' : '确认删除选中数据吗？';
-		layer.confirm(msg, { icon: 3, title: '删除试卷' }, function (index) {
+		layer.confirm(msg, {icon: 3, title: '删除试卷'}, function (index) {
 			layer.close(index);
-            
-            AjaxPostUtil.request({url: schoolBasePath + "exam025", params: {rowId: data.id}, type: 'json', callback: function(json) {
-				winui.window.msg(systemLanguage["com.skyeye.deleteOperationSuccessMsg"][languageType], {icon: 1, time: 2000});
-				loadTable();
-    		}});
+
+			AjaxPostUtil.request({
+				url: schoolBasePath + "changeWhetherDeleteById",
+				params: {id: data.id},
+				type: 'json',
+				callback: function (json) {
+					winui.window.msg(systemLanguage["com.skyeye.deleteOperationSuccessMsg"][languageType], {
+						icon: 1,
+						time: 2000
+					});
+					loadTable();
+				}
+			});
 		});
 	}
-	
+
 	//设计
 	function edit(data) {
 		rowId = data.id;
 		_openNewWindows({
-			url: "../../tpl/examdesign/examDesign.html", 
+			url: "../../tpl/examdesign/examDesign.html",
 			title: "设计试卷",
 			pageId: "examDesign",
 			area: ['100vw', '100vh'],
 			callBack: function (refreshCode) {
 				winui.window.msg(systemLanguage["com.skyeye.successfulOperation"][languageType], {icon: 1, time: 2000});
 				loadTable();
-			}});
+			}
+		});
 	}
 	
 	//复制试卷
@@ -263,23 +272,30 @@ layui.config({
 	// }
 	
 	//发布
-	function showFb(data, obj){
+	function showFb(data, obj) {
+		console.log(data, obj)
+		console.log(222)
 		var msg = obj ? '确认发布试卷【' + obj.data.surveyName + '】吗？' : '确认发布选中数据吗？';
-		layer.confirm(msg, { icon: 3, title: '试卷发布' }, function (index) {
+		layer.confirm(msg, {icon: 3, title: '试卷发布'}, function (index) {
 			layer.close(index);
-            AjaxPostUtil.request({url:schoolBasePath + "setUpExamDirectory", params: {rowId: data.id}, type: 'json', callback: function (json) {
-				winui.window.msg("发布成功", {icon: 1, time: 2000});
-				loadTable();
-    		}});
+			AjaxPostUtil.request({
+				url: schoolBasePath + "setUpExamDirectory",
+				params: {id: data.id},
+				type: 'json',
+				callback: function (json) {
+					winui.window.msg("发布成功", {icon: 1, time: 2000});
+					loadTable();
+				}
+			});
 		});
 	}
 	
-	//结束调查
+	//结束
 	function endSurvey(data, obj){
 		var msg = obj ? '确认结束试卷【' + obj.data.surveyName + '】的考试吗？' : '确认结束选中数据吗？';
 		layer.confirm(msg, { icon: 3, title: '结束考试' }, function (index) {
 			layer.close(index);
-            AjaxPostUtil.request({url:schoolBasePath + "updateExamMationEndById", params: {surveyId: data.id}, type: 'json', callback: function (json) {
+            AjaxPostUtil.request({url:schoolBasePath + "updateExamMationEndById", params: {id: data.id}, type: 'json', callback: function (json) {
 				winui.window.msg(systemLanguage["com.skyeye.successfulOperation"][languageType], {icon: 1, time: 2000});
 				loadTable();
     		}});
