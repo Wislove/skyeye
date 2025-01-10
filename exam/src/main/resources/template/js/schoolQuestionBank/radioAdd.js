@@ -113,7 +113,7 @@ layui.config({
 		function loadData(){
 			// 如果问题id不为空，则说明是编辑，加载编辑信息
 			if (!isNull(parent.rowId)){
-				AjaxPostUtil.request({url:schoolBasePath + "schoolquestionbank004", params: {rowId: parent.rowId}, type: 'json', callback: function (json) {
+				AjaxPostUtil.request({url:schoolBasePath + "selectQuestionBySubjecId", params: {id: parent.rowId}, type: 'json', callback: function (json) {
 					$("#schoolId").val(json.bean.schoolId);
 					showGrid({
 						id: "facultyId",
@@ -123,7 +123,7 @@ layui.config({
 						template: getFileContent('tpl/template/select-option.tpl'),
 						ajaxSendLoadBefore: function(hdb) {},
 						ajaxSendAfter:function(data) {
-							$("#majorId").val(json.bean.majorId);
+							$("#facultyId").val(json.bean.facultyId);
 							showGrid({
 								id: "majorId",
 								url: schoolBasePath + "queryMajorListByFacultyId",//专业
@@ -132,7 +132,7 @@ layui.config({
 								template: getFileContent('tpl/template/select-option.tpl'),
 								ajaxSendLoadBefore: function (hdb) {},
 								ajaxSendAfter: function (data) {
-									$("#gradeId").val(json.bean.gradeId);
+									$("#majorId").val(json.bean.majorId);
 									showGrid({
 										id: "subjectId",
 										url: schoolBasePath + "querySubjectListByMajorId",//科目
@@ -150,7 +150,7 @@ layui.config({
 						}
 					});
 					$("input:radio[name=type][value=" + json.bean.type + "]").attr("checked", true);
-					$("#fraction").val(json.bean.fraction);
+					$("#fraction").val(json.bean.fraction);//分数
 					// 知识点赋值
 					schoolKnowledgeMationList = [].concat(json.bean.knowledgeList);
 					var str = "";
@@ -181,6 +181,8 @@ layui.config({
 				initFaculty();
 				// 加载专业
 				initMajor();
+				//加载科目
+				initSubject();
 		 		// 题目信息赋值
 				$(".surveyQuItemBody").html($("#noDataTemplate").html());
 				// 加载上传和切换监听事件

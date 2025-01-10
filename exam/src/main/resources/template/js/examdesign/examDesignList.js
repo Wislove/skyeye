@@ -318,7 +318,7 @@ layui.config({
 	function markExam(data) {
 		rowId = data.id;
 		_openNewWindows({
-			url: "../../tpl/markExam/markExamPeople.html", 
+			// url: "../../tpl/markExam/markExamPeople.html", 可以看这个回显阅卷人代码写详情
 			url: "../../tpl/examdesign/examDesignAdd.html",
 			title: "编辑",
 			pageId: "markExamPeople",
