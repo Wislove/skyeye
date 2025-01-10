@@ -306,23 +306,26 @@ layui.config({
 	function details(data) {
 		rowId = data.id;
 		_openNewWindows({
-			url: "../../tpl/examDetail/examPCDetail.html", 
+			url: "../../tpl/examDetail/examPCDetail.html",
 			title: "试卷信息",
 			pageId: "examPCDetail",
 			area: ['100vw', '100vh'],
 			callBack: function (refreshCode) {
 			}});
 	}
-	
-	//阅卷人
+
+	//编辑
 	function markExam(data) {
 		rowId = data.id;
 		_openNewWindows({
 			url: "../../tpl/markExam/markExamPeople.html", 
-			title: "阅卷人",
+			url: "../../tpl/examdesign/examDesignAdd.html",
+			title: "编辑",
 			pageId: "markExamPeople",
 			area: ['90vw', '90vh'],
 			callBack: function (refreshCode) {
+				winui.window.msg(systemLanguage["com.skyeye.successfulOperation"][languageType], {icon: 1, time: 2000});
+				loadTable();
 			}});
 	}
 	
