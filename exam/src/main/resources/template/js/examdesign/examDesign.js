@@ -632,6 +632,11 @@ layui.config({
                             isDefaultAnswer = 1
                         }
                         var s = {
+                            hv: quItemBody.find("input[name='hv']").val(),
+                            tag:2, // 1题库里的题，2 试卷里的题
+                            fileType: tabIndex,//试题类型，0.默认没有，1.视频，2.音频，3.图片
+                            whetherUpload: data.field.whetherUpload,//是否允许拍照/上传图片选中，1.是，2.否
+
                             optionValue: encodeURI($(this).find("label.quCoOptionEdit").html()),
                             optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
                             isNote: $(this).find(".quItemInputCase input[name='isNote']").val(),
@@ -652,7 +657,7 @@ layui.config({
                 data.logic = JSON.stringify(list);
 
                 AjaxPostUtil.request({
-                    url: schoolBasePath + "exam010", params: data, type: 'json', callback: function (json) {
+                    url: schoolBasePath + "writeQuestion", params: data, type: 'json', callback: function (json) {
                         var quId = json.bean.quId;
                         quItemBody.find("input[name='saveTag']").val(1);
                         quItemBody.find(".quCoTitle input[name='quTitleSaveTag']").val(1);
