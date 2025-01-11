@@ -17,8 +17,6 @@ layui.config({
 		schoolUtil.queryMyBelongSchoolList(function (json) {
 			$("#schoolId").html(getDataUseHandlebars(getFileContent('tpl/template/select-option-must.tpl'), json));
 			form.render("select");
-			// 加载院系
-			initFacultyId();
 			loadData();
 		});
 	    //学校监听事件
@@ -28,14 +26,13 @@ layui.config({
 				form.render('select');
 			} else {
 				// 加载院系
-				initFacultyId();
-				//加载学期
-				initSemester();
+				initFaculty();
+				initSemester();//初始化学期
 			}
 		});
 
 		// 所属院系
-		function initFacultyId(){
+		function initFaculty(){
 			showGrid({
 				id: "facultyId",
 				url: schoolBasePath + "queryFacultyListBySchoolId",
@@ -67,7 +64,7 @@ layui.config({
 			showGrid({
 				id: "majorId",
 				url: schoolBasePath + "queryMajorListByFacultyId",
-				params: {facultyId: facultyId},
+				params: {facultyId: $("#facultyId").val()},
 				pagination: false,
 				template: getFileContent('tpl/template/select-option.tpl'),
 				method: 'GET',
@@ -90,6 +87,22 @@ layui.config({
 			}
 		});
 
+		//初始化科目
+		function initSubject(){
+			showGrid({
+				id: "subjectId",
+				url: schoolBasePath + "querySubjectListByMajorId",
+				params: {majorId: $("#majorId").val()},  // 修正参数名
+				pagination: false,
+				template: getFileContent('tpl/template/select-option.tpl'),
+				method: 'GET',
+				ajaxSendLoadBefore: function(hdb) {},
+				ajaxSendAfter:function (json) {
+					form.render('select');
+				}
+			});
+		}
+
 		//初始化学期
 		function initSemester(){
 			showGrid({
@@ -97,22 +110,6 @@ layui.config({
 			 	url: schoolBasePath + "queryAllSemesterList",
 			 	params: {schoolId: $("#schoolId").val()},
 			 	pagination: false,
-			 	template: getFileContent('tpl/template/select-option.tpl'),
-				method: 'GET',
-			 	ajaxSendLoadBefore: function(hdb) {},
-			 	ajaxSendAfter:function (json) {
-			 		form.render('select');
-			 	}
-		    });
-		}
-
-		//初始化科目
-		function initSubject(){
-			showGrid({
-			 	id: "subjectId",
-			 	url: schoolBasePath + "querySubjectListByMajorId",
-				params: {majorId: $("#majorId").val()},  // 修正参数名
-				pagination: false,
 			 	template: getFileContent('tpl/template/select-option.tpl'),
 				method: 'GET',
 			 	ajaxSendLoadBefore: function(hdb) {},
@@ -149,7 +146,7 @@ layui.config({
 					return item.name;
 				});
 				$("#approver").val(approverNames.join(", "));
-				
+
 				// 更新全局变量
 				readerList = userReturnList.map(function(item) {
 					return item.id;
@@ -162,110 +159,86 @@ layui.config({
 			});
 		});
 
-		function loadData(){
-			// 如果问题id不为空，则说明是编辑，加载编辑信息
-			if (!isNull(parent.rowId)){
-				console.log(33,parent.rowId)
-				AjaxPostUtil.request({url:schoolBasePath + "queryDirectoryById", params: {id: parent.rowId}, type: 'json', callback: function (json) {
-						$("#surveyName").val(json.bean.surveyName);
+		function loadData() {
+			// 如果试卷id不为空，则说明是编辑，加载编辑信息
+			if (!isNull(parent.rowId)) {
+				console.log("编辑模式，有parent.rowId");
+				AjaxPostUtil.request({
+					url: schoolBasePath + "queryDirectoryById",
+					params: {id: parent.rowId},
+					type: 'json',
+					callback: function (json) {
+						console.log("获取到的试卷数据:", json);
 						$("#schoolId").val(json.bean.schoolId);
-						$("#approverSelPeople").val(json.bean.classesMation.facultyMation.name);
-						// $("#majorId").val(json.bean.classesMation.majorMation.name);还是不行
-						// $("#subjectId").val(json.bean.subjectMation.name);
-						// $("#classList").val(json.bean.classesMation.name);
+						$("#surveyName").val(json.bean.surveyName);
+						$("#semesterId").val(json.bean.semesterId);//学期
+						//回显阅卷人
+						var str = "";
+						chooseTeacherList = [].concat(json.rows);
+						$.each(json.rows, function(i, row){
+							str += row.userName + '(' + row.userSex + ')，';
+						});
+						$("#approver").val(str);
+						// 设置阅卷人信息
+						// if(json.bean.readerList){
+						// 	readerList = json.bean.readerList;
+						// 	$("#approver").val(json.bean.readerNames);
+						// }
+
+						// 设置单选按钮状态
+						$("input[name='viewAnswer'][value='" + json.bean.viewAnswer + "']").prop("checked", true);
+						$("input[name='surveyModel'][value='" + json.bean.surveyModel + "']").prop("checked", true);
 						showGrid({
 							id: "facultyId",
 							url: schoolBasePath + "queryFacultyListBySchoolId",//院系
 							params: {schoolId: $("#schoolId").val()},
-							method: 'GET',
+							method: "GET",
 							pagination: false,
 							template: getFileContent('tpl/template/select-option.tpl'),
-							ajaxSendLoadBefore: function(hdb) {},
-							ajaxSendAfter:function(data) {
-								$("#facultyId").val(json.bean.classesMation.facultyMation.name);
+							ajaxSendLoadBefore: function (hdb) {
+							},
+							ajaxSendAfter: function (data) {
+								$("#facultyId").val(json.bean.facultyId);
 								showGrid({
 									id: "majorId",
 									url: schoolBasePath + "queryMajorListByFacultyId",//专业
 									params: {facultyId: $("#facultyId").val()},
-									method: 'GET',
+									method: "GET",
 									pagination: false,
 									template: getFileContent('tpl/template/select-option.tpl'),
-									ajaxSendLoadBefore: function (hdb) {},
+									ajaxSendLoadBefore: function (hdb) {
+									},
 									ajaxSendAfter: function (data) {
-										$("#majorId").val(json.bean.classesMation.majorMation.name);
-										console.log("majorId",json.bean.classesMation.majorMation.name)
+										$("#majorId").val(json.bean.majorId);
 										showGrid({
-											id: "subjectId",
-											url: schoolBasePath + "querySubjectListByMajorId",//科目
+											id: "subjectId",//科目
+											url: schoolBasePath + "querySubjectListByMajorId",
+											method: "GET",
 											params: {majorId: $("#majorId").val()},
-											method: 'GET',
 											pagination: false,
 											template: getFileContent('tpl/template/select-option.tpl'),
-											ajaxSendLoadBefore: function (hdb) {},
+											ajaxSendLoadBefore: function (hdb) {
+											},
 											ajaxSendAfter: function (data) {
-												$("#subjectId").val(json.bean.subjectMation.name);
-												showGrid({
-													id: "classList",
-													url: schoolBasePath + "queryClassListByMajorId",
-													params: {majorId: $("#majorId").val()},  // 修正参数名
-													pagination: false,
-													template: getFileContent('tpl/template/checkbox-property.tpl'),
-													method: 'GET',
-													ajaxSendLoadBefore: function(hdb) {},
-													ajaxSendAfter:function (json) {
-														// form.render('checkbox');
-														form.render();
-													}
-												});
-
-
-
-
+												$("#subjectId").val(json.bean.subjectId);
+												form.render();
 											}
 										});
 									}
 								})
 							}
 						});
-						$("input:radio[name=type][value=" + json.bean.type + "]").attr("checked", true);
-						$("#fraction").val(json.bean.fraction);
-
-
-						// // 知识点赋值
-						// schoolKnowledgeMationList = [].concat(json.bean.knowledgeList);
-						// var str = "";
-						// $.each(schoolKnowledgeMationList, function(i, item) {
-	   					// 	str += '<br><span class="layui-badge layui-bg-blue" style="height: 25px !important; line-height: 25px !important; margin: 5px 0px;">' + item.title + '</span>';
-						// });
-						// $("#schoolKnowledgeChoose").parent().html('<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" id="schoolKnowledgeChoose">知识点选择</button>' + str);
-						//
-						// // 题目信息赋值
-						// $(".surveyQuItemBody").html(getDataUseHandlebars($("#template").html(), json));
-
-						// // 设置tab
-						// tabIndex = json.bean.fileType;
-						// fileUrl = json.bean.fileUrl;
-						// $('.layui-tab-title li').eq(tabIndex).addClass('layui-this').siblings().removeClass('layui-this');
-						// $('.layui-tab-item').eq(tabIndex).addClass('layui-show').siblings().removeClass('layui-show');
-						//
-						// // 设置是否允许拍照/上传图片选中
-						// $("input:radio[name=whetherUpload][value=" + json.bean.whetherUpload + "]").attr("checked", true);
-
 						form.render();
-
-						// 加载上传和切换监听事件
-						// pageLoadAfter();
-					}});
+					}
+				});
 			} else {
+				console.log("新增模式，无parent.rowId");
 				// 加载院系
-				initFacultyId();
-				// 加载专业
-				initMajor();
-
-
-
+				initFaculty();
+				initSemester();//初始化学期
 			}
 		}
+
 
 		matchingLanguage();
 		form.render();

@@ -290,16 +290,24 @@ layui.config({
 	//编辑
 	function markExam(data) {
 		rowId = data.id;
+		parent.rowId = data.id;  // 明确设置parent.rowId
+		
 		_openNewWindows({
 			// url: "../../tpl/markExam/markExamPeople.html", 可以看这个回显阅卷人代码写详情
 			url: "../../tpl/examdesign/examDesignAdd.html",
 			title: "编辑",
 			pageId: "markExamPeople",
+			
 			area: ['90vw', '90vh'],
+			beforeOpen: function() {
+				// 确保编辑时rowId正确设置
+				parent.rowId = data.id;
+			},
 			callBack: function (refreshCode) {
 				winui.window.msg(systemLanguage["com.skyeye.successfulOperation"][languageType], {icon: 1, time: 2000});
 				loadTable();
-			}});
+			}
+		});
 	}
 	
 	//刷新数据
@@ -309,11 +317,20 @@ layui.config({
     
     //新增
     $("body").on("click", "#addBean", function() {
+        // 清空全局变量rowId
+        rowId = "";
+        parent.rowId = "";  // 同时清空parent.rowId
+        
     	_openNewWindows({
 			url: "../../tpl/examdesign/examDesignAdd.html", 
 			title: "新增试卷",
 			pageId: "examDesignAdd",
 			area: ['70vw', '60vh'],
+			beforeOpen: function() {
+                // 确保打开窗口前rowId为空
+                rowId = "";
+                parent.rowId = "";
+            },
 			callBack: function (refreshCode) {
 				winui.window.msg(systemLanguage["com.skyeye.successfulOperation"][languageType], {icon: 1, time: 2000});
 				loadTable();
@@ -343,4 +360,29 @@ layui.config({
 	}
     
     exports('examDesignList', {});
+});
+
+// 编辑按钮事件
+$("body").on("click", ".edit", function() {
+    console.log("编辑按钮点击 - rowId:", $(this).attr("rowId"));
+    if (isNull($(this).attr("rowId"))) {
+        winui.window.msg('请选择一条数据', {icon: 2, time: 2000});
+        return false;
+    }
+    _openNewWindows({
+        url: "../../tpl/examdesign/examDesignAdd.html",
+        title: "编辑试卷",
+        pageId: "examDesignEdit",
+        maxmin: true,
+        beforeOpen: function() {
+            console.log("打开编辑窗口前 - rowId:", rowId);
+        },
+        callBack: function(refreshCode) {
+            console.log("编辑窗口回调 - refreshCode:", refreshCode);
+            winui.window.msg("操作成功", {icon: 1,time: 2000});
+            loadTable();
+        }
+    });
+    // 设置全局变量rowId
+    rowId = $(this).attr("rowId");
 });

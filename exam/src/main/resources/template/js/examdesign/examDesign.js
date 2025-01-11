@@ -34,8 +34,9 @@ layui.config({
         //获取题目信息
         function initPageJson(callback) {
             AjaxPostUtil.request({
-                url: schoolBasePath + "queryQuestionList",
-                params: {rowId: parent.rowId},
+                url: schoolBasePath + "queryDirectoryById",
+                params: {id: parent.rowId},
+                pagination: false,
                 type: 'json',
                 callback: function (json) {
                     $.each(json.rows, function (i, item) {
@@ -349,6 +350,7 @@ layui.config({
 
         // 删除题目
         $("body").on("click", ".dwQuDelete", function () {
+            console.log(ondwQuDelete)
             var quBody = $(this).parents(".surveyQuItemBody");
             layer.confirm("确认要删除此题吗？", {icon: 3, title: '删除题目'}, function (index) {
                 layer.close(index);

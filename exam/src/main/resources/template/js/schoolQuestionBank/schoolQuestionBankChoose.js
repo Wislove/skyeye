@@ -26,31 +26,28 @@ layui.config({
 	schoolUtil.queryMyBelongSchoolList(function (json) {
 		$("#schoolId").html(getDataUseHandlebars(getFileContent('tpl/template/select-option-must.tpl'), json));
 		form.render("select");
-		// 加载年级
-		initGradeId();
 		initTable();
 	});
 
 	form.on('select(schoolId)', function(data) {
-		// 加载年级
- 		initGradeId();
+
 	});
 	
 	// 所属年级
-    function initGradeId(){
-	    showGrid({
-    	 	id: "gradeId",
-    	 	url: schoolBasePath + "grademation006",
-    	 	params: {schoolId: $("#schoolId").val()},
-    	 	pagination: false,
-    	 	template: getFileContent('tpl/template/select-option.tpl'),
-    	 	ajaxSendLoadBefore: function(hdb) {
-    	 	},
-    	 	ajaxSendAfter:function (json) {
-    	 		form.render('select');
-    	 	}
-        });
-    }
+    // function initGradeId(){
+	//     showGrid({
+    // 	 	id: "gradeId",
+    // 	 	url: schoolBasePath + "grademation006",
+    // 	 	params: {schoolId: $("#schoolId").val()},
+    // 	 	pagination: false,
+    // 	 	template: getFileContent('tpl/template/select-option.tpl'),
+    // 	 	ajaxSendLoadBefore: function(hdb) {
+    // 	 	},
+    // 	 	ajaxSendAfter:function (json) {
+    // 	 		form.render('select');
+    // 	 	}
+    //     });
+    // }
     
     form.on('select(gradeId)', function(data) {
 		if(isNull(data.value) || data.value === '请选择'){

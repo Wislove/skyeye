@@ -230,46 +230,58 @@
                 	{{surveyName}}
                 </div>
 	        </div>
-	        <div class="layui-form-item layui-col-xs12">
-	            <label class="layui-form-label">试卷语：</label>
-	            <div class="layui-input-block ver-center">
-                	{{surveyNote}}
-                </div>
-	        </div>
+<!--	        <div class="layui-form-item layui-col-xs12">-->
+<!--	            <label class="layui-form-label">试卷语：</label>-->
+<!--	            <div class="layui-input-block ver-center">-->
+<!--                	{{surveyNote}}-->
+<!--                </div>-->
+<!--	        </div>-->
 	        <div class="layui-form-item layui-col-xs12">
 	            <label class="layui-form-label">所属学校：</label>
 	            <div class="layui-input-block ver-center">
-                	{{schoolName}}
+                	{{schoolMation.name}}
                 </div>
 	        </div>
-	        <div class="layui-form-item layui-col-xs6">
-	            <label class="layui-form-label">考试年级：</label>
-	            <div class="layui-input-block ver-center">
-                	{{gradeName}}
-                </div>
-	        </div>
+<!--	        <div class="layui-form-item layui-col-xs6">-->
+<!--	            <label class="layui-form-label">考试年级：</label>-->
+<!--	            <div class="layui-input-block ver-center">-->
+<!--                	{{gradeName}}-->
+<!--                </div>-->
+<!--	        </div>-->
+			<div class="layui-form-item layui-col-xs6">
+				<label class="layui-form-label">所属院系：</label>
+				<div class="layui-input-block ver-center">
+					{{classesMation.facultyMation.name}}
+				</div>
+			</div>
+			<div class="layui-form-item layui-col-xs6">
+				<label class="layui-form-label">所属专业：</label>
+				<div class="layui-input-block ver-center">
+					{{classesMation.majorMation.name}}
+				</div>
+			</div>
 	        <div class="layui-form-item layui-col-xs6">
 	            <label class="layui-form-label">第几届：</label>
 	            <div class="layui-input-block ver-center">
-                	{{sessionYear}}
+                	{{classesMation.year}}
                 </div>
 	        </div>
 	        <div class="layui-form-item layui-col-xs6">
 	            <label class="layui-form-label">考试科目：</label>
 	            <div class="layui-input-block ver-center">
-                	{{subjectName}}
+                	{{subjectMation.name}}
                 </div>
 	        </div>
 	        <div class="layui-form-item layui-col-xs12">
 	            <label class="layui-form-label">考试班级：</label>
                	<div class="layui-input-block ver-center">
-                	{{className}}
+                	{{classesMation.name}}
                 </div>
 	        </div>
 	        <div class="layui-form-item layui-col-xs6">
 	            <label class="layui-form-label">学期：</label>
 	            <div class="layui-input-block ver-center">
-                	{{semesterName}}
+                	{{semesterMation.name}}
                 </div>
 	        </div>
 	        <div class="layui-form-item layui-col-xs12">
@@ -286,7 +298,7 @@
 		    <div class="layui-form-item layui-col-xs6">
 		        <label class="layui-form-label">状态：</label>
 		        <div class="layui-input-block ver-center">
-                	{{surveyStateName}}
+                	{{surveyState}}
                 </div>
 		    </div>
 		    <div class="layui-form-item layui-col-xs6">
@@ -786,8 +798,8 @@
 					
 	 	   			showGrid({
 						id: "wrap",
-						url: schoolBasePath + "exam034",
-						params: {surveyId: parent.rowId},
+						url: schoolBasePath + "queryDirectoryById",
+						params: {id: parent.rowId},
 						pagination: false,
 						template: getFileContent('tpl/examDetail/examPCDetail.tpl'),
 						ajaxSendLoadBefore: function(hdb, json) {
@@ -989,7 +1001,7 @@
 							$("#showForm").html(getDataUseHandlebars($("#examMationTemplate").html(), json.bean));
 							// 回显阅卷人
 			   				var str = "";
-					        $.each(json.bean.markPeople, function(i, row){
+					        $.each(json.bean.readerMationList, function(i, row){
 					        	str += row.userName + '(' + row.userSex + ')，';
 					        });
 					        $("#markPeople").html(str);
