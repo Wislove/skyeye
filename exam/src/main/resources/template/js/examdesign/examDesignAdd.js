@@ -137,24 +137,28 @@ layui.config({
 
 		// 阅卷人选择
 		$("body").on("click", "#approverSelPeople", function (e) {
-			systemCommonUtil.userReturnList = [];
+			// 初始化选择器参数
+			systemCommonUtil.userReturnList = readerList ? systemCommonUtil.userReturnList : [];
 			systemCommonUtil.chooseOrNotMy = "1";
 			systemCommonUtil.chooseOrNotEmail = "2";
 			systemCommonUtil.checkType = "1";
+			
+			// 打开选择页面
 			systemCommonUtil.openSysUserStaffChoosePage(function (userReturnList) {
-				var approverNames = userReturnList.map(function(item) {
-					return item.name;
-				});
-				$("#approver").val(approverNames.join(", "));
+				if (userReturnList && userReturnList.length > 0) {
+					// 构建显示字符串
+					var approverNames = userReturnList.map(function(item) {
+						return item.userName + (item.userSex === 1 ? '(男)' : '(女)');
+					});
+					$("#approver").val(approverNames.join("，"));
 
-				// 更新全局变量
-				readerList = userReturnList.map(function(item) {
-					return item.id;
-				}).join(",");
-
-				if (isNull(readerList)) {
-					winui.window.msg('请选择审批人', {icon: 2, time: 2000});
-					return false;
+					// 保存阅卷人ID列表
+					readerList = userReturnList.map(function(item) {
+						return item.id;
+					}).join(",");
+				} else {
+					$("#approver").val("");
+					readerList = "";
 				}
 			});
 		});
@@ -169,25 +173,16 @@ layui.config({
 					type: 'json',
 					callback: function (json) {
 						console.log("获取到的试卷数据:", json);
+						// 基础信息赋值
 						$("#schoolId").val(json.bean.schoolId);
 						$("#surveyName").val(json.bean.surveyName);
 						$("#semesterId").val(json.bean.semesterId);//学期
-						//回显阅卷人
-						var str = "";
-						chooseTeacherList = [].concat(json.rows);
-						$.each(json.rows, function(i, row){
-							str += row.userName + '(' + row.userSex + ')，';
-						});
-						$("#approver").val(str);
-						// 设置阅卷人信息
-						// if(json.bean.readerList){
-						// 	readerList = json.bean.readerList;
-						// 	$("#approver").val(json.bean.readerNames);
-						// }
-
+						
 						// 设置单选按钮状态
 						$("input[name='viewAnswer'][value='" + json.bean.viewAnswer + "']").prop("checked", true);
 						$("input[name='surveyModel'][value='" + json.bean.surveyModel + "']").prop("checked", true);
+						
+						// 加载院系、专业、科目和班级的级联数据
 						showGrid({
 							id: "facultyId",
 							url: schoolBasePath + "queryFacultyListBySchoolId",//院系
@@ -195,10 +190,11 @@ layui.config({
 							method: "GET",
 							pagination: false,
 							template: getFileContent('tpl/template/select-option.tpl'),
-							ajaxSendLoadBefore: function (hdb) {
-							},
+							ajaxSendLoadBefore: function (hdb) {},
 							ajaxSendAfter: function (data) {
 								$("#facultyId").val(json.bean.facultyId);
+								
+								// 加载专业
 								showGrid({
 									id: "majorId",
 									url: schoolBasePath + "queryMajorListByFacultyId",//专业
@@ -206,10 +202,11 @@ layui.config({
 									method: "GET",
 									pagination: false,
 									template: getFileContent('tpl/template/select-option.tpl'),
-									ajaxSendLoadBefore: function (hdb) {
-									},
+									ajaxSendLoadBefore: function (hdb) {},
 									ajaxSendAfter: function (data) {
 										$("#majorId").val(json.bean.majorId);
+										
+										// 加载科目
 										showGrid({
 											id: "subjectId",//科目
 											url: schoolBasePath + "querySubjectListByMajorId",
@@ -217,25 +214,73 @@ layui.config({
 											params: {majorId: $("#majorId").val()},
 											pagination: false,
 											template: getFileContent('tpl/template/select-option.tpl'),
-											ajaxSendLoadBefore: function (hdb) {
-											},
+											ajaxSendLoadBefore: function (hdb) {},
 											ajaxSendAfter: function (data) {
 												$("#subjectId").val(json.bean.subjectId);
-												form.render();
+												
+												// 加载班级并设置选中状态
+												showGrid({
+													id: "classList",
+													url: schoolBasePath + "queryClassListByMajorId",
+													params: {majorId: $("#majorId").val()},
+													pagination: false,
+													template: getFileContent('tpl/template/checkbox-property.tpl'),
+													method: "GET",
+													ajaxSendLoadBefore: function (hdb) {},
+													ajaxSendAfter: function (data) {
+														// 设置班级选中状态
+														if(json.bean.classId) {
+															var classIds = json.bean.classId.split(',');
+															classIds.forEach(function(classId) {
+																$("input[type='checkbox'][rowId='" + classId + "']").prop("checked", true);
+															});
+														}
+														form.render('checkbox');
+													}
+												});
+												
+												form.render('select');
 											}
 										});
+										
+										// 加载学期
+										showGrid({
+											id: "semesterId",
+											url: schoolBasePath + "queryAllSemesterList",
+											params: {schoolId: json.bean.schoolId},
+											pagination: false,
+											template: getFileContent('tpl/template/select-option.tpl'),
+											method: "GET",
+											ajaxSendLoadBefore: function (hdb) {},
+											ajaxSendAfter: function (data) {
+												$("#semesterId").val(json.bean.semesterId);
+												form.render('select');
+											}
+										});
+
+										// 回显阅卷人信息
+										if(json.bean.readerMationList && json.bean.readerMationList.length > 0) {
+											systemCommonUtil.userReturnList = json.bean.readerMationList;
+											var approverNames = json.bean.readerMationList.map(function(item) {
+												return item.userName + (item.userSex === 1 ? '(男)' : '(女)');
+											});
+											$("#approver").val(approverNames.join("，"));
+											readerList = json.bean.readerMationList.map(function(item) {
+												return item.id;
+											}).join(",");
+										}
+										
+										form.render();
 									}
-								})
+								});
 							}
 						});
-						form.render();
 					}
 				});
 			} else {
-				console.log("新增模式，无parent.rowId");
-				// 加载院系
+				console.log("新增模式，无parent.rowId")
 				initFaculty();
-				initSemester();//初始化学期
+				initSemester();
 			}
 		}
 
