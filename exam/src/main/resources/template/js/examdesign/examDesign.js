@@ -589,9 +589,6 @@ layui.config({
                 tabIndex = 0;
             }
             return {
-                belongId: parent.rowId,
-                orderById: quItemBody.find("input[name='orderById']").val(),
-                tag: svTag,
                 quId: quItemBody.find("input[name='quId']").val(),
                 hv: quItemBody.find("input[name='hv']").val(),
                 randOrder: quItemBody.find("input[name='randOrder']").val(),
@@ -601,8 +598,12 @@ layui.config({
                 knowledgeIds: isNull(quItemBody.find("li[class='knowledgeQuLogic']").attr("knowledgeIds")) ?
                     "" : quItemBody.find("li[class='knowledgeQuLogic']").attr("knowledgeIds"),
                 fileUrl: fileUrl,
-                fileType: tabIndex,
-                whetherUpload: whetherUpload
+                fileType: tabIndex,//试题类型，0.默认没有，1.视频，2.音频，3.图片
+                whetherUpload: data.field.whetherUpload,//是否允许拍照/上传图片选中，1.是，2.否
+                tag: svTag,// 1题库里的题，2 试卷里的题
+                belongId: parent.rowId,
+                orderById: quItemBody.find("input[name='orderById']").val(),
+
             };
         }
 
@@ -632,10 +633,7 @@ layui.config({
                             isDefaultAnswer = 1
                         }
                         var s = {
-                            hv: quItemBody.find("input[name='hv']").val(),
-                            tag:2, // 1题库里的题，2 试卷里的题
-                            fileType: tabIndex,//试题类型，0.默认没有，1.视频，2.音频，3.图片
-                            whetherUpload: data.field.whetherUpload,//是否允许拍照/上传图片选中，1.是，2.否
+                            optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
 
                             optionValue: encodeURI($(this).find("label.quCoOptionEdit").html()),
                             optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),

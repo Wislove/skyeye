@@ -1,5 +1,5 @@
 var rowId = "";
-
+var surveyName = "";
 layui.config({
 	base: basePath, 
 	version: skyeyeVersion
@@ -29,49 +29,82 @@ layui.config({
 		initTable();
 	});
 
-	form.on('select(schoolId)', function(data) {
+	form.on('select(schoolId)', function (data) {
+		// 加载院系
+		initFacultyId();
+	});
+
+	// 所属院系
+	function initFacultyId() {
+		showGrid({
+			id: "facultyId",
+			url: schoolBasePath + "queryFacultyListBySchoolId",
+			params: {schoolId: $("#schoolId").val()},
+			pagination: false,
+			template: getFileContent('tpl/template/select-option.tpl'),
+			method: 'GET',
+			ajaxSendLoadBefore: function (hdb) {
+			},
+			ajaxSendAfter: function (json) {
+				form.render('select');
+			}
+		});
+	}
+
+	// 院系选择事件
+	form.on('select(facultyId)', function (data) {
+		if (isNull(data.value) || data.value === '请选择') {
+			$("#majorId").html("");  // 清空专业
+			$("#subjectId").html("");  // 清空科目
+			form.render('select');
+		} else {
+			facultyId = data.value;  // 设置当前选中的院系ID
+			initMajor(); } // 加载专业
 
 	});
-	
-	// 所属年级
-    // function initGradeId(){
-	//     showGrid({
-    // 	 	id: "gradeId",
-    // 	 	url: schoolBasePath + "grademation006",
-    // 	 	params: {schoolId: $("#schoolId").val()},
-    // 	 	pagination: false,
-    // 	 	template: getFileContent('tpl/template/select-option.tpl'),
-    // 	 	ajaxSendLoadBefore: function(hdb) {
-    // 	 	},
-    // 	 	ajaxSendAfter:function (json) {
-    // 	 		form.render('select');
-    // 	 	}
-    //     });
-    // }
-    
-    form.on('select(gradeId)', function(data) {
-		if(isNull(data.value) || data.value === '请选择'){
+
+	// 初始化专业
+	function initMajor() {
+		showGrid({
+			id: "majorId",
+			url: schoolBasePath + "queryMajorListByFacultyId",
+			params: {facultyId: facultyId},
+			pagination: false,
+			template: getFileContent('tpl/template/select-option.tpl'),
+			method: 'GET',
+			ajaxSendLoadBefore: function (hdb) {
+			},
+			ajaxSendAfter: function (json) {
+				form.render('select');
+			}
+		});
+	}
+
+	// 专业选择事件
+	form.on('select(majorId)', function (data) {
+		if (isNull(data.value) || data.value === '请选择') {
 			$("#subjectId").html("");
 			form.render('select');
 		} else {
-			// 加载科目
+			majorId = data.value;  // 设置当前选中的专业ID
 			initSubject();
 		}
 	});
-	
+
 	// 初始化科目
-	function initSubject(){
+	function initSubject() {
 		showGrid({
-		 	id: "subjectId",
-		 	url: schoolBasePath + "schoolsubjectmation007",
-		 	params: {gradeId: $("#gradeId").val()},
-		 	pagination: false,
-		 	template: getFileContent('tpl/template/select-option.tpl'),
-		 	ajaxSendLoadBefore: function(hdb) {},
-		 	ajaxSendAfter:function (json) {
-		 		form.render('select');
-		 	}
-	    });
+			id: "subjectId",
+			url: schoolBasePath + "querySubjectListByMajorId",
+			params: {majorId: $("#majorId").val()},  // 修正参数名
+			pagination: false,
+			template: getFileContent('tpl/template/select-option.tpl'),
+			method: 'GET',
+			ajaxSendLoadBefore: function (hdb) {},
+			ajaxSendAfter: function (json) {
+				form.render('select');
+			}
+		});
 	}
 	
 	function initTable(){
@@ -90,13 +123,12 @@ layui.config({
 			filterId: 'messageTable',
 			fieldName: 'quInBankId'
 		});
-			
-		
+
 		table.render({
 		    id: 'messageTable',
 		    elem: '#messageTable',
 		    method: 'post',
-		    url: schoolBasePath + 'schoolquestionbank017',
+		    url: schoolBasePath + 'queryFilterQuestionList',
 		    where: getTableParams(),
 			even: false,
 		    page: true,
@@ -105,20 +137,52 @@ layui.config({
 		    cols: [[
 		    	{ type: 'checkbox'},
 		        { title: systemLanguage["com.skyeye.serialNumber"][languageType], type: 'numbers' },
-		        { field: 'quTitle', width:250, title: '题目', templet: function (d) {
+		        { field: 'quTitle', width:100, title: '题目', templet: function (d) {
 			        return d.quTitle;
 			    }},
-		        { field: 'type', width:80, title: '类型', align: 'center', templet: function (d) {
-		        	if(d.type == 1){
-		        		return '<span style="color: blue">' + d.typeName + '</span>';
-		        	} else {
-		        		return '<span style="color: goldenrod">' + d.typeName + '</span>';
+		        { field: 'isPublic', width:80, title: '类型', align: 'center', templet: function (d) {
+		        	if(d.isPublic == 1){
+		        		return '<span style="color: blue">' + "公开" + '</span>';
+		        	} else if(d.isPublic == 2){
+		        		return '<span style="color: goldenrod">' + "私有" + '</span>';
 		        	}
 		        }},
-		        { field: 'cName', width: 100, title: '题型'},
-		        { field: 'schoolName', width: 150, title: '学校'},
-	            { field: 'gradeName', width: 80, align: 'center', title: '年级'},
-	            { field: 'subjectName', width: 80, align: 'center', title: '科目'},
+		        { field: 'quType', width: 100, title: '题型',templet: function (d) {
+						if (d.quType == 0) {
+							return "判断题";
+						} else if (d.quType == 1) {
+							return "单选题" + '<i class="fa fa-pencil-square fa-fw cursor vary-color" lay-event="pcExaming" title="点击前往考试"></i>';
+						} else if (d.quType == 2) {
+							return "多选题"+'<i class="fa fa-pencil-square fa-fw cursor vary-color" lay-event="pcExaming" title="点击前往考试"></i>';
+						} else if (d.quType == 3) {
+							return "填空题"+'<i class="fa fa-pencil-square fa-fw cursor vary-color" lay-event="pcExaming" title="点击前往考试"></i>';
+						}else if (d.quType == 4) {
+							return "多项填空题"+'<i class="fa fa-pencil-square fa-fw cursor vary-color" lay-event="pcExaming" title="点击前往考试"></i>';
+						}else if (d.quType == 5) {
+							return "多行填空题"+'<i class="fa fa-pencil-square fa-fw cursor vary-color" lay-event="pcExaming" title="点击前往考试"></i>';
+						}else if (d.quType == 8) {
+							return "评分题"+'<i class="fa fa-pencil-square fa-fw cursor vary-color" lay-event="pcExaming" title="点击前往考试"></i>';
+						}else if (d.quType == 9) {
+							return "排序题"+'<i class="fa fa-pencil-square fa-fw cursor vary-color" lay-event="pcExaming" title="点击前往考试"></i>';
+						}else if (d.quType == 10) {
+							return "多选题"+'<i class="fa fa-pencil-square fa-fw cursor vary-color" lay-event="pcExaming" title="点击前往考试"></i>';
+						}else {//还没写完
+							return d.quType; // 兜底返回，以防state值不在预期范围内
+						}
+				}},
+		        { field: 'schoolName', width: 100, title: '学校', templet: function (d) {
+						return d.schoolMation.name;
+					}},
+	            // { field: 'gradeName', width: 80, align: 'center', title: '年级'},
+				{ field: 'facultyName', width: 80, align: 'center', title: '院系', templet: function (d) {
+						return d.facultyMation.name;
+					}},
+				{ field: 'subjectName', width: 80, align: 'center', title: '专业', templet: function (d) {
+						return d.majorMation.name;
+					}},
+	            { field: 'subjectName', width: 80, align: 'center', title: '科目', templet: function (d) {
+						return d.subjectMation.name;
+					}},
 		        { field: 'createTime', title: systemLanguage["com.skyeye.createTime"][languageType], align: 'center', width: 140 }
 		    ]],
 		    done: function(res, curr, count){
@@ -161,7 +225,7 @@ layui.config({
 			winui.window.msg("请选择试题", {icon: 2, time: 2000});
 			return false;
 		}
-		AjaxPostUtil.request({url:schoolBasePath + "schoolquestionbank018", params: {ids: selectedData.toString()}, type: 'json', callback: function (json) {
+		AjaxPostUtil.request({url:schoolBasePath + "selectQuestionById", params: {ids: selectedData.toString()}, type: 'json', callback: function (json) {
 			parent.questionMationList = [].concat(json.rows);
 			parent.layer.close(index);
 			parent.refreshCode = '0';
@@ -191,12 +255,15 @@ layui.config({
 
 	function getTableParams() {
 		return {
-			quTitle: $("#quTitle").val(), 
-    		schoolId: $("#schoolId").val(), 
-    		gradeId: $("#gradeId").val(), 
-    		subjectId: $("#subjectId").val(),
-    		type: $("#type").val(),
-    		quType: $("#quType").val()
+			holderKey: $("#schoolId").val(),
+			holderId: $("#facultyId").val(),
+			objectKey: $("#majorId").val(),//专业
+			objectId: $("#subjectId").val(),//科目
+			keyword: $("#quTitle").val(),//题目
+			// state: $("#surveyState").val(),//状态，类型
+			typeId:$("#quType").val(),//题型
+			// enabled:$("#enabled").val(),//类型，(私有/公开)
+			enabled:1,
 		};
 	}
 	
