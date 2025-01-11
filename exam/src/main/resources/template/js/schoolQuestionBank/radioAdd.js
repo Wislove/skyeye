@@ -113,13 +113,14 @@ layui.config({
 		function loadData(){
 			// 如果问题id不为空，则说明是编辑，加载编辑信息
 			if (!isNull(parent.rowId)){
-				console.log("编辑parent.rowId",parent.rowId)
+				console.log("编辑模式，有parent.rowId");
 				AjaxPostUtil.request({url:schoolBasePath + "selectQuestionById", params: {id: parent.rowId}, type: 'json', callback: function (json) {
 					$("#schoolId").val(json.bean.schoolId);
 					showGrid({
 						id: "facultyId",
 						url: schoolBasePath + "queryFacultyListBySchoolId",//院系
 						params: {schoolId: $("#schoolId").val()},
+						method: "GET",
 						pagination: false,
 						template: getFileContent('tpl/template/select-option.tpl'),
 						ajaxSendLoadBefore: function(hdb) {},
@@ -129,6 +130,7 @@ layui.config({
 								id: "majorId",
 								url: schoolBasePath + "queryMajorListByFacultyId",//专业
 								params: {facultyId: $("#facultyId").val()},
+								method: "GET",
 								pagination: false,
 								template: getFileContent('tpl/template/select-option.tpl'),
 								ajaxSendLoadBefore: function (hdb) {},
@@ -137,6 +139,7 @@ layui.config({
 									showGrid({
 										id: "subjectId",
 										url: schoolBasePath + "querySubjectListByMajorId",//科目
+										method: "GET",
 										params: {majorId: $("#majorId").val()},
 										pagination: false,
 										template: getFileContent('tpl/template/select-option.tpl'),
@@ -178,6 +181,7 @@ layui.config({
 					pageLoadAfter();
 				}});
 			} else {
+				console.log("新增模式，无parent.rowId");
 				// 加载院系
 				initFaculty();
 				
