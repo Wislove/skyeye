@@ -14,7 +14,7 @@ var ueEditorUtil = {
             UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;
             UE.Editor.prototype.getActionUrl = function (action) {
                 if (action == 'uploadimage' || action == 'uploadfile' || action == 'uploadvideo' || action == 'uploadimage') {//上传单个图片,上传附件,上传视频,多图上传
-                    return reqBasePath + '/upload/editUploadController/uploadContentPic';
+                    return reqBasePath + '/editorUploadContentPic';
                 } else if (action == 'listimage') {
                     var currentUserMation = {};
                     systemCommonUtil.getSysCurrentLoginUserMation(function (data) {
