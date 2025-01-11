@@ -104,8 +104,18 @@ layui.config({
 		        	}
 		        }},
 		        { field: 'cName', width: 100, title: '题型' },
-		        { field: 'schoolName', width: 150, title: '学校' },
-	            { field: 'subjectName', width: 80, align: 'center', title: '科目' },
+				{ field: 'schoolName', width: 150, title: '学校',templet:function (d) {
+						return d.schoolMation?.name
+					}},
+				{ field: 'facultyName', width: 80, align: 'center', title: '院系',templet:function (d) {
+						return d.facultyMation?.name
+					}},
+				{ field: 'majorName', width: 80, align: 'center', title: '专业',templet:function (d) {
+						return d.majorMation?.name
+					}},
+				{ field: 'subjectName', width: 80, align: 'center', title: '科目',templet:function (d) {
+						return d.subjectMatio0n?.name
+					}},
 		        { field: 'createTime', title: systemLanguage["com.skyeye.createTime"][languageType], align: 'center', width: 140 }
 		    ]],
 		    done: function(json) {

@@ -278,6 +278,7 @@ layui.config({
                     facultyId:$("#facultyId").val(),
                     majorId:$("#majorId").val(),
                     visibility: 1, //是否显示题，1显示，
+                    // checkType: 0,
                     // gradeId: $("#gradeId").val(),
                     subjectId: $("#subjectId").val(),
                     type: $("input[name='type']:checked").val(),
@@ -300,8 +301,28 @@ layui.config({
                     // 是否是默认答案  1.是  2.否
                     var isDefaultAnswer = 2;
                     if ($(this).find("input[type='checkbox']").is(':checked')) {
-                        isDefaultAnswer = 1
+                        isDefaultAnswer = 1;
                     }
+                    
+                    // 获取checkType的名称
+                    // var checkTypeName = $(this).find(".quItemInputCase input[name='checkType']").val();
+                    // // 根据名称获取对应的index
+                    // var checkTypeIndex = {
+                    //     'NO': 0,
+                    //     'EMAIL': 1,
+                    //     'STRLEN': 2,
+                    //     'UNSTRCN': 3,
+                    //     'STRCN': 4,
+                    //     'NUM': 5,
+                    //     'TELENUM': 6,
+                    //     'PHONENUM': 7,
+                    //     'DATE': 8,
+                    //     'IDENTCODE': 9,
+                    //     'ZIPCODE': 10,
+                    //     'URL': 11,
+                    //     'TELE_PHONE_NUM': 12
+                    // }[checkTypeName] || 0; // 默认返回0
+                    
                     var s = {
                         optionName: encodeURI($.trim($(this).find("label.quCoOptionEdit").html())),
                         optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),

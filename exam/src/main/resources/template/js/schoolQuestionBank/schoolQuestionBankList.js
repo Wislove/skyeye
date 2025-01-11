@@ -1,5 +1,23 @@
-
 var rowId = "";
+
+// 定义题型映射对象
+var quTypeMap = {
+    0: "是非题",
+    1: "单选题",
+    2: "多选题", 
+    3: "填空题",
+    4: "多项填空题",
+    5: "多行填空题",
+    6: "大题",
+    7: "枚举题",
+    8: "评分题",
+    9: "排序题",
+    10: "比重题",
+    11: "矩阵单选题",
+    12: "矩阵填空题",
+    13: "矩阵多选题",
+    14: "复合矩阵单选题"
+};
 
 layui.config({
 	base: basePath, 
@@ -39,16 +57,29 @@ layui.config({
 				return d.quTitle;
 			}},
 			{ field: 'type', width:80, title: '类型', align: 'center', templet: function (d) {
-				if(d.type == 1){
-					return '<span style="color: blue">' + d.typeName + '</span>';
-				} else {
-					return '<span style="color: goldenrod">' + d.typeName + '</span>';
+				if(d.quTag == 1){
+					return '<span style="color: blue">' + d.quTag + '默认题</span>';
+				} else if (d.quTag==2){
+					return '<span style="color: goldenrod">' + d.quTag + '大题</span>';
+				}else {
+					return '<span style="color: goldenrod">' + d.quTag + '小题</span>';
 				}
 			}},
-			{ field: 'cName', width: 100, title: '题型'},
-			{ field: 'schoolName', width: 150, title: '学校'},
-			{ field: 'gradeName', width: 80, align: 'center', title: '年级'},
-			{ field: 'subjectName', width: 80, align: 'center', title: '科目'},
+			{ field: 'cName', width: 100, title: '题型',templet: function(d) {
+					return quTypeMap[d.quType] || d.quType;
+				}},
+			{ field: 'schoolName', width: 150, title: '学校',templet:function (d) {
+					return d.schoolMation?.name
+				}},
+			{ field: 'facultyName', width: 80, align: 'center', title: '院系',templet:function (d) {
+					return d.facultyMation?.name
+				}},
+			{ field: 'majorName', width: 80, align: 'center', title: '专业',templet:function (d) {
+					return d.majorMation?.name
+				}},
+			{ field: 'subjectName', width: 80, align: 'center', title: '科目',templet:function (d) {
+					return d.subjectMation?.name
+				}},
 			{ field: 'createTime', title: systemLanguage["com.skyeye.createTime"][languageType], align: 'center', width: 140 },
 			{ title: systemLanguage["com.skyeye.operation"][languageType], fixed: 'right', align: 'center', width: 150, toolbar: '#tableBar'}
 		]],
