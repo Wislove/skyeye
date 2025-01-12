@@ -177,8 +177,6 @@ layui.config({
     }
 
     function getTableParams() {
-        return $.extend(true, {locationId: placeTypeId, isPaging: false}, initTableSearchUtil.getSearchValue("messageTable"));
+        return $.extend(true, {holderId: placeTypeId}, initTableSearchUtil.getSearchValue("messageTable"));
     }
-
-
 })
