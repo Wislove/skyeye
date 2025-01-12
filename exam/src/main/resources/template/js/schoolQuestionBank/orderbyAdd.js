@@ -212,14 +212,18 @@ layui.config({
     				quTitle: encodeURI(quItemBody.find(".quCoTitleEdit").html()),
     				fraction: $("#fraction").val(),
     				schoolId: $("#schoolId").val(),
-        			gradeId: $("#gradeId").val(),
+					facultyId: $("#facultyId").val(),
+        			majorId: $("#majorId").val(),
         			subjectId: $("#subjectId").val(),
+					visibility:1,
+					tag:1,
         			type: $("input[name='type']:checked").val(),
         			schoolKnowledgeMationList: JSON.stringify(schoolKnowledgeMationList),
         			deleteRowList: JSON.stringify(deleteRowList),
         			fileUrl: fileUrl,
         			fileType: tabIndex,
-        			whetherUpload: data.field.whetherUpload
+        			whetherUpload: data.field.whetherUpload,
+					quType:9
 	    		};
 	    		// 评分题选项td
 	    		var quItemOptions = quItemBody.find(".quCoItem .quOrderByLeft  li.quCoItemUlLi");
@@ -230,7 +234,7 @@ layui.config({
 	    		var orderquTd = [];
 	    		$.each(quItemOptions, function(i) {
     				var s = {
-						optionValue: encodeURI($(this).find("label.quCoOptionEdit").html()),
+						optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
 						optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
 						key: i
 	    			};
@@ -238,7 +242,7 @@ layui.config({
 	    		});
 	    		params.orderquTd = JSON.stringify(orderquTd);
 	    		
-    			AjaxPostUtil.request({url:schoolBasePath + "schoolquestionbank011", params: params, type: 'json', callback: function (json) {
+    			AjaxPostUtil.request({url:schoolBasePath + "writeQuestion", params: params, type: 'json', callback: function (json) {
 					parent.layer.close(index);
 					parent.refreshCode = '0';
     			}});

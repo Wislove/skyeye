@@ -42,17 +42,17 @@ layui.config({
 		
 		// 初始化年级
 		function initGrade(){
-			showGrid({
-			 	id: "gradeId",
-			 	url: schoolBasePath + "grademation006",
-			 	params: {schoolId: $("#schoolId").val()},
-			 	pagination: false,
-			 	template: getFileContent('tpl/template/select-option.tpl'),
-			 	ajaxSendLoadBefore: function(hdb) {},
-			 	ajaxSendAfter:function (json) {
-			 		form.render('select');
-			 	}
-		    });
+			// showGrid({
+			//  	id: "gradeId",
+			//  	url: schoolBasePath + "grademation006",
+			//  	params: {schoolId: $("#schoolId").val()},
+			//  	pagination: false,
+			//  	template: getFileContent('tpl/template/select-option.tpl'),
+			//  	ajaxSendLoadBefore: function(hdb) {},
+			//  	ajaxSendAfter:function (json) {
+			//  		form.render('select');
+			//  	}
+		    // });
 		}
 		// 年级监听事件
 		form.on('select(gradeId)', function(data) {
@@ -67,17 +67,17 @@ layui.config({
 		
 		// 初始化科目
 		function initSubject(){
-			showGrid({
-			 	id: "subjectId",
-			 	url: schoolBasePath + "schoolsubjectmation007",
-			 	params: {gradeId: $("#gradeId").val()},
-			 	pagination: false,
-			 	template: getFileContent('tpl/template/select-option.tpl'),
-			 	ajaxSendLoadBefore: function(hdb) {},
-			 	ajaxSendAfter:function (json) {
-			 		form.render('select');
-			 	}
-		    });
+			// showGrid({
+			//  	id: "subjectId",
+			//  	url: schoolBasePath + "schoolsubjectmation007",
+			//  	params: {gradeId: $("#gradeId").val()},
+			//  	pagination: false,
+			//  	template: getFileContent('tpl/template/select-option.tpl'),
+			//  	ajaxSendLoadBefore: function(hdb) {},
+			//  	ajaxSendAfter:function (json) {
+			//  		form.render('select');
+			//  	}
+		    // });
 		}
 		
 		function loadData(){
