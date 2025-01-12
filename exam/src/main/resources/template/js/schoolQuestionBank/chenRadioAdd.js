@@ -222,7 +222,7 @@ layui.config({
  	        	var params = {
     				quId: quItemBody.find("input[name='quId']").val(),
     				hv: quItemBody.find("input[name='hv']").val(),
-    				quType: quItemBody.find("input[name='quType']").val(),
+    				// quType: quItemBody.find("input[name='quType']").val(),
     				randOrder: quItemBody.find("input[name='randOrder']").val(),
     				cellCount: quItemBody.find("input[name='cellCount']").val(),
     				quTitle: encodeURI(quItemBody.find(".quCoTitleEdit").html()),
@@ -253,19 +253,19 @@ layui.config({
 	    			};
     				column.push(s);
 	    		});
-	    		params.column = JSON.stringify(column);
+	    		params.columnTd = JSON.stringify(column);
 	    		// 矩阵行选项td
 	    		var quRowOptions = quItemBody.find(".quCoItem table.quCoChenTable tr td.quChenRowTd");
 	    		var row = [];
 	    		$.each(quRowOptions, function(i) {
     				var s = {
-						optionValue: encodeURI($(this).find("label.quCoOptionEdit").html()),
+						optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
 						optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
 						key: i
 	    			};
     				row.push(s);
 	    		});
-	    		params.row = JSON.stringify(row);
+	    		params.rowTd = JSON.stringify(row);
 	    		if(quColumnOptions.length == 0 || quRowOptions.length == 0){
 	    			winui.window.msg('选项不能为空', {icon: 2, time: 2000});
 	    			return false;
@@ -284,12 +284,14 @@ layui.config({
 	    			} else {
 		    			yIndex++;
 	    			}
-	    			var s = {
-	    				x: xIndex,
-	    				y: yIndex,
-	    				value: $(this).prop("checked")
-	    			};
-	    			isDefaultAnswer.push(s);
+					if($(this).prop("checked")){
+						var s = {
+							x: xIndex,
+							y: yIndex,
+							value: $(this).prop("checked")
+						};
+						isDefaultAnswer.push(s);
+					}
 	    		});
 	    		params.isDefaultAnswer = JSON.stringify(isDefaultAnswer);
 	    		
