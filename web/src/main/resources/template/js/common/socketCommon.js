@@ -136,6 +136,8 @@ layui.define(["jquery"], function(exports) {
 				sendTwoType(json);
 			} else if (json.bigType == 3) {
 				sendThreeType(json);
+			} else {
+				sendInfoMsg(json.message);
 			}
 		}
 

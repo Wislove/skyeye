@@ -21,15 +21,12 @@ layui.config({
         form.render("select");
         // 加载院系
         initFacultyId();
-        // 加载年级
         initTable();
     });
 
     form.on('select(schoolId)', function (data) {
         // 加载院系
         initFacultyId();
-        //加载年级
-        // initGradeId();
     });
 
     // 所属院系
@@ -270,18 +267,6 @@ layui.config({
             }
         });
     }
-
-    // //分析报告
-    // function fxWj(data) {
-    // 	rowId = data.id;
-    // 	_openNewWindows({
-    // 		url: "../../tpl/examreport/examReport.html",
-    // 		title: "分析报告",
-    // 		pageId: "examReport",
-    // 		maxmin: true,
-    // 		callBack: function (refreshCode) {
-    // 		}});
-    // }
 
     //发布
     function showFb(data, obj) {
