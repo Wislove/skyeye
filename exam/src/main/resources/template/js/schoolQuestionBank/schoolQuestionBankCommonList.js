@@ -106,7 +106,7 @@ layui.config({
             id: 'messageTable',
             elem: '#messageTable',
             method: 'post',
-            url: schoolBasePath + 'selectQuestionBySubjecId',
+            url: schoolBasePath + 'selectQuestionBySubjectId',
             where: getTableParams(),
             even: false,
             page: true,
@@ -244,7 +244,7 @@ layui.config({
         return {
             limit: getLimit(),
             page: 1,
-            subjectId: subjectId
+            holderId: subjectId
         };
     }
 
