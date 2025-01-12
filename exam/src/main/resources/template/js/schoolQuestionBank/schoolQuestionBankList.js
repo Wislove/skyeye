@@ -80,6 +80,7 @@ layui.config({
 			{ field: 'subjectName', width: 80, align: 'center', title: '科目',templet:function (d) {
 					return d.subjectMation?.name
 				}},
+			{ field: 'createName', title: systemLanguage["com.skyeye.createName"][languageType], width: 120 },
 			{ field: 'createTime', title: systemLanguage["com.skyeye.createTime"][languageType], align: 'center', width: 140 },
 			{ title: systemLanguage["com.skyeye.operation"][languageType], fixed: 'right', align: 'center', width: 150, toolbar: '#tableBar'}
 		]],
