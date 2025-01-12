@@ -111,17 +111,17 @@ layui.config({
 		// 初始化值
 		var ids = [];
 		$.each(questionMationList, function(i, item) {
-			ids.push(item.quInBankId);
+			ids.push(item.id);
 		});
 		tableCheckBoxUtil.setIds({
 			gridId: 'messageTable',
-			fieldName: 'quInBankId',
+			fieldName: 'id',
 			ids: ids
 		});
 		tableCheckBoxUtil.init({
 			gridId: 'messageTable',
 			filterId: 'messageTable',
-			fieldName: 'quInBankId'
+			fieldName: 'id'
 		});
 
 		table.render({
@@ -141,12 +141,13 @@ layui.config({
 			        return d.quTitle;
 			    }},
 		        { field: 'isPublic', width:80, title: '类型', align: 'center', templet: function (d) {
-		        	if(d.isPublic == 1){
+		        	if(d.isPublic == 0){
 		        		return '<span style="color: blue">' + "公开" + '</span>';
-		        	} else if(d.isPublic == 2){
+		        	} else if(d.isPublic == 1){
 		        		return '<span style="color: goldenrod">' + "私有" + '</span>';
-		        	}
-		        }},
+		        	}else {
+						return d.isPublic; // 兜底返回，以防isPublic值不在预期范围内
+					}}},
 		        { field: 'quType', width: 100, title: '题型',templet: function (d) {
 						if (d.quType == 0) {
 							return "判断题";
@@ -158,16 +159,20 @@ layui.config({
 							return "填空题"+'<i class="fa fa-pencil-square fa-fw cursor vary-color" lay-event="pcExaming" title="点击前往考试"></i>';
 						}else if (d.quType == 4) {
 							return "多项填空题"+'<i class="fa fa-pencil-square fa-fw cursor vary-color" lay-event="pcExaming" title="点击前往考试"></i>';
-						}else if (d.quType == 5) {
-							return "多行填空题"+'<i class="fa fa-pencil-square fa-fw cursor vary-color" lay-event="pcExaming" title="点击前往考试"></i>';
 						}else if (d.quType == 8) {
 							return "评分题"+'<i class="fa fa-pencil-square fa-fw cursor vary-color" lay-event="pcExaming" title="点击前往考试"></i>';
 						}else if (d.quType == 9) {
 							return "排序题"+'<i class="fa fa-pencil-square fa-fw cursor vary-color" lay-event="pcExaming" title="点击前往考试"></i>';
-						}else if (d.quType == 10) {
-							return "多选题"+'<i class="fa fa-pencil-square fa-fw cursor vary-color" lay-event="pcExaming" title="点击前往考试"></i>';
-						}else {//还没写完
-							return d.quType; // 兜底返回，以防state值不在预期范围内
+						}else if (d.quType == 11) {
+							return "矩阵单选题"+'<i class="fa fa-pencil-square fa-fw cursor vary-color" lay-event="pcExaming" title="点击前往考试"></i>';
+						}else if (d.quType == 12) {
+							return "矩阵填空题"+'<i class="fa fa-pencil-square fa-fw cursor vary-color" lay-event="pcExaming" title="点击前往考试"></i>';
+						}else if (d.quType == 13) {
+							return "矩阵多选题"+'<i class="fa fa-pencil-square fa-fw cursor vary-color" lay-event="pcExaming" title="点击前往考试"></i>';
+						}else if (d.quType == 18) {
+							return "矩阵评分题"+'<i class="fa fa-pencil-square fa-fw cursor vary-color" lay-event="pcExaming" title="点击前往考试"></i>';
+						}else {
+							return d.quType; // 兜底返回，以防quType值不在预期范围内
 						}
 				}},
 		        { field: 'schoolName', width: 100, title: '学校', templet: function (d) {
@@ -225,6 +230,7 @@ layui.config({
 			winui.window.msg("请选择试题", {icon: 2, time: 2000});
 			return false;
 		}
+		console.log(99,selectedData,selectedData.length)
 		AjaxPostUtil.request({url:schoolBasePath + "selectQuestionById", params: {ids: selectedData.toString()}, type: 'json', callback: function (json) {
 			parent.questionMationList = [].concat(json.rows);
 			parent.layer.close(index);
@@ -252,7 +258,7 @@ layui.config({
     function refreshTable(){
     	table.reloadData("messageTable", {page: {curr: 1}, where: getTableParams()});
     }
-
+	console.log($("#isPublic").val(),3423)
 	function getTableParams() {
 		return {
 			holderKey: $("#schoolId").val(),
@@ -260,10 +266,8 @@ layui.config({
 			objectKey: $("#majorId").val(),//专业
 			objectId: $("#subjectId").val(),//科目
 			keyword: $("#quTitle").val(),//题目
-			// state: $("#surveyState").val(),//状态，类型
-			typeId:$("#quType").val(),//题型
-			// enabled:$("#enabled").val(),//类型，(私有/公开)
-			enabled:1,
+			type: $("#quType").val(),//题型
+			enabled: $("#isPublic").val(),  //类型，公开/私有
 		};
 	}
 	
