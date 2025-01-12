@@ -35,49 +35,80 @@ layui.config({
 				$("#schoolId").html("");
 				form.render('select');
 			} else {
-				// 加载年级
-				initGrade();
+				// 加载院系
+				initFaculty();
 			}
 		});
-		
-		// 初始化年级
-		function initGrade(){
+
+		// 初始化院系
+		function initFaculty(){
 			showGrid({
-			 	id: "gradeId",
-			 	url: schoolBasePath + "grademation006",
-			 	params: {schoolId: $("#schoolId").val()},
-			 	pagination: false,
-			 	template: getFileContent('tpl/template/select-option.tpl'),
-			 	ajaxSendLoadBefore: function(hdb) {},
-			 	ajaxSendAfter:function (json) {
-			 		form.render('select');
-			 	}
-		    });
+				id: "facultyId",
+				url: schoolBasePath + "queryFacultyListBySchoolId",
+				params: {schoolId: $("#schoolId").val()},
+				method: "GET",
+				pagination: false,
+				template: getFileContent('tpl/template/select-option.tpl'),
+				ajaxSendLoadBefore: function(hdb) {},
+				ajaxSendAfter:function (json) {
+					form.render('select');
+				}
+			});
 		}
-		// 年级监听事件
-		form.on('select(gradeId)', function(data) {
+
+		// 院系监听事件
+		form.on('select(facultyId)', function(data) {
 			if(isNull(data.value) || data.value === '请选择'){
-				$("#subjectId").html("");
+				$("#facultyId").html("");
+				form.render('select');
+			} else {
+				// 加载专业
+				initMajor();
+			}
+		});
+
+		// 初始化专业
+		function initMajor(){
+			showGrid({
+				id: "majorId",
+				url: schoolBasePath + "queryMajorListByFacultyId",
+				method: "GET",
+				params: {facultyId: $("#facultyId").val()},
+				pagination: false,
+				template: getFileContent('tpl/template/select-option.tpl'),
+				ajaxSendLoadBefore: function(hdb) {
+				},
+				ajaxSendAfter:function (json) {
+					form.render('select');
+				}
+			});
+		}
+
+		// 专业监听事件
+		form.on('select(majorId)', function(data) {
+			if(isNull(data.value) || data.value === '请选择'){
+				$("#majorId").html("");
 				form.render('select');
 			} else {
 				// 加载科目
 				initSubject();
 			}
 		});
-		
+
 		// 初始化科目
 		function initSubject(){
 			showGrid({
-			 	id: "subjectId",
-			 	url: schoolBasePath + "schoolsubjectmation007",
-			 	params: {gradeId: $("#gradeId").val()},
-			 	pagination: false,
-			 	template: getFileContent('tpl/template/select-option.tpl'),
-			 	ajaxSendLoadBefore: function(hdb) {},
-			 	ajaxSendAfter:function (json) {
-			 		form.render('select');
-			 	}
-		    });
+				id: "subjectId",
+				url: schoolBasePath + "querySubjectListByMajorId",
+				params: {majorId: $("#majorId").val()},
+				method: "GET",
+				pagination: false,
+				template: getFileContent('tpl/template/select-option.tpl'),
+				ajaxSendLoadBefore: function(hdb) {},
+				ajaxSendAfter:function (json) {
+					form.render('select');
+				}
+			});
 		}
 		
 		function loadData(){
@@ -157,8 +188,10 @@ layui.config({
 					pageLoadAfter();
 				}});
 			} else {
-				// 加载年级
-		 		initGrade();
+				// 加载院系
+				initFaculty();
+				// 加载专业
+				initMajor();
 		 		// 题目信息赋值
 				$(".surveyQuItemBody").html($("#noDataTemplate").html());
 				// 加载上传和切换监听事件
@@ -185,46 +218,50 @@ layui.config({
  	        	var params = {
     				quId: quItemBody.find("input[name='quId']").val(),
     				hv: quItemBody.find("input[name='hv']").val(),
-    				quType: quItemBody.find("input[name='quType']").val(),
+    				// quType: quItemBody.find("input[name='quType']").val(),
     				randOrder: quItemBody.find("input[name='randOrder']").val(),
     				cellCount: quItemBody.find("input[name='cellCount']").val(),
     				quTitle: encodeURI(quItemBody.find(".quCoTitleEdit").html()),
     				fraction: $("#fraction").val(),
     				schoolId: $("#schoolId").val(),
-        			gradeId: $("#gradeId").val(),
+					facultyId: $("#facultyId").val(),
+					majorId: $("#majorId").val(),
         			subjectId: $("#subjectId").val(),
+					visibility:1,
+					tag:1,
         			type: $("input[name='type']:checked").val(),
         			schoolKnowledgeMationList: JSON.stringify(schoolKnowledgeMationList),
         			deleteRowList: JSON.stringify(deleteRowList),
         			deleteColumnList: JSON.stringify(deleteColumnList),
         			fileUrl: fileUrl,
         			fileType: tabIndex,
-        			whetherUpload: data.field.whetherUpload
+        			whetherUpload: data.field.whetherUpload,
+					quType:13
 	    		};
 	    		// 矩阵列选项td
 	    		var quColumnOptions = quItemBody.find(".quCoItem table.quCoChenTable tr td.quChenColumnTd");
 	    		var column = [];
 	    		$.each(quColumnOptions, function(i) {
     				var s = {
-						optionValue: encodeURI($(this).find("label.quCoOptionEdit").html()),
+						optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
 						optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
 						key: i
 	    			};
     				column.push(s);
 	    		});
-	    		params.column = JSON.stringify(column);
+	    		params.columnTd = JSON.stringify(column);
 	    		// 矩阵行选项td
 	    		var quRowOptions = quItemBody.find(".quCoItem table.quCoChenTable tr td.quChenRowTd");
 	    		var row = [];
 	    		$.each(quRowOptions, function(i) {
     				var s = {
-						optionValue: encodeURI($(this).find("label.quCoOptionEdit").html()),
+						optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
 						optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
 						key: i
 	    			};
     				row.push(s);
 	    		});
-	    		params.row = JSON.stringify(row);
+	    		params.rowTd = JSON.stringify(row);
 	    		if(quColumnOptions.length == 0 || quRowOptions.length == 0){
 	    			winui.window.msg('选项不能为空', {icon: 2, time: 2000});
 	    			return false;
@@ -243,16 +280,19 @@ layui.config({
 	    			} else {
 		    			yIndex++;
 	    			}
-	    			var s = {
-	    				x: xIndex,
-	    				y: yIndex,
-	    				value: $(this).prop("checked")
-	    			};
-	    			isDefaultAnswer.push(s);
+					if($(this).prop("checked")){
+						var s = {
+							x: xIndex,
+							y: yIndex,
+							value: $(this).prop("checked")
+						};
+						isDefaultAnswer.push(s);
+					}
+
 	    		});
 	    		params.isDefaultAnswer = JSON.stringify(isDefaultAnswer);
 	    		
-    			AjaxPostUtil.request({url:schoolBasePath + "schoolquestionbank015", params: params, type: 'json', callback: function (json) {
+    			AjaxPostUtil.request({url:schoolBasePath + "writeQuestion", params: params, type: 'json', callback: function (json) {
 					parent.layer.close(index);
 					parent.refreshCode = '0';
     			}});

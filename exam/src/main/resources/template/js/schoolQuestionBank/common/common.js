@@ -36,7 +36,7 @@ layui.define(["jquery", 'form'], function(exports) {
 				form.render('checkbox');
 			} else if(quType == "SCORE") {
 				editAble(addScoreItem(quItemBody, "新选项"));
-			} else if(quType == "ORDERQU") {
+			} else if(quType == "ORDERBY") {
 				editAble(addOrderquItem(quItemBody, "新选项"));
 			} else if(quType == "MULTIFILLBLANK") {
 				editAble(addMultiFillblankItem(quItemBody, "新选项"));
@@ -154,7 +154,7 @@ layui.define(["jquery", 'form'], function(exports) {
 					} else if (quType == "SCORE"){
 						// 评分题
 						addScoreItem(quItemBody, item);
-					} else if (quType == "ORDERQU"){
+					} else if (quType == "ORDERBY"){
 						addOrderquItem(quItemBody, item);
 					} else if (quType == "MULTIFILLBLANK"){
 						addMultiFillblankItem(quItemBody, item);
