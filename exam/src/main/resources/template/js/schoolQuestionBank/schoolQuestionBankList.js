@@ -45,7 +45,7 @@ layui.config({
 		id: 'messageTable',
 		elem: '#messageTable',
 		method: 'post',
-		url: sysMainMation.schoolBasePath + 'queryQuestionList',
+		url: sysMainMation.schoolBasePath + 'queryMyQuestionList',
 		where: getTableParams(),
 		even: false,
 		page: true,

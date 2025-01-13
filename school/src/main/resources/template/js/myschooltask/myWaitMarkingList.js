@@ -113,7 +113,7 @@ layui.config({
 	        id: 'messageTable',
 	        elem: '#messageTable',
 	        method: 'post',
-			url: schoolBasePath + 'queryMyExamList',//暂时用这个接口
+			url: schoolBasePath + 'queryFilterToBeReviewedSurveys',//接口文档在 试卷回答信息表管理
 	        // url: schoolBasePath + 'myschooltask002',
 	        where: getTableParams(),
 	        even: false,
@@ -122,14 +122,18 @@ layui.config({
 	    	limit: getLimit(),
 	        cols: [[
 	        	{ title: systemLanguage["com.skyeye.serialNumber"][languageType], rowspan: '2', type: 'numbers' },
-	        	{ field: 'studentName', rowspan: '2', width: 80, title: '姓名'},
-	        	{ field: 'studentNo', rowspan: '2', width: 140, align: 'center', title: '学号'},
-	            { field: 'schoolName', rowspan: '2', width: 150, title: '学校'},
-	            // { field: 'gradeName', rowspan: '2', width: 80, align: 'center', title: '年级'},
-				{ field: 'gradeName', rowspan: '2', width: 80, align: 'center', title: '院系'},
-				{ field: 'gradeName', rowspan: '2', width: 80, align: 'center', title: '专业'},
+	        	{ field: 'studentName', rowspan: '2', width: 80, title: '姓名',templet:function (d) {
+						return d.stuMation?.realName}},
+	        	{ field: 'studentNo', rowspan: '2', width: 140, align: 'center', title: '学号',templet:function (d) {
+						return d.stuMation?.studentNumber}},
+	            { field: 'schoolName', rowspan: '2', width: 150, title: '学校',templet:function (d) {
+						return d.schoolMation?.name}},
+				{ field: 'facultyName', rowspan: '2', width: 80, align: 'center', title: '院系',templet:function (d) {
+						return d.facultyMation?.name}},
+				{ field: 'majorName', rowspan: '2', width: 80, align: 'center', title: '专业',templet:function (d) {
+						return d.majorMation?.name}},
 	            { field: 'surveyName', rowspan: '2', width: 200, title: '试卷名称', templet: function (d) {
-			        return '<a lay-event="details" class="notice-title-click">' + d.surveyName + '</a>';
+			        return '<a lay-event="details" class="notice-title-click">' + d.surveyMation?.surveyName + '</a>';
 			    }},
             	{ title: '答题信息', align: 'center', colspan: '3'},
 		        { title: systemLanguage["com.skyeye.operation"][languageType], fixed: 'right', rowspan: '2', align: 'center', width: 100, toolbar: '#tableBar'}
@@ -201,12 +205,12 @@ layui.config({
 
     function getTableParams() {
     	return {
-    		gradeId: $("#gradeId").val(), 
-    		schoolId: $("#schoolId").val(), 
-    		year: $("#year").val(),
-    		surveyName: $("#surveyName").val(),
-    		studentName: $("#studentName").val(),
-    		studentNo: $("#studentNo").val()
+			holderKey: $("#schoolId").val(),
+			holderId:$("#facultyId").val(),
+			objectKey: $("#majorId").val(),//专业
+			type: $("#studentName").val(),//学生
+			// studentNo: $("#studentNo").val(),//学号 刘庆余
+			keyword: $("#surveyName").val(),//试卷名
     	};
     }
     

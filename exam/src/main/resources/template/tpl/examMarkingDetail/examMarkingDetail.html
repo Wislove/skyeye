@@ -797,10 +797,12 @@
 						form = layui.form;
 					var markStartTime = "";//阅卷开始时间
 					markStartTime = getFormatDate();
+                    console.log("开始阅卷",parent.rowId)
 	 	   			showGrid({
 						id: "wrap",
-						url: schoolBasePath + "exam032",
-						params: {answerId: parent.rowId},
+						url: schoolBasePath + "queryExamSurveyQuAnswerListById",//接口在 题目和所得分数的关联表管理
+						params: {id: parent.rowId},
+						method:"GET",
 						pagination: false,
 						template: getFileContent('tpl/examMarkingDetail/examMarkingDetail.tpl'),
 						ajaxSendLoadBefore: function(hdb, json) {
