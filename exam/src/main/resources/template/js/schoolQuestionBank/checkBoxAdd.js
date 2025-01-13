@@ -5,6 +5,10 @@ var schoolKnowledgeMationList = new Array();
 // 要删除的行id
 var deleteRowList = new Array();
 
+Handlebars.registerHelper('eq', function(v1, v2) {
+    return v1 === v2;
+});
+
 layui.config({
     base: basePath,
     version: skyeyeVersion
@@ -115,41 +119,44 @@ layui.config({
             // 如果问题id不为空，则说明是编辑，加载编辑信息
             if (!isNull(parent.rowId)) {
                 AjaxPostUtil.request({
-                    url: schoolBasePath + "schoolquestionbank004",
-                    params: {rowId: parent.rowId},
+                    url: schoolBasePath + "selectQuestionById",
+                    params: {ids: parent.rowId},
                     type: 'json',
                     callback: function (json) {
-                        $("#schoolId").val(json.bean.schoolId);
+                        $("#schoolId").val(json.rows[0].schoolId);
                         showGrid({
                             id: "facultyId",
                             url: schoolBasePath + "queryFacultyListBySchoolId",//院系
                             params: {schoolId: $("#schoolId").val()},
+                            method: "GET",
                             pagination: false,
                             template: getFileContent('tpl/template/select-option.tpl'),
                             ajaxSendLoadBefore: function (hdb) {
                             },
                             ajaxSendAfter: function (data) {
-                                $("#majorId").val(json.bean.majorId);
+                                $("#facultyId").val(json.rows[0].facultyId);
                                 showGrid({
                                     id: "majorId",
                                     url: schoolBasePath + "queryMajorListByFacultyId",//专业
                                     params: {facultyId: $("#facultyId").val()},
+                                    method: "GET",
                                     pagination: false,
                                     template: getFileContent('tpl/template/select-option.tpl'),
                                     ajaxSendLoadBefore: function (hdb) {
                                     },
                                     ajaxSendAfter: function (data) {
-                                        $("#gradeId").val(json.bean.gradeId);
+                                        $("#majorId").val(json.rows[0].majorId);
                                         showGrid({
                                             id: "subjectId",
                                             url: schoolBasePath + "querySubjectListByMajorId",//科目
                                             params: {majorId: $("#majorId").val()},
+                                            method: "GET",
                                             pagination: false,
                                             template: getFileContent('tpl/template/select-option.tpl'),
                                             ajaxSendLoadBefore: function (hdb) {
                                             },
                                             ajaxSendAfter: function (data) {
-                                                $("#subjectId").val(json.bean.subjectId);
+                                                $("#subjectId").val(json.rows[0].subjectId);
                                                 form.render();
                                             }
                                         });
@@ -157,18 +164,24 @@ layui.config({
                                 })
                             }
                         });
-                        $("input:radio[name=type][value=" + json.bean.type + "]").attr("checked", true);
-                        $("#fraction").val(json.bean.fraction);
+                        $("input:radio[name=type][value=" + json.rows[0].type + "]").attr("checked", true);
+                        $("#fraction").val(json.rows[0].fraction);
                         // 知识点赋值
-                        schoolKnowledgeMationList = [].concat(json.bean.knowledgeList);
-                        var str = "";
-                        $.each(schoolKnowledgeMationList, function (i, item) {
-                            str += '<br><span class="layui-badge layui-bg-blue" style="height: 25px !important; line-height: 25px !important; margin: 5px 0px;">' + item.title + '</span>';
-                        });
-                        $("#schoolKnowledgeChoose").parent().html('<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" id="schoolKnowledgeChoose">知识点选择</button>' + str);
+                        // schoolKnowledgeMationList = [].concat(json.bean.knowledgeList);
+                        // var str = "";
+                        // $.each(schoolKnowledgeMationList, function (i, item) {
+                        //     str += '<br><span class="layui-badge layui-bg-blue" style="height: 25px !important; line-height: 25px !important; margin: 5px 0px;">' + item.title + '</span>';
+                        // });
+                        // $("#schoolKnowledgeChoose").parent().html('<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" id="schoolKnowledgeChoose">知识点选择</button>' + str);
+                        $("#schoolKnowledgeChoose").parent().html('<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" id="schoolKnowledgeChoose">知识点选择</button>');
 
                         // 题目信息赋值
-                        $(".surveyQuItemBody").html(getDataUseHandlebars($("#template").html(), json));
+                        $(".surveyQuItemBody").html(getDataUseHandlebars($("#template").html(), {
+                            bean: {
+                                ...json.rows[0],
+                                questionCheckBox: json.rows[0].checkboxTd
+                            }
+                        }));
 
                         // 设置tab
                         tabIndex = json.bean.fileType;
@@ -266,7 +279,7 @@ layui.config({
                     fileUrl = "";
                 }
                 var params = {
-                    quId: quItemBody.find("input[name='quId']").val(),
+                    id: quItemBody.find("input[name='quId']").val(),
                     hv: quItemBody.find("input[name='hv']").val(),
                     randOrder: quItemBody.find("input[name='randOrder']").val(),
                     cellCount: quItemBody.find("input[name='cellCount']").val(),
@@ -275,8 +288,8 @@ layui.config({
                     quTitle: encodeURI(quItemBody.find(".quCoTitleEdit").html()),
                     fraction: $("#fraction").val(),
                     schoolId: $("#schoolId").val(),
-                    facultyId:$("#facultyId").val(),
-                    majorId:$("#majorId").val(),
+                    facultyId: $("#facultyId").val(),
+                    majorId: $("#majorId").val(),
                     visibility: 1, //是否显示题，1显示，
                     // checkType: 0,
                     // gradeId: $("#gradeId").val(),
@@ -285,8 +298,8 @@ layui.config({
                     schoolKnowledgeMationList: JSON.stringify(schoolKnowledgeMationList),
                     deleteRowList: JSON.stringify(deleteRowList),
                     fileUrl: fileUrl,
-                    quType:2,//题目类型
-                    tag:1 ,
+                    quType: 2,//题目类型
+                    tag: 1,
                     fileType: tabIndex,
                     whetherUpload: data.field.whetherUpload
                 };
@@ -303,26 +316,7 @@ layui.config({
                     if ($(this).find("input[type='checkbox']").is(':checked')) {
                         isDefaultAnswer = 1;
                     }
-                    
-                    // 获取checkType的名称
-                    // var checkTypeName = $(this).find(".quItemInputCase input[name='checkType']").val();
-                    // // 根据名称获取对应的index
-                    // var checkTypeIndex = {
-                    //     'NO': 0,
-                    //     'EMAIL': 1,
-                    //     'STRLEN': 2,
-                    //     'UNSTRCN': 3,
-                    //     'STRCN': 4,
-                    //     'NUM': 5,
-                    //     'TELENUM': 6,
-                    //     'PHONENUM': 7,
-                    //     'DATE': 8,
-                    //     'IDENTCODE': 9,
-                    //     'ZIPCODE': 10,
-                    //     'URL': 11,
-                    //     'TELE_PHONE_NUM': 12
-                    // }[checkTypeName] || 0; // 默认返回0
-                    
+
                     var s = {
                         optionName: encodeURI($.trim($(this).find("label.quCoOptionEdit").html())),
                         optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),

@@ -165,7 +165,8 @@
 							<ul>
 								{{#each questionRadio}}
 									<li class="quCoItemUlLi">
-										<input type="radio" name="radioName" {{isDefaultAnswer}}><label class="editAble quCoOptionEdit">{{optionName}}</label>
+										<input type="radio" name="radioName" value="{{id}}" {{#if isDefaultAnswer}}checked="checked"{{/if}}>
+										<label class="editAble quCoOptionEdit">{{optionName}}</label>
 										<div class="quItemInputCase">
 											<input type="hidden" name="quItemId" value="{{id}}">
 											<input type="hidden" name="isNote" value="{{isNote}}">

@@ -165,7 +165,8 @@
 							<ul>
 								{{#each questionCheckBox}}
 									<li class="quCoItemUlLi">
-										<input type="checkbox" name="checkBoxName" {{isDefaultAnswer}}><label class="editAble quCoOptionEdit">{{optionName}}</label>
+										<input type="checkbox" name="checkboxName" value="{{id}}" {{#if (eq isDefaultAnswer 1)}}checked="checked"{{/if}}>
+										<label class="editAble quCoOptionEdit">{{optionName}}</label>
 										<div class="quItemInputCase">
 											<input type="hidden" name="quItemId" value="{{id}}">
 											<input type="hidden" name="isNote" value="{{isNote}}">

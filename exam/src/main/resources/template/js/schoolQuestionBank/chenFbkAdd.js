@@ -1,12 +1,3 @@
-
-// 知识点选择必备参数
-var schoolKnowledgeCheckType = 2;// 知识点选择类型：1.单选schoolKnowledgeMation；2.多选schoolKnowledgeMationList
-var schoolKnowledgeMationList = new Array();
-
-// 要删除的行id
-var deleteRowList = new Array();
-var deleteColumnList = new Array();
-
 layui.config({
 	base: basePath,
 	version: skyeyeVersion
@@ -19,6 +10,14 @@ layui.config({
 	    var $ = layui.$,
 		    form = layui.form,
 		    element = layui.element;
+		// 知识点选择必备参数
+		var schoolKnowledgeCheckType = 2;// 知识点选择类型：1.单选schoolKnowledgeMation；2.多选schoolKnowledgeMationList
+		var schoolKnowledgeMationList = new Array();
+
+		// 要删除的行id
+		var deleteRowList = new Array();
+		var deleteColumnList = new Array();
+
 		// tab当前下标
 		var tabIndex = 0;
 		var fileUrl = "";
@@ -64,7 +63,7 @@ layui.config({
 				initMajor();
 			}
 		});
-// 初始化专业
+		// 初始化专业
 		function initMajor(){
 			showGrid({
 				id: "majorId",
@@ -136,65 +135,93 @@ layui.config({
 		function loadData(){
 			// 如果问题id不为空，则说明是编辑，加载编辑信息
 			if (!isNull(parent.rowId)){
-				AjaxPostUtil.request({url:schoolBasePath + "selectQuestionBySubjectId", params: {rowId: parent.rowId}, type: 'json', callback: function (json) {
-					console.log(json.bean);
-						if (typeof json.bean.someIntegerField === 'string' && json.bean.someIntegerField === '[CHENFBK]') {
-							// 可以选择合适的处理方式，例如设置为默认值或显示错误信息
-							json.bean.someIntegerField = 0;
-						}
-					$("#schoolId").val(json.bean.schoolId);
+				AjaxPostUtil.request({
+					url:schoolBasePath + "selectQuestionById",
+					params: {ids: parent.rowId},
+					type: 'json',
+					method: 'post',
+					callback: function (json) {
+					$("#schoolId").val(json.rows[0].schoolId);
+					//院系
 					showGrid({
-						id: "gradeId",
-						url: schoolBasePath + "grademation006",
+						id: "facultyId",
+						url: schoolBasePath + "queryFacultyListBySchoolId",
+						method: 'GET',
 						params: {schoolId: $("#schoolId").val()},
 						pagination: false,
 						template: getFileContent('tpl/template/select-option.tpl'),
 						ajaxSendLoadBefore: function(hdb) {},
 						ajaxSendAfter:function(data) {
-							$("#gradeId").val(json.bean.gradeId);
+							$("#facultyId").val(json.rows[0].facultyId);
+							//专业
 							showGrid({
-								id: "subjectId",
-								url: schoolBasePath + "schoolsubjectmation007",
-								params: {gradeId: $("#gradeId").val()},
+								id: "majorId",
+								url: schoolBasePath + "queryMajorListByFacultyId",
+								method: 'GET',
+								params: {facultyId: $("#facultyId").val()},
 								pagination: false,
 								template: getFileContent('tpl/template/select-option.tpl'),
 								ajaxSendLoadBefore: function(hdb) {},
 								ajaxSendAfter:function(data) {
-									$("#subjectId").val(json.bean.subjectId);
-									form.render();
-								}
+									$("#majorId").val(json.rows[0].majorId);
+									//科目
+									showGrid({
+										id: "subjectId",
+										url: schoolBasePath + "querySubjectListByMajorId",
+										method: 'GET',
+										params: {majorId: $("#majorId").val()},
+										pagination: false,
+										template: getFileContent('tpl/template/select-option.tpl'),
+										ajaxSendLoadBefore: function(hdb) {},
+										ajaxSendAfter:function(data) {
+											$("#subjectId").val(json.rows[0].subjectId);
+											form.render();
+										}
+									})
+									}
 							});
 						}
 					});
-					$("input:radio[name=type][value=" + json.bean.type + "]").attr("checked", true);
-					$("#fraction").val(json.bean.fraction);
-					// 知识点赋值
-					schoolKnowledgeMationList = [].concat(json.bean.knowledgeList);
-					var str = "";
-					$.each(schoolKnowledgeMationList, function(i, item) {
-						str += '<br><span class="layui-badge layui-bg-blue" style="height: 25px !important; line-height: 25px !important; margin: 5px 0px;">' + item.title + '</span>';
-					});
-					$("#schoolKnowledgeChoose").parent().html('<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" id="schoolKnowledgeChoose">知识点选择</button>' + str);
+					$("input:radio[name=type][value=" + json.rows[0].type + "]").attr("checked", true);
+					$("#fraction").val(json.rows[0].fraction);
+					$("#quTitle").val(json.rows[0].quTitle);
 
+					// 知识点赋值
+					// schoolKnowledgeMationList = [].concat(json.bean.knowledgeList);
+					// var str = "";
+					// $.each(schoolKnowledgeMationList, function(i, item) {
+					// 	str += '<br><span class="layui-badge layui-bg-blue" style="height: 25px !important; line-height: 25px !important; margin: 5px 0px;">' + item.title + '</span>';
+					// });
+					// $("#schoolKnowledgeChoose").parent().html('<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" id="schoolKnowledgeChoose">知识点选择</button>' + str);
+
+					// 解析列和行数据
+					var columnTd = isJsonFormat(json.rows[0].columnTd) ? JSON.parse(json.rows[0].columnTd) : [];
+					var rowTd = isJsonFormat(json.rows[0].rowTd) ? JSON.parse(json.rows[0].rowTd) : [];
+					
 					// 题目信息赋值
-					$(".surveyQuItemBody").html(getDataUseHandlebars($("#template").html(), json));
+					$(".surveyQuItemBody").html(getDataUseHandlebars($("#template").html(),
+						{
+							bean: json.rows[0]
+						}
+					));
 
 					// 设置tab
-					tabIndex = json.bean.fileType;
-					fileUrl = json.bean.fileUrl;
+					tabIndex = json.rows[0].fileType;
+					fileUrl = json.rows[0].fileUrl;
 					$('.layui-tab-title li').eq(tabIndex).addClass('layui-this').siblings().removeClass('layui-this');
 					$('.layui-tab-item').eq(tabIndex).addClass('layui-show').siblings().removeClass('layui-show');
 
 					// 设置是否允许拍照/上传图片选中
-					$("input:radio[name=whetherUpload][value=" + json.bean.whetherUpload + "]").attr("checked", true);
+					$("input:radio[name=whetherUpload][value=" + json.rows[0].whetherUpload + "]").attr("checked", true);
 
 					form.render();
 
 					// 加载答案数据
 					var answer = $(".surveyQuItemBody").find(".quCoItem table.quCoChenTable tr input.questionChenColumnValue");
-					var isDefaultAnswer = isJsonFormat(json.bean.isDefaultAnswer) ? JSON.parse(json.bean.isDefaultAnswer) : [];
-					var columuLength = $(".surveyQuItemBody").find(".quCoItem table.quCoChenTable tr td.quChenColumnTd").length;
-					var xIndex = 0;
+					var isDefaultAnswer = isJsonFormat(json.rows[0].isDefaultAnswer) ? JSON.parse(json.rows[0].isDefaultAnswer) : [];
+					var columuLength = columnTd.length;  // 使用实际的列数
+						var rowLength = rowTd.length;
+						var xIndex = 0;
 					var yIndex = 1;
 					$.each(answer, function(i) {
 						if(i % columuLength == 0){
@@ -242,13 +269,11 @@ layui.config({
  	        	var params = {
     				quId: quItemBody.find("input[name='quId']").val(),
     				hv: quItemBody.find("input[name='hv']").val(),
-
     				randOrder: quItemBody.find("input[name='randOrder']").val(),
     				cellCount: quItemBody.find("input[name='cellCount']").val(),
     				quTitle: encodeURI(quItemBody.find(".quCoTitleEdit").html()),
 					fraction: $("#fraction").val(),
     				schoolId: $("#schoolId").val(),
-        			//gradeId: $("#gradeId").val(),
 					majorId:$("#majorId").val(),
 					facultyId:$("#facultyId").val(),
         			subjectId: $("#subjectId").val(),
@@ -267,25 +292,33 @@ layui.config({
 	    		var column = [];
 	    		$.each(quColumnOptions, function(i) {
     				var s = {
+						optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
 						optionValue: encodeURI($(this).find("label.quCoOptionEdit").html()),
+						isRequiredFill: $(this).find(".quItemInputCase input[name='isRequiredFill']").val(),
 						optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
+						isDefaultAnswer: isDefaultAnswer,
+						isNote: $(this).find(".quItemInputCase input[name='isNote']").val(),
 						key: i
 	    			};
     				column.push(s);
 	    		});
-	    		params.column = JSON.stringify(column);
+	    		params.columnTd = JSON.stringify(column);
 	    		// 矩阵行选项td
 	    		var quRowOptions = quItemBody.find(".quCoItem table.quCoChenTable tr td.quChenRowTd");
 	    		var row = [];
 	    		$.each(quRowOptions, function(i) {
     				var s = {
+						optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
 						optionValue: encodeURI($(this).find("label.quCoOptionEdit").html()),
+						isRequiredFill: $(this).find(".quItemInputCase input[name='isRequiredFill']").val(),
 						optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
+						isDefaultAnswer: isDefaultAnswer,
+						isNote: $(this).find(".quItemInputCase input[name='isNote']").val(),
 						key: i
 	    			};
     				row.push(s);
 	    		});
-	    		params.row = JSON.stringify(row);
+	    		params.rowTd = JSON.stringify(row);
 	    		if(quColumnOptions.length == 0 || quRowOptions.length == 0){
 	    			winui.window.msg('选项不能为空', {icon: 2, time: 2000});
 	    			return false;
