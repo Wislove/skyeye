@@ -139,7 +139,7 @@ layui.config({
 		} else if (data.quType == '18'){//矩阵评分
 			url = "../../tpl/schoolQuestionBank/chenScoreAdd.html";
 		}
-		title += data.cName;
+		title += quTypeMap[data.quType] || "未知题型";
 		_openNewWindows({
 			url: url, 
 			title: title,
