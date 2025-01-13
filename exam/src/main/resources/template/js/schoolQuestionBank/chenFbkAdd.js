@@ -195,13 +195,31 @@ layui.config({
 					// $("#schoolKnowledgeChoose").parent().html('<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" id="schoolKnowledgeChoose">知识点选择</button>' + str);
 
 					// 解析列和行数据
-					var columnTd = isJsonFormat(json.rows[0].columnTd) ? JSON.parse(json.rows[0].columnTd) : [];
-					var rowTd = isJsonFormat(json.rows[0].rowTd) ? JSON.parse(json.rows[0].rowTd) : [];
+					var columnTd = [];
+					var rowTd = [];
 					
+					try {
+						if (json.rows[0].columnTd && typeof json.rows[0].columnTd === 'string') {
+							columnTd = JSON.parse(decodeURIComponent(json.rows[0].columnTd));
+						} else if (Array.isArray(json.rows[0].columnTd)) {
+							columnTd = json.rows[0].columnTd;
+						}
+						
+						if (json.rows[0].rowTd && typeof json.rows[0].rowTd === 'string') {
+							rowTd = JSON.parse(decodeURIComponent(json.rows[0].rowTd));
+						} else if (Array.isArray(json.rows[0].rowTd)) {
+							rowTd = json.rows[0].rowTd;
+						}
+					} catch (e) {
+						console.error('解析选项数据失败:', e);
+					}
+
 					// 题目信息赋值
 					$(".surveyQuItemBody").html(getDataUseHandlebars($("#template").html(),
 						{
-							bean: json.rows[0]
+							bean: json.rows[0],
+							columnTd: columnTd,
+							rowTd: rowTd
 						}
 					));
 
@@ -219,9 +237,8 @@ layui.config({
 					// 加载答案数据
 					var answer = $(".surveyQuItemBody").find(".quCoItem table.quCoChenTable tr input.questionChenColumnValue");
 					var isDefaultAnswer = isJsonFormat(json.rows[0].isDefaultAnswer) ? JSON.parse(json.rows[0].isDefaultAnswer) : [];
-					var columuLength = columnTd.length;  // 使用实际的列数
-						var rowLength = rowTd.length;
-						var xIndex = 0;
+					var columuLength = columnTd.length;
+					var xIndex = 0;
 					var yIndex = 1;
 					$.each(answer, function(i) {
 						if(i % columuLength == 0){
@@ -267,7 +284,7 @@ layui.config({
  	        		fileUrl = "";
  	        	}
  	        	var params = {
-    				quId: quItemBody.find("input[name='quId']").val(),
+    				id: quItemBody.find("input[name='quId']").val(),
     				hv: quItemBody.find("input[name='hv']").val(),
     				randOrder: quItemBody.find("input[name='randOrder']").val(),
     				cellCount: quItemBody.find("input[name='cellCount']").val(),

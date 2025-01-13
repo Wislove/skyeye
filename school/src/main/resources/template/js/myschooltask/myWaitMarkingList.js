@@ -113,7 +113,7 @@ layui.config({
 	        id: 'messageTable',
 	        elem: '#messageTable',
 	        method: 'post',
-			url: schoolBasePath + 'queryMyExamList',
+			url: schoolBasePath + 'queryMyExamList',//暂时用这个接口
 	        // url: schoolBasePath + 'myschooltask002',
 	        where: getTableParams(),
 	        even: false,
@@ -125,7 +125,9 @@ layui.config({
 	        	{ field: 'studentName', rowspan: '2', width: 80, title: '姓名'},
 	        	{ field: 'studentNo', rowspan: '2', width: 140, align: 'center', title: '学号'},
 	            { field: 'schoolName', rowspan: '2', width: 150, title: '学校'},
-	            { field: 'gradeName', rowspan: '2', width: 80, align: 'center', title: '年级'},
+	            // { field: 'gradeName', rowspan: '2', width: 80, align: 'center', title: '年级'},
+				{ field: 'gradeName', rowspan: '2', width: 80, align: 'center', title: '院系'},
+				{ field: 'gradeName', rowspan: '2', width: 80, align: 'center', title: '专业'},
 	            { field: 'surveyName', rowspan: '2', width: 200, title: '试卷名称', templet: function (d) {
 			        return '<a lay-event="details" class="notice-title-click">' + d.surveyName + '</a>';
 			    }},
@@ -171,7 +173,7 @@ layui.config({
 	
     // 详情
 	function details(data) {
-		rowId = data.surveyId;
+		rowId = data.id;
 		_openNewWindows({
 			url: "../../tpl/examDetail/examPCDetail.html", 
 			title: "试卷信息",

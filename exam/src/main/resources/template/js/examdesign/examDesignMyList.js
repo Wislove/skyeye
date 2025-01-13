@@ -280,18 +280,6 @@ layui.config({
         });
     }
 
-    //分析报告
-    // function fxWj(data) {
-    // 	rowId = data.id;
-    // 	_openNewWindows({
-    // 		url: "../../tpl/examreport/examReport.html",
-    // 		title: "分析报告",
-    // 		pageId: "examReport",
-    // 		maxmin: true,
-    // 		callBack: function (refreshCode) {
-    // 		}});
-    // }
-
     //发布
     function showFb(data, obj) {
         console.log(data, obj)
@@ -344,13 +332,15 @@ layui.config({
         });
     }
 
-    //阅卷人
+    //编辑
     function markExam(data) {
+        // 清空并重新设置rowId
         rowId = data.id;
+        parent.rowId = data.id;
         _openNewWindows({
-            url: "../../tpl/markExam/markExamPeople.html",
-            title: "阅卷人",
-            pageId: "markExamPeople",
+            url: "../../tpl/examdesign/examDesignAdd.html",
+            title: "编辑试卷",
+            pageId: "examDesignEdit",
             area: ['90vw', '90vh'],
             callBack: function (refreshCode) {
             }

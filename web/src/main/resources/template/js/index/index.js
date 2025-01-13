@@ -3,7 +3,7 @@
 var friendList = null;//好友列表
 var friendChooseList = "";//已选中群组成员
 
-var layim = '';//聊天对象
+var layim = null;//聊天对象
 var userId = "";
 
 var childParams = {};//子页面操作时传递的值
@@ -507,10 +507,10 @@ layui.config({
 			msgbox: '../../tpl/chat/invitation.html', //消息盒子页面地址，若不开启，剔除该项即可
 			joingroup: {
 				url: '../../tpl/chat/searchMation.html' //加入群聊页面地址，若不开启，剔除该项即可
-			}, 
+			},
 			customMation: {
 				url: '../../tpl/chat/customMation.html' //加入群聊页面地址，若不开启，剔除该项即可
-			}, 
+			},
 			find: {
 				url: '../../tpl/chat/createGroup.html', //发现页面地址，若不开启，剔除该项即可
 				brforeCallback: function(){
@@ -531,7 +531,7 @@ layui.config({
 			},
 			chatLog: '../../tpl/chat/chatLog.html' //聊天记录页面地址，若不开启，剔除该项即可
 		});
-    	
+
     	//监听在线状态的切换事件
 		layim.on('online', function(data) {
 			if (data == 'online'){//上线
@@ -548,14 +548,14 @@ layui.config({
 				etiger.socket.send(JSON.stringify(sendMessage));
 			}
 		});
-		
+
 		//监听签名修改
 		layim.on('sign', function(value) {
 			AjaxPostUtil.request({url: reqBasePath + "companychat002", params: {userSign: value}, type: 'json', callback: function (json) {
 				winui.window.msg('保存成功', {icon: 1, skin: 'msg-skin-message'});
  	   		}});
 		});
-		
+
 		//监听layim建立就绪
 		layim.on('ready', function(res) {
 			//初始化websocket
@@ -565,8 +565,57 @@ layui.config({
 			if (window.localStorage.getItem("lockscreen") == "true") {
 				$('.talk-btn').hide();
 			}
+
+			// 获取最新的聊天记录并更新会话列表
+			AjaxPostUtil.request({
+				url: reqBasePath + "queryMyUnReadMessageList",
+				type: 'json',
+				method: "GET",
+				callback: function (result) {
+					if (result.rows && result.rows.length > 0) {
+						// 按照会话分组消息
+						var chatGroups = {};
+						result.rows.forEach(function (item) {
+							var chatId = item.sendId;
+							if (!chatGroups[chatId]) {
+								chatGroups[chatId] = [];
+							}
+							chatGroups[chatId].push({
+								username: item.sendStaffMation.userName,
+								name: item.sendStaffMation.userName,
+								companyName: getNotUndefinedVal(item.sendStaffMation?.companyName),
+								departmentName: getNotUndefinedVal(item.sendStaffMation?.departmentName),
+								jobName: getNotUndefinedVal(item.sendStaffMation?.jobName),
+								sign: getNotUndefinedVal(item.sendStaffMation?.userSign),
+								id: chatId,
+								type: item.chatType === 1 ? 'friend' : 'group',
+								content: item.content,
+								timestamp: new Date(item.createTime).getTime(),
+								mine: (item.sendId === userId),
+								avatar: (item.sendId === userId) ? currentUserMation.userPhoto : item.sendStaffMation.userPhoto,
+								fromid: item.sendId,
+								cid: 'history'
+							});
+						});
+
+						for (var chatId in chatGroups) {
+							var messages = chatGroups[chatId];
+							// 按时间排序
+							messages.sort(function (a, b) {
+								return a.timestamp - b.timestamp;
+							});
+
+							// 获取最新一条消息
+							var lastMsg = messages[messages.length - 1];
+
+							// 添加未读消息提示
+							etiger.socket.setUnReadCount(lastMsg.id, lastMsg.type, messages.length)
+						}
+					}
+				}
+			});
 		});
-		
+
 		//监听发送消息
 		layim.on('sendMessage', function(data) {
 			var To = data.to;
@@ -593,7 +642,7 @@ layui.config({
 				etiger.socket.send(JSON.stringify(sendMessage));
 			}
 		});
-		
+
 		//监听查看群员
 		layim.on('members', function(data) {
 			console.log(data);
@@ -605,6 +654,7 @@ layui.config({
 			$.fn.fullpage.setAllowScrolling(false);
 			var type = res.data.type;
 			var id = res.data.id;  // 获取当前聊天窗口ID（用户id或者群组id）
+			etiger.socket.currentChatId = id;
 			// 获取历史聊天记录
 			AjaxPostUtil.request({
 				url: reqBasePath + "companytalkgroup008",
@@ -632,22 +682,28 @@ layui.config({
 								voice: false             // 只在加载历史消息时禁用提示音
 							};
 						});
-						
+
 						// 按时间正序排列
 						messages.sort(function(a, b) {
 							return a.timestamp - b.timestamp;
 						});
-						
+
 						// 逐条插入消息
 						messages.forEach(function(message) {
 							layim.getMessage(message);
 						});
+
+						// 修改我和这个人之间的未读数
+						AjaxPostUtil.request({url: sysMainMation.reqBasePath + "editTalkChatHistoryToRead", params: {sendId: id}, type: 'json', method: 'POST', callback: function (json) {
+							// 标记已读
+							etiger.socket.setUnReadCount(id, type, 0)
+						}});
 					}
 				}
 			});
 		});
     }
-    
+
     //初始化配置信息
     function initWinConfig(currentUserMation){
     	//设置窗口点击事件
@@ -690,7 +746,7 @@ layui.config({
                     });
                     menuItem.contextmenu({
                     	item: [{
-                        	icon: 'fa-folder-open-o', 
+                        	icon: 'fa-folder-open-o',
                         	text: '打开',
                         	callBack: function (id, elem) {
                             	var item = $(elem);
@@ -702,7 +758,7 @@ layui.config({
                             	}
                             }
                         }, {
-                        	icon: ' fa-copy', 
+                        	icon: ' fa-copy',
                         	text: '发送到桌面',
                         	callBack: function (id, elem) {
                         		AjaxPostUtil.request({url: reqBasePath + "sysevewindragdrop010", params: {rowId: id}, type: 'json', callback: function (json) {
@@ -809,7 +865,7 @@ layui.config({
                         }, {
                         	text: '--'
                         }, {
-                        	icon: 'fa-qq', 
+                        	icon: 'fa-qq',
                         	text: '自定义',
                         	callBack: function (id, elem) {
                         		winui.window.msg('自定义回调');
@@ -864,7 +920,7 @@ layui.config({
 						});
 					}});
 		 		});
-		 		
+
 		 		// 查看详细信息
 		 		$(".winui-message-item").on("click", function (e) {
 		 			var _this = $(this);
@@ -890,7 +946,7 @@ layui.config({
 						});
 		 	   		}});
 		 		});
-		 		
+
 		 		//删除
 		 		$(".notice-item-remove").on("click", function (e) {
 		 			var _this = $(this).parent().parent();
@@ -912,7 +968,7 @@ layui.config({
 		 	}
 	    });
     }
-    
+
     //个人中心点击
     $('.winui-start-syspersonal').on('click', function () {
     	$('.win-10-menu').removeClass("switch-checked");
@@ -921,25 +977,25 @@ layui.config({
 		$(".win-file-switch").css({'z-index': '0'});//顶部菜单栏
         OpenWindow(this);
     });
-    
+
     //展开
     $('.winui-start-item.winui-start-show').on('click', function () {
     	if($(".winui-start-left").css("width") === '210px'){//当前状态：展开
     		$(".winui-start-left").animate({
-    			width: '48px' 
+    			width: '48px'
     		});
     		$(".winui-start-left").css({'background-color': 'rgba(0, 0, 0, 0.3)'});
     	} else {//当前状态：关闭
     		$(".winui-start-left").animate({
-    			width: '210px' 
+    			width: '210px'
     		});
     		$(".winui-start-left").css({'background-color': 'rgba(0, 0, 0, 0.9)'});
     	}
     });
-    
+
     $(".winui-start-left").mouseleave(function (){
     	$(".winui-start-left").animate({
-			width: '48px' 
+			width: '48px'
 		});
     	$(".winui-start-left").css({'background-color': 'rgba(0, 0, 0, 0.3)'});
     });
@@ -1022,7 +1078,7 @@ layui.config({
 			});
 		}
     }
-    
+
     //打开二级窗口
     function showBigWin(menuItem) {
     	var menu = $(menuItem);
@@ -1090,7 +1146,7 @@ layui.config({
         			});
         			AjaxPostUtil.request({url: reqBasePath + "sysevewindragdrop004", params: {rowId: thisMenuId, parentId: ""}, type: 'json', callback: function (json) {
     				}});
-        			
+
             	}).on('cancel', function (el, container) {//拖拽取消
             		var times = $("#childWindow").parent().attr("times");
             		$("#layui-layer-shade" + times).css({width: '100%'});
@@ -1102,7 +1158,7 @@ layui.config({
         });
     	initDeskTopMenuRightClick();
     }
-    
+
     //盒子标题双击
     $("body").on('dblclick', '#childWindowtext', function (e) {
     	$(this).hide();
@@ -1173,7 +1229,7 @@ layui.config({
 			$(".win-file-switch").css({'z-index': '0'});
 		}
 	});
-    
+
 	/**
 	 * 初始化菜单向文件夹中移动
 	 */
@@ -1211,7 +1267,7 @@ layui.config({
                         var thisMenuTitle = $(el).eq(0).attr("win-title");
                         var thisMenuOpenType = $(el).eq(0).attr("win-opentype");
                         var thisMenuMaxOpen = $(el).eq(0).attr("win-maxopen");
-						
+
                         var iconTypeI = "", iconSmallI = "", iconBigI = "";
                         if(thisMenuIcon.indexOf('fa-') != -1){//icon图标
                             iconTypeI = "winui-icon-font";
@@ -1225,7 +1281,7 @@ layui.config({
                         var menuStr = '<div class="winui-desktop-item sec-clsss-btn sec-btn" win-id="' + thisMenuId + '" win-url="' + thisMenuUrl + '" win-title="' + thisMenuTitle + '" win-opentype="' + thisMenuOpenType + '" win-maxopen="' + thisMenuMaxOpen + '" win-menuiconbg="' + thisMenuBg + '" win-menuiconcolor="' + thisMenuIconColor + '" win-icon="' + thisMenuIcon + '">'
                         + '<div class="winui-icon ' + iconTypeI + '" style="background-color: ' + thisMenuBg + '">' + iconBigI + '</div>'
                         + '<p>' + thisMenuTitle + '</p></div>';
-						
+
                         drawer.html(drawer.html() + iconSmallI);//在盒子内部追加icon
                         child.html(child.html() + menuStr);
                         $('#' + boxId).children('div[win-id="' + thisMenuId + '"]').remove();
@@ -1243,12 +1299,12 @@ layui.config({
                         AjaxPostUtil.request({url: reqBasePath + "sysevewindragdrop004", params: {rowId: thisMenuId, parentId: boxId}, type: 'json', callback: function (json) {
                         }});
                     }
-					
+
                 }
             });
         });
 	}
-	
+
 	$('.win-10-menu').on('click', function () {
 		$('.win-10-menu').removeClass("switch-checked");
 		$(".win-sys-wicket").css({'display': 'none'});
@@ -1299,7 +1355,7 @@ layui.config({
             }
         }
 	});
-	
+
 	function initDeskTopMenuRightClick(){
 		winui.desktop.initRightMenu({
 			item: [{
@@ -1432,12 +1488,12 @@ layui.config({
 		}
         window.location.reload();
     });
-	
+
 	//切换风格
 	$('body').on('click', '.winui-switching-style', function (e) {
 		location.href = "../../tpl/traditionpage/index.html";
 	});
-	
+
 	//顶部滚动事件
 	$('body').on('click', '#left-scoolor', function (e) {
 		var scoolor = $('.switch-menu').scrollLeft();
@@ -1453,13 +1509,13 @@ layui.config({
 			$('.switch-menu').scrollLeft(scoolor);
 		}
 	});
-	
+
 	initLoadTopScoolor();
 	//监听窗口变化
 	$(window).resize(function(){
 		initLoadTopScoolor();
 	});
-	
+
 	function initLoadTopScoolor(){
 		$('.switch-menu').scrollLeft(10);
 		if($('.switch-menu').scrollLeft() > 0){
@@ -1476,8 +1532,8 @@ layui.config({
 			etiger.socket.close();
 		}
 	}
-	
+
 	matchingLanguage();
-	
+
     exports('index', {});
 });

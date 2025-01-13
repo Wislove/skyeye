@@ -5,7 +5,8 @@ html #layuicss-skinlayimcss {
 	width: 1989px
 }
 
-body .layui-layim, body .layui-layim-chat {
+body .layui-layim,
+body .layui-layim-chat {
 	border: 1px solid #D9D9D9;
 	border-color: rgba(0, 0, 0, .05);
 	background-repeat: no-repeat;
@@ -30,13 +31,15 @@ body .layui-layim .layui-layer-title {
 	left: 0
 }
 
-body .layui-layim .layui-layer-content, body .layui-layim-chat .layui-layer-content
-	{
+body .layui-layim .layui-layer-content,
+body .layui-layim-chat .layui-layer-content {
 	overflow: visible
 }
 
-.layui-layim cite, .layui-layim em, .layui-layim-chat cite,
-	.layui-layim-chat em {
+.layui-layim cite,
+.layui-layim em,
+.layui-layim-chat cite,
+.layui-layim-chat em {
 	font-style: normal
 }
 
@@ -50,27 +53,32 @@ body .layui-layim .layui-layer-content, body .layui-layim-chat .layui-layer-cont
 	font-size: 14px
 }
 
-.layim-tab-content li h5 *, .layui-layim-info div, .layui-layim-skin li,
-	.layui-layim-tab li, .layui-layim-tool li {
+.layim-tab-content li h5 *,
+.layui-layim-info div,
+.layui-layim-skin li,
+.layui-layim-tab li,
+.layui-layim-tool li {
 	display: inline-block;
 	vertical-align: top;
 	*zoom: 1;
 	*display: inline
 }
 
-.layim-tab-content li h5 span, .layui-layim-info .layui-layim-user,
-	.layui-layim-list li p, .layui-layim-list li span, .layui-layim-remark
-	{
+.layim-tab-content li h5 span,
+.layui-layim-info .layui-layim-user,
+.layui-layim-list li p,
+.layui-layim-list li span,
+.layui-layim-remark {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap
 }
 
-.layui-layim-user>span{
+.layui-layim-user>span {
 	font-size: 12px
 }
 
-.layui-layim-user{
+.layui-layim-user {
 	cursor: pointer;
 }
 
@@ -95,18 +103,35 @@ body .layui-layim .layui-layer-content, body .layui-layim-chat .layui-layer-cont
 	color: #DD691D
 }
 
-.talk-user-photo{
-    width: 20px;
-    height: 20px;
-    border-radius: 20px;
-    border: 1px solid white;
-    margin-right: 10px;
-    cursor: pointer;
+.layim-msg-status {
+	display: inline-block;
+	position: absolute;
+	right: 10px;
+	top: 50%;
+	transform: translateY(-50%);
+	min-width: 16px;
+	height: 16px;
+	line-height: 16px;
+	padding: 0 4px;
+	text-align: center;
+	font-size: 12px;
+	background-color: #FF5722;
+	color: #fff;
+	border-radius: 10px;
 }
 
-.talk-bottom-icon{
+.talk-user-photo {
+	width: 20px;
+	height: 20px;
+	border-radius: 20px;
+	border: 1px solid white;
+	margin-right: 10px;
+	cursor: pointer;
+}
+
+.talk-bottom-icon {
 	font-size: 23px;
-    color: gray;
+	color: gray;
 }
 
 .layim-menu-box {
@@ -164,7 +189,8 @@ body .layui-layim .layui-layer-content, body .layui-layim-chat .layui-layer-cont
 	border-radius: 2px
 }
 
-.layui-layim-remark:focus, .layui-layim-remark:hover {
+.layui-layim-remark:focus,
+.layui-layim-remark:hover {
 	border: 1px solid #d2d2d2;
 	border-color: rgba(0, 0, 0, .15)
 }
@@ -211,7 +237,7 @@ body .layui-layim .layui-layer-content, body .layui-layim-chat .layui-layer-cont
 
 .layui-layim-tab li:hover {
 	opacity: .8;
-	filter: Alpha(opacity = 80)
+	filter: Alpha(opacity=80)
 }
 
 .layim-tab-content {
@@ -311,10 +337,10 @@ body .layui-layim .layui-layer-content, body .layui-layim-chat .layui-layer-cont
 
 .layui-layim-list li img {
 	position: absolute;
-    left: 20px;
-    top: 8px;
-    width: 25px;
-    height: 25px;
+	left: 20px;
+	top: 8px;
+	width: 25px;
+	height: 25px;
 	border-radius: 100%;
 }
 
@@ -428,7 +454,8 @@ body .layui-layim .layui-layer-content, body .layui-layim-chat .layui-layer-cont
 	background-color: #f6f6f6
 }
 
-.layui-layim-skin li, .layui-layim-skin li img {
+.layui-layim-skin li,
+.layui-layim-skin li img {
 	width: 86px;
 	height: 60px;
 	cursor: pointer
@@ -436,7 +463,7 @@ body .layui-layim .layui-layer-content, body .layui-layim-chat .layui-layer-cont
 
 .layui-layim-skin li img:hover {
 	opacity: .8;
-	filter: Alpha(opacity = 80)
+	filter: Alpha(opacity=80)
 }
 
 .layui-layim-skin li cite {
@@ -463,7 +490,8 @@ body .layui-layim-chat .layui-layer-content {
 	background: 0 0
 }
 
-.layim-chat-list li *, .layui-layim-min .layui-layer-content * {
+.layim-chat-list li *,
+.layui-layim-min .layui-layer-content * {
 	display: inline-block;
 	*display: inline;
 	*zoom: 1;
@@ -487,17 +515,19 @@ body .layui-layim-chat .layui-layer-content {
 	overflow-y: auto
 }
 
-.layim-chat-list li, .layui-layim-min .layui-layer-content {
+.layim-chat-list li,
+.layui-layim-min .layui-layer-content {
 	position: relative;
 	margin: 5px;
 	padding: 5px 30px 5px 5px;
 	line-height: 30px;
 	cursor: pointer;
 	border-radius: 3px;
-    height: 30px !important;
+	height: 30px !important;
 }
 
-.layim-chat-list li img, .layui-layim-min .layui-layer-content img {
+.layim-chat-list li img,
+.layui-layim-min .layui-layer-content img {
 	width: 40px;
 	height: 40px;
 	border-radius: 100%
@@ -511,7 +541,8 @@ body .layui-layim-chat .layui-layer-content {
 	white-space: nowrap
 }
 
-.layim-chat-list li span, .layui-layim-min .layui-layer-content span {
+.layim-chat-list li span,
+.layui-layim-min .layui-layer-content span {
 	width: 100px;
 	padding-left: 10px;
 	font-size: 16px;
@@ -575,12 +606,12 @@ body .layui-layim-chat .layui-layer-content {
 .layim-chat-title {
 	position: absolute;
 	top: -40px;
-    height: 40px;
+	height: 40px;
 }
 
 .layim-chat-other {
 	position: relative;
-    top: 7px;
+	top: 7px;
 	left: 15px;
 	padding-left: 60px;
 	cursor: default;
@@ -590,15 +621,15 @@ body .layui-layim-chat .layui-layer-content {
 	position: absolute;
 	left: 0;
 	top: 0;
-    width: 30px;
-    height: 30px;
+	width: 30px;
+	height: 30px;
 	border-radius: 100%;
 }
 
 .layim-chat-username {
 	position: relative;
 	top: 5px;
-    font-size: 13px;
+	font-size: 13px;
 }
 
 .layim-chat-status {
@@ -632,7 +663,8 @@ body .layui-layim-chat .layui-layer-content {
 	min-height: 68px;
 }
 
-.layim-chat-text, .layim-chat-user {
+.layim-chat-text,
+.layim-chat-user {
 	display: inline-block;
 	*display: inline;
 	*zoom: 1;
@@ -702,10 +734,11 @@ body .layui-layim-chat .layui-layer-content {
 	max-width: 100%;
 	vertical-align: middle;
 	float: right;
-    max-height: 100px;
+	max-height: 100px;
 }
 
-.layim-chat-text .layui-layim-file, .layui-layim-file {
+.layim-chat-text .layui-layim-file,
+.layui-layim-file {
 	display: block;
 	text-align: center
 }
@@ -765,7 +798,7 @@ body .layui-layim-chat .layui-layer-content {
 	-khtml-user-select: text;
 	-moz-user-select: text;
 	-ms-user-select: text;
-	 user-select: text;
+	user-select: text;
 }
 
 .layim-chat-mine .layim-chat-text:after {
@@ -783,66 +816,66 @@ body .layui-layim-chat .layui-layer-content {
 	width: 70%;
 }
 
-.layim-chat-right-mation{
-    height: 508px;
-    width: calc(30% - 30px);
-    float: right;
-    margin-top: -508px;
-    margin-right: 10px;
-    border-left: 1px solid gainsboro;
+.layim-chat-right-mation {
+	height: 508px;
+	width: calc(30% - 30px);
+	float: right;
+	margin-top: -508px;
+	margin-right: 10px;
+	border-left: 1px solid gainsboro;
 }
 
-.layim-chat-right-mation-user{
+.layim-chat-right-mation-user {
 	width: 100%;
 	float: left;
 	height: 262px;
 }
 
-.layim-chat-right-mation-user-title{
+.layim-chat-right-mation-user-title {
 	height: 38px;
-    line-height: 38px;
-    padding-left: 10px;
-    font-weight: 600;
-}
-
-.layim-chat-right-mation-user-content{
+	line-height: 38px;
 	padding-left: 10px;
-    padding-right: 10px;
+	font-weight: 600;
 }
 
-.layim-chat-right-mation-user-content p{
+.layim-chat-right-mation-user-content {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.layim-chat-right-mation-user-content p {
 	line-height: 30px;
-    font-size: 12px;
-    overflow: hidden;
-	text-overflow:ellipsis;
+	font-size: 12px;
+	overflow: hidden;
+	text-overflow: ellipsis;
 	white-space: nowrap;
 }
 
-.layim-chat-right-mation-main{
+.layim-chat-right-mation-main {
 	width: 100%;
 	float: left;
 	height: 158px;
 }
 
-.layim-chat-right-mation-main-title{
+.layim-chat-right-mation-main-title {
 	height: 38px;
-    line-height: 38px;
-    border-top: 1px solid gainsboro;
-    margin-top: 10px;
-    padding-left: 10px;
-    font-weight: 600;
-}
-
-.layim-chat-right-mation-main-content{
+	line-height: 38px;
+	border-top: 1px solid gainsboro;
+	margin-top: 10px;
 	padding-left: 10px;
-    padding-right: 10px;
+	font-weight: 600;
 }
 
-.layim-chat-right-mation-main-content p{
+.layim-chat-right-mation-main-content {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.layim-chat-right-mation-main-content p {
 	line-height: 30px;
-    font-size: 12px;
-    overflow: hidden;
-	text-overflow:ellipsis;
+	font-size: 12px;
+	overflow: hidden;
+	text-overflow: ellipsis;
 	white-space: nowrap;
 }
 
@@ -887,7 +920,7 @@ body .layui-layim-chat .layui-layer-content {
 	width: 100%;
 	height: 100%;
 	opacity: .01;
-	filter: Alpha(opacity = 1);
+	filter: Alpha(opacity=1);
 	cursor: pointer
 }
 
@@ -1036,6 +1069,7 @@ body .layui-layim-min {
 	margin: 0 10px;
 	padding: 5px 10px;
 	white-space: nowrap;
+	overflow: hidden;
 }
 
 .layui-layim-close .layui-layer-content span {
@@ -1077,7 +1111,9 @@ body .layui-layim-members .layui-layer-content {
 	overflow: auto;
 }
 
-.layim-add-img, .layim-add-remark, .layui-layim-members li {
+.layim-add-img,
+.layim-add-remark,
+.layui-layim-members li {
 	display: inline-block;
 	*display: inline;
 	*zoom: 1;
@@ -1112,7 +1148,7 @@ body .layui-layim-members .layui-layer-content {
 
 .layui-layim-members li img {
 	width: 40px;
-    height: 40px;
+	height: 40px;
 	border-radius: 100%
 }
 
@@ -1127,7 +1163,7 @@ body .layui-layim-members .layui-layer-content {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	color: gray;
-    font-size: 12px;
+	font-size: 12px;
 }
 
 body .layui-layim-contextmenu {
@@ -1167,7 +1203,8 @@ body .layui-layim-contextmenu .layui-layer-content {
 	font-size: 0
 }
 
-.layim-add-img img, .layim-add-remark p {
+.layim-add-img img,
+.layim-add-remark p {
 	margin-bottom: 10px
 }
 
@@ -1197,7 +1234,9 @@ body .layui-layim-contextmenu .layui-layer-content {
 	resize: none
 }
 
-.layim-tab-content, .layui-layim-face ul, .layui-layim-tab {
+.layim-tab-content,
+.layui-layim-face ul,
+.layui-layim-tab {
 	margin-bottom: 0
 }
 
@@ -1223,179 +1262,171 @@ body .layui-layim-contextmenu .layui-layer-content {
 	text-decoration: none
 }
 
-.group-list{
+.group-list {
 	margin-left: 25%;
 	height: 300px;
 }
 
-.friend-list{
+.friend-list {
 	height: 100%;
 }
 
-.friend-list-title{
-	
-}
+.friend-list-title {}
 
-.friend-list-box{
+.friend-list-box {
 	height: 90%;
 }
 
-.friend-list-box ul{
-    height: 100%;
-    overflow-y: auto;
+.friend-list-box ul {
+	height: 100%;
+	overflow-y: auto;
 }
 
-.choose-friend{
-	
-}
+.choose-friend {}
 
-.choose-friend-title{
-	
-}
+.choose-friend-title {}
 
-.choose-friend-box{
+.choose-friend-box {
 	height: 90%;
 }
 
-.layim-list-friend .layui-form-checkbox{
+.layim-list-friend .layui-form-checkbox {
 	float: right;
 	width: 25px;
-    height: 25px;
-    padding-right: 0px;
-    padding-left: 0px;
+	height: 25px;
+	padding-right: 0px;
+	padding-left: 0px;
 }
 
-.layim-list-friend .layui-form-checkbox i{
+.layim-list-friend .layui-form-checkbox i {
 	width: 25px;
-    height: 25px;
+	height: 25px;
 }
 
 /** 群列表 **/
-.msg-box{
+.msg-box {
 	width: 30%;
 	float: left;
 	border: 1px solid gainsboro;
-    border-radius: 3px;
-    margin-left: 2.5%;
-    margin-top: 10px;
+	border-radius: 3px;
+	margin-left: 2.5%;
+	margin-top: 10px;
 }
 
-.msg-group-mation{
+.msg-group-mation {
 	width: 100%;
 	float: left;
 	height: 120px;
-    padding: 5px;
+	padding: 5px;
 }
 
-.msg-group-mation-img{
+.msg-group-mation-img {
 	width: 30%;
 	float: left;
 	height: 75px;
 }
 
-.msg-group-mation-img img{
+.msg-group-mation-img img {
 	width: 70px;
-    height: 70px;
-    border-radius: 70px;
+	height: 70px;
+	border-radius: 70px;
 }
 
-.msg-group-mation-img img:HOVER{
+.msg-group-mation-img img:HOVER {
 	border: 1px solid #1E9FFF;
 	width: 65px;
-    height: 65px;
-    padding: 2px;
+	height: 65px;
+	padding: 2px;
 }
 
-.msg-group-mation-title{
+.msg-group-mation-title {
 	width: 70%;
 	float: left;
 }
 
-.msg-group-mation-name{
+.msg-group-mation-name {
 	width: 100%;
 	float: left;
 	margin-top: 5px;
 }
 
-.msg-group-mation-name font{
-    font-size: 16px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 1;
-    padding-right: 5px;
+.msg-group-mation-name font {
+	font-size: 16px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 1;
+	padding-right: 5px;
 }
 
-.msg-group-mation-num{
+.msg-group-mation-num {
 	width: 100%;
 	float: left;
 	margin-top: 7px;
 }
 
-.group-icon{
+.group-icon {
 	float: left;
-    width: 20px;
-    height: 20px;
-    color: gray;
+	width: 20px;
+	height: 20px;
+	color: gray;
 }
 
-.msg-group-mation-num font{
-    font-size: 13px;
-    float: left;
+.msg-group-mation-num font {
+	font-size: 13px;
+	float: left;
 }
 
-.msg-group-mation-desc{
+.msg-group-mation-desc {
 	width: calc(100% - 10px);
 	float: left;
 	height: 40px;
 	overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    padding-right: 5px;
-    padding-left: 5px;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	padding-right: 5px;
+	padding-left: 5px;
 }
 
-.msg-group-opratio{
+.msg-group-opratio {
 	width: 100%;
 	float: left;
 	height: 40px;
-    text-align: right;
-    line-height: 40px;
-    background-color: RGB(245,245,245);
-    border-top: 1px solid gainsboro;
+	text-align: right;
+	line-height: 40px;
+	background-color: RGB(245, 245, 245);
+	border-top: 1px solid gainsboro;
 }
 
-.msg-group-opratio>button{
+.msg-group-opratio>button {
 	margin-right: 5px;
 }
 
-.msg-group-opratio .in-this-group{
+.msg-group-opratio .in-this-group {
 	padding-right: 10px;
-    font-size: 12px;
-    color: gray;
-}
-
-.msg-group-opratio>button>i{
-	
-}
-
-.msg-group-opratio>font{
 	font-size: 12px;
-    color: gray;
-    margin-right: 10px;
+	color: gray;
 }
 
-.reSearch{
+.msg-group-opratio>button>i {}
+
+.msg-group-opratio>font {
+	font-size: 12px;
+	color: gray;
+	margin-right: 10px;
+}
+
+.reSearch {
 	position: inherit;
-    float: right;
-    margin-top: -38px;
+	float: right;
+	margin-top: -38px;
 }
 
 /** 消息列表 **/
-.invitation-box{
+.invitation-box {
 	width: 96%;
 	padding-left: 2%;
 	padding-right: 2%;
@@ -1403,130 +1434,116 @@ body .layui-layim-contextmenu .layui-layer-content {
 	margin-top: 10px;
 }
 
-.invitation-box-time{
+.invitation-box-time {
 	width: 100%;
 	float: left;
 }
 
-.invitation-box-time font{
+.invitation-box-time font {
 	font-size: 12px;
-    color: gainsboro;
+	color: gainsboro;
 }
 
-.invitation-mation{
+.invitation-mation {
 	width: 100%;
 	float: left;
 	margin-top: 5px;
 	border: 1px solid gainsboro;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 2px 2px 10px gainsboro;
+	padding: 10px;
+	border-radius: 5px;
+	box-shadow: 2px 2px 10px gainsboro;
 }
 
-.top-right-book{
+.top-right-book {
 	content: "";
-    top: 0%;
-    left: 0%;
-    width: 0px;
-    height: 0px;
-    border-bottom: 25px solid #eee;
-    border-left: 25px solid transparent;
-    -webkit-box-shadow: 6px 6px 7px rgba(0,0,0,0.3);
-    -moz-box-shadow: 6px 6px 7px rgba(0,0,0,0.3);
-    box-shadow: 6px 6px 7px rgba(0,0,0,0.3);
-    margin-top: -12px;
-    margin-left: -12px;
-    border-top-left-radius: 5px;
-    background-color: white;
+	top: 0%;
+	left: 0%;
+	width: 0px;
+	height: 0px;
+	border-bottom: 25px solid #eee;
+	border-left: 25px solid transparent;
+	-webkit-box-shadow: 6px 6px 7px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 6px 6px 7px rgba(0, 0, 0, 0.3);
+	box-shadow: 6px 6px 7px rgba(0, 0, 0, 0.3);
+	margin-top: -12px;
+	margin-left: -12px;
+	border-top-left-radius: 5px;
+	background-color: white;
 }
 
-.invitation-mation-img{
+.invitation-mation-img {
 	width: 15%;
 	float: left;
 }
 
-.invitation-mation-img img{
+.invitation-mation-img img {
 	width: 70px;
-    height: 70px;
-    border-radius: 70px;
+	height: 70px;
+	border-radius: 70px;
 }
 
-.invitation-mation-title{
+.invitation-mation-title {
 	width: 85%;
 	float: left;
 	height: 50px;
 }
 
-.invitation-mation-title font{
+.invitation-mation-title font {
 	color: blue;
 }
 
-.invitation-optrator{
+.invitation-optrator {
 	width: 85%;
 	float: left;
 	text-align: right;
 }
 
-.invitation-optrator font{
+.invitation-optrator font {
 	color: gainsboro;
 	font-size: 14px;
 }
 
-.left-talk-log{
+.left-talk-log {
 	width: 90%;
 	float: left;
 	min-height: 50px;
 }
 
-.left-talk-log-title{
+.left-talk-log-title {
 	color: blue;
-    font-size: 12px;
+	font-size: 12px;
 }
 
-.left-talk-log-title-name{
-	
-}
+.left-talk-log-title-name {}
 
-.left-talk-log-title-time{
+.left-talk-log-title-time {
 	margin-left: 8px;
 }
 
-.left-talk-log-content{
+.left-talk-log-content {
 	text-align: left;
 }
 
-.right-talk-log{
-    min-height: 50px;
-    width: 90%;
-    float: left;
-    margin-left: 10%;
+.right-talk-log {
+	min-height: 50px;
+	width: 90%;
+	float: left;
+	margin-left: 10%;
 }
 
-.right-talk-log-title{
-    text-align: right;
-    color: #15ea35;
-    font-size: 12px;
+.right-talk-log-title {
+	text-align: right;
+	color: #15ea35;
+	font-size: 12px;
 }
 
-.right-talk-log-title-name{
+.right-talk-log-title-name {
 	margin-left: 8px;
 }
 
-.right-talk-log-title-time{
-	
+.right-talk-log-title-time {}
+
+.right-talk-log-content {
+	text-align: right;
+	word-break: break-all;
 }
-
-.right-talk-log-content{
-    text-align: right;
-    word-break: break-all;
-}
-
-
-
-
-
-
-
-
-
-

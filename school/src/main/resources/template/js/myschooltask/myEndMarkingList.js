@@ -131,7 +131,7 @@ layui.config({
 	        id: 'messageTable',
 	        elem: '#messageTable',
 	        method: 'post',
-	        url: schoolBasePath + 'myschooltask003',
+	        url: schoolBasePath + 'queryMyExamList',//暂时用这个接口
 	        where: getTableParams(),
 	        even: false,
 		    page: true,
@@ -184,7 +184,7 @@ layui.config({
     
     //详情
 	function details(data) {
-		rowId = data.surveyId;
+		rowId = data.id;
 		_openNewWindows({
 			url: "../../tpl/examDetail/examPCDetail.html", 
 			title: "试卷信息",

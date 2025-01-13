@@ -17,11 +17,10 @@ layui.config({
 	    form.on('submit(formAddBean)', function (data) {
 	        if (winui.verifyForm(data.elem)) {
 	        	var params = {
-        			// surveyName: $("#surveyName").val(),
+        			surveyName: $("#surveyName").val(),
         			id: parent.rowId
 					// id: data.id
 	        	};
-				console.log(params)
 	        	AjaxPostUtil.request({url:schoolBasePath + "copyExamDirectory", params: params, type: 'json', callback: function (json) {
 					parent.layer.close(index);
 					parent.refreshCode = '0';

@@ -276,6 +276,7 @@ layui.config({
     				radioTd.push(s);
 	    		});
 	    		params.radioTd = JSON.stringify(radioTd);
+				console.log(params);
 	    		
     			AjaxPostUtil.request({url:schoolBasePath + "writeQuestion", params: params, type: 'json', callback: function (json) {
 					parent.layer.close(index);
