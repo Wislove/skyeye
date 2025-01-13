@@ -184,13 +184,13 @@ layui.config({
                         }));
 
                         // 设置tab
-                        tabIndex = json.bean.fileType;
-                        fileUrl = json.bean.fileUrl;
+                        tabIndex = json.rows[0].fileType;
+                        fileUrl = json.rows[0].fileUrl;
                         $('.layui-tab-title li').eq(tabIndex).addClass('layui-this').siblings().removeClass('layui-this');
                         $('.layui-tab-item').eq(tabIndex).addClass('layui-show').siblings().removeClass('layui-show');
 
                         // 设置是否允许拍照/上传图片选中
-                        $("input:radio[name=whetherUpload][value=" + json.bean.whetherUpload + "]").attr("checked", true);
+                        $("input:radio[name=whetherUpload][value=" + json.rows[0].whetherUpload + "]").attr("checked", true);
 
                         form.render();
 

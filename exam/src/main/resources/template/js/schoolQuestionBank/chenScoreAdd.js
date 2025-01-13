@@ -1,12 +1,4 @@
 
-// 知识点选择必备参数
-var schoolKnowledgeCheckType = 2;// 知识点选择类型：1.单选schoolKnowledgeMation；2.多选schoolKnowledgeMationList
-var schoolKnowledgeMationList = new Array();
-
-// 要删除的行id
-var deleteRowList = new Array();
-var deleteColumnList = new Array();
-
 layui.config({
 	base: basePath, 
 	version: skyeyeVersion
@@ -22,6 +14,14 @@ layui.config({
 		// tab当前下标
 		var tabIndex = 0;
 		var fileUrl = "";
+		// 知识点选择必备参数
+		var schoolKnowledgeCheckType = 2;// 知识点选择类型：1.单选schoolKnowledgeMation；2.多选schoolKnowledgeMationList
+		var schoolKnowledgeMationList = new Array();
+
+		// 要删除的行id
+		var deleteRowList = new Array();
+		var deleteColumnList = new Array();
+
 
 		// 获取当前登陆用户所属的学校列表
 		schoolUtil.queryMyBelongSchoolList(function (json) {
@@ -110,94 +110,142 @@ layui.config({
 				}
 			});
 		}
-		
+
 		function loadData(){
 			// 如果问题id不为空，则说明是编辑，加载编辑信息
 			if (!isNull(parent.rowId)){
-				AjaxPostUtil.request({url:schoolBasePath + "schoolquestionbank016", params: {rowId: parent.rowId}, type: 'json', callback: function (json) {
-					$("#schoolId").val(json.bean.schoolId);
-					showGrid({
-						id: "gradeId",
-						url: schoolBasePath + "grademation006",
-						params: {schoolId: $("#schoolId").val()},
-						pagination: false,
-						template: getFileContent('tpl/template/select-option.tpl'),
-						ajaxSendLoadBefore: function(hdb) {},
-						ajaxSendAfter:function(data) {
-							$("#gradeId").val(json.bean.gradeId);
-							showGrid({
-								id: "subjectId",
-								url: schoolBasePath + "schoolsubjectmation007",
-								params: {gradeId: $("#gradeId").val()},
-								pagination: false,
-								template: getFileContent('tpl/template/select-option.tpl'),
-								ajaxSendLoadBefore: function(hdb) {},
-								ajaxSendAfter:function(data) {
-									$("#subjectId").val(json.bean.subjectId);
-									form.render();
-								}
-							});
-						}
-					});
-					$("input:radio[name=type][value=" + json.bean.type + "]").attr("checked", true);
-					$("#fraction").val(json.bean.fraction);
-					// 知识点赋值
-					schoolKnowledgeMationList = [].concat(json.bean.knowledgeList);
-					var str = "";
-					$.each(schoolKnowledgeMationList, function(i, item) {
-						str += '<br><span class="layui-badge layui-bg-blue" style="height: 25px !important; line-height: 25px !important; margin: 5px 0px;">' + item.title + '</span>';
-					});
-					$("#schoolKnowledgeChoose").parent().html('<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" id="schoolKnowledgeChoose">知识点选择</button>' + str);
-
-					// 题目信息赋值
-					$(".surveyQuItemBody").html(getDataUseHandlebars($("#template").html(), json));
-
-					// 设置tab
-					tabIndex = json.bean.fileType;
-					fileUrl = json.bean.fileUrl;
-					$('.layui-tab-title li').eq(tabIndex).addClass('layui-this').siblings().removeClass('layui-this');
-					$('.layui-tab-item').eq(tabIndex).addClass('layui-show').siblings().removeClass('layui-show');
-
-					// 设置是否允许拍照/上传图片选中
-					$("input:radio[name=whetherUpload][value=" + json.bean.whetherUpload + "]").attr("checked", true);
-
-					// 加载答案数据
-					var answer = $(".surveyQuItemBody").find(".quCoItem table.quCoChenTable tr select.quChenScoreSelect");
-					var isDefaultAnswer = isJsonFormat(json.bean.isDefaultAnswer) ? JSON.parse(json.bean.isDefaultAnswer) : [];
-					var columuLength = $(".surveyQuItemBody").find(".quCoItem table.quCoChenTable tr td.quChenColumnTd").length;
-					var xIndex = 0;
-					var yIndex = 1;
-					$.each(answer, function(i) {
-						if(i % columuLength == 0){
-							xIndex++;
-							yIndex = 1;
-						} else {
-							yIndex++;
-						}
-						var _this = this;
-						$.each(isDefaultAnswer, function(j, item) {
-							if(item.x == xIndex && item.y == yIndex){
-								$(_this).val(item.value);
+				AjaxPostUtil.request({
+					url:schoolBasePath + "selectQuestionById",
+					params: {ids: parent.rowId},
+					type: 'json',
+					method: 'post',
+					callback: function (json) {
+						$("#schoolId").val(json.rows[0].schoolId);
+						//院系
+						showGrid({
+							id: "facultyId",
+							url: schoolBasePath + "queryFacultyListBySchoolId",
+							method: 'GET',
+							params: {schoolId: $("#schoolId").val()},
+							pagination: false,
+							template: getFileContent('tpl/template/select-option.tpl'),
+							ajaxSendLoadBefore: function(hdb) {},
+							ajaxSendAfter:function(data) {
+								$("#facultyId").val(json.rows[0].facultyId);
+								//专业
+								showGrid({
+									id: "majorId",
+									url: schoolBasePath + "queryMajorListByFacultyId",
+									method: 'GET',
+									params: {facultyId: $("#facultyId").val()},
+									pagination: false,
+									template: getFileContent('tpl/template/select-option.tpl'),
+									ajaxSendLoadBefore: function(hdb) {},
+									ajaxSendAfter:function(data) {
+										$("#majorId").val(json.rows[0].majorId);
+										//科目
+										showGrid({
+											id: "subjectId",
+											url: schoolBasePath + "querySubjectListByMajorId",
+											method: 'GET',
+											params: {majorId: $("#majorId").val()},
+											pagination: false,
+											template: getFileContent('tpl/template/select-option.tpl'),
+											ajaxSendLoadBefore: function(hdb) {},
+											ajaxSendAfter:function(data) {
+												$("#subjectId").val(json.rows[0].subjectId);
+												form.render();
+											}
+										})
+									}
+								});
 							}
 						});
-					});
+						$("input:radio[name=type][value=" + json.rows[0].type + "]").attr("checked", true);
+						$("#fraction").val(json.rows[0].fraction);
+						$("#quTitle").val(json.rows[0].quTitle);
 
-					form.render();
+						// 知识点赋值
+						// schoolKnowledgeMationList = [].concat(json.bean.knowledgeList);
+						// var str = "";
+						// $.each(schoolKnowledgeMationList, function(i, item) {
+						// 	str += '<br><span class="layui-badge layui-bg-blue" style="height: 25px !important; line-height: 25px !important; margin: 5px 0px;">' + item.title + '</span>';
+						// });
+						// $("#schoolKnowledgeChoose").parent().html('<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" id="schoolKnowledgeChoose">知识点选择</button>' + str);
 
-					// 加载上传和切换监听事件
-					pageLoadAfter();
-				}});
+						// 解析列和行数据
+						var questionChenColumn = [];
+						var questionChenRow = [];
+
+						try {
+							if (json.rows[0].columnTd && typeof json.rows[0].columnTd === 'string') {
+								questionChenColumn = JSON.parse(decodeURIComponent(json.rows[0].columnTd));
+							} else if (Array.isArray(json.rows[0].columnTd)) {
+								questionChenColumn = json.rows[0].columnTd;
+							}
+
+							if (json.rows[0].rowTd && typeof json.rows[0].rowTd === 'string') {
+								questionChenRow = JSON.parse(decodeURIComponent(json.rows[0].rowTd));
+							} else if (Array.isArray(json.rows[0].rowTd)) {
+								questionChenRow = json.rows[0].rowTd;
+							}
+						} catch (e) {
+							console.error('解析选项数据失败:', e);
+						}
+
+						// 题目信息赋值
+						$(".surveyQuItemBody").html(getDataUseHandlebars($("#template").html(),
+							{
+								bean: json.rows[0],
+								questionChenColumn: questionChenColumn,
+								questionChenRow: questionChenRow
+							}
+						));
+
+						// 设置tab
+						tabIndex = json.rows[0].fileType;
+						fileUrl = json.rows[0].fileUrl;
+						$('.layui-tab-title li').eq(tabIndex).addClass('layui-this').siblings().removeClass('layui-this');
+						$('.layui-tab-item').eq(tabIndex).addClass('layui-show').siblings().removeClass('layui-show');
+
+						// 设置是否允许拍照/上传图片选中
+						$("input:radio[name=whetherUpload][value=" + json.rows[0].whetherUpload + "]").attr("checked", true);
+
+						form.render();
+
+						// 加载答案数据
+						var answer = $(".surveyQuItemBody").find(".quCoItem table.quCoChenTable tr select.quChenScoreSelect");
+						var isDefaultAnswer = isJsonFormat(json.rows[0].isDefaultAnswer) ? JSON.parse(json.rows[0].isDefaultAnswer) : [];
+						var columuLength = questionChenColumn.length;
+						var xIndex = 0;
+						var yIndex = 1;
+						$.each(answer, function(i) {
+							if(i % columuLength == 0){
+								xIndex++;
+								yIndex = 1;
+							} else {
+								yIndex++;
+							}
+							var _this = this;
+							$.each(isDefaultAnswer, function(j, item) {
+								if(item.x == xIndex && item.y == yIndex){
+									$(_this).val(item.value);
+								}
+							});
+						});
+						// 加载上传和切换监听事件
+						pageLoadAfter();
+					}});
 			} else {
-				// 加载院系
-				initFaculty();
-				// 加载专业
-				initMajor();
-		 		// 题目信息赋值
+				// 加载年级
+				initGrade();
+				// 题目信息赋值
 				$(".surveyQuItemBody").html($("#noDataTemplate").html());
 				// 加载上传和切换监听事件
 				pageLoadAfter();
 			}
 		}
+
  		
 		matchingLanguage();
  		form.render();
@@ -216,7 +264,7 @@ layui.config({
  	        		fileUrl = "";
  	        	}
  	        	var params = {
-    				quId: quItemBody.find("input[name='quId']").val(),
+    				id: quItemBody.find("input[name='quId']").val(),
     				hv: quItemBody.find("input[name='hv']").val(),
     				// quType: quItemBody.find("input[name='quType']").val(),
     				randOrder: quItemBody.find("input[name='randOrder']").val(),

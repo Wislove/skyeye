@@ -153,7 +153,7 @@ layui.config({
 							})
 						}
 					});
-					$("input:radio[name=type][value=" + json.bean.type + "]").attr("checked", true);
+					$("input:radio[name=type][value=" + json.rows[0].type + "]").attr("checked", true);
 					$("#fraction").val(json.rows[0].fraction);//分数
 					// 知识点赋值
 					// schoolKnowledgeMationList = [].concat(json.rows[0].knowledgeList);
@@ -186,7 +186,7 @@ layui.config({
 					$('.layui-tab-item').eq(tabIndex).addClass('layui-show').siblings().removeClass('layui-show');
 
 					// 设置是否允许拍照/上传图片选中
-					$("input:radio[name=whetherUpload][value=" + json.bean.whetherUpload + "]").attr("checked", true);
+					$("input:radio[name=whetherUpload][value=" + json.rows[0].whetherUpload + "]").attr("checked", true);
 
 					form.render();
 
