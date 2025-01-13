@@ -654,6 +654,7 @@ layui.config({
 			$.fn.fullpage.setAllowScrolling(false);
 			var type = res.data.type;
 			var id = res.data.id;  // 获取当前聊天窗口ID（用户id或者群组id）
+			etiger.socket.currentChatId = id;
 			// 获取历史聊天记录
 			AjaxPostUtil.request({
 				url: reqBasePath + "companytalkgroup008",

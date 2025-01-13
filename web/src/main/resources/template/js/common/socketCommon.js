@@ -7,6 +7,7 @@ layui.define(["jquery"], function(exports) {
 		// 消息socket
     	etiger.socket = {
 			webSocket : "",
+			currentChatId: '',
 			init : function() {
 				if (!window.WebSocket) {
 					alert("你的浏览器不支持websocket，请升级到IE10以上浏览器，或者使用谷歌、火狐、360浏览器。");
@@ -33,7 +34,11 @@ layui.define(["jquery"], function(exports) {
 									layim.setFriendStatus(item, 'online');
 								});
 							} else if (jsonData.messageType == '4') {//普通消息
-								layimGetMessage(jsonData.username, jsonData.avatar, jsonData.fromId, 'friend', jsonData.textMessage);
+								layimGetMessage(jsonData.username, jsonData.avatar, jsonData.fromId, etiger.socket.talkType.FRIEND, jsonData.textMessage);
+								if (jsonData.fromId != etiger.socket.currentChatId) {
+									// 当前聊天窗口不是发送消息的人，则更新未读数
+									etiger.socket.addUnReadCount(jsonData.fromId, etiger.socket.talkType.FRIEND, 1);
+								}
 							} else if (jsonData.messageType == '5') {//系统消息
 								sendSystemMsg(jsonData);
 							} else if (jsonData.messageType == '6') {//全体消息
@@ -57,7 +62,11 @@ layui.define(["jquery"], function(exports) {
 									id: groupId //群组id
 								});
 							} else if (jsonData.messageType == '11') {//群聊
-								layimGetMessage(jsonData.username, jsonData.avatar, jsonData.id, 'group', jsonData.textMessage);
+								layimGetMessage(jsonData.username, jsonData.avatar, jsonData.id, etiger.socket.talkType.GROUP, jsonData.textMessage);
+								if (jsonData.fromId != etiger.socket.currentChatId) {
+									// 当前聊天窗口不是发送消息的人，则更新未读数
+									etiger.socket.addUnReadCount(jsonData.fromId, etiger.socket.talkType.GROUP, 1);
+								}
 							} else if (jsonData.messageType == '12') {//退出群聊--群主接收消息
 								var groupId = jsonData.groupId;
 								var userName = jsonData.userName;
