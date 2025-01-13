@@ -101,6 +101,54 @@ layui.define(["jquery"], function(exports) {
 			},
 			close: function(){
 				webSocket.close();
+			},
+
+			talkType: {
+				FRIEND: 'friend',
+				GROUP: 'group'
+			},
+			// 设置未读数
+			setUnReadCount: function(id, type, count) {
+				if (count > 0) {
+					// 直接在好友列表中添加未读数标记
+					if (type === 'friend') {
+						$('.layim-list-friend li[id="layim-friend' + id + '"]').append('<span class="layim-msg-status">' + count + '</span>');
+					} else {
+						$('.layim-list-group li[id="layim-group' + id + '"]').append('<span class="layim-msg-status">' + count + '</span>');
+					}
+					// 修改历史会话的未读数
+					$('.layim-list-history li[id="layim-history' + id + '"]').append('<span class="layim-msg-status">' + count + '</span>');
+				} else {
+					// 移除未读数标记
+					if (type === 'friend') {
+						$('.layim-list-friend li[id="layim-friend' + id + '"] span.layim-msg-status').remove();
+					} else {
+						$('.layim-list-group li[id="layim-group' + id + '"] span.layim-msg-status').remove();
+					}
+					// 修改历史会话的未读数
+					$('.layim-list-history li[id="layim-history' + id + '"] span.layim-msg-status').remove();
+				}
+			},
+
+			// 增加指定数量的未读数
+			addUnReadCount: function(id, type, count) {
+				if (count > 0) {
+					let oldCount = 0;
+					if (type === 'friend') {
+						oldCount = parseInt($('.layim-list-friend li[id="layim-friend' + id + '"] span.layim-msg-status').text() || 0);
+					} else {
+						oldCount = parseInt($('.layim-list-group li[id="layim-group' + id + '"] span.layim-msg-status').text() || 0);
+					}
+					count = oldCount + count;
+					// 直接在好友列表中添加未读数标记
+					if (type === 'friend') {
+						$('.layim-list-friend li[id="layim-friend' + id + '"]').append('<span class="layim-msg-status">' + count + '</span>');
+					} else {
+						$('.layim-list-group li[id="layim-group' + id + '"]').append('<span class="layim-msg-status">' + count + '</span>');
+					}
+					// 修改历史会话的未读数
+					$('.layim-list-history li[id="layim-history' + id + '"]').append('<span class="layim-msg-status">' + count + '</span>');
+				}
 			}
 		};
 
