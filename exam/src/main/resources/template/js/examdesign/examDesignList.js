@@ -210,8 +210,6 @@ layui.config({
 
     //复制试卷
     function fzWj(data) {
-        console.log(22222, data)
-        // id=data.id;
         rowId = data.id;
         surveyName = data.surveyName;
         _openNewWindows({
@@ -245,7 +243,7 @@ layui.config({
         });
     }
 
-    //结束调查
+    //结束
     function endSurvey(data, obj) {
         var msg = obj ? '确认结束试卷【' + obj.data.surveyName + '】的考试吗？' : '确认结束选中数据吗？';
         layer.confirm(msg, {icon: 3, title: '结束考试'}, function (index) {

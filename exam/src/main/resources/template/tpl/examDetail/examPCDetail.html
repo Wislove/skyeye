@@ -1192,8 +1192,8 @@
 			 	   	        id: 'messageTable',
 			 	   	        elem: '#messageTable',
 			 	   	        method: 'post',
-			 	   	        url: schoolBasePath + 'exam035',
-			 	   	        where: {surveyId: parent.rowId, field: '', order: ''},
+			 	   	        url: schoolBasePath + 'querySurveyAnswerById',//根据试卷id查询答卷信息
+			 	   	        where: {id: parent.rowId, field: '', order: ''},
 			 	   	        even: false,
 			 	   		    page: true,
 			 	   		    limits: [40, 80, 120],
