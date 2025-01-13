@@ -80,13 +80,23 @@
 			<tr id="quChenColumnModel">
 				<td class="quChenColumnTd">
 					<label class="editAble quCoOptionEdit">新项</label>
-					<div class="quItemInputCase"><input type="hidden" name="quItemId" value=""></div>
+					<div class="quItemInputCase">
+						<input type="hidden" name="quItemId" value="">
+						<input type="hidden" name="isNote" value="0">
+						<input type="hidden" name="checkType" value="NO">
+						<input type="hidden" name="isRequiredFill" value="0">
+					</div>
 				</td>
 			</tr>
 			<tr id="quChenRowModel">
 				<td class="quChenRowTd">
 					<label class="editAble quCoOptionEdit">新项</label>
-					<div class="quItemInputCase"><input type="hidden" name="quItemId" value=""></div>
+					<div class="quItemInputCase">
+						<input type="hidden" name="quItemId" value="">
+						<input type="hidden" name="isNote" value="0">
+						<input type="hidden" name="checkType" value="NO">
+						<input type="hidden" name="isRequiredFill" value="0">
+					</div>
 				</td>
 			</tr>
 		</table>
@@ -138,6 +148,8 @@
 					<input type="hidden" name="hv" value="{{hv}}">
 					<input type="hidden" name="randOrder" value="{{randOrder}}">
 					<input type="hidden" name="cellCount" value="{{cellCount}}">
+					<input type="hidden" name="contactsAttr" value="{{contactsAttr}}">
+					<input type="hidden" name="contactsField" value="{{contactsField}}">
 				</div>
 				<div class="surveyQuItem">
 					<div class="surveyQuItemContent" style="width: calc(100% - 20px);">
@@ -169,19 +181,33 @@
 								<table class="quCoChenTable" style="width: auto;">
 									<tr>
 										<td></td>
-										{{#each questionChenColumn}}
-										<td class="quChenColumnTd"><label class="editAble quCoOptionEdit">{{optionName}}</label>
-											<div class="quItemInputCase"><input type="hidden" name="quItemId" value="{{id}}"><input type="hidden" name="quItemSaveTag" value="1"></div>
+										{{#each columnTd}}
+										<td class="quChenColumnTd">
+											<label class="editAble quCoOptionEdit">{{optionName}}</label>
+											<div class="quItemInputCase">
+												<input type="hidden" name="quItemId" value="{{optionId}}">
+												<input type="hidden" name="isNote" value="{{isNote}}">
+												<input type="hidden" name="checkType" value="{{checkType}}">
+												<input type="hidden" name="isRequiredFill" value="{{isRequiredFill}}">
+											</div>
 										</td>
 										{{/each}}
 									</tr>
-									{{#each questionChenRow}}
+									{{#each rowTd}}
 									<tr class="quChenRowTr">
-										<td class="quChenRowTd"><label class="editAble quCoOptionEdit">{{optionName}}</label>
-											<div class="quItemInputCase"><input type="hidden" name="quItemId" value="{{id}}"><input type="hidden" name="quItemSaveTag" value="1"></div>
+										<td class="quChenRowTd">
+											<label class="editAble quCoOptionEdit">{{optionName}}</label>
+											<div class="quItemInputCase">
+												<input type="hidden" name="quItemId" value="{{optionId}}">
+												<input type="hidden" name="isNote" value="{{isNote}}">
+												<input type="hidden" name="checkType" value="{{checkType}}">
+												<input type="hidden" name="isRequiredFill" value="{{isRequiredFill}}">
+											</div>
 										</td>
-										{{#each questionChenColumn}}
-											<td><input type="text" class="questionChenColumnValue" value="{{isDefaultAnswer}}"></td>
+										{{#each ../columnTd}}
+										<td>
+											<input type="text" class="questionChenColumnValue">
+										</td>
 										{{/each}}
 									</tr>
 									{{/each}}
@@ -227,6 +253,8 @@
 					<input type="hidden" name="hv" value="2">
 					<input type="hidden" name="randOrder" value="0">
 					<input type="hidden" name="cellCount" value="0">
+					<input type="hidden" name="contactsAttr" value="0">
+					<input type="hidden" name="contactsField" value="0">
 				</div>
 				<div class="surveyQuItem">
 					<div class="surveyQuItemContent" style="width: calc(100% - 20px);">
@@ -256,18 +284,24 @@
 						<div class="quCoItem">
 							<div class="quCoItemLeftChenTableDiv">
 								<table class="quCoChenTable" style="width: auto;">
-									<tr>
+									<tr class="quChenColumnTr">
 										<td></td>
 										<td class="quChenColumnTd">
 											<label class="editAble quCoOptionEdit">列1</label>
 											<div class="quItemInputCase">
 												<input type="hidden" name="quItemId" value="">
+												<input type="hidden" name="isNote" value="0">
+												<input type="hidden" name="checkType" value="0">
+												<input type="hidden" name="isRequiredFill" value="0">
 											</div>
 										</td>
 										<td class="quChenColumnTd">
 											<label class="editAble quCoOptionEdit">列2</label>
 											<div class="quItemInputCase">
 												<input type="hidden" name="quItemId" value="">
+												<input type="hidden" name="isNote" value="0">
+												<input type="hidden" name="checkType" value="0">
+												<input type="hidden" name="isRequiredFill" value="0">
 											</div>
 										</td>
 									</tr>
@@ -276,6 +310,9 @@
 											<label class="editAble quCoOptionEdit">行1</label>
 											<div class="quItemInputCase">
 												<input type="hidden" name="quItemId" value="">
+												<input type="hidden" name="isNote" value="0">
+												<input type="hidden" name="checkType" value="0">
+												<input type="hidden" name="isRequiredFill" value="0">
 											</div>
 										</td>
 										<td>
@@ -290,6 +327,9 @@
 											<label class="editAble quCoOptionEdit">行2</label>
 											<div class="quItemInputCase">
 												<input type="hidden" name="quItemId" value="">
+												<input type="hidden" name="isNote" value="0">
+												<input type="hidden" name="checkType" value="0">
+												<input type="hidden" name="isRequiredFill" value="0">
 											</div>
 										</td>
 										<td>
