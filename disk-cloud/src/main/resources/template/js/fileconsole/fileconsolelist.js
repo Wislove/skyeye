@@ -529,7 +529,8 @@ layui.config({
 	$("body").on("click", ".openByMicrosoftOffice", function (e) {
 		$(".layui-dropdown-menu").hide();
 		getFileMation(operaterId, function (file) {
-			window.open('https://view.officeapps.live.com/op/view.aspx?src=http://gzwp.free.idcfengye.com/' + file.address);
+			const src = sysMainMation.fileBasePath + file.address;
+			window.open('https://view.officeapps.live.com/op/view.aspx?src=' + encodeURIComponent(src));
 		})
 	});
 	
