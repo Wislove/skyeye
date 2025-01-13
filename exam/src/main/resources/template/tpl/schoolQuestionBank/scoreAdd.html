@@ -178,12 +178,14 @@
 								<tr class="quScoreOptionTr">
 									<td class="quCoItemTableTd quOptionEditTd">
 										<label class="editAble quCoOptionEdit">{{optionName}}</label>
-										<div class="quItemInputCase"><input type="hidden" name="quItemId" value="{{id}}"></div>
+										<div class="quItemInputCase">
+											<input type="hidden" name="quItemId" value="{{id}}">
+										</div>
 									</td>
 									<td class="quCoItemTableTd">
 										<table class="scoreNumTable">
 											<tr>
-												{{{showParamInt02}}}
+												<td>1</td><td>2</td><td>3</td><td>4</td><td>5</td>
 											</tr>
 										</table>
 									</td>
@@ -226,7 +228,7 @@
 				<div class="surveyQuItem">
 					<div class="surveyQuItemContent" style="width: calc(100% - 20px);">
 						<div class="quCoTitle">
-							<div class="editAble quCoTitleEdit" >题标题？</div>
+							<div class="editAble quCoTitleEdit">题标题？</div>
 						</div>
 						<div class="layui-tab layui-tab-brief" lay-filter="question-insert-type">
           					<ul class="layui-tab-title">
