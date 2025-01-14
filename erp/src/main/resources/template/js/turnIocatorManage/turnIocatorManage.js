@@ -10,10 +10,9 @@ layui.config({
         form = layui.form,
         tableTree = layui.tableTreeDj;
     var ztree;
-    var id = GetUrlParam("id");
-    var parentId = GetUrlParam("parentId");
     var depotId = GetUrlParam("id");
-    var depotLevelId = GetUrlParam("depotLevelId");
+    var parentId = '';
+    var depotLevelId = '';
 
     authBtn('1720752315835');
 
@@ -27,7 +26,7 @@ layui.config({
     /********* tree 处理   start *************/
     fsTree.render({
         id: "treeDemo",
-        url: sysMainMation.erpBasePath + "queryDepotLevelByDepotId?depotId=" + id,
+        url: sysMainMation.erpBasePath + "queryDepotLevelByDepotId?depotId=" + depotId,
         checkEnable: false,
         showLine: false,
         showIcon: true,
@@ -108,7 +107,7 @@ layui.config({
     $("body").on("click", "#addBean", function() {
         parentId = 0;
         _openNewWindows({
-            url: "../../tpl/turnIocatorManage/addWarehouseLevelValue.html?depotId=" + id
+            url: "../../tpl/turnIocatorManage/addWarehouseLevelValue.html?depotId=" + depotId
                 + "&parentId=" + parentId,
             title: "新增仓库级别的值",
             pageId: "warehouseLevelValueAdd",
@@ -276,7 +275,7 @@ layui.config({
         var parentId = $(this).attr("folderId");
         // 打开一个新建布局
         _openNewWindows({
-            url: "../../tpl/turnIocatorManage/writeWarehouseLevel.html?depotId=" + id + "&parentId=" + parentId,
+            url: "../../tpl/turnIocatorManage/writeWarehouseLevel.html?depotId=" + depotId + "&parentId=" + parentId,
             title: "新增仓库级别",
             pageId: "writeWarehouseLevel",
             area: ['90vw', '90vh'],
