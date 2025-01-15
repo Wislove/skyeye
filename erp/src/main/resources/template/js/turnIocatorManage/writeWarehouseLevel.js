@@ -39,9 +39,9 @@ layui.config({
                 saveData: function (params) {
                     // 保存数据
                     AjaxPostUtil.request({url: sysMainMation.erpBasePath + "writeDepotLevel", params: params, type: 'json', method: "POST", callback: function(json) {
-                            parent.layer.close(index);
-                            parent.refreshCode = '0';
-                        }});
+                        parent.layer.close(index);
+                        parent.refreshCode = '0';
+                    }});
                 },
                 tableAddRowCallback: function (tableId) {
                     $("#addRow" + tableId).remove();

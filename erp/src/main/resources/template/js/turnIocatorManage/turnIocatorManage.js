@@ -253,12 +253,12 @@ layui.config({
         layer.confirm(systemLanguage["com.skyeye.deleteOperationMsg"][languageType], {icon: 3, title: systemLanguage["com.skyeye.deleteOperation"][languageType]}, function (index) {
             layer.close(index);
             clickType = 'folder';
-            deleteFileOrNote(folderId);
+            deleteDepotLevelById(folderId);
         });
     });
 
-    // 删除指定文件夹或笔记
-    function deleteFileOrNote(id){
+    // 删除
+    function deleteDepotLevelById(id){
         AjaxPostUtil.request({url: sysMainMation.erpBasePath + "deleteDepotLevelById", params: {id: id}, type: 'json', method: 'DELETE', callback: function (json) {
             winui.window.msg(systemLanguage["com.skyeye.deleteOperationSuccessMsg"][languageType], {icon: 1, time: 2000});
                 var selNode = ztree.getNodeByParam("id", id, null);
