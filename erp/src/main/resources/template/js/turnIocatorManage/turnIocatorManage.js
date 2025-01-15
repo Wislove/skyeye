@@ -247,7 +247,7 @@ layui.config({
         depotLevelId = nodeId;
     }
 
-    // 树操作--文件夹或者文件删除
+    // 树操作
     $("body").on("click", ".treedeleteFolderAndChild", function (e) {
         hideRMenu();
         layer.confirm(systemLanguage["com.skyeye.deleteOperationMsg"][languageType], {icon: 3, title: systemLanguage["com.skyeye.deleteOperation"][languageType]}, function (index) {
