@@ -201,7 +201,7 @@ layui.config({
 	function stateChange(data) {
 		stateChangeData = data;
 		_openNewWindows({
-			url: "../../tpl/crmOpportunity/stateChange.html",
+			url: "../../tpl/crmOpportunity/stateChange.html?objectId=" + objectId,
 			title: "状态变更",
 			pageId: "stateChange",
 			area: ['80vw', '20vh'],

@@ -9,37 +9,40 @@ layui.config({
 	var index = parent.layer.getFrameIndex(window.name);
 	var $ = layui.$;
 	var stateChangeData = parent.stateChangeData;
+	const objectId = GetUrlParam("objectId");
 
-	if(parent.stateChangeData.state == 'pass'){//审核通过
+	var authPermission = teamObjectPermissionUtil.checkTeamBusinessAuthPermission(objectId, 'crmOpportunityAuthEnum');
+
+	if (parent.stateChangeData.state == 'pass') {//审核通过
 		$(".layui-form-item").removeClass("layui-hide");
-	} else if (parent.stateChangeData.state == 'initialCommunication'){//初期沟通
-		$(".typeQuotedPrice").removeClass("layui-hide");
-		$(".typeTender").removeClass("layui-hide");
-		$(".typeNegotiate").removeClass("layui-hide");
-		$(".typeTurnover").removeClass("layui-hide");
-		$(".typeLayAside").removeClass("layui-hide");
-	} else if (parent.stateChangeData.state == 'schemeAndQuotation'){//方案与报价
-		$(".typeConmunicate").removeClass("layui-hide");
-		$(".typeTender").removeClass("layui-hide");
-		$(".typeNegotiate").removeClass("layui-hide");
-		$(".typeTurnover").removeClass("layui-hide");
-		$(".typeLayAside").removeClass("layui-hide");
-	} else if (parent.stateChangeData.state == 'competitionAndBidding'){//竞争与投标
-		$(".typeConmunicate").removeClass("layui-hide");
-		$(".typeQuotedPrice").removeClass("layui-hide");
-		$(".typeNegotiate").removeClass("layui-hide");
-		$(".typeTurnover").removeClass("layui-hide");
-		$(".typeLayAside").removeClass("layui-hide");
-	} else if (parent.stateChangeData.state == 'businessNegotiation'){//商务谈判
-		$(".typeConmunicate").removeClass("layui-hide");
-		$(".typeTender").removeClass("layui-hide");
-		$(".typeQuotedPrice").removeClass("layui-hide");
-		$(".typeTurnover").removeClass("layui-hide");
-		$(".typeLayAside").removeClass("layui-hide");
-	} else if (parent.stateChangeData.state == 'layAside'){//搁置
-		$(".typeConmunicate").removeClass("layui-hide");
+	} else if (parent.stateChangeData.state == 'initialCommunication') {//初期沟通
+		if (authPermission.quotedPrice) $(".typeQuotedPrice").removeClass("layui-hide");
+		if (authPermission.tender) $(".typeTender").removeClass("layui-hide");
+		if (authPermission.negotiate) $(".typeNegotiate").removeClass("layui-hide");
+		if (authPermission.turnover) $(".typeTurnover").removeClass("layui-hide");
+		if (authPermission.layAside) $(".typeLayAside").removeClass("layui-hide");
+	} else if (parent.stateChangeData.state == 'schemeAndQuotation') {//方案与报价
+		if (authPermission.conmunicate) $(".typeConmunicate").removeClass("layui-hide");
+		if (authPermission.tender) $(".typeTender").removeClass("layui-hide");
+		if (authPermission.negotiate) $(".typeNegotiate").removeClass("layui-hide");
+		if (authPermission.turnover) $(".typeTurnover").removeClass("layui-hide");
+		if (authPermission.layAside) $(".typeLayAside").removeClass("layui-hide");
+	} else if (parent.stateChangeData.state == 'competitionAndBidding') {//竞争与投标
+		if (authPermission.conmunicate) $(".typeConmunicate").removeClass("layui-hide");
+		if (authPermission.quotedPrice) $(".typeQuotedPrice").removeClass("layui-hide");
+		if (authPermission.negotiate) $(".typeNegotiate").removeClass("layui-hide");
+		if (authPermission.turnover) $(".typeTurnover").removeClass("layui-hide");
+		if (authPermission.layAside) $(".typeLayAside").removeClass("layui-hide");
+	} else if (parent.stateChangeData.state == 'businessNegotiation') {//商务谈判
+		if (authPermission.conmunicate) $(".typeConmunicate").removeClass("layui-hide");
+		if (authPermission.tender) $(".typeTender").removeClass("layui-hide");
+		if (authPermission.quotedPrice) $(".typeQuotedPrice").removeClass("layui-hide");
+		if (authPermission.turnover) $(".typeTurnover").removeClass("layui-hide");
+		if (authPermission.layAside) $(".typeLayAside").removeClass("layui-hide");
+	} else if (parent.stateChangeData.state == 'layAside') {//搁置
+		if (authPermission.conmunicate) $(".typeConmunicate").removeClass("layui-hide");
 	}
-	$(".typeLosingTable").removeClass("layui-hide");
+	if (authPermission.losingTable) $(".typeLosingTable").removeClass("layui-hide");
 	//初期沟通
 	$("body").on("click", "#conmunicate", function() {
 		var msg = '确认【' + stateChangeData.title + '】进入初期沟通状态吗？';
