@@ -9,17 +9,14 @@ layui.config({
     version: skyeyeVersion
 }).extend({
     window: 'js/winui.window'
-}).define(['window', 'table', 'jquery', 'winui', 'form', 'tagEditor', 'laydate'], function (exports) {
+}).define(['window', 'jquery', 'winui', 'form', 'laydate'], function (exports) {
     winui.renderColor();
     var index = parent.layer.getFrameIndex(window.name);
     var $ = layui.$,
-        form = layui.form,
-        tagEditor = layui.tagEditor,
-        laydate = layui.laydate,
-        table = layui.table;
+        form = layui.form
+        laydate = layui.laydate;
     var selOption = getFileContent('tpl/template/select-option.tpl');
     var serviceClassName = sysServiceMation["purchaseRequest"]["key"];
-    console.log(serviceClassName)
     // 表单模板信息
     let beanTemplate = $("#beanTemplate").html();
     var id = GetUrlParam("id");
