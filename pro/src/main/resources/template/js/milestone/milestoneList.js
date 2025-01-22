@@ -55,6 +55,9 @@ layui.config({
             { field: 'imported', title: '重要性', width: 90, templet: function (d) {
                 return skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("milestoneImported", 'id', d.imported, 'name');
             }},
+            { field: 'processInstanceId', title: '流程ID', width: 80, align: 'center', templet: function (d) {
+                return '<a lay-event="processDetails" class="notice-title-click">' + getNotUndefinedVal(d.processInstanceId) + '</a>';
+            }},
             { field: 'state', title: '状态', width: 90, templet: function (d) {
                 return skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("milestoneStateEnum", 'id', d.state, 'name');
             }},
