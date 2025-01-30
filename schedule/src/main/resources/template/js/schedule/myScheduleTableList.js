@@ -39,7 +39,7 @@ layui.config({
         ]],
         done: function(json) {
             matchingLanguage();
-            initTableSearchUtil.initAdvancedSearch(this, json.searchFilter, form, "请输入名称", function () {
+            initTableSearchUtil.initAdvancedSearch(this, json.searchFilter, form, "请输入标题", function () {
                 table.reloadData("messageTable", {page: {curr: 1}, where: getTableParams()});
             });
         }
