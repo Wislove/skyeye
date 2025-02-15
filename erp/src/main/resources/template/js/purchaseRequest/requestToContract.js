@@ -16,7 +16,7 @@ layui.config({
         form = layui.form
         laydate = layui.laydate;
     var selOption = getFileContent('tpl/template/select-option.tpl');
-    var serviceClassName = sysServiceMation["purchaseRequest"]["key"];
+    var serviceClassName = sysServiceMation["supplierContract"]["key"];
     // 表单模板信息
     let beanTemplate = $("#beanTemplate").html();
     var id = GetUrlParam("id");
@@ -167,7 +167,6 @@ layui.config({
                 if (winui.verifyForm(data.elem)) {
                     var tabIndex=$(this).attr("tabIndex")
                     activitiUtil.startProcess(serviceClassName, null, function (approvalId) {
-                        console.log(approvalId)
                         saveData("2", approvalId, tabIndex);
                     });
                 }
