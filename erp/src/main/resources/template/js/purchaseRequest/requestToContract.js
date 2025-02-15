@@ -9,7 +9,7 @@ layui.config({
     version: skyeyeVersion
 }).extend({
     window: 'js/winui.window'
-}).define(['window', 'jquery', 'winui', 'form', 'laydate'], function (exports) {
+}).define(['window', 'jquery', 'winui', 'form', 'laydate', 'tagEditor'], function (exports) {
     winui.renderColor();
     var index = parent.layer.getFrameIndex(window.name);
     var $ = layui.$,
@@ -165,7 +165,7 @@ layui.config({
             // 走工作流的提交审批
             form.on('submit(formSubOneBean' + i + ')', function(data) {
                 if (winui.verifyForm(data.elem)) {
-                    var tabIndex=$(this).attr("tabIndex")
+                    var tabIndex = $(this).attr("tabIndex")
                     activitiUtil.startProcess(serviceClassName, null, function (approvalId) {
                         saveData("2", approvalId, tabIndex);
                     });
