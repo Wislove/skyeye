@@ -7,7 +7,7 @@
 
 **1. Skyeye云【源代码】针对 {星球用户} 开源。拿到源码后可进行学习、毕设、企业等使用。**
 
-**2. [开发文档](https://articles.zsxq.com/id_xi3xhacte72g.html)   [视频教程](https://space.bilibili.com/87396008/channel/series)**
+**2. [开发文档](https://articles.zsxq.com/id_xi3xhacte72g.html)   [视频教程](https://space.bilibili.com/87396008/channel/series)    [业务操作教程](https://www.bilibili.com/video/BV16mwVeKE4X/?vd_source=714dd9434dc2ba981f2f47b7aa44be38)**
 
 **3. [常见问题](https://gitee.com/dromara/skyeye/blob/company_server/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98.md)，优先看这个。《《《《《《《《《《《《《《这个文件必看，有`移动端`的详细说明。**
 
