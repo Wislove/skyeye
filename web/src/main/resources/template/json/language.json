@@ -75,7 +75,7 @@
   
   "com.skyeye.details": {"zh": "详情", "cn": "Details"},
   "com.skyeye.detailsPageTitle": {"zh": "详情", "cn": "Details"},
-  
+  "com.skyeye.processInstenceDetailsPageTitle": {"zh": "流程实例详情", "cn": "Process Instance Details"},
   "com.skyeye.documentNumber": {"zh": "单据编号", "cn": "Document Number"},
   "com.skyeye.documentDate": {"zh": "单据日期", "cn": "Document Date"},
   "com.skyeye.quantity": {"zh": "数量", "cn": "Quantity"},
