@@ -9,10 +9,8 @@ layui.config({
     var $ = layui.$,
         form = layui.form,
         table = layui.table;
-
     var objectId = GetUrlParam("objectId");
 
-    authBtn('1624176433377');
     // 数据源列表
     table.render({
         id: 'messageTable',

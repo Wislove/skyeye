@@ -22,7 +22,7 @@ layui.define(['jquery', 'layer', 'winui'], function (exports) {
         $(this.data).each(function (index, item) {
         	var id = 'win-id="' + item.id + '"',
                 pageType = 'win-pageType="' + item.pageType + '"',
-                url = 'win-url="' + item.pageURL + '"',
+                url = 'win-url="' + item.pageUrl + '"',
         		title = 'win-title="' + item.name + '"',
         		opentype = 'win-opentype="' + item.openType + '"',
         		maxOpen = 'win-maxOpen="' + item.maxOpen + '"',
@@ -35,7 +35,7 @@ layui.define(['jquery', 'layer', 'winui'], function (exports) {
 
         	var iconParams = desktopMenuUtil.getDecktopMenuIcon(item);
         	if (isNull(item.childs) || item.childs.length == 0) {//没有子菜单
-        		if(item.pageURL == '--' && item.menuLevel == '0'){
+        		if(item.pageUrl == '--' && item.menuLevel == '0'){
         			html += `<div class="winui-desktop-item win-menu-group" id="${item.id}" ${id} ${pageType} ${url} ${title} ${opentype} ${maxOpen} ${iconBg} ${iconColor}>
 								<div class="winui-icon ${iconParams.isFaIcon}">
 									<div class="icon-drawer"></div>
@@ -64,7 +64,7 @@ layui.define(['jquery', 'layer', 'winui'], function (exports) {
         		$(item.childs).each(function (index, bean) {
         			var cId = 'win-id="' + bean.id + '"',
                         cPageType = 'win-pageType="' + bean.pageType + '"',
-                        cPageUrl = 'win-url="' + bean.pageURL + '"',
+                        cPageUrl = 'win-url="' + bean.pageUrl + '"',
         				cTitle = 'win-title="' + bean.name + '"',
         				cOpenType = 'win-opentype="' + bean.openType + '"',
         				cMaxOpen = 'win-maxOpen="' + bean.maxOpen + '"',
@@ -74,7 +74,7 @@ layui.define(['jquery', 'layer', 'winui'], function (exports) {
 
 					var childIconParams = desktopMenuUtil.getDecktopMenuIcon(bean);
         			// 如果子菜单的所属桌面和父菜单的一样
-                    if(bean.deskTopId === item.deskTopId){
+                    if(bean.desktopId === item.desktopId){
         				childsIconContent += childIconParams.smallIcon;
         				childsHtml += `<div class="winui-desktop-item sec-clsss-btn sec-btn" ${cId} ${cPageType} ${cPageUrl} ${cTitle} ${cOpenType} ${cMaxOpen} ${cIconBg} ${cIconColor} + ${childIconParams.menuIcon} ${cSysWinUrl}>`;
         				if (!isNull(bean.iconBg)){
@@ -98,11 +98,11 @@ layui.define(['jquery', 'layer', 'winui'], function (exports) {
             			childDeskHtml += '</div>';
             			childDeskHtml += '<p>' + bean.name + '</p>';
             			childDeskHtml += '</div>';
-            			if(isNull(bean.deskTopId)){
+            			if(isNull(bean.desktopId)){
                     		$('.winui-desktop>.fixed-page').append(childDeskHtml);
                     	} else {
-                    		if($('.winui-desktop').find("article[id='" + bean.deskTopId + "']").length > 0){
-                    			$('.winui-desktop').find("article[id='" + bean.deskTopId + "']").append(childDeskHtml);
+                    		if($('.winui-desktop').find("article[id='" + bean.desktopId + "']").length > 0){
+                    			$('.winui-desktop').find("article[id='" + bean.desktopId + "']").append(childDeskHtml);
                     		} else {
                     			$('.winui-desktop>.fixed-page').append(childDeskHtml);
                     		}
@@ -118,11 +118,11 @@ layui.define(['jquery', 'layer', 'winui'], function (exports) {
         		html += '<p>' + item.name + '</p>';
         		html += '</div>';
         	}
-        	if(isNull(item.deskTopId)){
+        	if(isNull(item.desktopId)){
         		$('.winui-desktop>.fixed-page').append(html);
         	} else {
-        		if($('.winui-desktop').find("article[id='" + item.deskTopId + "']").length > 0){
-        			$('.winui-desktop').find("article[id='" + item.deskTopId + "']").append(html);
+        		if($('.winui-desktop').find("article[id='" + item.desktopId + "']").length > 0){
+        			$('.winui-desktop').find("article[id='" + item.desktopId + "']").append(html);
         		} else {
         			$('.winui-desktop>.fixed-page').append(html);
         		}

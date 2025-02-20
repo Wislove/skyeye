@@ -12,7 +12,7 @@ layui.config({
 	    	form = layui.form;
 	    var colorpicker = layui.colorpicker;
 	    
-	    var deskTopId = parent.$("#desktop-sel").val();
+	    var desktopId = parent.$("#desktop-sel").val();
 	    
 	    colorpicker.render({
  		    elem: '#menuIconBg',
@@ -67,7 +67,7 @@ layui.config({
         			menuIconType: data.field.menuIconType,
         			menuIconBg: $('#menuIconBginput').val(),
         			menuIconColor: $('#menuIconColorinput').val(),
-        			deskTopId: deskTopId,
+					desktopId: desktopId,
  	        	};
 	        	
 	        	if (data.field.menuIconType == '1'){

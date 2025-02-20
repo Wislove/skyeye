@@ -84,11 +84,11 @@ layui.config({
         }
     });
 
-    // 转领料出库
+    // 转补料出库
     function turnPatchMaterialToTurnOut(data) {
         _openNewWindows({
             url: "../../tpl/erpPick/turnPatchMaterialToTurnOut.html?id=" + data.id,
-            title: "转领料出库",
+            title: "转补料出库",
             pageId: "turnPatchMaterialToTurnOut",
             area: ['90vw', '90vh'],
             callBack: function (refreshCode) {

@@ -933,7 +933,7 @@ var dsFormTableUtil = {
 
             if (pageMation.whetherChoose == 'checkbox') {
                 // 开启了多选表格
-                var chooseListMation = parent.chooseListMation;
+                var chooseListMation = parent.chooseListMation || [];
                 var ids = [];
                 $.each(chooseListMation, function (i, item) {
                     ids.push(item.id);

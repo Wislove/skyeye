@@ -9,14 +9,14 @@ layui.config({
     version: skyeyeVersion
 }).extend({
     window: 'js/winui.window'
-}).define(['window', 'jquery', 'winui', 'form', 'laydate'], function (exports) {
+}).define(['window', 'jquery', 'winui', 'form', 'laydate', 'tagEditor'], function (exports) {
     winui.renderColor();
     var index = parent.layer.getFrameIndex(window.name);
     var $ = layui.$,
         form = layui.form
         laydate = layui.laydate;
     var selOption = getFileContent('tpl/template/select-option.tpl');
-    var serviceClassName = sysServiceMation["purchaseRequest"]["key"];
+    var serviceClassName = sysServiceMation["supplierContract"]["key"];
     // 表单模板信息
     let beanTemplate = $("#beanTemplate").html();
     var id = GetUrlParam("id");
@@ -165,9 +165,8 @@ layui.config({
             // 走工作流的提交审批
             form.on('submit(formSubOneBean' + i + ')', function(data) {
                 if (winui.verifyForm(data.elem)) {
-                    var tabIndex=$(this).attr("tabIndex")
+                    var tabIndex = $(this).attr("tabIndex")
                     activitiUtil.startProcess(serviceClassName, null, function (approvalId) {
-                        console.log(approvalId)
                         saveData("2", approvalId, tabIndex);
                     });
                 }

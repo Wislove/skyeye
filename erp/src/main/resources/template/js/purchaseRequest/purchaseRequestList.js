@@ -129,7 +129,7 @@ layui.config({
     function toContract(data) {
         _openNewWindows({
             url: '../../tpl/purchaseRequest/requestToContract.html?id=' + data.id,
-            title: '采购合同',
+            title: '转采购合同',
             pageId: "requestToContract",
             area: ['90vw', '90vh'],
             callBack: function (refreshCode) {

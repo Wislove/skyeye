@@ -11,32 +11,155 @@
     <link href="../../assets/lib/winui/css/winui.css" rel="stylesheet" />
     <link href="../../assets/lib/winui/css/lockscreen.css" rel="stylesheet" />
 	<link href="../../assets/lib/winui/css/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <script>
         /^http(s*):\/\//.test(location.href) || alert('请先部署到 localhost 下再访问');
     </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #ffffff 0%, #f0f5ff 100%);
+            overflow: hidden;
+        }
+        
+        /* 柔和的背景动画 */
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        .shape {
+            position: absolute;
+            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+            animation: float 20s infinite;
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(100px, 100px) rotate(90deg); }
+            50% { transform: translate(0, 200px) rotate(180deg); }
+            75% { transform: translate(-100px, 100px) rotate(270deg); }
+        }
+
+        /* 登录框样式 */
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease;
+        }
+
+        .login-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .login-input {
+            background: #f8f9ff !important;
+            border: none !important;
+            color: #1a202c !important;
+            border-radius: 10px !important;
+            padding: 15px 20px !important;
+            font-size: 16px !important;
+            transition: all 0.3s ease;
+            border: 1px solid #e5e7eb !important;
+        }
+        
+        .login-input::placeholder {
+            color: #94a3b8;
+        }
+        
+        .login-input:focus {
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+            transform: translateY(-2px);
+            background: white !important;
+            border-color: #6366f1 !important;
+        }
+        
+        .login-input-icon {
+            left: 20px;
+            top: 50%;
+            position: absolute;
+            transform: translateY(-50%);
+            color: #6366f1;
+            font-size: 18px;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+        
+        .login-input-with-icon {
+            padding-left: 55px !important;
+        }
+        
+        .login-btn {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            padding: 15px !important;
+            font-size: 18px !important;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: 10px !important;
+            transition: all 0.3s ease;
+            color: white !important;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+            background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+        }
+        
+        .login-title {
+            color: #1e293b !important;
+            font-size: 2.3rem !important;
+            letter-spacing: 3px;
+            font-weight: 700;
+        }
+        
+        .common-footer {
+            color: #718096;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+    </style>
 </head>
-<body  class="bg-gray-100 flex justify-center dlbox">
-	<div class="max-w-screen-xl m-0 sm:m-20 bg-white shadow sm:rounded-lg flex justify-center flex-1">
-		<div class="flex-1 bg-indigo-100 text-center hidden lg:flex">
+<body class="flex justify-center dlbox">
+    <div class="floating-shapes" id="shapes"></div>
+	<div class="max-w-screen-xl m-0 sm:m-20 shadow sm:rounded-lg flex justify-center flex-1">
+		<div class="flex-1 bg-gradient-to-r from-indigo-500 to-purple-600 text-center hidden lg:flex">
 			<div class="m-12 xl:m-16 w-full bg-contain bg-center bg-no-repeat" style="background-image: url('../../assets/images/common/left_logo.png');"></div>
 		</div>
 		<div class="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
 			<div class="mt-12 flex flex-col items-center">
-				<h1 class="text-2xl xl:text-3xl font-extrabold">Skyeye云智能制造平台</h1>
+				<h1 class="text-2xl xl:text-3xl font-extrabold login-title">Skyeye云智能制造平台</h1>
 				<div class="w-full flex-1 mt-8">
-					<div class="my-12 border-b text-center">
-						<div class="leading-none px-2 inline-block text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">登录</div>
-					</div>
-
 					<div class="mx-auto max-w-xs">
-						<form class="layui-form" style="margin-top: 60px;">
-							<input class="w-full px-8 py-4 rounded-lg font-medium border placeholder-gray-500" id="userCode" type="text" placeholder="用户名">
-							<input class="w-full px-8 py-4 rounded-lg font-medium border placeholder-gray-500 mt-5" id="password" type="password" placeholder="密码">
+						<form class="layui-form login-form" style="margin-top: 60px;">
+							<div class="relative">
+								<i class="fas fa-user login-input-icon"></i>
+								<input class="w-full px-8 py-4 rounded-lg font-medium border placeholder-gray-500 login-input login-input-with-icon" id="userCode" type="text" placeholder="用户名">
+							</div>
+							<div class="relative mt-5">
+								<i class="fas fa-lock login-input-icon"></i>
+								<input class="w-full px-8 py-4 rounded-lg font-medium border placeholder-gray-500 login-input login-input-with-icon" id="password" type="password" placeholder="密码">
+							</div>
 							<button lay-submit lay-filter="login" id="loginBtn"
-									class="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg ease-in-out flex items-center justify-center">
-								登 录
+									class="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg ease-in-out flex items-center justify-center login-btn">
+								<i class="fas fa-sign-in-alt mr-2"></i>登 录
 							</button>
-							<p class="mt-6 text-xs text-gray-600 text-center">我同意并遵守服务协议</p>
+							<p class="mt-6 text-xs text-gray-600 text-center">
+								<i class="fas fa-check-circle text-green-500 mr-1"></i>
+								我同意并遵守
+								<a href="javascript:;" class="text-indigo-500 hover:text-indigo-600">服务协议</a>
+							</p>
 						</form>
 					</div>
 				</div>
@@ -58,4 +181,25 @@
 	    }).use('login');
 	</script>
 </body>
+<script>
+	function createShapes() {
+		const shapes = document.getElementById('shapes');
+		const colors = ['#6366f1', '#4f46e5', '#818cf8'];
+		for(let i = 0; i < 15; i++) {
+			const shape = document.createElement('div');
+			shape.className = 'shape';
+			const size = Math.random() * 150 + 50;
+			shape.style.width = `${size}px`;
+			shape.style.height = `${size}px`;
+			shape.style.left = `${Math.random() * 100}%`;
+			shape.style.top = `${Math.random() * 100}%`;
+			shape.style.animationDelay = `${Math.random() * 5}s`;
+			shape.style.background = colors[Math.floor(Math.random() * colors.length)];
+			shape.style.opacity = '0.08';
+			shape.style.transform = `rotate(${Math.random() * 360}deg)`;
+			shapes.appendChild(shape);
+		}
+	}
+	createShapes();
+</script>
 </html>

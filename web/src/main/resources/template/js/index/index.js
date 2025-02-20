@@ -767,12 +767,12 @@ layui.config({
 									var thisMenuBg = json.bean.menuIconBg;
 									var thisMenuIconColor = json.bean.menuIconColor;
 									var thisMenuId = json.bean.id;
-									var thisMenuUrl = json.bean.pageURL;
+									var thisMenuUrl = json.bean.pageUrl;
 									var thisMenuTitle = json.bean.title;
 									var thisMenuOpenType = json.bean.openType;
 									var thisMenuMaxOpen = json.bean.maxOpen;
 									var menuIconType = json.bean.menuIconType;
-									var thisDeskTopId = json.bean.deskTopId;
+									var thisDeskTopId = json.bean.desktopId;
 
 									if(isNull(thisDeskTopId)){
 										$.fn.fullpage.moveTo(1);

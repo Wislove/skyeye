@@ -534,7 +534,7 @@ function turnTime(time, mm){
     } else {
         minute = minute + mm;
     }
-    return (hour < 10 ? ("0" + hour) : hour) + ":" + (minute < 10 ? (minute + "0") : minute);
+    return (hour < 10 ? ("0" + hour) : hour) + ":" + (minute < 10 ? ("0" + minute) : minute);
 }
 
 // 设置最小可选的日期
