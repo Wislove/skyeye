@@ -41,10 +41,21 @@ layui.config({
             limit: getLimit(),
             cols: [[
                 { title: systemLanguage["com.skyeye.serialNumber"][languageType], type: 'numbers' },
-                { field: 'name', title: '会员姓名', align: 'left', width: 200 },
+                { field: 'name', title: '会员姓名', align: 'left', width: 200 ,
+                    templet: function(d) {
+                        return '<div style="width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + d.name + '</div>';
+                    }},
                 { field: 'phone', title: '联系电话', align: 'left', width: 200 },
                 { field: 'email', title: '邮箱', align: 'left', width: 200 },
-                { field: 'remark', title: '备注', align: 'left', width: 400 },
+                {
+                    field: 'remark',
+                    title: '备注',
+                    align: 'left',
+                    width: 400,
+                    templet: function(d) {
+                        return '<div style="width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">' + d.remark + '</div>';
+                    }
+                },
                 { title: systemLanguage["com.skyeye.operation"][languageType], rowspan: '2', fixed: 'right', align: 'center', width: 200, toolbar: '#tableBar'}
             ]],
             done: function(json) {
