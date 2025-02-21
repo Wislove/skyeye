@@ -5,16 +5,6 @@
     <title></title>
     <link href="../../assets/lib/layui/css/layui.css" rel="stylesheet" />
     <link href="../../assets/lib/winui/css/winui.css" rel="stylesheet" />
-	<style type="text/css">
-		.collection{
-			margin-top: -50px;
-			display: block;
-			width: 45%;
-			height: 35px;
-			font-size: 1em;
-			float: left;
-		}
-	</style>
 </head>
 <body>
 	<div class="txtcenter" style="margin:0 auto;padding-top:20px;">
@@ -47,10 +37,7 @@
 			</div>
 			<div class="layui-col-xs12 app-store-item-bottom">
 			</div>
-			<div class="layui-col-xs12 app-store-item-bottom-card">
-				<button class="layui-btn layui-btn-normal layui-btn-sm collection" rowid="{{id}}">收藏</button>
-			</div>
-			<div class="layui-col-xs12 app-store-item-center">
+			<div class="layui-col-xs12 app-store-item-center" title="{{title}}">
 				<p>{{title}}</p>
 			</div>
 		</div>

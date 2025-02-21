@@ -7,7 +7,7 @@
 
 **1. Skyeye云【源代码】针对 {星球用户} 开源。拿到源码后可进行学习、毕设、企业等使用。**
 
-**2. [开发文档](https://articles.zsxq.com/id_xi3xhacte72g.html)   [视频教程](https://space.bilibili.com/87396008/channel/series)**
+**2. [开发文档](https://articles.zsxq.com/id_xi3xhacte72g.html)   [视频教程](https://space.bilibili.com/87396008/channel/series)    [业务操作教程](https://www.bilibili.com/video/BV16mwVeKE4X/?vd_source=714dd9434dc2ba981f2f47b7aa44be38)**
 
 **3. [常见问题](https://gitee.com/dromara/skyeye/blob/company_server/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98.md)，优先看这个。《《《《《《《《《《《《《《这个文件必看，有`移动端`的详细说明。**
 
@@ -81,7 +81,7 @@
 | 框架 | 技术 | 版本 | 学习指南 |
 |---|---|---|---|
 |[layui](https://layui.uimaker.com/)|模块化前端UI，已经开发完成。**（持续更新中）**| 2.6.7 | [文档](https://layui.uimaker.com/doc/index.html) |
-|Vue 3 + JavaScript + Vite 5.0.0 + Ant Design Vue 4.2.6| **开发中，开发完成后，凡是采购了`管理端移动端`的VIP用户皆可免费获取该版本。** | - | - |
+|Vue 3 + JavaScript + Vite 5.0.0 + Ant Design Vue 4.2.6| **开发中** | - | - |
 |[uni-app](https://uniapp.dcloud.net.cn/)|一个使用Vue.js开发所有前端应用的框架，开发者编写一套代码，可发布到iOS、Android、Web（响应式）、以及各种小程序、快应用等多个平台。| VUE3 |[文档](https://uniapp.dcloud.net.cn/component/)|
 
 ##  :tw-1f30f:  PC端效果图

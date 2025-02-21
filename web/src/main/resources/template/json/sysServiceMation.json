@@ -8,6 +8,7 @@
     "putIsPurchase": {"name": "采购入库单申请", "key": "com.skyeye.purchase.service.impl.PurchasePutServiceImpl", "appId": "com.wzq.skyeye.erp"},
     "purchaseOrder": {"name": "采购订单申请", "key": "com.skyeye.purchase.service.impl.PurchaseOrderServiceImpl", "appId": "com.wzq.skyeye.erp"},
     "purchaseRequest": {"name": "采购申请", "key": "com.skyeye.request.service.impl.PurchaseRequestServiceImpl", "appId": "com.wzq.skyeye.erp"},
+    "supplierContract": {"name": "采购合同", "key": "com.skyeye.contract.service.impl.SupplierContractServiceImpl", "appId": "com.wzq.skyeye.erp"},
     "puchaseDeliveryNoteList": {"name": "采购到货单", "key": "com.skyeye.purchase.service.impl.PurchaseDeliveryServiceImpl", "appId": "com.wzq.skyeye.erp"},
     "purchaseQualityInspection": {"name": "采购质检单", "key": "com.skyeye.inspection.service.impl.QualityInspectionServiceImpl", "appId": "com.wzq.skyeye.erp"},
     "putIsOthers": {"name": "其他入库单申请", "key": "com.skyeye.other.service.impl.OtherWareHousServiceImpl", "appId": "com.wzq.skyeye.erp"},

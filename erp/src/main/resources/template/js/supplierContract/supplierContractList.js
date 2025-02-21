@@ -98,9 +98,6 @@ layui.config({
 						str += '<a class="layui-btn layui-btn-xs" lay-event="recovery">恢复</a>';
 					}
 				}
-
-
-
 				return str;
 			}}
 	    ], [

@@ -25,7 +25,7 @@ layui.config({
 		limits: getLimits(),
 		limit: getLimit(),
 		cols: [[
-			{ title: systemLanguage["com.skyeye.serialNumber"][languageType], type: 'numbers', rowspan: 2},
+			{ title: systemLanguage["com.skyeye.serialNumber"][languageType], type: 'numbers' },
 			{ field: 'oddNumber', title: '单据编号', width: 200, align: 'center', templet: function (d) {
 				return '<a lay-event="details" class="notice-title-click">' + d.oddNumber + '</a>';
 			}},
@@ -45,7 +45,7 @@ layui.config({
 		]],
 		done: function(json) {
 			matchingLanguage();
-			initTableSearchUtil.initAdvancedSearch(this, json.searchFilter, form, "请输入单号，项目名称", function () {
+			initTableSearchUtil.initAdvancedSearch(this, json.searchFilter, form, "请输入单据编号，项目名称", function () {
 				table.reloadData("messageTable", {page: {curr: 1}, where: getTableParams()});
 			});
 		}

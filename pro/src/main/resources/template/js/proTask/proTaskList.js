@@ -34,11 +34,11 @@ layui.config({
 	if (authPermission['myExecute']) {
 		var defaultClassName = firstBtn ? 'plan-select' : '';
 		firstBtn = false;
-		btnStr += `<button type="button" class="layui-btn layui-btn-primary type-btn ${defaultClassName}" data-type="myExecute" table-id="messageTable"><i class="layui-icon"></i>我执行的任务</button>`
+		btnStr += `<button type="button" class="layui-btn layui-btn-primary type-btn ${defaultClassName}" data-type="myExecute" table-id="messageTable"><i class="layui-icon"></i>我执行的</button>`
 	}
 	if (authPermission['myCreate']) {
 		var defaultClassName = firstBtn ? 'plan-select' : '';
-		btnStr += `<button type="button" class="layui-btn layui-btn-primary type-btn ${defaultClassName}" data-type="myCreate" table-id="messageTable"><i class="layui-icon"></i>我创建的任务</button>`
+		btnStr += `<button type="button" class="layui-btn layui-btn-primary type-btn ${defaultClassName}" data-type="myCreate" table-id="messageTable"><i class="layui-icon"></i>我创建的</button>`
 	}
 	btnStr += `</div>`;
 	$(".winui-toolbar").before(btnStr);

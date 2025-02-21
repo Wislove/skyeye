@@ -20,8 +20,6 @@ layui.config({
 		table = layui.table;
 	var selTemplate = getFileContent('tpl/template/select-option.tpl');
 
-	authBtn('1563415739069');
-
 	$("#echartsPie").hide();
 	form.on('radio(type)', function (data) {
 		if (data.value == "image") {

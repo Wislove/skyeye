@@ -37,10 +37,10 @@ layui.config({
 				return sysDictDataUtil.getDictDataNameByCodeAndKey("CRM_CUSTOMER_INDUSTRY", d.industryId);
 			}},
 	        { field: 'noDocumentaryDayNum', title: '未跟单天数', align: 'left', width: 100 },
-	        { field: 'createName', title: systemLanguage["com.skyeye.createName"][languageType], align: 'left', width: 120 },
-	        { field: 'createTime', title: systemLanguage["com.skyeye.createTime"][languageType], align: 'center', width: 100 },
-	        { field: 'lastUpdateName', title: systemLanguage["com.skyeye.lastUpdateName"][languageType], align: 'left', width: 120 },
-	        { field: 'lastUpdateTime', title: '最后修改时间', align: 'center', width: 100}
+	        { field: 'createName', title: systemLanguage["com.skyeye.createName"][languageType], align: 'left', width: 140 },
+	        { field: 'createTime', title: systemLanguage["com.skyeye.createTime"][languageType], align: 'center', width: 150 },
+	        { field: 'lastUpdateName', title: systemLanguage["com.skyeye.lastUpdateName"][languageType], align: 'left', width: 140 },
+	        { field: 'lastUpdateTime', title: '最后修改时间', align: 'center', width: 150}
 	    ]],
 	    done: function (json) {
 	    	matchingLanguage();

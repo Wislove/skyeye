@@ -74,20 +74,20 @@ layui.config({
 				$.each(json.rows, function(i, row){
 					menuStr = "";
 					row.icon = desktopMenuUtil.getTraditionPageMenuIcon(row);
-					if(row.pageURL != '--'){
+					if(row.pageUrl != '--'){
 						//一级菜单
 						menuStr = getDataUseHandlebars(menuTemplate, {bean: row});
-						if(isNull(row.deskTopId)){
+						if(isNull(row.desktopId)){
 							$("ul[menurowid='winfixedpage00000000']").append(menuStr);
 						} else {
-							$("ul[menurowid='" + row.deskTopId + "']").append(menuStr);
+							$("ul[menurowid='" + row.desktopId + "']").append(menuStr);
 						}
 						data.push({
 							id: row.id,
 							name: row.name,
 							pageType: row.pageType,
-							pageURL: row.pageURL,
-							winName: isNull(row.deskTopId) ? defaultName : $(".desktop-menu-box").find("li[rowid='" + row.deskTopId + "']").find('span').html()
+							pageUrl: row.pageUrl,
+							winName: isNull(row.desktopId) ? defaultName : $(".desktop-menu-box").find("li[rowid='" + row.desktopId + "']").find('span').html()
 						});
 					} else {
 						//二级菜单
@@ -98,16 +98,16 @@ layui.config({
 									id: child.id,
 									name: child.name,
 									pageType: row.pageType,
-									pageURL: child.pageURL,
-									winName: isNull(row.deskTopId) ? defaultName : $(".desktop-menu-box").find("li[rowid='" + row.deskTopId + "']").find('span').html()
+									pageUrl: child.pageUrl,
+									winName: isNull(row.desktopId) ? defaultName : $(".desktop-menu-box").find("li[rowid='" + row.desktopId + "']").find('span').html()
 								});
 							});
 						}
 						menuStr = getDataUseHandlebars(menuMoreTemplate, {bean: row});
-						if(isNull(row.deskTopId)){
+						if(isNull(row.desktopId)){
 							$("ul[menurowid='winfixedpage00000000']").append(menuStr);
 						} else {
-							$("ul[menurowid='" + row.deskTopId + "']").append(menuStr);
+							$("ul[menurowid='" + row.desktopId + "']").append(menuStr);
 						}
 					}
 				});

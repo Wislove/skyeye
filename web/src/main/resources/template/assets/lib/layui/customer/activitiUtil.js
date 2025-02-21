@@ -41,7 +41,7 @@ var activitiUtil = {
         processInstanceId = data.processInstanceId;
         _openNewWindows({
             url: "../../tpl/activitiCommon/processInstanceDetails.html",
-            title: systemLanguage["com.skyeye.detailsPageTitle"][languageType],
+            title: systemLanguage["com.skyeye.processInstenceDetailsPageTitle"][languageType],
             pageId: "processDetails",
             area: ['90vw', '90vh'],
             callBack: function (refreshCode) {

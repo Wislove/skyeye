@@ -10,14 +10,14 @@ layui.config({
 	    var $ = layui.$,
 	    	form = layui.form;
 	    
-	    var deskTopId = parent.$("#desktop-sel").val();
+	    var desktopId = parent.$("#desktop-sel").val();
 	    
 	    matchingLanguage();
 	    form.on('submit(formAddBean)', function (data) {
 	        if (winui.verifyForm(data.elem)) {
 	        	var params = {
         			menuBoxName: $("#menuBoxName").val(),
-        			deskTopId: deskTopId
+					desktopId: desktopId
 	        	};
 	        	
 	        	AjaxPostUtil.request({url: reqBasePath + "sysevewindragdrop001", params: params, type: 'json', callback: function (json) {

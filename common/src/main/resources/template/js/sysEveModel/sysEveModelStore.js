@@ -33,16 +33,6 @@ layui.config({
 		 	},
 		 	options: {},
 		 	ajaxSendAfter:function (json) {
-		 		$(".collection").hide();
-		 		
-		 		//遮罩层移入移出事件
-		 	    $(".app-store-item-bottom-card").mouseover(function (e){
-		 	    	$(this).parent().find(".app-store-item-bottom").addClass("app-store-item-bottom-zz");
-		 	    	$(this).find(".collection").show();
-		 		}).mouseout(function (e){
-		 			$(this).parent().find(".app-store-item-bottom").removeClass("app-store-item-bottom-zz");
-	 				$(this).find(".collection").hide();
-		 		});
 		 		matchingLanguage();
 		 		form.render();
 		 	}
@@ -68,12 +58,6 @@ layui.config({
 		$(this).parent().addClass("active");
 		secondType = $(this).attr("rowid");
 		initData();
-	});
-
-	// 收藏
-	$("body").on("click", ".collection", function() {
-		var rowId = $(this).attr("rowid");
-		console.log(rowId);
 	});
 
     function getTableParams() {

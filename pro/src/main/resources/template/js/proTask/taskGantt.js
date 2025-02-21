@@ -36,11 +36,11 @@ layui.config({
         if (authPermission['myExecute']) {
             var defaultClassName = firstBtn ? 'plan-select' : '';
             firstBtn = false;
-            btnStr += `<button type="button" class="layui-btn layui-btn-primary type-btn ${defaultClassName}" data-type="myExecute" table-id="messageTable"><i class="layui-icon"></i>我执行的任务</button>`
+            btnStr += `<button type="button" class="layui-btn layui-btn-primary type-btn ${defaultClassName}" data-type="myExecute" table-id="messageTable"><i class="layui-icon"></i>我执行的</button>`
         }
         if (authPermission['myCreate']) {
             var defaultClassName = firstBtn ? 'plan-select' : '';
-            btnStr += `<button type="button" class="layui-btn layui-btn-primary type-btn ${defaultClassName}" data-type="myCreate" table-id="messageTable"><i class="layui-icon"></i>我创建的任务</button>`
+            btnStr += `<button type="button" class="layui-btn layui-btn-primary type-btn ${defaultClassName}" data-type="myCreate" table-id="messageTable"><i class="layui-icon"></i>我创建的</button>`
         }
         btnStr += `</div>`;
         $(".txtcenter").before(btnStr);
@@ -67,7 +67,7 @@ layui.config({
     gantt.config.reorder_grid_columns = true;
     gantt.config.columns = [{
         name: "text",
-        label: "任务名",
+        label: "任务名称",
         width: 200,
         align: "center",
         tree: true,
@@ -159,14 +159,35 @@ layui.config({
             if (isNull(nodeList) || nodeList.length == 0) {
                 return;
             }
+
+            // 创建一个映射来存储所有节点ID
+            const nodeMap = new Map();
+
+            // 首先处理所有节点的日期并记录ID
             $.each(nodeList, function (i, item) {
                 item.start_date = new Date(item.start_date);
                 item.end_date = new Date(item.end_date);
+                nodeMap.set(item.id, item);
             });
+
+            // 处理节点，如果父节点不存在，则将其设置为顶层节点
+            nodeList = nodeList.map(item => {
+                if (item.parent !== '0' && !nodeMap.has(item.parent)) {
+                    return { ...item, parent: '0' };
+                }
+                return item;
+            });
+
             let linkList = json.bean.link;
             if (isNull(linkList) || linkList.length == 0) {
                 linkList = [];
             }
+
+            // 过滤连接，确保连接的两端节点都存在
+            linkList = linkList.filter(link => {
+                return nodeMap.has(link.source) && nodeMap.has(link.target);
+            });
+
             // 解析
             gantt.parse({
                 data: nodeList,
