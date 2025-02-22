@@ -125,9 +125,6 @@ layui.config({
 						isLogin = true;
 						AjaxPostUtil.request({url: reqBasePath + "login001", params: params, type: 'json', callback: function (json) {
 							isLogin = false;
-							if (json.rows != null) {
-								localStorage.setItem("authpoints", JSON.stringify(json.rows));
-							}
 							localStorage.setItem('userToken', json.bean.userToken);
 							if (!isNull(json.bean.id)) {
 								if (checkURL(url)) {

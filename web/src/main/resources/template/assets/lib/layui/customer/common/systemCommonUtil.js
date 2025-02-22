@@ -118,6 +118,15 @@ var systemCommonUtil = {
     },
 
     /**
+     * 获取当前登录用户的权限点
+     */
+    getUserAuthPoint: function (){
+        AjaxPostUtil.request({url: sysMainMation.reqBasePath + "queryAuthPointByUserId", params: {}, type: 'json', method: "GET", callback: function(json) {
+            localStorage.setItem("authpoints", JSON.stringify(json.rows));
+        }, async: false});
+    },
+
+    /**
      * 加载图片
      *
      * @param src 图片地址

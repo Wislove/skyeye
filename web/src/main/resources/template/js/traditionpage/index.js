@@ -33,6 +33,8 @@ layui.config({
 			$("#userPhoto").attr("src", fileBasePath + data.bean.userPhoto);
 			$("#userName").html(data.bean.userCode + '(' + data.bean.userName + ')');
 		});
+		// 获取用户权限点
+		systemCommonUtil.getUserAuthPoint();
 		// 加载首页
 		initDefaultPage();
 		// 加载菜单数据

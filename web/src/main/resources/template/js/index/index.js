@@ -82,6 +82,9 @@ layui.config({
 			currentUserMation.winLockBgPicUrl = fileBasePath + currentUserMation.winLockBgPicUrl;
 		}
 
+		// 获取用户权限点
+		systemCommonUtil.getUserAuthPoint();
+
 		// 获取桌面消息
 		AjaxPostUtil.request({url: reqBasePath + "login009", params: {}, type: 'json', method: "GET", callback: function(desktopResult){
 			var deskTopName = new Array();
