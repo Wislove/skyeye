@@ -47,7 +47,10 @@ layui.config({
                     field: 'depotMation', title: '来源仓库', align: 'left', width: 200, templet: function (d) {
                         return isNull(d.depotMation) ? '' : d.depotMation.name
                     }
-                }
+                },
+                { field: 'storeUseState', title: '状态', width: 90, templet: function (d) {
+                    return skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("storeNormsCodeUseState", 'id', d.storeUseState, 'name');
+                }},
             ]],
             done: function (json) {
                 matchingLanguage();
