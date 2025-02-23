@@ -20,6 +20,7 @@
 	<div style="margin: auto 10px;">
 		<table id="messageTable" lay-filter="messageTable"></table>
         <script type="text/html" id="messageTableBar">
+			<a class="layui-btn layui-btn-xs" lay-event="edit"><language showName="com.skyeye.editBtn"></language></a>
             {{# if (isNull(d.state)) { }}
                 <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete"><language showName="com.skyeye.deleteBtn"></language></a>
             {{# } }}

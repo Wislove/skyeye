@@ -75,6 +75,8 @@ layui.config({
 			systemCommonUtil.showPicImg(systemCommonUtil.getFilePath(data.barCodeMation.imagePath));
 		} else if (layEvent === 'delete') { // 删除
 			delet(data);
+		} else if (layEvent === 'edit') { //编辑
+			edit(data);
 		}
     });
 
@@ -112,6 +114,20 @@ layui.config({
 			callBack: function (refreshCode) {
 			}});
 	});
+
+	// 编辑
+	function edit(data) {
+		_openNewWindows({
+			url: systemCommonUtil.getUrl('FP2025022200001&id=' + data.id, null),
+			title: "编辑资产明细",
+			pageId: "assetDetailsEdit",
+			area: ['90vw', '90vh'],
+			callBack: function (refreshCode) {
+				winui.window.msg(systemLanguage["com.skyeye.successfulOperation"][languageType], {icon: 1, time: 2000});
+				loadTable();
+			}
+		});
+	}
 
 	form.render();
     $("body").on("click", "#reloadTable", function() {
