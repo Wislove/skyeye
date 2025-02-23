@@ -28,7 +28,9 @@ layui.config({
                     return '<a lay-event="details" class="notice-title-click">' + d.oddNumber + '</a>';
                 }},
             { field: 'operTime', title: '单据日期', align: 'center', width: 140 },
-            { field: 'tenantId', title: '租户', align: 'center',width: 150, templet: function (d) {return d.tenantMation.name}},
+            { field: 'buyTenantId', title: '租户', align: 'center',width: 150, templet: function (d) {
+                return getNotUndefinedVal(d.buyTenantMation?.name);
+            }},
             { field: 'allPrice', title: '总金额', align: 'center', width: 140 },
             { field: 'processInstanceId', title: '流程ID', width: 100, templet: function (d) {
                     return '<a lay-event="processDetails" class="notice-title-click">' + getNotUndefinedVal(d.processInstanceId) + '</a>';
