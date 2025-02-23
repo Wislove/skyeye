@@ -35,7 +35,7 @@
                     {{# } }}
                 {{# } }}
                 {{# if(d.state == 'allCompleted' || d.state== 'excessCompleted') { }}
-                    {{# if(auth('1722236598520')) { }}
+                    {{# if(auth('1722236598520') && d.isLastProcedure) { }}
                         <a class="layui-btn layui-btn-xs" lay-event="transferDepotPut">加工入库</a>
                     {{# } }}
                 {{# } }}

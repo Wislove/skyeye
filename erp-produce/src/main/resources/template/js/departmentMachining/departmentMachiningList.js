@@ -39,7 +39,7 @@ layui.config({
                     return '<a lay-event="processDetails" class="notice-title-click">' + getNotUndefinedVal(d.processInstanceId) + '</a>';
                 }},
             { field: 'state', title: '状态', rowspan: '2', width: 90, templet: function (d) {
-                    return skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("erpOrderStateEnum", 'id', d.state, 'name');
+                    return skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("machinStateEnum", 'id', d.state, 'name');
                 }},
             { field: 'pickState', rowspan: '2', title: '领料状态', align: 'left', width: 80, templet: function (d) {
                     return skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("machinPickStateEnum", 'id', d.pickState, 'name');
