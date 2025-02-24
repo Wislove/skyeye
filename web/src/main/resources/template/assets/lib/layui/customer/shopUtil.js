@@ -141,7 +141,7 @@ var shopUtil = {
      */
     queryStaffBelongStoreList: function (callback) {
         AjaxPostUtil.request({url: sysMainMation.shopBasePath + "storeStaff005", params: {}, type: 'json', method: "GET", callback: function(json) {
-            if(typeof(callback) == "function") {
+            if (typeof (callback) == "function") {
                 callback(json);
             }
         }, async: false});
@@ -154,11 +154,11 @@ var shopUtil = {
      * @param callback 回执函数
      */
     queryStoreListByAreaId: function (areaId, callback){
-        if(isNull(areaId)){
+        if (isNull(areaId)) {
             return [];
         }
-        AjaxPostUtil.request({url: sysMainMation.shopBasePath + "queryStoreList", params: {areaId: areaId}, type: 'json', method: "GET", callback: function(json) {
-            if(typeof(callback) == "function") {
+        AjaxPostUtil.request({url: sysMainMation.shopBasePath + "queryStoreListByParams", params: {shopAreaId: areaId}, type: 'json', method: "GET", callback: function(json) {
+            if (typeof (callback) == "function") {
                 callback(json);
             }
         }, async: false});
