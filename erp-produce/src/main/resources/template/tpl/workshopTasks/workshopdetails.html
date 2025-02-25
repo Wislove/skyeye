@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link href="../../assets/lib/layui/css/layui.css" rel="stylesheet" />
+    <link href="../../assets/lib/winui/css/winui.css" rel="stylesheet" />
+</head>
+
+<body>
+    <script type="text/x-handlebars-template" id="showBaseTemplate">
+		{{#bean}}
+		<div class="layui-form-item layui-col-xs12">
+			<span class="hr-title">基础信息</span>
+			<hr>
+		</div>
+		<div class="layui-form-item layui-col-xs6">
+			<label class="layui-form-label">中文名称：</label>
+			<div class="layui-input-block ver-center">
+				{{name}}
+			</div>
+		</div>
+		<div class="layui-form-item layui-col-xs6">
+			<label class="layui-form-label">状态：</label>
+			<div class="layui-input-block ver-center">
+				{{enabled}}
+			</div>
+		</div>
+		{{/bean}}
+	</script>
+
+    <script src="../../assets/lib/layui/layui.js"></script>
+    <script src="../../assets/lib/layui/custom.js"></script>
+    <script type="text/javascript">
+        layui.config({ base: '../../js/workshopTasks/' }).use('workshopdetails');
+    </script>
+</body>
+
+</html>
