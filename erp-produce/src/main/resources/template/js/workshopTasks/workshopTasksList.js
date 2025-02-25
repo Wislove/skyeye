@@ -38,17 +38,35 @@ layui.config({
             limits: getLimits(),
             limit: getLimit(),
             cols: [[
-                { title: systemLanguage["com.skyeye.serialNumber"][languageType], type: 'numbers' },
-                { field: 'id', title: '任务编号',width: 280, templet: function (d) {
+                { title: systemLanguage["com.skyeye.serialNumber"][languageType], rowspan: '2', type: 'numbers' },
+                { field: 'id', title: '任务编号',width: 200, rowspan: '2', templet: function (d) {
                     return '<a lay-event="details" class="notice-title-click">' + getNotUndefinedVal(d.oddNumber) + '</a>';
                 }},
-                { field: 'state', title: '状态',  width: 90, templet: function (d) {
+                { field: 'state', title: '状态',  width: 90, rowspan: '2', templet: function (d) {
                     return skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("machinProcedureFarmState", 'id', d.state, 'name');
                 }},
-                { field: 'name', title: '部门', align: 'center', width: 90, templet: function (d) {
+                { field: 'name', title: '部门', align: 'center', rowspan: '2', width: 90, templet: function (d) {
                     return getNotUndefinedVal(d.farmMation?.departmentMation?.name);
                 }},
-                { field: 'targetNum', title: '任务安排数量', align: 'center', width: 140 },
+                { title: '加工信息', align: 'center', colspan: '2'},
+                { field: 'targetNum', title: '任务安排数量', rowspan: '2', align: 'center', width: 140 },
+                { title: '计划时间', align: 'center', colspan: '2'},
+                { title: '实际时间', align: 'center', colspan: '2'},
+                { field: 'createTime', title: '创建时间', rowspan: '2', align: 'center', width: 140, templet: function (d) {
+                    return getNotUndefinedVal(d.machinMation?.createTime);
+                }},
+                {title: systemLanguage["com.skyeye.operation"][languageType], rowspan: '2', fixed: 'right', align: 'center', width: 200, toolbar: '#tableBar' }
+            ], [
+                { field: 'machinId', title: '所属加工单', align: 'center', width: 200, templet: function (d) {
+                    var str = '<a lay-event="machinDetails" class="notice-title-click">' + getNotUndefinedVal(d.machinMation?.oddNumber) + '</a>';
+                    if (!isNull(getNotUndefinedVal(d.machinMation?.fromId))) {
+                        str += '<span class="state-new">[转]</span>';
+                    }
+                    return str;
+                }},
+                { field: 'procedureId', title: '加工工序', width: 120, templet: function (d) {
+                    return getNotUndefinedVal(d.machinProcedureMation?.procedureMation?.name);
+                }},
                 { field: 'planStartTime', title: '计划开始时间', align: 'center', width: 140, templet: function (d) {
                     return getNotUndefinedVal(d.machinProcedureMation?.planStartTime);
                 }},
@@ -60,11 +78,7 @@ layui.config({
                 }},
                 { field: 'actualEndTime', title: '实际结束时间', align: 'center', width: 140, templet: function (d) {
                     return getNotUndefinedVal(d.machinProcedureMation?.actualEndTime);
-                }},
-                { field: 'createTime', title: '创建时间', align: 'center', width: 140, templet: function (d) {
-                    return getNotUndefinedVal(d.machinMation?.createTime);
-                }},
-                {title: systemLanguage["com.skyeye.operation"][languageType], rowspan: '2', fixed: 'right', align: 'center', width: 200, toolbar: '#tableBar' }
+                }}
             ]],
             done: function (json) {
                 matchingLanguage();
@@ -82,12 +96,14 @@ layui.config({
             receive(data);
         } else if (layEvent === 'antiReception') { //反接收
             antiReception(data);
-        }else if (layEvent === 'details') { //详情
+        } else if (layEvent === 'details') { //详情
             details(data);
-        }else if (layEvent === 'processCheck') { //转工序验收
+        } else if (layEvent === 'processCheck') { //转工序验收
             processCheck(data);
-        }else if (layEvent === 'transferDepotPut') { //转加工入库单
+        } else if (layEvent === 'transferDepotPut') { //转加工入库单
             transferDepotPut(data);
+        } else if (layEvent === 'machinDetails') { //加工单详情
+            machinDetails(data);
         }
     });
 
@@ -135,6 +151,17 @@ layui.config({
             url:  systemCommonUtil.getUrl('FP2024072600001&id=' + data.id, null),
             title: systemLanguage["com.skyeye.detailsPageTitle"][languageType],
             pageId: "workTaskDetail",
+            area: ['90vw', '90vh'],
+            callBack: function (refreshCode) {
+            }});
+    }
+
+    // 加工单详情
+    function machinDetails(data) {
+        _openNewWindows({
+            url:  systemCommonUtil.getUrl('FP2023100300003&id=' + data.machinId, null),
+            title: systemLanguage["com.skyeye.detailsPageTitle"][languageType],
+            pageId: "machiningDetail",
             area: ['90vw', '90vh'],
             callBack: function (refreshCode) {
             }});
