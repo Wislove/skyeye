@@ -47,11 +47,14 @@ layui.config({
                     field: 'depotMation', title: '来源仓库', align: 'left', width: 200, templet: function (d) {
                         return isNull(d.depotMation) ? '' : d.depotMation.name
                     }
-                }
+                },
+                { field: 'pickUseState', title: '状态', align: 'left', width: 80, templet: function (d) {
+                    return skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("pickNormsCodeUseState", 'id', d.pickUseState, 'name');
+                }}
             ]],
             done: function (json) {
                 matchingLanguage();
-                initTableSearchUtil.initAdvancedSearch(this, json.searchFilter, form, "暂不支持搜索", function () {
+                initTableSearchUtil.initAdvancedSearch(this, json.searchFilter, form, "请输入条形码", function () {
                     table.reloadData("messageTable", {page: {curr: 1}, where: getTableParams()});
                 });
             }

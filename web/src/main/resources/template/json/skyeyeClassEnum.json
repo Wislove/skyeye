@@ -281,6 +281,7 @@
     "shopMealOrderState": {"name": "智慧门店-套餐订单状态", "className": "skyeye-shop#com.skyeye.meal.classenum.ShopMealOrderState"},
     "shopConfirmFromType": {"name": "智慧门店-门店物料接收/退货来源单据类型", "className": "skyeye-erp#com.skyeye.shop.classenum.ShopConfirmFromType"},
     "keepFitOrderState": {"name": "智慧门店-保养订单状态", "className": "skyeye-shop#com.skyeye.keepfit.classenum.KeepFitOrderState"},
-    "storeNormsCodeUseState": {"name": "门店商品使用状态", "className": "skyeye-erp#com.skyeye.shop.classenum.StoreNormsCodeUseState"}
+    "storeNormsCodeUseState": {"name": "门店商品使用状态", "className": "skyeye-erp#com.skyeye.shop.classenum.StoreNormsCodeUseState"},
+    "pickNormsCodeUseState": {"name": "物料加工时的使用状态", "className": "skyeye-erp#com.skyeye.pick.classenum.PickNormsCodeUseState"}
 
 }
