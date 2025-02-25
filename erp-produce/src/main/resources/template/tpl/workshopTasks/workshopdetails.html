@@ -1,34 +1,122 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
     <meta charset="utf-8" />
     <title></title>
     <link href="../../assets/lib/layui/css/layui.css" rel="stylesheet" />
     <link href="../../assets/lib/winui/css/winui.css" rel="stylesheet" />
+    <style type="text/css">
+        .workDay {
+            cursor: pointer;
+        }
+
+        .workDay:HOVER {
+            border-color: #429CE3;
+        }
+    </style>
 </head>
 
 <body>
-    <script type="text/x-handlebars-template" id="showBaseTemplate">
-		{{#bean}}
+    <div style="padding: 20px; margin: 0 auto;">
+        <form class="layui-form" action="" id="showForm">
+
+        </form>
+    </div>
+    <script type="text/html" id="beanTemplate">
+	{{#bean}}
+	<div class="layui-form-item layui-col-xs12">
+		<span class="hr-title">基础信息</span>
+		<hr>
+	</div>
+	<div class="layui-form-item layui-col-xs6">
+		<label class="layui-form-label">车间：</label>
+		<div class="layui-input-block ver-center">
+			{{farmMation.name}}
+		</div>
+	</div>
+	<div class="layui-form-item layui-col-xs6">
+		<label class="layui-form-label">任务编号：</label>
+		<div class="layui-input-block ver-center">{{oddNumber}}</div>
+	</div>
+	<div class="layui-form-item layui-col-xs6">
+		<label class="layui-form-label">状态：</label>
+		<div class="layui-input-block ver-center">
+			<span class="state-tag">{{{state}}}</span>
+		</div>
+	</div>
+	<div class="layui-form-item layui-col-xs6">
+		<label class="layui-form-label">任务数量：</label>
+		<div class="layui-input-block ver-center">{{targetNum}}</div>
+	</div>
+	<div class="layui-form-item layui-col-xs6">
+		<label class="layui-form-label">创建时间：</label>
+		<div class="layui-input-block ver-center">{{createTime}}</div>
+	</div>
+
+	<!-- 车间信息 -->
+	<div class="info-block">
 		<div class="layui-form-item layui-col-xs12">
-			<span class="hr-title">基础信息</span>
+			<span class="hr-title">车间信息</span>
 			<hr>
 		</div>
 		<div class="layui-form-item layui-col-xs6">
-			<label class="layui-form-label">中文名称：</label>
-			<div class="layui-input-block ver-center">
-				{{name}}
-			</div>
+			<label class="layui-form-label">车间名称：</label>
+			<div class="layui-input-block ver-center">{{farmMation.name}}</div>
 		</div>
 		<div class="layui-form-item layui-col-xs6">
-			<label class="layui-form-label">状态：</label>
+			<label class="layui-form-label">车间编号：</label>
+			<div class="layui-input-block ver-center">{{farmMation.number}}</div>
+		</div>
+		<div class="layui-form-item layui-col-xs6">
+			<label class="layui-form-label">所属部门：</label>
+			<div class="layui-input-block ver-center">{{farmMation.departmentMation.name}}</div>
+		</div>
+		<div class="layui-form-item layui-col-xs6">
+			<label class="layui-form-label">负责人：</label>
+			<div class="layui-input-block ver-center">{{farmMation.chargePersonMation.userName}}</div>
+		</div>
+	</div>
+
+	<!-- 工序信息 -->
+	<div class="info-block">
+		<div class="layui-form-item layui-col-xs12">
+			<span class="hr-title">工序信息</span>
+			<hr>
+		</div>
+		<div class="layui-form-item layui-col-xs6">
+			<label class="layui-form-label">计划开始：</label>
+			<div class="layui-input-block ver-center">{{machinProcedureMation.planStartTime}}</div>
+		</div>
+		<div class="layui-form-item layui-col-xs6">
+			<label class="layui-form-label">计划结束：</label>
+			<div class="layui-input-block ver-center">{{machinProcedureMation.planEndTime}}</div>
+		</div>
+		<div class="layui-form-item layui-col-xs6">
+			<label class="layui-form-label">实际开始：</label>
+			<div class="layui-input-block ver-center">{{machinProcedureMation.actualStartTime}}</div>
+		</div>
+		<div class="layui-form-item layui-col-xs6">
+			<label class="layui-form-label">实际结束：</label>
+			<div class="layui-input-block ver-center">{{machinProcedureMation.actualEndTime}}</div>
+		</div>
+	</div>
+
+	<!-- 加工单信息 -->
+	<div class="info-block">
+		<div class="layui-form-item layui-col-xs12">
+			<span class="hr-title">加工单信息</span>
+			<hr>
+		</div>
+		<div class="layui-form-item layui-col-xs6">
+			<label class="layui-form-label">加工单号：</label>
 			<div class="layui-input-block ver-center">
-				{{enabled}}
+				<a href="javascript:void(0);" class="notice-title-click" lay-event="machinDetails" machinId="{{machinMation.id}}">{{machinMation.oddNumber}}</a>
 			</div>
 		</div>
-		{{/bean}}
-	</script>
+	</div>
+	{{/bean}}
+</script>
 
     <script src="../../assets/lib/layui/layui.js"></script>
     <script src="../../assets/lib/layui/custom.js"></script>
