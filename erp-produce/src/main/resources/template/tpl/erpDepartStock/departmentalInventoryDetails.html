@@ -1,22 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8"/>
-  <title></title>
-  <link href="../../assets/lib/layui/css/layui.css" rel="stylesheet"/>
-  <link href="../../assets/lib/winui/css/winui.css" rel="stylesheet"/>
+    <meta charset="utf-8"/>
+    <title></title>
+    <link href="../../assets/lib/layui/css/layui.css" rel="stylesheet"/>
+    <link href="../../assets/lib/winui/css/winui.css" rel="stylesheet"/>
 </head>
 <body>
+<div style="" class="type-group" id="type">
+    <button type="button" class="layui-btn layui-btn-primary type-btn" data-type="all" table-id="messageTable"><i class="layui-icon"></i>所有</button>
+    <button type="button" class="layui-btn layui-btn-primary type-btn plan-select" data-type="noUse" table-id="messageTable"><i class="layui-icon"></i>未使用</button>
+    <button type="button" class="layui-btn layui-btn-primary type-btn" data-type="used" table-id="messageTable"><i class="layui-icon"></i>已使用</button>
+</div>
 <div class="winui-toolbar">
-  <div class="winui-tool">
-    <button id="reloadTable" class="winui-toolbtn search-table-btn-right"><i class="fa fa-refresh" aria-hidden="true"></i>
-      <language showName="com.skyeye.refreshDataBtn"></language>
-    </button>
-  </div>
+    <div class="winui-tool">
+        <button id="reloadTable" class="winui-toolbtn search-table-btn-right">
+            <i class="fa fa-refresh" aria-hidden="true"></i>
+            <language showName="com.skyeye.refreshDataBtn"></language>
+        </button>
+    </div>
 </div>
 <div style="margin:auto 10px;">
-  <table id="messageTable" lay-filter="messageTable"></table>
-  <script type="text/html" id="tableBar">
+    <table id="messageTable" lay-filter="messageTable"></table>
+    <script type="text/html" id="tableBar">
 
   </script>
 </div>
@@ -24,7 +30,7 @@
 <script src="../../assets/lib/layui/layui.js"></script>
 <script src="../../assets/lib/layui/custom.js"></script>
 <script type="text/javascript">
-  layui.config({base: '../../js/erpDepartStock/'}).use('departmentalInventoryDetails');
+    layui.config({base: '../../js/erpDepartStock/'}).use('departmentalInventoryDetails');
 </script>
 </body>
 </html>

@@ -7,6 +7,11 @@
     <link href="../../assets/lib/winui/css/winui.css" rel="stylesheet"/>
 </head>
 <body>
+<div style="" class="type-group" id="type">
+    <button type="button" class="layui-btn layui-btn-primary type-btn" data-type="all" table-id="messageTable"><i class="layui-icon"></i>所有</button>
+    <button type="button" class="layui-btn layui-btn-primary type-btn plan-select" data-type="noUse" table-id="messageTable"><i class="layui-icon"></i>未使用</button>
+    <button type="button" class="layui-btn layui-btn-primary type-btn" data-type="used" table-id="messageTable"><i class="layui-icon"></i>已使用</button>
+</div>
 <div class="winui-toolbar">
     <div class="winui-tool">
         <button id="reloadTable" class="winui-toolbtn search-table-btn-right"><i class="fa fa-refresh" aria-hidden="true"></i>
