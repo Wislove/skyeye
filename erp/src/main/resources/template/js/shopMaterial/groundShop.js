@@ -64,7 +64,7 @@ layui.config({
                 "data-num": "6",
                 "data-type": imageType,
                 "uploadType": 29,
-                "data-value": isNull(json.bean.id) ? '' : json.bean.carouselImg,
+                "data-value": isNull(json.bean.id) ? '' : json.bean.carouselImg || '',
                 "function": function (_this, data) {
                     show(_this, data);
                 }
@@ -89,7 +89,7 @@ layui.config({
                     item.isDefault = inPoingArr.isDefault;
                     item.estimatePurchasePrice = inPoingArr.estimatePurchasePrice;
                     item.salePrice = inPoingArr.salePrice;
-                    item.carouselImg = inPoingArr.carouselImg;
+                    item.carouselImg = inPoingArr.carouselImg || '';
                     item.logo = inPoingArr.logo;
                     item.logoType = inPoingArr.logoType;
                 }
@@ -142,7 +142,7 @@ layui.config({
                         id: isNull(json.bean.id) ? '' : json.bean.id,
                         materialId: id,
                         logo: $("#materialLogo").find("input[type='hidden'][name='upload']").attr("oldurl"),
-                        carouselImg: $("#materialCarouselImg").find("input[type='hidden'][name='upload']").attr("oldurl"),
+                        carouselImg: $("#materialCarouselImg").find("input[type='hidden'][name='upload']").attr("oldurl") || '',
                         content: encodeURIComponent(ue.getContent()),
                         remark: $("#remark").val(),
                         orderBy: $("#orderBy").val(),

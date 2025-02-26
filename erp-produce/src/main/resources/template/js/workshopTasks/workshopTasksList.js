@@ -1,4 +1,3 @@
-
 // 车间任务
 layui.config({
     base: basePath,
@@ -13,11 +12,13 @@ layui.config({
     var selTemplate = getFileContent('tpl/template/select-option.tpl');
 
     // 加载当前用户所属车间
-    AjaxPostUtil.request({url: sysMainMation.erpBasePath + "queryStaffBelongFarmList", params: {}, type: 'json', method: "GET", callback: function(json) {
-        $("#workshopId").html(getDataUseHandlebars(selTemplate, json));
-        form.render('select');
-        initTable();
-    }, async: false});
+    AjaxPostUtil.request({
+        url: sysMainMation.erpBasePath + "queryStaffBelongFarmList", params: {}, type: 'json', method: "GET", callback: function (json) {
+            $("#workshopId").html(getDataUseHandlebars(selTemplate, json));
+            form.render('select');
+            initTable();
+        }, async: false
+    });
 
     var workshopId = "";
     form.on('select(workshopId)', function (data) {
@@ -39,51 +40,71 @@ layui.config({
             limit: getLimit(),
             cols: [[
                 { title: systemLanguage["com.skyeye.serialNumber"][languageType], rowspan: '2', type: 'numbers' },
-                { field: 'id', title: '任务编号',width: 200, rowspan: '2', templet: function (d) {
-                    return '<a lay-event="details" class="notice-title-click">' + getNotUndefinedVal(d.oddNumber) + '</a>';
-                }},
-                { field: 'state', title: '状态',  width: 90, rowspan: '2', templet: function (d) {
-                    return skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("machinProcedureFarmState", 'id', d.state, 'name');
-                }},
-                { field: 'name', title: '部门', align: 'center', rowspan: '2', width: 90, templet: function (d) {
-                    return getNotUndefinedVal(d.farmMation?.departmentMation?.name);
-                }},
-                { title: '加工信息', align: 'center', colspan: '2'},
-                { field: 'targetNum', title: '任务安排数量', rowspan: '2', align: 'center', width: 140 },
-                { title: '计划时间', align: 'center', colspan: '2'},
-                { title: '实际时间', align: 'center', colspan: '2'},
-                { field: 'createTime', title: '创建时间', rowspan: '2', align: 'center', width: 140, templet: function (d) {
-                    return getNotUndefinedVal(d.machinMation?.createTime);
-                }},
-                {title: systemLanguage["com.skyeye.operation"][languageType], rowspan: '2', fixed: 'right', align: 'center', width: 200, toolbar: '#tableBar' }
-            ], [
-                { field: 'machinId', title: '所属加工单', align: 'center', width: 200, templet: function (d) {
-                    var str = '<a lay-event="machinDetails" class="notice-title-click">' + getNotUndefinedVal(d.machinMation?.oddNumber) + '</a>';
-                    if (!isNull(getNotUndefinedVal(d.machinMation?.fromId))) {
-                        str += '<span class="state-new">[转]</span>';
+                {
+                    field: 'id', title: '任务编号', width: 200, rowspan: '2', templet: function (d) {
+                        return '<a lay-event="details" class="notice-title-click">' + getNotUndefinedVal(d.oddNumber) + '</a>';
                     }
-                    return str;
-                }},
-                { field: 'procedureId', title: '加工工序', width: 120, templet: function (d) {
-                    return getNotUndefinedVal(d.machinProcedureMation?.procedureMation?.name);
-                }},
-                { field: 'planStartTime', title: '计划开始时间', align: 'center', width: 140, templet: function (d) {
-                    return getNotUndefinedVal(d.machinProcedureMation?.planStartTime);
-                }},
-                { field: 'planEndTime', title: '计划结束时间', align: 'center', width: 140, templet: function (d) {
-                    return getNotUndefinedVal(d.machinProcedureMation?.planEndTime);
-                }},
-                { field: 'actualStartTime', title: '实际开始时间', align: 'center', width: 140, templet: function (d) {
-                    return getNotUndefinedVal(d.machinProcedureMation?.actualStartTime);
-                }},
-                { field: 'actualEndTime', title: '实际结束时间', align: 'center', width: 140, templet: function (d) {
-                    return getNotUndefinedVal(d.machinProcedureMation?.actualEndTime);
-                }}
+                },
+                {
+                    field: 'state', title: '状态', width: 90, rowspan: '2', templet: function (d) {
+                        return skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("machinProcedureFarmState", 'id', d.state, 'name');
+                    }
+                },
+                {
+                    field: 'name', title: '部门', align: 'center', rowspan: '2', width: 90, templet: function (d) {
+                        return getNotUndefinedVal(d.farmMation?.departmentMation?.name);
+                    }
+                },
+                { title: '加工信息', align: 'center', colspan: '2' },
+                { field: 'targetNum', title: '任务安排数量', rowspan: '2', align: 'center', width: 140 },
+                { title: '计划时间', align: 'center', colspan: '2' },
+                { title: '实际时间', align: 'center', colspan: '2' },
+                {
+                    field: 'createTime', title: '创建时间', rowspan: '2', align: 'center', width: 140, templet: function (d) {
+                        return getNotUndefinedVal(d.machinMation?.createTime);
+                    }
+                },
+                { title: systemLanguage["com.skyeye.operation"][languageType], rowspan: '2', fixed: 'right', align: 'center', width: 200, toolbar: '#tableBar' }
+            ], [
+                {
+                    field: 'machinId', title: '所属加工单', align: 'center', width: 200, templet: function (d) {
+                        var str = '<a lay-event="machinDetails" class="notice-title-click">' + getNotUndefinedVal(d.machinMation?.oddNumber) + '</a>';
+                        if (!isNull(getNotUndefinedVal(d.machinMation?.fromId))) {
+                            str += '<span class="state-new">[转]</span>';
+                        }
+                        return str;
+                    }
+                },
+                {
+                    field: 'procedureId', title: '加工工序', width: 120, templet: function (d) {
+                        return getNotUndefinedVal(d.machinProcedureMation?.procedureMation?.name);
+                    }
+                },
+                {
+                    field: 'planStartTime', title: '计划开始时间', align: 'center', width: 140, templet: function (d) {
+                        return getNotUndefinedVal(d.machinProcedureMation?.planStartTime);
+                    }
+                },
+                {
+                    field: 'planEndTime', title: '计划结束时间', align: 'center', width: 140, templet: function (d) {
+                        return getNotUndefinedVal(d.machinProcedureMation?.planEndTime);
+                    }
+                },
+                {
+                    field: 'actualStartTime', title: '实际开始时间', align: 'center', width: 140, templet: function (d) {
+                        return getNotUndefinedVal(d.machinProcedureMation?.actualStartTime);
+                    }
+                },
+                {
+                    field: 'actualEndTime', title: '实际结束时间', align: 'center', width: 140, templet: function (d) {
+                        return getNotUndefinedVal(d.machinProcedureMation?.actualEndTime);
+                    }
+                }
             ]],
             done: function (json) {
                 matchingLanguage();
                 initTableSearchUtil.initAdvancedSearch(this, json.searchFilter, form, "暂不支持搜索", function () {
-                    table.reloadData("messageTable", {page: {curr: 1}, where: getTableParams()});
+                    table.reloadData("messageTable", { page: { curr: 1 }, where: getTableParams() });
                 });
             }
         });
@@ -115,9 +136,10 @@ layui.config({
             pageId: "transferDepotPut",
             area: ['90vw', '90vh'],
             callBack: function (refreshCode) {
-                winui.window.msg(systemLanguage["com.skyeye.successfulOperation"][languageType], {icon: 1, time: 2000});
+                winui.window.msg(systemLanguage["com.skyeye.successfulOperation"][languageType], { icon: 1, time: 2000 });
                 loadTable();
-            }});
+            }
+        });
     }
 
     // 接收
@@ -126,10 +148,12 @@ layui.config({
             var params = {
                 id: data.id,
             };
-            AjaxPostUtil.request({url: sysMainMation.erpBasePath + "receiveMachinProcedureFarm", params: params, type: 'json', method: 'POST', callback: function (json) {
-                winui.window.msg("接收成功", {icon: 1, time: 2000});
-                loadTable();
-            }});
+            AjaxPostUtil.request({
+                url: sysMainMation.erpBasePath + "receiveMachinProcedureFarm", params: params, type: 'json', method: 'POST', callback: function (json) {
+                    winui.window.msg("接收成功", { icon: 1, time: 2000 });
+                    loadTable();
+                }
+            });
         });
     }
 
@@ -138,24 +162,23 @@ layui.config({
             var params = {
                 id: data.id,
             };
-            AjaxPostUtil.request({url: sysMainMation.erpBasePath + "receptionReceiveMachinProcedureFarm", params: params, type: 'json', method: 'POST', callback: function (json) {
-                winui.window.msg("反接收成功", {icon: 1, time: 2000});
-                loadTable();
-            }});
+            AjaxPostUtil.request({
+                url: sysMainMation.erpBasePath + "receptionReceiveMachinProcedureFarm", params: params, type: 'json', method: 'POST', callback: function (json) {
+                    winui.window.msg("反接收成功", { icon: 1, time: 2000 });
+                    loadTable();
+                }
+            });
         });
     }
 
     // 车间任务 详情
     function details(data) {
-        console.log("xiangqing data:", data);
         _openNewWindows({
-            url: "../../../tpl/workshopTasks/workshopdetails.html?id=" + data.id + "&serviceClassName=" + encodeURIComponent(data.serviceClassName),
+            url: "../../tpl/workshopTasks/workshopdetails.html?id=" + data.id + "&serviceClassName=" + encodeURIComponent(data.serviceClassName),
             title: '详情',
             pageId: "workshopdetails",
             area: ['90vw', '90vh'],
             callBack: function (refreshCode) {
-                winui.window.msg(systemLanguage["com.skyeye.successfulOperation"][languageType], { icon: 1, time: 2000 });
-                loadTable();
             }
         });
     }
@@ -163,12 +186,13 @@ layui.config({
     // 加工单详情
     function machinDetails(data) {
         _openNewWindows({
-            url:  systemCommonUtil.getUrl('FP2023100300003&id=' + data.machinId, null),
+            url: systemCommonUtil.getUrl('FP2023100300003&id=' + data.machinId, null),
             title: systemLanguage["com.skyeye.detailsPageTitle"][languageType],
             pageId: "machiningDetail",
             area: ['90vw', '90vh'],
             callBack: function (refreshCode) {
-            }});
+            }
+        });
     }
 
     //工序验收
