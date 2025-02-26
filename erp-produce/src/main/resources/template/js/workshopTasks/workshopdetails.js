@@ -36,7 +36,7 @@ layui.config({
             }
         });
 
-        // 加工单详情点击事件
+        // 加工单号点击事件
         $("body").on("click", "[lay-event='machinDetails']", function () {
             var machinId = $(this).attr("machinId");
             _openNewWindows({
