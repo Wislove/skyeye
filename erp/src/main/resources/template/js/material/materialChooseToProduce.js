@@ -108,7 +108,7 @@ layui.config({
 		$("#tBody").html(getDataUseHandlebars($("#tableBody").html(), {rows: materialMationList}));
 		// 设置商品来源选中
 		$.each(materialMationList, function(i, item) {
-			$("#type" + item.id).val(item.typeId);
+			$("#type" + item.id).val(item.fromType);
 		});
 		form.render();
 	});
