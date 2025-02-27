@@ -468,10 +468,19 @@
                             value = "";
                         }
                     }
+
+                    // 上传文件
+                    if (othis.hasClass("skyeye-upload-item")) {
+                        value = othis.find("input[name='upload']").attr("oldurl");
+                        if (value === undefined) {
+                            value = "";
+                        }
+                    }
                     if (othis.attr('type') == 'hidden') {
                         othis.siblings('img').removeClass(DANGER);
                     } else {
                         othis.removeClass(DANGER);
+                        othis.find('.upload').removeClass(DANGER);
                     }
                     layui.each(ver, function (_, thisVer) {
                         var isFn = typeof that.verify[thisVer] === 'function';
@@ -489,6 +498,7 @@
                                 othis.siblings('img').addClass(DANGER);
                             } else {
                                 othis.addClass(DANGER);
+                                othis.find('.upload').addClass(DANGER);
                             }
                             //移除请求遮罩层
                             $("body").find(".mask-req-str").remove();
