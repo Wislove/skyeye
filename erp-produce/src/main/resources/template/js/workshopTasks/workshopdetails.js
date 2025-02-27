@@ -3,38 +3,54 @@ layui.config({
     version: skyeyeVersion
 }).extend({
     window: 'js/winui.window'
-}).define(['window', 'jquery', 'winui', 'form'], function (exports) {
+}).define(['window', 'table', 'jquery', 'winui'], function (exports) {
     winui.renderColor();
-    var index = parent.layer.getFrameIndex(window.name);
-    var $ = layui.$,
-        form = layui.form;
+    layui.use(['form'], function (form) {
+        var index = parent.layer.getFrameIndex(window.name);
+        var $ = layui.$,
+            table = layui.table;
+        var objectId = GetUrlParam("id");
+        var serviceClassName = GetUrlParam("serviceClassName");
 
-    // // 从URL获取参数
-    // var objectId = getUrlParam("id");
-    // var serviceClassName = decodeURIComponent(getUrlParam("serviceClassName"));
+        showGrid({
+            id: "showForm",
+            url: sysMainMation.erpBasePath + "getDataByObjectId",
+            params: {
+                objectId: objectId,
+                serviceClassName: serviceClassName
+            },
+            pagination: false,
+            method: "GET",
+            template: $("#beanTemplate").html(),
+            ajaxSendLoadBefore: function (hdb, json) {
+                if (json && json.bean) {
+                    // 处理状态显示
+                    if (json.bean.state) {
+                        json.bean.state = skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("machinProcedureFarmState", 'id', json.bean.state, 'name');
+                    }
+                }
+            },
+            ajaxSendAfter: function (json) {
+                matchingLanguage();
+                form.render();
+            }
+        });
 
-    console.log("11Parameters:", parent.objectId, parent.serviceClassName);
+        // 加工单号点击事件
+        $("body").on("click", "[lay-event='machinDetails']", function () {
+            var machinId = $(this).attr("machinId");
+            _openNewWindows({
+                url: systemCommonUtil.getUrl('FP2023100300003&id=' + machinId, null),
+                title: systemLanguage["com.skyeye.detailsPageTitle"][languageType],
+                pageId: "machiningDetail",
+                area: ['90vw', '90vh'],
+                callBack: function (refreshCode) {
+                }
+            });
+        });
 
-    showGrid({
-        id: "showForm",
-        url: reqBasePath + "getDataByObjectId",
-        params: {
-            objectId: parent.objectId,
-            serviceClassName: parent.serviceClassName
-        },
-        pagination: false,
-        method: "GET",
-        template: $("#showBaseTemplate").html(),
-        ajaxSendLoadBefore: function (hdb, json) {
-            json.bean.enabled = skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("commonEnable", 'id', json.bean.enabled, 'name');
-        },
-        ajaxSendAfter: function (json) {
-            matchingLanguage();
-            form.render();
-        }
-    });
-
-    $("body").on("click", "#cancle", function () {
-        parent.layer.close(index);
+        $("body").on("click", "#userPhoto", function () {
+            systemCommonUtil.showPicImg($(this).attr("src"));
+        });
     });
 });
