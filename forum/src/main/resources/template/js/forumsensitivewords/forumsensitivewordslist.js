@@ -12,28 +12,33 @@ layui.config({
 		form = layui.form,
 		table = layui.table;
 	
-	authBtn('1565243619075');
+	authBtn('1565243646285');
 	
 	table.render({
 	    id: 'messageTable',
 	    elem: '#messageTable',
 	    method: 'post',
-	    url: sysMainMation.forumBasePath + 'sensitiveword001',
+	    url: sysMainMation.admBasePath + 'queryForumSensitiveWordsList',
 	    where: {sensitiveWord: $("#sensitiveWord").val()},
 	    even: false,
 	    page: true,
-	    limits: [8, 16, 24, 32, 40, 48, 56],
-	    limit: 8,
+		limits: getLimits(),
+		limit: getLimit(),
 	    cols: [[
 	        { title: systemLanguage["com.skyeye.serialNumber"][languageType], type: 'numbers' },
 	        { field: 'sensitiveWord', title: '敏感词名称', align: 'center', width: 120 },
 	        { field: 'createName', title: systemLanguage["com.skyeye.createName"][languageType], align: 'left', width: 120 },
 	        { field: 'createTime', title: systemLanguage["com.skyeye.createTime"][languageType], align: 'center', width: 180 },
+			{ field: 'lastUpdateName', title: systemLanguage["com.skyeye.lastUpdateName"][languageType], align: 'left', width: 120 },
+			{ field: 'lastUpdateTime', title: systemLanguage["com.skyeye.lastUpdateTime"][languageType], align: 'center', width: 150 },
 	        { title: systemLanguage["com.skyeye.operation"][languageType], fixed: 'right', align: 'center', width: 257, toolbar: '#tableBar'}
 	    ]],
-	    done: function(json) {
-	    	matchingLanguage();
-	    }
+		done: function(json) {
+			matchingLanguage();
+			initTableSearchUtil.initAdvancedSearch(this, json.searchFilter, form, "请输入名称", function () {
+				table.reloadData("messageTable", {page: {curr: 1}, where: getTableParams()});
+			},);
+		}
 	});
 	
 	table.on('tool(messageTable)', function (obj) {
@@ -47,16 +52,15 @@ layui.config({
     });
 	
 	form.render();
-	
-	
-	$("body").on("click", "#formSearch", function() {
-		refreshTable();
+
+	$("body").on("click", "#reloadTable", function() {
+		loadTable();
 	});
 	
 	//添加
 	$("body").on("click", "#addBean", function() {
     	_openNewWindows({
-			url: "../../tpl/forumsensitivewords/forumsensitivewordsadd.html", 
+			url: "../../tpl/forumsensitivewords/forumsensitivewordsWrite.html",
 			title: "新增敏感词",
 			pageId: "forumsensitivewordsadd",
 			area: ['500px', '20vh'],
@@ -71,7 +75,10 @@ layui.config({
 		var msg = '确认删除选中数据吗？';
 		layer.confirm(msg, { icon: 3, title: '删除论坛敏感词' }, function (index) {
 			layer.close(index);
-            AjaxPostUtil.request({url: sysMainMation.forumBasePath + "sensitiveword003", params: {rowId: data.id}, type: 'json', callback: function (json) {
+            AjaxPostUtil.request({
+				url: sysMainMation.forumBasePath + "sensitiveword003",
+				params: {rowId: data.id},
+				type: 'json', callback: function (json) {
 				winui.window.msg(systemLanguage["com.skyeye.deleteOperationSuccessMsg"][languageType], {icon: 1, time: 2000});
 				loadTable();
     		}});
@@ -80,9 +87,8 @@ layui.config({
 
 	//编辑
 	function edit(data) {
-		rowId = data.id;
 		_openNewWindows({
-			url: "../../tpl/forumsensitivewords/forumsensitivewordsedit.html", 
+			url: "../../tpl/forumsensitivewords/forumsensitivewordsWrite.html?id="+data.id,
 			title: "编辑论坛敏感词",
 			pageId: "forumsensitivewordsedit",
 			area: ['500px', '20vh'],
@@ -97,14 +103,14 @@ layui.config({
     $("body").on("click", "#reloadTable", function() {
     	loadTable();
     });
-    
-    function loadTable() {
-    	table.reloadData("messageTable", {where:{sensitiveWord: $("#sensitiveWord").val()}});
-    }
-    
-    function refreshTable(){
-    	table.reloadData("messageTable", {page: {curr: 1}, where:{sensitiveWord: $("#sensitiveWord").val()}});
-    }
+
+	function loadTable() {
+		table.reloadData("messageTable", {where: getTableParams()});
+	}
+
+	function getTableParams() {
+		return $.extend(true, {}, initTableSearchUtil.getSearchValue("messageTable"));
+	}
     
     exports('forumtaglist', {});
 });
