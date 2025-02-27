@@ -113,7 +113,6 @@ layui.config({
 		function loadData(){
 			// 如果问题id不为空，则说明是编辑，加载编辑信息
 			if (!isNull(parent.rowId)){
-				console.log("编辑模式，有parent.rowId");
 				AjaxPostUtil.request({url:schoolBasePath + "selectQuestionById", params: {ids: parent.rowId}, type: 'json', callback: function (json) {
 					$("#schoolId").val(json.rows[0].schoolId);
 					showGrid({

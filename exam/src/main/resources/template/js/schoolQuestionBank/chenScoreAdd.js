@@ -237,8 +237,10 @@ layui.config({
 						pageLoadAfter();
 					}});
 			} else {
-				// 加载年级
-				initGrade();
+				// 加载院系
+				initFaculty();
+				// 加载专业
+				initMajor();
 				// 题目信息赋值
 				$(".surveyQuItemBody").html($("#noDataTemplate").html());
 				// 加载上传和切换监听事件

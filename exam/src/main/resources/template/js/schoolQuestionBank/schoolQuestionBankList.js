@@ -227,7 +227,7 @@ layui.config({
     	rowId = "";
     	_openNewWindows({
 			url: "../../tpl/schoolQuestionBank/multiFillblankAdd.html", 
-			title: "新增多项排序题",
+			title: "新增多项填空题",
 			pageId: "multiFillblankAdd",
 			area: ['90vw', '90vh'],
 			callBack: function (refreshCode) {
