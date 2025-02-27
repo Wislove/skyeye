@@ -26,29 +26,24 @@ layui.config({
             limits: getLimits(),
             limit: getLimit(),
             cols: [[
-                {title: systemLanguage["com.skyeye.serialNumber"][languageType], type: 'numbers'},
-                {
-                    field: 'materialMation', title: '产品', align: 'left', width: 120, templet: function (d) {
-                        return isNull(d.materialMation) ? '' : d.materialMation.name
-                    }
-                },
-                {
-                    field: 'normsMation', title: '规格', align: 'left', width: 200, templet: function (d) {
-                        return isNull(d.normsMation) ? '' : d.normsMation.name
-                    }
-                },
-                {field: 'codeNum', title: '条形码', align: 'center', width: 250},
-                {
-                    field: 'departmentMation', title: '来源部门', align: 'left', width: 200, templet: function (d) {
-                        return isNull(d.departmentMation) ? '' : d.departmentMation.name
-                    }
-                },
-                {
-                    field: 'depotMation', title: '来源仓库', align: 'left', width: 200, templet: function (d) {
-                        return isNull(d.depotMation) ? '' : d.depotMation.name
-                    }
-                },
-                { field: 'pickUseState', title: '状态', align: 'left', width: 80, templet: function (d) {
+                { title: systemLanguage["com.skyeye.serialNumber"][languageType], type: 'numbers'},
+                { field: 'materialMation', title: '产品', align: 'left', width: 120, templet: function (d) {
+                    return isNull(d.materialMation) ? '' : d.materialMation.name
+                }},
+                { field: 'normsMation', title: '规格', align: 'left', width: 200, templet: function (d) {
+                    return isNull(d.normsMation) ? '' : d.normsMation.name
+                }},
+                { field: 'codeNum', title: '条形码', align: 'center', width: 250},
+                { field: 'departmentMation', title: '来源部门', align: 'left', width: 200, templet: function (d) {
+                    return isNull(d.departmentMation) ? '' : d.departmentMation.name
+                }},
+                { field: 'depotMation', title: '来源仓库', align: 'left', width: 200, templet: function (d) {
+                    return isNull(d.depotMation) ? '' : d.depotMation.name
+                }},
+                { field: 'pickState', title: '车间加工使用结果', width: 150, align: 'center', templet: function (d) {
+                    return skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("machinProcedureAcceptChildType", 'id', d.pickState, 'name');
+                }},
+                { field: 'pickUseState', title: '状态', align: 'left', width: 80, align: 'center', templet: function (d) {
                     return skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("pickNormsCodeUseState", 'id', d.pickUseState, 'name');
                 }}
             ]],
