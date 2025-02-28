@@ -180,8 +180,8 @@
 										<td class="quChenRowTd"><label class="editAble quCoOptionEdit">{{optionName}}</label>
 											<div class="quItemInputCase"><input type="hidden" name="quItemId" value="{{id}}"><input type="hidden" name="quItemSaveTag" value="1"></div>
 										</td>
-										{{#each questionChenColumn}}
-											<td><input type="radio" class="chenRadioInput" name="{{../id}}"></td>
+										{{#each ../questionChenColumn}}
+											<td><input type="radio" class="chenRadioInput" name="{{../id}}" {{#if (lookup ../columnCheckedStates @index)}}checked{{/if}}></td>
 										{{/each}}
 									</tr>
 									{{/each}}

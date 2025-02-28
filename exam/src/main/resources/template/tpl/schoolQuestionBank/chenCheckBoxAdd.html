@@ -177,11 +177,16 @@
 									</tr>
 									{{#each questionChenRow}}
 									<tr class="quChenRowTr">
-										<td class="quChenRowTd"><label class="editAble quCoOptionEdit">{{optionName}}</label>
-											<div class="quItemInputCase"><input type="hidden" name="quItemId" value="{{id}}"></div>
+										<td class="quChenRowTd">
+											<label class="editAble quCoOptionEdit">{{optionName}}</label>
+											<div class="quItemInputCase">
+												<input type="hidden" name="quItemId" value="{{id}}">
+											</div>
 										</td>
-										{{#each questionChenColumn}}
-											<td><input type="checkbox" class="chenCheckBoxInput"></td>
+										{{#each ../questionChenColumn}}
+											<td>
+												<input type="checkbox" class="chenCheckBoxInput" {{#if (lookup ../columnCheckedStates @index)}}checked{{/if}}>
+											</td>
 										{{/each}}
 									</tr>
 									{{/each}}

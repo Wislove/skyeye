@@ -1,4 +1,3 @@
-
 layui.config({
 	base: basePath, 
 	version: skyeyeVersion
@@ -193,6 +192,11 @@ layui.config({
 							console.error('解析选项数据失败:', e);
 						}
 
+						// 在渲染模板前添加
+						console.log("传递给模板的数据:");
+						console.log("questionChenColumn:", questionChenColumn);
+						console.log("questionChenRow:", questionChenRow);
+
 						// 题目信息赋值
 						$(".surveyQuItemBody").html(getDataUseHandlebars($("#template").html(),
 							{
@@ -213,32 +217,87 @@ layui.config({
 
 						form.render();
 
-						// 加载答案数据
-						var answer = $(".surveyQuItemBody").find(".quCoItem table.quCoChenTable tr select.quChenScoreSelect");
-						var isDefaultAnswer = isJsonFormat(json.rows[0].isDefaultAnswer) ? JSON.parse(json.rows[0].isDefaultAnswer) : [];
-						var columuLength = questionChenColumn.length;
-						var xIndex = 0;
-						var yIndex = 1;
-						$.each(answer, function(i) {
-							if(i % columuLength == 0){
-								xIndex++;
-								yIndex = 1;
-							} else {
-								yIndex++;
+						// 在渲染模板后，手动构建表格
+						setTimeout(function() {
+							// 获取表格元素
+							var table = $(".surveyQuItemBody").find("table.quCoChenTable");
+							if (table.length === 0) {
+								console.error("找不到表格元素");
+								return;
 							}
-							var _this = this;
-							$.each(isDefaultAnswer, function(j, item) {
-								if(item.x == xIndex && item.y == yIndex){
-									$(_this).val(item.value);
+							
+							// 清空表格
+							table.empty();
+							
+							// 创建表头行
+							var headerRow = $("<tr></tr>");
+							headerRow.append("<td></td>"); // 左上角空单元格
+							
+							// 添加列标题
+							$.each(questionChenColumn, function(i, column) {
+								var td = $("<td class='quChenColumnTd'></td>");
+								td.append("<label class='editAble quCoOptionEdit'>" + column.optionName + "</label>");
+								td.append("<div class='quItemInputCase'><input type='hidden' name='quItemId' value='" + column.id + "'></div>");
+								headerRow.append(td);
+							});
+							
+							// 添加表头行到表格
+							table.append(headerRow);
+							
+							// 添加数据行
+							$.each(questionChenRow, function(rowIndex, row) {
+								var tr = $("<tr class='quChenRowTr'></tr>");
+								
+								// 添加行标题
+								var rowTd = $("<td class='quChenRowTd'></td>");
+								rowTd.append("<label class='editAble quCoOptionEdit'>" + row.optionName + "</label>");
+								rowTd.append("<div class='quItemInputCase'><input type='hidden' name='quItemId' value='" + row.id + "'></div>");
+								tr.append(rowTd);
+								
+								// 添加单元格
+								$.each(questionChenColumn, function(colIndex, column) {
+									var td = $("<td></td>");
+									var select = $("<select class='quChenScoreSelect'></select>");
+									select.append("<option value='0'>-评分-</option>");
+									select.append("<option value='1'>1分</option>");
+									select.append("<option value='2'>2分</option>");
+									select.append("<option value='3'>3分</option>");
+									select.append("<option value='4'>4分</option>");
+									select.append("<option value='5'>5分</option>");
+									td.append(select);
+									tr.append(td);
+								});
+								
+								// 添加行到表格
+								table.append(tr);
+							});
+							
+							// 设置答案
+							var isDefaultAnswer = isJsonFormat(json.rows[0].isDefaultAnswer) ? JSON.parse(json.rows[0].isDefaultAnswer) : [];
+							var selects = $(".surveyQuItemBody").find("select.quChenScoreSelect");
+							
+							$.each(isDefaultAnswer, function(i, answer) {
+								var rowIndex = answer.x - 1;
+								var colIndex = answer.y - 1;
+								var selectIndex = rowIndex * questionChenColumn.length + colIndex;
+								
+								if (selectIndex < selects.length) {
+									$(selects[selectIndex]).val(answer.value);
 								}
 							});
-						});
+							
+							// 刷新表单
+							form.render('select');
+						}, 200);
+						
 						// 加载上传和切换监听事件
 						pageLoadAfter();
 					}});
 			} else {
-				// 加载年级
-				initGrade();
+				// 加载院系
+				initFaculty();
+				// 加载专业
+				initMajor();
 				// 题目信息赋值
 				$(".surveyQuItemBody").html($("#noDataTemplate").html());
 				// 加载上传和切换监听事件
