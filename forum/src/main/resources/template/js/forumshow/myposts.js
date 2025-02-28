@@ -27,27 +27,13 @@ layui.config({
             pagesize: 12,
             template: addListTemplate,
             ajaxSendLoadBefore: function (hdb) {
+                // 如果需要注册其他 Handlebars 辅助函数，可以在这里添加
             },
             ajaxSendAfter: function (json) {
-                var row = json.rows;
-                for (var i = 0; i < row.length; i++) {
-                    var id = row[i].id;
-                    var tagName = row[i].tagName;
-                    if (!isNull(tagName)) {
-                        var tagArr = tagName.split(",");
-                        var tagStr = "";
-                        for (var j = 0; j < tagArr.length; j++) {
-                            tagStr += "<strong rowId='" + tagArr[j].split("-")[1] + "'>" + tagArr[j].split("-")[0] + "</strong>"
-                        }
-                        $(".my-forum-main-span").each(function () {
-                            var thisId = $(this).parents('div[class^="my-forum-main"]').eq(0).attr("rowId");
-                            if (thisId == id) {
-                                $(this).append(tagStr);
-                            }
-                        });
-                    }
+                if (json.returnCode == 0 && json.rows) {
+                    // 如果需要在渲染后进行额外处理，可以在这里添加
+                    matchingLanguage();
                 }
-                matchingLanguage();
             }
         });
     }

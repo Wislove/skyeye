@@ -164,12 +164,14 @@ layui.config({
     //举报
     $("body").on("click", "#forumReport", function (e) {
         _openNewWindows({
-            url: "../../tpl/forumshow/forumreport.html",
-            title: "帖子举报",
+            url: "../../tpl/forumshow/forumreport.html?forumId=" + rowId,
+            title: "举报",
             pageId: "forumreport",
-            area: ['40vw', '60vh'],
+            area: ['600px', '400px'],
             callBack: function (refreshCode) {
-                winui.window.msg("举报成功", { icon: 1, time: 2000 });
+                if (refreshCode == '0') {
+                    winui.window.msg("举报成功", { icon: 1, time: 2000 });
+                }
             }
         });
     });

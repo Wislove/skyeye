@@ -31,12 +31,19 @@
 	{{#each rows}}
 		<div class="caller-item">
 			<div class="my-forum-main caller-fl" rowId='{{id}}'>
-				<p><span class="my-forum-main-span"></span><em>{{forumTitle}}</em></p>
+				<p>
+					<span class="my-forum-main-span">
+						{{#each tagList}}
+							<strong rowId='{{id}}'>{{tagName}}</strong>
+						{{/each}}
+					</span>
+					<em>{{forumTitle}}</em>
+				</p>
 				<div class="caller-fl my-operator-list">
 					<a type="edit"><language showName="com.skyeye.editBtn"></language></a>
 					<a type="delete"><language showName="com.skyeye.deleteBtn"></language></a>
 				</div>
-				<p class="forum-desc">{{desc}}</p>
+				<p class="forum-desc">{{forumDesc}}</p>
 			</div>
 			<div class="caller-fl my-hi-list">
 				<em><i class="fa fa-eye"></i>{{browseNum}}</em>
