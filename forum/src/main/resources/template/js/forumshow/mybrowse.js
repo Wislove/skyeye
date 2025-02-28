@@ -21,7 +21,7 @@ layui.config({
 		$("#addList").empty();
 	    showGrid({
 		 	id: "addList",
-		 	url: sysMainMation.forumBasePath + "forumcontent012",
+		 	url: sysMainMation.admBasePath + "queryForumMyBrowerList",
 		 	params: {},
 		 	pagination: true,
 		 	pagesize: 12,

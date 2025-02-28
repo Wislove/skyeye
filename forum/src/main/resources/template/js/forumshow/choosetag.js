@@ -1,74 +1,101 @@
-
 layui.config({
-	base: basePath, 
-	version: skyeyeVersion
+    base: basePath,
+    version: skyeyeVersion
 }).extend({
     window: 'js/winui.window'
-}).define(['window', 'jquery', 'winui', 'form', 'tagEditor'], function (exports) {
-	var index = parent.layer.getFrameIndex(window.name);
-	winui.renderColor();
-	var $ = layui.$,
-		form = layui.form;
-	
-	var tagReturnList = new Array();
-	
-	$("body").on("click", "#cancle", function() {
-		parent.layer.close(index);
+}).define(['window', 'jquery', 'winui', 'form'], function (exports) {
+    var index = parent.layer.getFrameIndex(window.name);
+    winui.renderColor();
+    var $ = layui.$,
+        form = layui.form;
+
+    var tagReturnList = new Array();
+
+    // 加载标签列表
+    function loadTags() {
+        AjaxPostUtil.request({
+            url: sysMainMation.admBasePath + "queryForumTagUpStateList",
+            params: {
+                limit: 999,
+                page: 1,
+                rows: 999
+            },
+            type: 'json',
+            callback: function (json) {
+                if (json.returnCode == 0 && json.bean && Array.isArray(json.bean)) {
+                    var html = '';
+                    // 遍历 bean 数组
+                    $.each(json.bean, function (i, item) {
+                        if (item.state === 2) { // 假设 state=2 表示可用状态
+                            html += '<input type="checkbox" lay-filter="checkboxProperty" ' +
+                                'rowId="' + item.id + '" title="' + item.tagName + '" ' +
+                                'name="' + item.tagName + '" lay-skin="primary">';
+                        }
+                    });
+                    $("#showForm").html(html);
+
+                    // 如果有已选标签，设置选中状态
+                    if (parent.tagReturnList && parent.tagReturnList.length > 0) {
+                        tagReturnList = [].concat(parent.tagReturnList);
+                        num = tagReturnList.length;
+                        for (var j = 0; j < tagReturnList.length; j++) {
+                            $('input:checkbox[rowId="' + tagReturnList[j].id + '"]').prop("checked", true);
+                        }
+                    }
+
+                    // 渲染复选框
+                    form.render('checkbox');
+                } else {
+                    winui.window.msg(json.returnMessage || "获取标签失败", { icon: 2, time: 2000 });
+                }
+            },
+            errorCallback: function (err) {
+                console.error("获取标签失败:", err);
+                winui.window.msg("获取标签失败", { icon: 2, time: 2000 });
+            }
+        });
+    }
+
+    var num = 0;
+    form.on('checkbox(checkboxProperty)', function (data) {
+        if (data.elem.checked) {
+            if (num < 3) {
+                num++;
+            } else {
+                winui.window.msg("最多选三个标签！", { icon: 2, time: 2000 });
+                $(data.elem).prop("checked", false);
+                form.render('checkbox');
+                return false;
+            }
+        } else {
+            num--;
+        }
     });
-	
-	var num = 0;
-	form.on('checkbox(checkboxProperty)', function(data) {
-		if (data.elem.checked == true){
-			if(num < 3){
-				num++;
-			} else {
-				winui.window.msg("最多选三个标签！", {icon: 2, time: 2000});
-				$('input:checkbox[rowId="' + $(this).attr("rowId") + '"]').attr("checked", false);
-				form.render('checkbox');
-			}
-		} else {
-			num--;
-		}
-	});
-	
-	//确定
-    $("body").on("click", "#confimChoose", function() {
-    	tagReturnList = new Array();
-    	$.each($('input:checkbox:checked'),function(){
-    		id= $(this).attr("rowId");
-			name= $(this).attr("name");
-			var j = {
-	    			id: $(this).attr("rowId"),
-	    			name: $(this).attr("title")
-	    		};
-			tagReturnList.push(j);
-    	});
-		parent.tagReturnList = [].concat(tagReturnList);
-    	parent.layer.close(index);
-    	parent.refreshCode = '0';
+
+    // 确定按钮
+    $("body").on("click", "#confimChoose", function () {
+        tagReturnList = [];
+        $('input:checkbox:checked').each(function () {
+            tagReturnList.push({
+                id: $(this).attr("rowId"),
+                name: $(this).attr("title")
+            });
+        });
+        parent.tagReturnList = [].concat(tagReturnList);
+        parent.layer.close(index);
+        parent.refreshCode = '0';
     });
-	
-	//标签
-	showGrid({
-	 	id: "choosetag",
-	 	url: sysMainMation.forumBasePath + "forumtag010",
-	 	params: {},
-	 	pagination: false,
-	 	template: getFileContent('tpl/template/checkbox-property.tpl'),
-	 	ajaxSendLoadBefore: function(hdb) {
-	 	},
-	 	ajaxSendAfter:function(j){
-	 		if(parent.tagReturnList.length > 0){
-	 			tagReturnList = [].concat(parent.tagReturnList);
-	 			num = tagReturnList.length;
-	 			for(var j = 0; j < tagReturnList.length; j++){
-	 				$('input:checkbox[rowId="' + tagReturnList[j].id + '"]').attr("checked", true);
-	 	    	}
-	 		}
-	 		form.render('checkbox');
-	 		matchingLanguage();
-	 	}
-	});
-	
+
+    // 取消按钮
+    $("body").on("click", "#cancle", function () {
+        parent.layer.close(index);
+    });
+
+    // 初始化加载标签
+    loadTags();
+
+    // 添加多语言支持
+    matchingLanguage();
+
     exports('choosetag', {});
 });

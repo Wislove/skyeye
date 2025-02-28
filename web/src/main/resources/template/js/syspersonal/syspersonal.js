@@ -42,7 +42,7 @@ layui.config({
 			scrollElem: "#myForum",
 			done: function(page, next) {
 				var lis = [];
-				AjaxPostUtil.request({url: sysMainMation.forumBasePath + "forumcontent001", params: {page: page, limit: 15}, type: 'json', callback: function (json) {
+				AjaxPostUtil.request({url: sysMainMation.admBasePath + "queryMyForumContentList", params: {page: page, limit: 15}, type: 'json', callback: function (json) {
 					lis.push(getDataUseHandlebars(forumTemplate, json));
 					next(lis.join(''), (page * 15) < json.total);
 					matchingLanguage();

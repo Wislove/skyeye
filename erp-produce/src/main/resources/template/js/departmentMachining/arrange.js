@@ -16,6 +16,11 @@ layui.config({
     AjaxPostUtil.request({url: sysMainMation.erpBasePath + "queryMachinProcedureById", params: {id: id}, type: 'json', method: 'GET', callback: function (json) {
         $("#showForm").html(getDataUseHandlebars($("#beanTemplate").html(), json));
 
+        const oddNumberMap = {};
+        (json.bean.machinProcedureFarmList || []).forEach((item, index) => {
+            oddNumberMap[item.oddNumber] = item.id;
+        });
+
         let par = {
             workProcedureId: json.bean.procedureId
         };
@@ -30,6 +35,7 @@ layui.config({
             cols: [
                 {id: 'farmId', title: '安排车间', formType: 'select', width: '200', verify: 'required', modelHtml: farmModelHtml },
                 {id: 'targetNum', title: '安排任务数量', formType: 'input', width: '140', verify: 'required|number' },
+                {id: 'oddNumber', title: '任务单号', formType: 'detail', width: '140', className: 'notice-title-click' },
                 {id: 'stateName', title: '状态', formType: 'detail', width: '140' }
             ],
             form: form,
@@ -128,6 +134,21 @@ layui.config({
             }
         });
 
+        // 车间任务详情
+        $("body").on("click", ".notice-title-click", function() {
+            const dataStr = $(this).attr("data");
+            const data = isNull(dataStr) ? {} : JSON.parse(dataStr);
+            console.log(data);
+            _openNewWindows({
+                url: "../../tpl/workshopTasks/workshopdetails.html?id=" + data.id + "&serviceClassName=" + encodeURIComponent(data.serviceClassName),
+                title: '详情',
+                pageId: "workshopdetails",
+                area: ['90vw', '90vh'],
+                callBack: function (refreshCode) {
+                }
+            });
+        });
+
         matchingLanguage();
         form.render();
         form.on('submit(formAddBean)', function (data) {
@@ -136,6 +157,10 @@ layui.config({
                 if (!result.checkResult) {
                     return false;
                 }
+                let dataList = result.dataList;
+                for (let i = 0; i < dataList.length; i++) {
+                    dataList[i].id = oddNumberMap[dataList[i].oddNumber] || '';
+                }
 
                 var params = {
                     id: id,
@@ -143,7 +168,7 @@ layui.config({
                     planEndTime: $("#planEndTime").val(),
                     actualStartTime: $("#actualStartTime").val(),
                     actualEndTime: $("#actualEndTime").val(),
-                    machinProcedureFarmList: JSON.stringify(result.dataList),
+                    machinProcedureFarmList: JSON.stringify(dataList),
                 };
                 AjaxPostUtil.request({url: sysMainMation.erpBasePath + "setMachinProcedureById", params: params, type: 'json', method: 'POST', callback: function (json) {
                     parent.layer.close(index);
