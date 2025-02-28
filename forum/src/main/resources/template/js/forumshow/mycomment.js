@@ -21,7 +21,7 @@ layui.config({
         //初始化数据
         showGrid({
              id: "addList",
-             url: sysMainMation.admBasePath + "queryMyCommentList",
+             url: sysMainMation.admBasePath + "queryMyForumCommentList",
              params: {},
              pagination: true,
              pagesize: 12,
