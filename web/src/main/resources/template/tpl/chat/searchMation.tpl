@@ -10,7 +10,7 @@
 				</div>
 				<div class="msg-group-mation-num">
 					<i class="fa layui-icon layui-icon-user fa-fw group-icon"></i>
-					<font>{{newGroupNum}}/{{groupUserNum}}</font>
+					<font>{{groupUserNum}}</font>
 				</div>
 			</div>
 			<div class="msg-group-mation-desc">
@@ -18,7 +18,7 @@
 			</div>
 		</div>
 		<div class="msg-group-opratio">
-			{{#compare2 inId id newGroupNum groupUserNum}}{{/compare2}}
+			{{#compare2 inId id}}{{/compare2}}
 		</div>
 	</div>
 {{/each}}
