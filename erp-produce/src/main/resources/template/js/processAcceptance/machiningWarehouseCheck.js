@@ -24,6 +24,7 @@ layui.config({
 
         saveData: function (params) {
             // 保存数据
+            console.log("params",params)
             AjaxPostUtil.request({url: sysMainMation.erpBasePath + "writeMachinProcedureAccept", params: params, type: 'json', method: "POST", callback: function(json) {
                 parent.layer.close(index);
                 parent.refreshCode = '0';
