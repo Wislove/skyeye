@@ -168,13 +168,13 @@ layui.config({
                         // $.each(schoolKnowledgeMationList, function (i, item) {
                         //     str += '<br><span class="layui-badge layui-bg-blue" style="height: 25px !important; line-height: 25px !important; margin: 5px 0px;">' + item.title + '</span>';
                         // });
-                        $("#schoolKnowledgeChoose").parent().html('<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" id="schoolKnowledgeChoose">知识点选择</button>' + str);
+                        // $("#schoolKnowledgeChoose").parent().html('<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" id="schoolKnowledgeChoose">知识点选择</button>' + str);
 
-                        //题 目信息赋值
+                        //题目信息赋值
                         $(".surveyQuItemBody").html(getDataUseHandlebars($("#template").html(), {
                             bean: {
                                 ...json.rows[0],
-                                questionCheckBox: json.rows[0].multifillblankTd
+                                questionMultiFillBlank: json.rows[0].multifillblankTd
                             }
                         }));
 
@@ -223,7 +223,7 @@ layui.config({
                     fileUrl = "";
                 }
                 var params = {
-                    quId: quItemBody.find("input[name='quId']").val(),
+                    id: quItemBody.find("input[name='quId']").val(),
                     hv: quItemBody.find("input[name='hv']").val(),
                     randOrder: quItemBody.find("input[name='randOrder']").val(),
                     cellCount: quItemBody.find("input[name='cellCount']").val(),
