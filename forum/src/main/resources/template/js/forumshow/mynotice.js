@@ -22,7 +22,7 @@ layui.config({
         //初始化数据
         showGrid({
              id: "addList",
-             url: sysMainMation.forumBasePath + "forumcontent023",
+             url: sysMainMation.admBasePath + "queryMyNoticeList",
              params: {},
              pagination: true,
              pagesize: 12,
@@ -85,7 +85,7 @@ layui.config({
         rowId = $(this).parents('div[class^="my-forum-main"]').eq(0).attr("rowId");
         layer.confirm('确认删除该通知吗？', { icon: 3, title: '删除通知' }, function (index) {
             layer.close(index);
-            AjaxPostUtil.request({url: sysMainMation.forumBasePath + "forumcontent024", params: {rowId: rowId}, type: 'json', callback: function (json) {
+            AjaxPostUtil.request({url: sysMainMation.admBasePath + "deleteForumNoticeById", params: {id: rowId}, type: 'json', callback: function (json) {
                 winui.window.msg(systemLanguage["com.skyeye.deleteOperationSuccessMsg"][languageType], {icon: 1, time: 2000});
                 loadList();
             }});

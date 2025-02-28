@@ -66,8 +66,8 @@ layui.config({
 		$("#searchForumList").empty();
 	    showGrid({
 		 	id: "searchForumList",
-		 	url: sysMainMation.forumBasePath + "forumcontent018",
-		 	params: {searchValue: searchValue},
+		 	url: sysMainMation.admBasePath + "queryMyForumContentList",
+		 	params: {keyword: searchValue},
 		 	pagination: false,
 		 	pagesize: 10,
 		 	template: searchForumListTemplate,
@@ -130,7 +130,7 @@ layui.config({
 		$("#newForumList").empty();
 	    showGrid({
 		 	id: "newForumList",
-		 	url: sysMainMation.forumBasePath + "forumcontent007",
+		 	url: sysMainMation.admBasePath + "queryNewForumContentList",
 		 	params: {},
 		 	pagination: false,
 		 	template: newForumListTemplate,
@@ -150,7 +150,7 @@ layui.config({
 		$("#newCommentList").empty();
 	    showGrid({
 		 	id: "newCommentList",
-		 	url: sysMainMation.forumBasePath + "forumcontent013",
+		 	url: sysMainMation.admBasePath + "queryNewCommentList",
 		 	params: {},
 		 	pagination: false,
 		 	template: newCommentListTemplate,
@@ -170,7 +170,7 @@ layui.config({
 		$("#hotTagList").empty();
 	    showGrid({
 		 	id: "hotTagList",
-		 	url: sysMainMation.forumBasePath + "forumcontent015",
+		 	url: sysMainMation.admBasePath + "queryHotTagList",
 		 	params: {},
 		 	pagination: false,
 		 	template: hotTagListTemplate,
@@ -188,7 +188,7 @@ layui.config({
 		$("#activeUsersList").empty();
 	    showGrid({
 		 	id: "activeUsersList",
-		 	url: sysMainMation.forumBasePath + "forumcontent016",
+		 	url: sysMainMation.admBasePath + "queryActiveUsersList",
 		 	params: {},
 		 	pagination: false,
 		 	template: activeUsersListTemplate,
@@ -208,7 +208,7 @@ layui.config({
 		$("#hotForumList").empty();
 	    showGrid({
 		 	id: "hotForumList",
-		 	url: sysMainMation.forumBasePath + "forumcontent017",
+		 	url: sysMainMation.admBasePath + "queryHotForumList",
 		 	params: {},
 		 	pagination: false,
 		 	template: hotForumListTemplate,
