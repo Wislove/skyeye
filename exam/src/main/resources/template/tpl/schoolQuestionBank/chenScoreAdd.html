@@ -169,45 +169,7 @@
 						<div class="quCoItem">
 							<div class="quCoItemLeftChenTableDiv">
 								<table class="quCoChenTable">
-									<tr>
-										<td></td>
-										{{#each questionChenColumn}}
-										<td class="quChenColumnTd">
-											<label class="editAble quCoOptionEdit">{{optionName}}</label>
-											<div class="quItemInputCase">
-												<input type="hidden" name="quItemId" value="{{id}}">
-												<input type="hidden" name="isNote" value="{{isNote}}">
-												<input type="hidden" name="checkType" value="{{checkType}}">
-												<input type="hidden" name="isRequiredFill" value="{{isRequiredFill}}">
-											</div>
-										</td>
-										{{/each}}
-									</tr>
-									{{#each questionChenRow}}
-									<tr class="quChenRowTr">
-										<td class="quChenRowTd">
-											<label class="editAble quCoOptionEdit">{{optionName}}</label>
-											<div class="quItemInputCase">
-												<input type="hidden" name="quItemId" value="{{id}}">
-												<input type="hidden" name="isNote" value="{{isNote}}">
-												<input type="hidden" name="checkType" value="{{checkType}}">
-												<input type="hidden" name="isRequiredFill" value="{{isRequiredFill}}">
-											</div>
-										</td>
-										{{#each questionChenColumn}}
-											<td>
-												<select class="quChenScoreSelect"> 
-													<option value="0">-评分-</option>
-													<option value="1">1分</option>
-													<option value="2">2分</option>
-													<option value="3">3分</option>
-													<option value="4">4分</option>
-													<option value="5">5分</option>
-												</select>
-											</td>
-										{{/each}}
-									</tr>
-									{{/each}}
+									<tr><td></td></tr>
 								</table>
 							</div>
 							<div class="quCoRightTools" style="visibility: visible;">

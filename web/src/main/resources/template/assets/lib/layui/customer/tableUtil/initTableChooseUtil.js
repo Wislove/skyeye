@@ -138,7 +138,7 @@ var initTableChooseUtil = {
                 var modelHtml = isNull(item.modelHtml) ? "" : item.modelHtml;
                 tbodyStr += '<td><select id="' + tdId + '" lay-filter="' + item.layFilter + '" lay-search win-verify="' + verify + '" class="' + className + '">' + modelHtml + '</select></td>';
             } else if (item.formType == 'detail') {
-                tbodyStr += '<td id="' + tdId + '" class="' + className + '">' + value + '</td>';
+                tbodyStr += '<td id="' + tdId + '" class="' + className + '" data="">' + value + '</td>';
             }
         });
         tbodyStr += '</tr>';
@@ -325,6 +325,7 @@ var initTableChooseUtil = {
                 }
             } else if (formType == 'detail') {
                 $("#" + tdId).html(value);
+                $("#" + tdId).attr("data", JSON.stringify(data));
             }
         });
     },
