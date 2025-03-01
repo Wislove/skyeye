@@ -57,7 +57,6 @@ layui.config({
             }
         },
         errorCallback: function (err) {
-            console.error("获取帖子详情失败:", err);
             winui.window.msg("获取帖子详情失败", { icon: 2, time: 2000 });
         }
     });
