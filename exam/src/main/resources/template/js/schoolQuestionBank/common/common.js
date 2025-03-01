@@ -1,4 +1,3 @@
-
 // 当前编辑选中的项
 var curEditObj = null;
 // 弹框
@@ -664,22 +663,6 @@ layui.define(["jquery", 'form'], function(exports) {
 			}
 			delQuOptionCallBack(optionParent);
 		}
-	    
-	    //知识点选择
-	    $("body").on("click", "#schoolKnowledgeChoose", function() {
-	    	_openNewWindows({
-				url: "../../tpl/schoolKnowledgePoints/schoolKnowledgePointsChoose.html", 
-				title: "知识点选择",
-				pageId: "schoolKnowledgePointsChoose",
-				area: ['90vw', '90vh'],
-				callBack: function (refreshCode) {
-					var str = "";
-					$.each(schoolKnowledgeMationList, function(i, item) {
-						str += '<br><span class="layui-badge layui-bg-blue" style="height: 25px !important; line-height: 25px !important; margin: 5px 0px;">' + item.title + '</span>';
-					});
-					$("#schoolKnowledgeChoose").parent().html('<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" id="schoolKnowledgeChoose">知识点选择</button>' + str);
-				}});
-	    });
 		
 	})(jQuery);
 });
