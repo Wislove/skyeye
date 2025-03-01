@@ -60,7 +60,7 @@ layui.config({
     form.on('submit(formAddBean)', function (data) {
         if (winui.verifyForm(data.elem)) {
         	var params = {
-    			title: $("#title").val(),
+				forumTitle: $("#title").val(),
     			forumType: data.field.forumType,
 				tagId: systemCommonUtil.tagEditorGetAllData('tagId', tagList)
         	};
@@ -78,7 +78,7 @@ layui.config({
         		winui.window.msg("请输入内容", {icon: 2, time: 2000});
         		return false;
         	}
-        	params.textConent = encodeURIComponent(ue.getContentTxt());
+        	params.forumContent = encodeURIComponent(ue.getContentTxt());
         	AjaxPostUtil.request({url: sysMainMation.admBasePath + "saveOrUpdateEntity", params: params, type: 'json', callback: function (json) {
 				winui.window.msg("发布成功", {icon: 1, time: 2000}, function() {
 					location.href = '../../tpl/forumshow/myposts.html';

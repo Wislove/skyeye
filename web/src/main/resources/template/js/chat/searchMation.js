@@ -13,41 +13,37 @@ layui.config({
 		showGrid({
 		 	id: "search-group-list",
 		 	url: reqBasePath + "companytalkgroup005",
-		 	params: {groupNameOrNum: 'skyeye'},
+		 	params: {keyword: 'skyeye'},
 		 	pagination: true,
 		 	pagesize: 66,
 		 	template: getFileContent('tpl/chat/searchMation.tpl'),
 		 	ajaxSendLoadBefore: function(hdb) {
-		 		hdb.registerHelper('compareimg', function(v1, options) {
-		 			if(isNull(v1)){
-		        		return '../../assets/images/os_windows.png';
-		        	} else {
-		        		return fileBasePath + v1;
-		        	}
-		 		});
-		 		
-		 		hdb.registerHelper('compare1', function(v1, options) {
-		 			if(isNull(v1)){
-		        		return '暂无简介';
-		        	} else {
-		        		return v1;
-		        	}
-		 		});
-		 		
-		 		hdb.registerHelper('compare2', function(v1, v2, v3, v4, options) {
-		 			if (!isNull(v1)){
-		        		return '<font class="in-this-group">已在该群聊</font>';
-		        	} else {
-		        		if(v3 < v4){
-		        			return '<button type="button" class="layui-btn layui-btn-xs layui-btn-normal inGroup" rowid="' + v2 + '">' + 
-					        			'<i class="fa fa-plus"></i>' + 
-					        			'<font>加群</font>' + 
-				        			'</button>';
-		        		} else {
-		        			return '<font class="in-this-group">群聊人数已满</font>';
-		        		}
-		        	}
-		 		});
+				hdb.registerHelper('compareimg', function (v1, options) {
+					if (isNull(v1)) {
+						return '../../assets/images/os_windows.png';
+					} else {
+						return fileBasePath + v1;
+					}
+				});
+
+				hdb.registerHelper('compare1', function (v1, options) {
+					if (isNull(v1)) {
+						return '暂无简介';
+					} else {
+						return v1;
+					}
+				});
+
+				hdb.registerHelper('compare2', function (v1, v2, options) {
+					if (!isNull(v1)) {
+						return '<font class="in-this-group">已在该群聊</font>';
+					} else {
+						return '<button type="button" class="layui-btn layui-btn-xs layui-btn-normal inGroup" rowid="' + v2 + '">' +
+							'<i class="fa fa-plus"></i>' +
+							'<font>加群</font>' +
+							'</button>';
+					}
+				});
 		 	},
 		 	options: {},
 		 	ajaxSendAfter:function (json) {

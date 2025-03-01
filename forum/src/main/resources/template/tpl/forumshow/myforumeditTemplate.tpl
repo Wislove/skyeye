@@ -1,8 +1,15 @@
 {{#bean}}
     <div class="layui-form-item">
-        <label class="layui-form-label">标题<i class="red">*</i></label>
+        <label class="layui-form-label">标题</label>
         <div class="layui-input-block">
-        	<input type="text" id="title" name="title" win-verify="required" placeholder="请输入标题" class="layui-input" maxlength="50" value="{{title}}"/>
+        	<input type="text" id="title" name="title" win-verify="required" placeholder="请输入标题" class="layui-input" value="{{forumTitle}}" />
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">标签</label>
+        <div class="layui-input-block">
+        	<input type="text" id="tagId" class="layui-input" />
+        	<button type="button" class="layui-btn layui-btn-primary" id="chooseTag">选择标签</button>
         </div>
     </div>
     <div class="layui-form-item">
@@ -12,11 +19,11 @@
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">标签<i class="red">*</i></label>
-		<div class="layui-input-block">
-			<input type="text" id="tagId" name="tagId" placeholder="请选择标签" class="layui-input" /> <i class="fa fa-user-plus input-icon" id="chooseTag"></i>
-		</div>
-	</div>
+        <label class="layui-form-label">匿名发布</label>
+        <div class="layui-input-block">
+        	<input type="checkbox" name="anonymous" lay-skin="switch" lay-filter="anonymous" value="{{compare5 anonymous}}" {{compare4 anonymous}} />
+    	</div>
+    </div>
     <div class="layui-form-item">
         <label class="layui-form-label">发布形式<i class="red">*</i></label>
         <div class="layui-input-block winui-radio">
@@ -24,16 +31,10 @@
             <input type="radio" name="forumType" value="2" title="私密" lay-filter="forumType" />
         </div>
 	</div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">匿名发送<i class="red">*</i></label>
-        <div class="layui-input-block winui-switch">
-        	<input id="anonymous" name="anonymous" lay-filter="anonymous" type="checkbox" lay-skin="switch" lay-text="是|否" {{#compare4 anonymous}}{{/compare4}} value="{{#compare5 anonymous}}{{/compare5}}"/>
-    	</div>
-    </div>
     <div class="layui-form-item layui-col-xs12">
         <div class="layui-input-block">
-            <button class="winui-btn" type="button" id="cancle"><language showName="com.skyeye.cancel"></language></button>
-            <button class="winui-btn" lay-submit lay-filter="formEditBean">发布</button>
+            <button class="winui-btn" id="cancle">取消</button>
+            <button class="winui-btn" lay-submit lay-filter="formEditBean">保存</button>
         </div>
     </div>
 {{/bean}}
