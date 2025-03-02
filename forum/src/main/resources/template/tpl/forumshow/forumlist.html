@@ -65,12 +65,11 @@
 									<div class="layui-col-xs12 layui-col-sm4">
 										<div class="layuiadmin-card-text" rowid="{{id}}">
 											<div class="layui-text-top">
-												<img userId="{{userId}}" class="hot-user-img" alt="" src="{{userPhoto}}">
-												<a class="forum-invitation">{{title}}</a>
+												<img userId="{{userId}}" class="hot-user-img" alt="" src="{{createMation.userPhoto}}">
+												<a class="forum-invitation">{{forumTitle}}</a>
 											</div>
-											<p class="layui-text-center">{{desc}}</p>
 											<p class="layui-text-bottom">
-												<a class="layui-text-bottom-a"></a><span>{{createTime}}</span>
+												<a class="layui-text-bottom-b"></a><span>{{createTime}}</span>
                                             </p>
 										</div>
 									</div>
@@ -158,7 +157,7 @@
                                 <!-- hotTagListTemplate.tpl -->
                                 <script type="text/x-handlebars-template" id="hotTagListTemplate">
 									{{#each rows}}
-										<a href="javascript:;" rowid='{{id}}'>{{name}}</a>
+										<a href="javascript:;" rowid='{{id}}'>{{forumTag.tagName}}</a>
 									{{/each}}
 								</script>
                             </div>

@@ -216,5 +216,41 @@ layui.config({
         });
     }
 
+    /**
+     * 在用户进入帖子详情页时，记录浏览历史并增加浏览量
+     */
+    function addForumViewHistory(forumId) {
+        // 确保有帖子ID
+        if (!forumId) {
+            return;
+        }
+        // 构建请求参数
+        var params = {
+            forumId: forumId
+        };
+        if (typeof sysMainMation.userToken !== 'undefined' && sysMainMation.userToken) {
+            params.createId = sysMainMation.userToken.id;
+        }
+        // 调用接口增加浏览量
+        AjaxPostUtil.request({
+            url: sysMainMation.admBasePath + "insertForumHistoryView",
+            params: params,
+            type: 'json',
+            callback: function (json) {
+            }
+        });
+    }
+
+    // 在页面加载完成后调用此函数
+    $(function () {
+        var forumId = GetUrlParam("id");
+        // 如果存在帖子ID，则增加浏览量
+        if (forumId) {
+            // 延迟一小段时间后记录浏览量，确保用户真的在查看帖子
+            setTimeout(function () {
+                addForumViewHistory(forumId);
+            }, 1000); // 延迟1秒
+        }
+    });
     exports('forumitem', {});
 });
