@@ -1,32 +1,138 @@
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--    <meta charset="utf-8" />-->
+<!--    <title></title>-->
+<!--    <link href="../../assets/lib/layui/css/layui.css" rel="stylesheet" />-->
+<!--    <link href="../../assets/lib/winui/css/winui.css" rel="stylesheet" />-->
+<!--</head>-->
+<!--<body>-->
+<!--	<div style="padding-top:20px; padding-left: 10px; padding-right: 10px">-->
+<!--	    <form class="layui-form" action="" id="showForm" autocomplete="off">-->
+<!--	        <div class="layui-form-item">-->
+<!--	            <label class="layui-form-label">问卷名称<i class="red">*</i></label>-->
+<!--	            <div class="layui-input-block">-->
+<!--                	<input type="text" id="surveyName" name="surveyName" win-verify="required" placeholder="请输入问卷名称" class="layui-input" maxlength="50"/>-->
+<!--                </div>-->
+<!--	        </div>-->
+<!--	        <div class="layui-form-item">-->
+<!--	            <div class="layui-input-block">-->
+<!--	                <button class="winui-btn" id="cancle"><language showName="com.skyeye.cancel"></language></button>-->
+<!--	                <button class="winui-btn" lay-submit lay-filter="formAddBean"><language showName="com.skyeye.save"></language></button>-->
+<!--	            </div>-->
+<!--	        </div>-->
+<!--	    </form>-->
+<!--	</div>-->
+<!--	<script src="../../assets/lib/layui/layui.js"></script>-->
+<!--   	<script src="../../assets/lib/layui/custom.js"></script>-->
+<!--   	<script type="text/javascript">-->
+<!--        layui.config({base: '../../js/dwsurveydesign/'}).use('dwsurveydesignadd');-->
+<!--    </script>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <title></title>
-    <link href="../../assets/lib/layui/css/layui.css" rel="stylesheet" />
-    <link href="../../assets/lib/winui/css/winui.css" rel="stylesheet" />
+	<meta charset="utf-8" />
+	<title>问卷设计</title>
+	<link href="../../assets/lib/layui/css/layui.css" rel="stylesheet" />
+	<link href="../../assets/lib/winui/css/winui.css" rel="stylesheet" />
 </head>
 <body>
-	<div style="padding-top:20px; padding-left: 10px; padding-right: 10px">
-	    <form class="layui-form" action="" id="showForm" autocomplete="off">
-	        <div class="layui-form-item">
-	            <label class="layui-form-label">问卷名称<i class="red">*</i></label>
-	            <div class="layui-input-block">
-                	<input type="text" id="surveyName" name="surveyName" win-verify="required" placeholder="请输入问卷名称" class="layui-input" maxlength="50"/>
-                </div>
-	        </div>
-	        <div class="layui-form-item">
-	            <div class="layui-input-block">
-	                <button class="winui-btn" id="cancle"><language showName="com.skyeye.cancel"></language></button>
-	                <button class="winui-btn" lay-submit lay-filter="formAddBean"><language showName="com.skyeye.save"></language></button>
-	            </div>
-	        </div>
-	    </form>
-	</div>
-	<script src="../../assets/lib/layui/layui.js"></script>
-   	<script src="../../assets/lib/layui/custom.js"></script>
-   	<script type="text/javascript">
-        layui.config({base: '../../js/dwsurveydesign/'}).use('dwsurveydesignadd');
-    </script>
+<div style="padding-top:20px; padding-left: 10px; padding-right: 10px">
+	<form class="layui-form" action="" id="showForm" autocomplete="off">
+		<!-- 问卷名称 -->
+		<div class="layui-form-item">
+			<label class="layui-form-label">问卷名称<i class="red">*</i></label>
+			<div class="layui-input-block">
+				<input type="text" id="surveyName" name="surveyName" win-verify="required" placeholder="请输入问卷名称" class="layui-input" maxlength="50"/>
+			</div>
+		</div>
+
+		<!-- 问卷模块 -->
+		<div class="layui-form-item">
+			<label class="layui-form-label">所属模块<i class="red">*</i></label>
+			<div class="layui-input-block">
+				<select id="surveyModel" name="surveyModel" win-verify="required">
+					<option value="">请选择模块类型</option>
+					<option value="1">问卷模块</option>
+					<option value="2">试题模块</option>
+				</select>
+			</div>
+		</div>
+
+		<!-- 目录类型 -->
+		<div class="layui-form-item">
+			<label class="layui-form-label">类型<i class="red">*</i></label>
+			<div class="layui-input-block">
+				<select id="dirType" name="dirType" win-verify="required">
+					<option value="">请选择类型</option>
+					<option value="1">目录</option>
+					<option value="2">问卷</option>
+				</select>
+			</div>
+		</div>
+
+		<!-- 调查规则 -->
+		<div class="layui-form-item">
+			<label class="layui-form-label">访问规则<i class="red">*</i></label>
+			<div class="layui-input-block">
+				<input type="radio" name="rule" value="1" title="公开" checked>
+				<input type="radio" name="rule" value="2" title="私有">
+				<input type="radio" name="rule" value="3" title="令牌访问">
+			</div>
+		</div>
+
+		<!-- 允许回答次数 -->
+		<div class="layui-form-item">
+			<label class="layui-form-label">回答次数<i class="red">*</i></label>
+			<div class="layui-input-block">
+				<input type="number" id="answerNum" name="answerNum" win-verify="required|number" placeholder="每个IP允许回答的次数" class="layui-input" min="1" />
+			</div>
+		</div>
+
+		<!-- IP冷却时间 -->
+		<div class="layui-form-item">
+			<label class="layui-form-label">冷却时间<i class="red">*</i></label>
+			<div class="layui-input-block">
+				<input type="number" id="effectiveTime" name="effectiveTime" win-verify="required|number" placeholder="同一IP允许重复回答的间隔（分钟）" class="layui-input"/>
+			</div>
+		</div>
+
+		<!-- 结束方式 -->
+		<div class="layui-form-item">
+			<label class="layui-form-label">结束方式<i class="red">*</i></label>
+			<div class="layui-input-block">
+				<select id="endType" name="endType" win-verify="required">
+					<option value="">请选择结束方式</option>
+					<option value="1">手动结束</option>
+					<option value="2">依据结束时间</option>
+					<option value="3">依据收到份数</option>
+				</select>
+			</div>
+		</div>
+
+		<!-- 是否删除 -->
+		<div class="layui-form-item">
+			<label class="layui-form-label">删除状态</label>
+			<div class="layui-input-block">
+				<input type="checkbox" id="whetherDelete" name="whetherDelete" lay-skin="switch" lay-text="已删除|未删除">
+			</div>
+		</div>
+
+			        <div class="layui-form-item">
+			            <div class="layui-input-block">
+			                <button class="winui-btn" id="cancle"><language showName="com.skyeye.cancel"></language></button>
+			                <button class="winui-btn" lay-submit lay-filter="formAddBean"><language showName="com.skyeye.save"></language></button>
+			            </div>
+			        </div>
+	</form>
+</div>
+<script src="../../assets/lib/layui/layui.js"></script>
+<script src="../../assets/lib/layui/custom.js"></script>
+<script type="text/javascript">
+	layui.config({base: '../../js/dwsurveydesign/'}).use('dwsurveydesignadd');
+</script>
 </body>
 </html>

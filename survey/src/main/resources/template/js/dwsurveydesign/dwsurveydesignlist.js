@@ -19,7 +19,7 @@ layui.config({
 	    id: 'messageTable',
 	    elem: '#messageTable',
 	    method: 'post',
-	    url: sysMainMation.surveyBasePath + 'dwsurveydirectory001',
+	    url: sysMainMation.surveyBasePath + 'queryAllDwList',
 	    where: {surveyName: $("#surveyName").val(), surveyState: $("#surveyState").val()},
 	    even: false,
 	    page: true,
@@ -29,8 +29,17 @@ layui.config({
 	        { title: systemLanguage["com.skyeye.serialNumber"][languageType], type: 'numbers' },
 	        { field: 'surveyName', width: 300, title: '问卷名称'},
 	        { field: 'answerNum', width: 140, title: '答卷'},
-	        { field: 'surveyState', width: 120, title: '状态'},
-	        { field: 'userName', width: 120, title: systemLanguage["com.skyeye.createName"][languageType]},
+	        { field: 'surveyState', width: 120, title: '状态',templet: function (d) {
+					var state = d.surveyState;
+					if (state == 0) {
+						return '设计';
+					} else if (state == 1) {
+						return '执行中';
+					} else if (state == 2) {
+						return '结束';
+					}
+				}},
+	        { field: 'createName', width: 120, title: systemLanguage["com.skyeye.createName"][languageType]},
 	        { field: 'createTime', title: systemLanguage["com.skyeye.createTime"][languageType], width: 180 },
 	        { title: systemLanguage["com.skyeye.operation"][languageType], fixed: 'right', align: 'center', width: 300, toolbar: '#tableBar'}
 	    ]],
@@ -72,7 +81,7 @@ layui.config({
 		var msg = obj ? '确认删除问卷【' + obj.data.surveyName + '】吗？' : '确认删除选中数据吗？';
 		layer.confirm(msg, { icon: 3, title: '删除问卷' }, function (index) {
 			layer.close(index);
-            AjaxPostUtil.request({url: sysMainMation.surveyBasePath + "dwsurveydirectory025", params: {rowId: data.id}, type: 'json', callback: function (json) {
+            AjaxPostUtil.request({url: sysMainMation.surveyBasePath + "deleteSurvey", params: {rowId: data.id,id:data.id}, type: 'json', method: 'DELETE', callback: function (json) {
 				winui.window.msg(systemLanguage["com.skyeye.deleteOperationSuccessMsg"][languageType], {icon: 1, time: 2000});
 				loadTable();
     		}});
@@ -138,7 +147,7 @@ layui.config({
 		var msg = obj ? '确认发布问卷【' + obj.data.surveyName + '】吗？' : '确认发布选中数据吗？';
 		layer.confirm(msg, { icon: 3, title: '问卷发布' }, function (index) {
 			layer.close(index);
-            AjaxPostUtil.request({url: sysMainMation.surveyBasePath + "dwsurveydirectory023", params: {rowId: data.id}, type: 'json', callback: function (json) {
+            AjaxPostUtil.request({url: sysMainMation.surveyBasePath + "setUpDwDirectory", params: {rowId: data.id,id:data.id}, type: 'json',method: 'POST', callback: function (json) {
 				winui.window.msg("发布成功", {icon: 1, time: 2000});
 				loadTable();
     		}});
@@ -150,7 +159,7 @@ layui.config({
 		var msg = obj ? '确认结束问卷【' + obj.data.surveyName + '】的调查吗？' : '确认结束选中数据吗？';
 		layer.confirm(msg, { icon: 3, title: '结束调查' }, function (index) {
 			layer.close(index);
-            AjaxPostUtil.request({url: sysMainMation.surveyBasePath + "dwsurveydirectory030", params: {surveyId: data.id}, type: 'json', callback: function (json) {
+            AjaxPostUtil.request({url: sysMainMation.surveyBasePath + "updateDwMationEndById", params: {surveyId: data.id,id:data.id}, type: 'json',method: 'POST', callback: function (json) {
 				winui.window.msg("结束成功", {icon: 1, time: 2000});
 				loadTable();
     		}});

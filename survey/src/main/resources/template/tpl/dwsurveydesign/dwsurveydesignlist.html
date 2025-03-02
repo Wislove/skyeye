@@ -42,7 +42,7 @@
 			{{# if(auth('1553665692294')){ }}
             	<a class="layui-btn layui-btn-xs" lay-event="fzWj">复制</a>
 			{{# } }}
-			{{# if(d.state == 0){ }}
+			{{# if(d.surveyState == 1){ }}
 				{{# if(auth('1553666048321')){ }}
 					<a class="layui-btn layui-btn-xs" lay-event="edit">设计</a>
 				{{# } }}
@@ -52,7 +52,7 @@
 				{{# if(auth('1553666318443')){ }}
           			<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><language showName="com.skyeye.deleteBtn"></language></a>
 				{{# } }}
-			{{# } else if(d.state == 1){ }}
+			{{# } else if(d.surveyState == 0){ }}
 				{{# if(auth('1553666399244')){ }}
 					<a class="layui-btn layui-btn-xs" lay-event="endSurvey">结束调查</a>
 				{{# } }}
@@ -62,7 +62,7 @@
 				{{# if(auth('1553666630342')){ }}
 					<a class="layui-btn layui-btn-xs" lay-event="fxWj">分析报告</a>
 				{{# } }}
-			{{# } else if(d.state == 2){ }}
+			{{# } else if(d.surveyState == 2){ }}
 				{{# if(auth('1553666630342')){ }}
 					<a class="layui-btn layui-btn-xs" lay-event="fxWj">分析报告</a>
 				{{# } }}

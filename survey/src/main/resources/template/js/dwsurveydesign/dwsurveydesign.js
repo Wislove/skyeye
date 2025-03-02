@@ -24,8 +24,18 @@ layui.config({
 	    
 	    showGrid({
 		 	id: "dw_body",
-		 	url: sysMainMation.surveyBasePath + "dwsurveydirectory003",
-		 	params: {rowId: parent.rowId},
+		 	url: sysMainMation.surveyBasePath + "writeDwDirectory",
+		 	params: {
+				 rowId: parent.rowId,
+				surveyName: data.surveyName,
+				surveyModel: data.surveyModel,
+				dirType: data.dirType,
+				rule: data.rule,
+				answerNum: data.answerNum,
+				effectiveTime: data.effectiveTime,
+				endType: data.endType,
+				whetherDelete: data.whetherDelete
+			},
 		 	pagination: false,
 		 	template: getFileContent('tpl/dwsurveydesign/dwsurveydesignbean.tpl'),
 		 	ajaxSendLoadBefore: function(hdb, json){
