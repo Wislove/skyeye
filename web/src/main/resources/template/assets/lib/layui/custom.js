@@ -6,32 +6,21 @@ var customerJS = {
 	"fontawesomeAll": "../../assets/lib/fontawesome-free-5.11.2/css/all.css", // fontawesome5
 	"fontawesomev4": "../../assets/lib/fontawesome-free-5.11.2/css/v4-shims.css", // fontawesome4兼容版
 	"systemCommonUtil": "../../assets/lib/layui/customer/common/systemCommonUtil.js", // 系统工具函数
-	"activitiUtil": "../../assets/lib/layui/customer/activitiUtil.js", // 工作流工具函数
-	"erpOrderUtil": "../../assets/lib/layui/customer/erpOrderUtil.js", // erp工具函数
-	"mailUtil": "../../assets/lib/layui/customer/mailUtil.js", // 通讯录工具函数
 	"systemDateUtil": "../../assets/lib/layui/customer/systemDateUtil.js", // 日期工具函数
 	"calculationUtil": "../../assets/lib/layui/customer/calculationUtil.js", // 加减乘除工具函数
 	"ajaxPostUtil": "../../assets/lib/layui/customer/ajaxPostUtil.js", // ajax工具函数
 	"dsFormUtil": "../../assets/lib/layui/customer/skyeye/dsFormUtil.js", // 动态表单工具函数
 	"systemModelUtil": "../../assets/lib/layui/customer/systemModelUtil.js", // 系统编辑器模板工具函数
 	"ueEditorUtil": "../../assets/lib/layui/customer/ueEditorUtil.js", // ueEditor编辑器工具函数
-	"sysCustomerUtil": "../../assets/lib/layui/customer/sysCustomerUtil.js", // CRM相关的工具函数
+	"sysCustomerUtil": "../../assets/lib/layui/customer/sysCustomerUtil.js", // 公共工具函数
 	"publicKeyCode": "../../assets/lib/layui/customer/publicKeyCode.js", // 快捷键
-	"sysSupplierUtil": "../../assets/lib/layui/customer/sysSupplierUtil.js", // 供应商相关工具
-	"sysMemberUtil": "../../assets/lib/layui/customer/sysMemberUtil.js", // 会员相关工具
-	"shopUtil": "../../assets/lib/layui/customer/shopUtil.js", // 商城模块相关工具
 	"indexMenu": "../../assets/lib/layui/customer/indexMenu.js", // 菜单按钮模块相关工具
-	"adminAssistantUtil": "../../assets/lib/layui/customer/adminAssistantUtil.js", // 行政管理模块相关工具
 	"codeDocUtil": "../../assets/lib/layui/customer/codeDocUtil.js", // 代码生成器相关工具类
-	"organizationUtil": "../../assets/lib/layui/customer/organizationUtil.js", // 组织机构相关工具类
 	"threeUtil": "../../assets/lib/layui/customer/threeUtil.js", // 3D编辑器相关工具类
 	"initTableChooseUtil": "../../assets/lib/layui/customer/tableUtil/initTableChooseUtil.js", // 加载表格选择的表格插件
-	"sysDictDataUtil": "../../assets/lib/layui/customer/skyeye/sysDictDataUtil.js", // 数据字典插件
 	"initTableSearchUtil": "../../assets/lib/layui/customer/tableUtil/initTableSearchUtil.js", // 表格高级查询插件
-	"skyeyeClassEnumUtil": "../../assets/lib/layui/customer/skyeye/skyeyeClassEnumUtil.js", // 动态枚举插件
 	"teamObjectPermissionUtil": "../../assets/lib/layui/customer/teamObjectPermissionUtil.js", // 团队成员权限插件
 	"catalogTreeUtil": "../../assets/lib/layui/customer/tree/catalogTreeUtil.js", // 目录功能的工具类
-	"schoolUtil": "../../assets/lib/layui/customer/skyeye/schoolUtil.js", // 学校模块工具类
 };
 
 let titleColor = ["layui-bg-blue", "layui-bg-red", "layui-bg-orange", "layui-bg-black", "layui-bg-gray", "layui-bg-green", "layui-bg-cyan"];

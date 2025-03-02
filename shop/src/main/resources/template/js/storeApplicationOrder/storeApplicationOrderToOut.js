@@ -18,6 +18,9 @@ layui.config({
     // 门店申领单转仓库出库
     AjaxPostUtil.request({url: sysMainMation.erpBasePath + "queryShopOutLetsTransById", params: {id: id}, type: 'json', method: 'GET', callback: function (json) {
             let data = json.bean;
+            data.erpOrderItemList.forEach(function (item) {
+                item.unitPrice = item.normsMation.salePrice;
+            });
             // 仓库出库的【编辑布局】
             dsFormUtil.initEditPageForStatic('content', 'FP2024070100006', data, {
                 savePreParams: function (params) {

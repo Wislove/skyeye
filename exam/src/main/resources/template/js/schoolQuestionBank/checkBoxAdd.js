@@ -5,7 +5,7 @@ var schoolKnowledgeMationList = new Array();
 // 要删除的行id
 var deleteRowList = new Array();
 
-Handlebars.registerHelper('eq', function(v1, v2) {
+Handlebars.registerHelper('eq', function (v1, v2) {
     return v1 === v2;
 });
 
@@ -167,13 +167,15 @@ layui.config({
                         $("input:radio[name=type][value=" + json.rows[0].type + "]").attr("checked", true);
                         $("#fraction").val(json.rows[0].fraction);
                         // 知识点赋值
-                        // schoolKnowledgeMationList = [].concat(json.bean.knowledgeList);
-                        // var str = "";
-                        // $.each(schoolKnowledgeMationList, function (i, item) {
-                        //     str += '<br><span class="layui-badge layui-bg-blue" style="height: 25px !important; line-height: 25px !important; margin: 5px 0px;">' + item.title + '</span>';
-                        // });
-                        // $("#schoolKnowledgeChoose").parent().html('<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" id="schoolKnowledgeChoose">知识点选择</button>' + str);
-                        $("#schoolKnowledgeChoose").parent().html('<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" id="schoolKnowledgeChoose">知识点选择</button>');
+                        schoolKnowledgeMationList = [].concat(json.rows[0].knowledgeList || []);
+                        var str = '<div class="knowledge-tags-container" style="display: inline-flex; flex-wrap: wrap; margin-top: 5px;">';
+                        $.each(schoolKnowledgeMationList, function (i, item) {
+                            // 使用name字段或title字段显示知识点名称
+                            var displayName = item.name;
+                            str += '<span class="layui-badge layui-bg-blue" style="height: 25px !important; line-height: 25px !important; margin: 5px 5px 0 0;">' + displayName + '</span>';
+                        });
+                        str += '</div>';
+                        $("#schoolKnowledgeChoose").parent().html('<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" id="schoolKnowledgeChoose">知识点选择</button>' + str);
 
                         // 题目信息赋值
                         $(".surveyQuItemBody").html(getDataUseHandlebars($("#template").html(), {
@@ -196,6 +198,25 @@ layui.config({
 
                         // 加载上传和切换监听事件
                         pageLoadAfter();
+
+                        // 处理知识点数据回显
+                        if (json.rows[0].knowledgePointsMation && json.rows[0].knowledgePointsMation.length > 0) {
+                            schoolKnowledgeMationList = [];
+                            $.each(json.rows[0].knowledgePointsMation, function (i, item) {
+                                schoolKnowledgeMationList.push({
+                                    id: item.id,
+                                    name: item.name
+                                });
+                            });
+
+                            // 更新知识点显示
+                            var knowledgeStr = '<div class="knowledge-tags-container" style="display: inline-flex; flex-wrap: wrap; margin-top: 5px;">';
+                            $.each(schoolKnowledgeMationList, function (i, item) {
+                                knowledgeStr += '<span class="layui-badge layui-bg-blue" style="height: 25px !important; line-height: 25px !important; margin: 5px 5px 0 0;">' + item.name + '</span>';
+                            });
+                            knowledgeStr += '</div>';
+                            $("#schoolKnowledgeChoose").parent().html('<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" id="schoolKnowledgeChoose">知识点选择</button>' + knowledgeStr);
+                        }
                     }
                 });
                 // AjaxPostUtil.request({url:schoolBasePath + "schoolquestionbank006", params: {rowId: parent.rowId}, type: 'json', callback: function (json) {
@@ -296,6 +317,7 @@ layui.config({
                     subjectId: $("#subjectId").val(),
                     type: $("input[name='type']:checked").val(),
                     schoolKnowledgeMationList: JSON.stringify(schoolKnowledgeMationList),
+                    knowledgeIds: "", // 默认为空字符串
                     deleteRowList: JSON.stringify(deleteRowList),
                     fileUrl: fileUrl,
                     quType: 2,//题目类型
@@ -303,6 +325,16 @@ layui.config({
                     fileType: tabIndex,
                     whetherUpload: data.field.whetherUpload
                 };
+
+                // 处理知识点ID，将知识点ID数组转换为逗号分隔的字符串
+                if (schoolKnowledgeMationList && schoolKnowledgeMationList.length > 0) {
+                    var knowledgeIds = [];
+                    $.each(schoolKnowledgeMationList, function (i, item) {
+                        knowledgeIds.push(item.id);
+                    });
+                    params.knowledgeIds = knowledgeIds.join(',');
+                }
+
                 var quItemOptions = quItemBody.find(".quCoItem li.quCoItemUlLi");
                 if (quItemOptions.length == 0) {
                     winui.window.msg('选项不能为空', {icon: 2, time: 2000});
@@ -319,7 +351,6 @@ layui.config({
 
                     var s = {
                         optionName: encodeURI($.trim($(this).find("label.quCoOptionEdit").html())),
-                        optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
                         isNote: $(this).find(".quItemInputCase input[name='isNote']").val(),
                         checkType: $(this).find(".quItemInputCase input[name='checkType']").val(),
                         isRequiredFill: $(this).find(".quItemInputCase input[name='isRequiredFill']").val(),
@@ -403,6 +434,36 @@ layui.config({
 
         $("body").on("click", "#cancle", function () {
             parent.layer.close(index);
+        });
+
+        // 知识点选择按钮点击事件
+        $("body").on("click", "#schoolKnowledgeChoose", function () {
+            // 将当前知识点列表传递给临时变量，供子窗口使用
+            knowledgeReturnList = [].concat(schoolKnowledgeMationList);
+
+            // 打开知识点选择弹窗
+            _openNewWindows({
+                url: "../../tpl/schoolKnowledgePoints/schoolKnowledgePointsChoose.html",
+                title: "知识点选择",
+                pageId: "schoolKnowledgePointsChoose",
+                area: ['90vw', '90vh'],
+                callBack: function (refreshCode) {
+                    // 如果有返回值，则处理选择的知识点
+                    if (refreshCode == '0') {
+                        // 更新知识点列表
+                        schoolKnowledgeMationList = [].concat(knowledgeReturnList);
+                        // 更新显示
+                        var str = '<div class="knowledge-tags-container" style="display: inline-flex; flex-wrap: wrap; margin-top: 5px;">';
+                        $.each(schoolKnowledgeMationList, function (i, item) {
+                            // 使用name字段显示知识点名称
+                            var displayName = item.name;
+                            str += '<span class="layui-badge layui-bg-blue" style="height: 25px !important; line-height: 25px !important; margin: 5px 5px 0 0;">' + displayName + '</span>';
+                        });
+                        str += '</div>';
+                        $("#schoolKnowledgeChoose").parent().html('<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" id="schoolKnowledgeChoose">知识点选择</button>' + str);
+                    }
+                }
+            });
         });
     });
 });

@@ -128,7 +128,7 @@ var initTableChooseUtil = {
             var className = isNull(item.className) ? "" : item.className;
             var verify = isNull(item.verify) ? "" : item.verify;
             if (item.formType == 'input') {
-                tbodyStr += '<td><input type="text" class="layui-input ' + className + '" value="' + value + '" id="' + tdId + '" win-verify="' + verify + '"/></td>';
+                tbodyStr += '<td><input type="text" class="layui-input ' + className + '" value="' + value + '" id="' + tdId + '" win-verify="' + verify + '" maxlength="150"/></td>';
             } else if (item.formType == 'textarea') {
                 tbodyStr += '<td><textarea style="height: 100px;" class="layui-textarea ' + className + '" value="' + value + '" id="' + tdId + '" win-verify="' + verify + '"></textarea></td>';
             } else if (item.formType == 'chooseInput') {
@@ -138,7 +138,7 @@ var initTableChooseUtil = {
                 var modelHtml = isNull(item.modelHtml) ? "" : item.modelHtml;
                 tbodyStr += '<td><select id="' + tdId + '" lay-filter="' + item.layFilter + '" lay-search win-verify="' + verify + '" class="' + className + '">' + modelHtml + '</select></td>';
             } else if (item.formType == 'detail') {
-                tbodyStr += '<td id="' + tdId + '" class="' + className + '">' + value + '</td>';
+                tbodyStr += '<td id="' + tdId + '" class="' + className + '" data="">' + value + '</td>';
             }
         });
         tbodyStr += '</tr>';
@@ -325,6 +325,7 @@ var initTableChooseUtil = {
                 }
             } else if (formType == 'detail') {
                 $("#" + tdId).html(value);
+                $("#" + tdId).attr("data", JSON.stringify(data));
             }
         });
     },

@@ -1,6 +1,8 @@
 // 知识点选择必备参数
 var schoolKnowledgeCheckType = 2;// 知识点选择类型：1.单选schoolKnowledgeMation；2.多选schoolKnowledgeMationList
 var schoolKnowledgeMationList = new Array();
+// 临时存储选择的知识点，用于回调
+var knowledgeReturnList = new Array();
 
 // 要删除的行id
 var deleteRowList = new Array();
@@ -113,7 +115,6 @@ layui.config({
 		function loadData(){
 			// 如果问题id不为空，则说明是编辑，加载编辑信息
 			if (!isNull(parent.rowId)){
-				console.log("编辑模式，有parent.rowId");
 				AjaxPostUtil.request({url:schoolBasePath + "selectQuestionById", params: {ids: parent.rowId}, type: 'json', callback: function (json) {
 					$("#schoolId").val(json.rows[0].schoolId);
 					showGrid({
@@ -156,14 +157,15 @@ layui.config({
 					$("input:radio[name=type][value=" + json.rows[0].type + "]").attr("checked", true);
 					$("#fraction").val(json.rows[0].fraction);//分数
 					// 知识点赋值
-					// schoolKnowledgeMationList = [].concat(json.rows[0].knowledgeList);
-					// var str = "";
-					// $.each(schoolKnowledgeMationList, function(i, item) {
-					// 	str += '<br><span class="layui-badge layui-bg-blue" style="height: 25px !important; line-height: 25px !important; margin: 5px 0px;">' + item.title + '</span>';
-					// });
-					// $("#schoolKnowledgeChoose").parent().html('<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" id="schoolKnowledgeChoose">知识点选择</button>' + str);
-						$("#schoolKnowledgeChoose").parent().html('<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" id="schoolKnowledgeChoose">知识点选择</button>');
-
+					schoolKnowledgeMationList = [].concat(json.rows[0].knowledgeList || []);
+					var str = '<div class="knowledge-tags-container" style="display: inline-flex; flex-wrap: wrap; margin-top: 5px;">';
+					$.each(schoolKnowledgeMationList, function(i, item) {
+						// 使用name字段或title字段显示知识点名称
+						var displayName = item.name;
+						str += '<span class="layui-badge layui-bg-blue" style="height: 25px !important; line-height: 25px !important; margin: 5px 5px 0 0;">' + displayName + '</span>';
+					});
+					str += '</div>';
+					$("#schoolKnowledgeChoose").parent().html('<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" id="schoolKnowledgeChoose">知识点选择</button>' + str);
 
 					// 题目信息赋值
 					$(".surveyQuItemBody").html(getDataUseHandlebars($("#template").html(), {
@@ -192,9 +194,27 @@ layui.config({
 
 					// 加载上传和切换监听事件
 					pageLoadAfter();
+
+					// 处理知识点数据回显
+					if (json.rows[0].knowledgePointsMation && json.rows[0].knowledgePointsMation.length > 0) {
+						schoolKnowledgeMationList = [];
+						$.each(json.rows[0].knowledgePointsMation, function(i, item) {
+							schoolKnowledgeMationList.push({
+								id: item.id,
+								name: item.name
+							});
+						});
+						
+						// 更新知识点显示
+						var knowledgeStr = '<div class="knowledge-tags-container" style="display: inline-flex; flex-wrap: wrap; margin-top: 5px;">';
+						$.each(schoolKnowledgeMationList, function(i, item) {
+							knowledgeStr += '<span class="layui-badge layui-bg-blue" style="height: 25px !important; line-height: 25px !important; margin: 5px 5px 0 0;">' + item.name + '</span>';
+						});
+						knowledgeStr += '</div>';
+						$("#schoolKnowledgeChoose").parent().html('<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" id="schoolKnowledgeChoose">知识点选择</button>' + knowledgeStr);
+					}
 				}});
 			} else {
-				console.log("新增模式，无parent.rowId");
 				// 加载院系
 				initFaculty();
 				
@@ -242,10 +262,19 @@ layui.config({
         			fileUrl: fileUrl,
         			fileType: tabIndex,//试题类型，0.默认没有，1.视频，2.音频，3.图片
         			whetherUpload: data.field.whetherUpload,//是否允许拍照/上传图片选中，1.是，2.否
-
-					quType:1,//题目类型
-					// quTag:1,//是否是大小题 1默认题 2大题 3大题下面的小题
+        			knowledgeIds: "", // 默认为空字符串
+        			quType:1,//题目类型
 	    		};
+	    		
+	    		// 处理知识点ID，将知识点ID数组转换为逗号分隔的字符串
+	    		if (schoolKnowledgeMationList && schoolKnowledgeMationList.length > 0) {
+	    			var knowledgeIds = [];
+	    			$.each(schoolKnowledgeMationList, function(i, item) {
+	    				knowledgeIds.push(item.id);
+	    			});
+	    			params.knowledgeIds = knowledgeIds.join(',');
+	    		}
+	    		
 	    		var quItemOptions = quItemBody.find(".quCoItem li.quCoItemUlLi");
 	    		if(quItemOptions.length == 0){
 	    			winui.window.msg('选项不能为空', {icon: 2, time: 2000});
@@ -259,24 +288,25 @@ layui.config({
 	    			if($(this).find("input[type='radio']").is(':checked')){
 	    				isDefaultAnswer = 1
 	    			}
-    				var s = {
-						// optionTitle: encodeURI($.trim($(this).find("label.quCoOptionEdit").html())),
-						// orderById:,//排序
-						// visibility:,//是否显示
-						// optionName:,//选项内容
-
-						optionName: encodeURI($.trim($(this).find("label.quCoOptionEdit").html())),
-						optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
-						isNote: $(this).find(".quItemInputCase input[name='isNote']").val(),
-						checkType: $(this).find(".quItemInputCase input[name='checkType']").val(),
-						isRequiredFill: $(this).find(".quItemInputCase input[name='isRequiredFill']").val(),
-						isDefaultAnswer: isDefaultAnswer,
-						key: i
+	    			
+	    			var optionId = $(this).find(".quItemInputCase input[name='quItemId']").val();
+	    			
+	    			// 检查该选项ID是否在deleteRowList中，如果在则跳过不添加到radioTd
+	    			if (optionId && deleteRowList.indexOf(optionId) >= 0) {
+	    				return true; // continue to next iteration
+	    			}
+	    			
+	    			var s = {
+	    				optionName: encodeURI($.trim($(this).find("label.quCoOptionEdit").html())),
+	    				isNote: $(this).find(".quItemInputCase input[name='isNote']").val(),
+	    				checkType: $(this).find(".quItemInputCase input[name='checkType']").val(),
+	    				isRequiredFill: $(this).find(".quItemInputCase input[name='isRequiredFill']").val(),
+	    				isDefaultAnswer: isDefaultAnswer,
+	    				key: i
 	    			};
-    				radioTd.push(s);
+	    			radioTd.push(s);
 	    		});
 	    		params.radioTd = JSON.stringify(radioTd);
-				console.log(params);
 	    		
     			AjaxPostUtil.request({url:schoolBasePath + "writeQuestion", params: params, type: 'json', callback: function (json) {
 					parent.layer.close(index);
@@ -346,6 +376,36 @@ layui.config({
 		
 	    $("body").on("click", "#cancle", function() {
 	    	parent.layer.close(index);
+	    });
+
+	    // 知识点选择按钮点击事件
+	    $("body").on("click", "#schoolKnowledgeChoose", function() {
+	        // 将当前知识点列表传递给临时变量，供子窗口使用
+	        knowledgeReturnList = [].concat(schoolKnowledgeMationList);
+	        
+	        // 打开知识点选择弹窗
+	        _openNewWindows({
+	            url: "../../tpl/schoolKnowledgePoints/schoolKnowledgePointsChoose.html",
+	            title: "知识点选择",
+	            pageId: "schoolKnowledgePointsChoose",
+	            area: ['90vw', '90vh'],
+	            callBack: function (refreshCode) {
+	                // 如果有返回值，则处理选择的知识点
+	                if (refreshCode == '0') {
+	                    // 更新知识点列表
+	                    schoolKnowledgeMationList = [].concat(knowledgeReturnList);
+	                    // 更新显示
+	                    var str = '<div class="knowledge-tags-container" style="display: inline-flex; flex-wrap: wrap; margin-top: 5px;">';
+	                    $.each(schoolKnowledgeMationList, function(i, item) {
+	                        // 使用name字段显示知识点名称
+	                        var displayName = item.name;
+	                        str += '<span class="layui-badge layui-bg-blue" style="height: 25px !important; line-height: 25px !important; margin: 5px 5px 0 0;">' + displayName + '</span>';
+	                    });
+	                    str += '</div>';
+	                    $("#schoolKnowledgeChoose").parent().html('<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" id="schoolKnowledgeChoose">知识点选择</button>' + str);
+	                }
+	            }
+	        });
 	    });
 	});
 });
