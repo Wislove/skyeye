@@ -24,7 +24,7 @@ layui.config({
             url: sysMainMation.admBasePath + "queryForumMyBrowerList",
             params: {},
             pagination: true,
-            pagesize: 12,
+            pagesize: 10,
             template: addListTemplate,
             ajaxSendLoadBefore: function (hdb) {
             },

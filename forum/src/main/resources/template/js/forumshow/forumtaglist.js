@@ -34,41 +34,80 @@ layui.config({
             url: sysMainMation.admBasePath + "queryForumTagUpStateList",
             params: {},
             pagination: false,
+            pagesize: 10,
             template: taglistTemplate,
             ajaxSendLoadBefore: function (hdb) {
             },
             ajaxSendAfter: function (json) {
-                // 如果有 URL 参数中的 tagId，选中对应标签
-                if (!isNull(tagId)) {
-                    $("#taglist").find("li").removeClass('layui-this');
-                    $("#taglist").find("li[rowid='" + tagId + "']").addClass('layui-this');
-                } else {
-                    // 默认选中"所有"
-                    $("#taglist").find("li[rowid='']").addClass('layui-this');
-                }
-                loadList(); // 加载帖子列表
             }
         });
     }
 
-    //加载帖子列表
+    tagId = GetUrlParam("id");
+    if (!isNull(tagId)) {
+        $("#taglist").find("li").removeClass('layui-this');
+        $("#taglist").find("li[rowid='" + tagId + "']").addClass('layui-this');
+        loadList();
+    }
+
+    //加载列表
+    loadList();
     function loadList() {
         $("#addList").empty();
+
+        // 如果是热门标签，使用热门帖子接口
+        var apiUrl = tagId === "hot"
+            ? sysMainMation.admBasePath + "queryHotForumList"
+            : sysMainMation.admBasePath + "queryForumListByTagId";
+
+        // 准备请求参数，热门接口不需要传objectId
+        var params = tagId === "hot" ? {} : { objectId: tagId };
+
         showGrid({
             id: "addList",
-            url: sysMainMation.admBasePath + "queryForumListByTagId",
-            params: {
-                objectId: tagId,
-            },
+            url: apiUrl,
+            params: params,
             pagination: true,
             pagesize: 12,
             template: addListTemplate,
-            ajaxSendLoadBefore: function (hdb) {
+            ajaxSendLoadBefore: function (hdb, json) {
+                // 处理用户头像路径和内容解码
+                for (var i = 0; i < json.rows.length; i++) {
+                    // 处理用户头像路径
+                    if (json.rows[i].createMation && json.rows[i].createMation.userPhoto) {
+                        json.rows[i].createMation.userPhoto = fileBasePath + json.rows[i].createMation.userPhoto;
+                    }
+
+                    // 处理内容解码
+                    if (json.rows[i].forumContent) {
+                        try {
+                            json.rows[i].forumContent = decodeURIComponent(json.rows[i].forumContent);
+                        } catch (e) {
+                            // 解码失败，保持原内容
+                        }
+                    }
+                }
             },
             ajaxSendAfter: function (json) {
-                if (json.returnCode == 0 && json.rows) {
-                    matchingLanguage();
+                var row = json.rows;
+                for (var i = 0; i < row.length; i++) {
+                    var id = row[i].id;
+                    var tagName = row[i].tagName;
+                    if (!isNull(tagName)) {
+                        var tagArr = tagName.split(",");
+                        var tagStr = "";
+                        for (var j = 0; j < tagArr.length; j++) {
+                            tagStr += "<strong>" + tagArr[j].split("-")[0] + "</strong>"
+                        }
+                        $(".my-forum-main-span").each(function () {
+                            var thisId = $(this).parents('div[class^="forum-main"]').eq(0).attr("rowId");
+                            if (thisId == id) {
+                                $(this).append(tagStr);
+                            }
+                        });
+                    }
                 }
+                matchingLanguage();
             }
         });
     }
