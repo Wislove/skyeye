@@ -298,7 +298,6 @@ layui.config({
 	    			
 	    			var s = {
 	    				optionName: encodeURI($.trim($(this).find("label.quCoOptionEdit").html())),
-	    				optionId: optionId,
 	    				isNote: $(this).find(".quItemInputCase input[name='isNote']").val(),
 	    				checkType: $(this).find(".quItemInputCase input[name='checkType']").val(),
 	    				isRequiredFill: $(this).find(".quItemInputCase input[name='isRequiredFill']").val(),
