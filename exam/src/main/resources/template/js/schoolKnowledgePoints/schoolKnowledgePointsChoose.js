@@ -83,8 +83,6 @@ layui.config({
                 fieldName: 'id'
             });
             
-            // 更新已选知识点数量显示
-            updateSelectedCount();
         }
     });
 
@@ -99,9 +97,6 @@ layui.config({
         var selectedData = tableCheckBoxUtil.getValueList({
             gridId: 'knowledgeTable'
         });
-        
-        console.log("确认选择，当前选中IDs:", selectedIds);
-        console.log("确认选择，当前选中数据:", selectedData);
         
         // 检查是否有选中的知识点
         if (!selectedIds || selectedIds.length === 0) {
@@ -155,16 +150,6 @@ layui.config({
     $("body").on("click", "#cancelSelection", function() {
         parent.layer.close(index);
     });
-
-    // 更新已选知识点数量显示
-    function updateSelectedCount() {
-        var selectedIds = tableCheckBoxUtil.getValue({
-            gridId: 'knowledgeTable'
-        });
-        
-        var count = selectedIds ? selectedIds.length : 0;
-        $("#selectedCount").text(count);
-    }
 
     // 刷新表格
     $("body").on("click", "#reloadTable", function() {

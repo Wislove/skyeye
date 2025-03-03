@@ -164,14 +164,15 @@ layui.config({
                         $("#fraction").val(json.rows[0].fraction);
                         // 知识点赋值
                         schoolKnowledgeMationList = [].concat(json.rows[0].knowledgeList || []);
-                        var str = '<div class="knowledge-tags-container" style="display: inline-flex; flex-wrap: wrap; margin-top: 5px;">';
-                        $.each(schoolKnowledgeMationList, function (i, item) {
-                            // 使用name字段或title字段显示知识点名称
+                        var str = '<div class="knowledge-tags-container" style="display: flex; flex-wrap: wrap;">';
+                        $.each(schoolKnowledgeMationList, function(i, item) {
+                            // 使用name字段显示知识点名称
                             var displayName = item.name;
                             str += '<span class="layui-badge layui-bg-blue" style="height: 25px !important; line-height: 25px !important; margin: 5px 5px 0 0;">' + displayName + '</span>';
                         });
                         str += '</div>';
-                        $("#schoolKnowledgeChoose").parent().html('<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" id="schoolKnowledgeChoose">知识点选择</button>' + str);
+                        // 保留原按钮，添加知识点标签到按钮下方的新行
+                        $("#schoolKnowledgeChoose").parent().append(str);
 
                         //题目信息赋值
                         $(".surveyQuItemBody").html(getDataUseHandlebars($("#template").html(), {
@@ -206,12 +207,14 @@ layui.config({
                             });
 
                             // 更新知识点显示
-                            var knowledgeStr = '<div class="knowledge-tags-container" style="display: inline-flex; flex-wrap: wrap; margin-top: 5px;">';
-                            $.each(schoolKnowledgeMationList, function (i, item) {
+                            var knowledgeStr = '<div class="knowledge-tags-container" style="display: flex; flex-wrap: wrap; margin-bottom: 5px">';
+                            $.each(schoolKnowledgeMationList, function(i, item) {
                                 knowledgeStr += '<span class="layui-badge layui-bg-blue" style="height: 25px !important; line-height: 25px !important; margin: 5px 5px 0 0;">' + item.name + '</span>';
                             });
                             knowledgeStr += '</div>';
-                            $("#schoolKnowledgeChoose").parent().html('<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" id="schoolKnowledgeChoose">知识点选择</button>' + knowledgeStr);
+
+                            // 添加新的知识点标签到按钮下方
+                            $("#schoolKnowledgeChoose").parent().append(knowledgeStr);
                         }
                     }
                 });
@@ -289,7 +292,8 @@ layui.config({
                     var s = {
                         optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
                         isDefaultAnswer: $(this).find("input[class='multiFillBlank']").val(),
-                        key: i
+                        key: i,
+                        orderById: i  // 添加orderById参数，从0开始累加
                     };
                     multifillblankTd.push(s);
                 });
@@ -384,14 +388,18 @@ layui.config({
                         // 更新知识点列表
                         schoolKnowledgeMationList = [].concat(knowledgeReturnList);
                         // 更新显示
-                        var str = '<div class="knowledge-tags-container" style="display: inline-flex; flex-wrap: wrap; margin-top: 5px;">';
-                        $.each(schoolKnowledgeMationList, function (i, item) {
+                        var str = '<div class="knowledge-tags-container" style="display: flex; flex-wrap: wrap;">';
+                        $.each(schoolKnowledgeMationList, function(i, item) {
                             // 使用name字段显示知识点名称
                             var displayName = item.name;
                             str += '<span class="layui-badge layui-bg-blue" style="height: 25px !important; line-height: 25px !important; margin: 5px 5px 0 0;">' + displayName + '</span>';
                         });
                         str += '</div>';
-                        $("#schoolKnowledgeChoose").parent().html('<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" id="schoolKnowledgeChoose">知识点选择</button>' + str);
+                        // 移除旧的知识点标签容器（如果存在）
+                        $("#schoolKnowledgeChoose").parent().find(".knowledge-tags-container").remove();
+
+                        // 添加新的知识点标签到按钮下方
+                        $("#schoolKnowledgeChoose").parent().append(str);
                     }
                 }
             });
