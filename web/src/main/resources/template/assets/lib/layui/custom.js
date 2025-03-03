@@ -1,4 +1,3 @@
-
 var customerJS = {
 	"handlebars": "../../assets/lib/layui/lay/modules/hdb/handlebars-v4.0.5.js", // 模板引擎
 	"showGrid": "../../assets/lib/layui/customer/showGrid.js", // 非表格分页加载插件
@@ -31,7 +30,7 @@ var env = '';
 //系统基础信息
 var sysMainMation = {}; // 系统基础信息json
 if (isNull(localStorage.getItem("sysMainMation"))) {
-	jsGetJsonFile("../../configRation.json?env=" + env, function(data) {
+	jsGetJsonFile("../../configRation.json?env=" + env, function (data) {
 		sysMainMation = data;
 		localStorage.setItem("sysMainMation", JSON.stringify(sysMainMation));
 		initBaseParams();
@@ -56,7 +55,7 @@ var reportBasePath; // 报表模块请求地址
 var homePagePath; // 前端请求地址
 var webSocketPath;//聊天socket-开发
 
-function initBaseParams(){
+function initBaseParams() {
 	skyeyeVersion = sysMainMation.skyeyeVersion;
 	fileBasePath = sysMainMation.fileBasePath;
 	reqBasePath = sysMainMation.reqBasePath;
@@ -69,37 +68,37 @@ function initBaseParams(){
 }
 
 var serviceMap = [
-	{"id": "sysMainMation.reqBasePath", "name": "基础服务"},
-	{"id": "sysMainMation.shopBasePath", "name": "商城服务"},
-	{"id": "sysMainMation.flowableBasePath", "name": "工作流相关功能的服务"},
-	{"id": "sysMainMation.schoolBasePath", "name": "学校服务"},
-	{"id": "sysMainMation.reportBasePath", "name": "报表服务"},
-	{"id": "sysMainMation.surveyBasePath", "name": "问卷服务"},
-	{"id": "sysMainMation.noteBasePath", "name": "笔记服务"},
-	{"id": "sysMainMation.rmprogramBasePath", "name": "小程序设计服务"},
-	{"id": "sysMainMation.knowlgBasePath", "name": "知识库服务"},
-	{"id": "sysMainMation.mailBasePath", "name": "通讯录服务"},
-	{"id": "sysMainMation.diskCloudBasePath", "name": "云盘服务"},
-	{"id": "sysMainMation.emailBasePath", "name": "邮箱服务"},
-	{"id": "sysMainMation.scheduleBasePath", "name": "日程服务"},
-	{"id": "sysMainMation.businessFlowBasePath", "name": "业务流程规划服务"},
-	{"id": "sysMainMation.noticeBasePath", "name": "公告服务"},
-	{"id": "sysMainMation.forumBasePath", "name": "论坛服务"},
-	{"id": "sysMainMation.jobdiaayBasePath", "name": "日报服务"},
-	{"id": "sysMainMation.ehrBasePath", "name": "EHR服务"},
-	{"id": "sysMainMation.lightAppBasePath", "name": "轻应用服务"},
-	{"id": "sysMainMation.wagesBasePath", "name": "薪资服务"},
-	{"id": "sysMainMation.crmBasePath", "name": "CRM服务"},
-	{"id": "sysMainMation.ifsBasePath", "name": "IFS财务服务"},
-	{"id": "sysMainMation.erpBasePath", "name": "ERP+生产服务"},
-	{"id": "sysMainMation.checkworkBasePath", "name": "考勤服务"},
-	{"id": "sysMainMation.bossBasePath", "name": "招聘服务"},
-	{"id": "sysMainMation.admBasePath", "name": "行政服务"},
-	{"id": "sysMainMation.projectBasePath", "name": "PM项目服务"},
-	{"id": "sysMainMation.sealServiceBasePath", "name": "售后工单服务"},
-	{"id": "sysMainMation.autoBasePath", "name": "自动化服务"},
-	{"id": "sysMainMation.wallBasePath", "name": "表白墙服务"},
-	{"id": "sysMainMation.tmsBasePath", "name": "物流服务"},
+	{ "id": "sysMainMation.reqBasePath", "name": "基础服务" },
+	{ "id": "sysMainMation.shopBasePath", "name": "商城服务" },
+	{ "id": "sysMainMation.flowableBasePath", "name": "工作流相关功能的服务" },
+	{ "id": "sysMainMation.schoolBasePath", "name": "学校服务" },
+	{ "id": "sysMainMation.reportBasePath", "name": "报表服务" },
+	{ "id": "sysMainMation.surveyBasePath", "name": "问卷服务" },
+	{ "id": "sysMainMation.noteBasePath", "name": "笔记服务" },
+	{ "id": "sysMainMation.rmprogramBasePath", "name": "小程序设计服务" },
+	{ "id": "sysMainMation.knowlgBasePath", "name": "知识库服务" },
+	{ "id": "sysMainMation.mailBasePath", "name": "通讯录服务" },
+	{ "id": "sysMainMation.diskCloudBasePath", "name": "云盘服务" },
+	{ "id": "sysMainMation.emailBasePath", "name": "邮箱服务" },
+	{ "id": "sysMainMation.scheduleBasePath", "name": "日程服务" },
+	{ "id": "sysMainMation.businessFlowBasePath", "name": "业务流程规划服务" },
+	{ "id": "sysMainMation.noticeBasePath", "name": "公告服务" },
+	{ "id": "sysMainMation.forumBasePath", "name": "论坛服务" },
+	{ "id": "sysMainMation.jobdiaayBasePath", "name": "日报服务" },
+	{ "id": "sysMainMation.ehrBasePath", "name": "EHR服务" },
+	{ "id": "sysMainMation.lightAppBasePath", "name": "轻应用服务" },
+	{ "id": "sysMainMation.wagesBasePath", "name": "薪资服务" },
+	{ "id": "sysMainMation.crmBasePath", "name": "CRM服务" },
+	{ "id": "sysMainMation.ifsBasePath", "name": "IFS财务服务" },
+	{ "id": "sysMainMation.erpBasePath", "name": "ERP+生产服务" },
+	{ "id": "sysMainMation.checkworkBasePath", "name": "考勤服务" },
+	{ "id": "sysMainMation.bossBasePath", "name": "招聘服务" },
+	{ "id": "sysMainMation.admBasePath", "name": "行政服务" },
+	{ "id": "sysMainMation.projectBasePath", "name": "PM项目服务" },
+	{ "id": "sysMainMation.sealServiceBasePath", "name": "售后工单服务" },
+	{ "id": "sysMainMation.autoBasePath", "name": "自动化服务" },
+	{ "id": "sysMainMation.wallBasePath", "name": "表白墙服务" },
+	{ "id": "sysMainMation.tmsBasePath", "name": "物流服务" },
 ]
 
 function getRequestHeaders() {
@@ -116,7 +115,7 @@ function setRequestHeaders(xmlhttp) {
 }
 
 // 编辑加载自定义的js文件
-layui.each(customerJS, function(key, jsPath){
+layui.each(customerJS, function (key, jsPath) {
 	if (jsPath.lastIndexOf(".js") >= 0) {
 		document.write('<script type="text/javascript" src="' + jsPath + '?v=' + skyeyeVersion + '"></script>');
 	} else {
@@ -135,45 +134,45 @@ var turnData = "";
  * @param params
  * @param title
  */
-function _openNewWindows(mation){
-	if(isNull(mation.url)){
-		winui.window.msg("页面路径不能为空", {icon: 2, time: 2000});
+function _openNewWindows(mation) {
+	if (isNull(mation.url)) {
+		winui.window.msg("页面路径不能为空", { icon: 2, time: 2000 });
 		return;
 	}
-	if(isNull(mation.pageId)){
-		winui.window.msg("缺少页面ID", {icon: 2, time: 2000});
+	if (isNull(mation.pageId)) {
+		winui.window.msg("缺少页面ID", { icon: 2, time: 2000 });
 		return;
 	}
-	if(isNull(mation.title)){
+	if (isNull(mation.title)) {
 		mation.title = "窗口";
 	}
-	if (!isNull(mation.params)){
+	if (!isNull(mation.params)) {
 		var s = "";
-		for(var param in mation.params)
+		for (var param in mation.params)
 			s += "&" + param + "=" + mation.params[param];
 		mation.url = mation.url + "?" + s.slice(1);
 	}
 	mation.url = systemCommonUtil.getHasVersionUrl(mation.url);
-	if(isNull(mation.area)){
-		if(mation.maxmin){
+	if (isNull(mation.area)) {
+		if (mation.maxmin) {
 			mation.area = ['100vw', '100vh'];
 		} else {
 			mation.area = ['90vw', '90vh'];
 		}
 	}
-	if(isNull(mation.offset)){
+	if (isNull(mation.offset)) {
 		mation.offset = 'auto';
 	}
-	if(isNull(mation.maxmin)){//是否最大化
+	if (isNull(mation.maxmin)) {//是否最大化
 		mation.maxmin = false;
 	}
-	if(isNull(mation.shade) && mation.shade != false && mation.shade != 0){//遮罩层
+	if (isNull(mation.shade) && mation.shade != false && mation.shade != 0) {//遮罩层
 		mation.shade = 0.5;
 	}
-	if(isNull(mation.closeBtn) && mation.closeBtn != '0'){//关闭按钮
+	if (isNull(mation.closeBtn) && mation.closeBtn != '0') {//关闭按钮
 		mation.closeBtn = 1;
 	}
-	if(isNull(mation.skin)){//用户自定义皮肤或者层级
+	if (isNull(mation.skin)) {//用户自定义皮肤或者层级
 		mation.skin = '';
 	}
 	refreshCode = "";
@@ -191,25 +190,25 @@ function _openNewWindows(mation){
 		zIndex: mation.zIndex,
 		scrollbar: false,
 		closeBtn: mation.closeBtn,
-		end: function() {
-			if(typeof(mation.callBack) == "function") {
+		end: function () {
+			if (typeof (mation.callBack) == "function") {
 				if (refreshCode == '0') {
 					mation.callBack(refreshCode, turnData);
 				} else if (refreshCode == '-9999') {
-					winui.window.msg(systemLanguage["com.skyeye.operationFailed"][languageType], {icon: 2, time: 2000});
+					winui.window.msg(systemLanguage["com.skyeye.operationFailed"][languageType], { icon: 2, time: 2000 });
 				}
 			}
 		},
-		success: function(){
+		success: function () {
 			var times = layui.$("#" + mation.pageId).parent().attr("times");
 			var zIndex = layui.$("#" + mation.pageId).parent().css("z-index");
-			layui.$("#layui-layer-shade" + times).css({'z-index': zIndex});
-			if(typeof(mation.success) == "function") {
+			layui.$("#layui-layer-shade" + times).css({ 'z-index': zIndex });
+			if (typeof (mation.success) == "function") {
 				mation.success();
 			}
 		}
 	});
-	if(mation.maxmin){
+	if (mation.maxmin) {
 		layer.full(pageIndex);
 	}
 }
@@ -221,13 +220,13 @@ function _openNewWindows(mation){
 function getLimits() {
 	var limit = getLimit();
 	var limits = new Array();
-	for(var i = 1; i <= 7; i++){
+	for (var i = 1; i <= 7; i++) {
 		limits.push(limit * i);
 	}
 	return limits;
 }
 
-function getLimit(){
+function getLimit() {
 	var clientHeight = document.body.clientHeight;
 	var toolbarHeight = $(".winui-toolbar").outerHeight(true);
 	var txtcenterHeight = $(".txtcenter").outerHeight(true);
@@ -244,7 +243,7 @@ function getLimit(){
 	return limit == 0 ? 5 : limit;
 }
 
-function decimerFiveOrZero(number){
+function decimerFiveOrZero(number) {
 	var newNum = Math.floor(number / 5);
 	return newNum * 5 < 0 ? 10 : newNum * 5;
 }
@@ -253,7 +252,7 @@ function decimerFiveOrZero(number){
 /**
  * 根据数据展示
  */
-function showDataUseHandlebars(id, source, data){
+function showDataUseHandlebars(id, source, data) {
 	//预编译模板
 	var template = Handlebars.compile(source);
 	//匹配json内容
@@ -262,7 +261,7 @@ function showDataUseHandlebars(id, source, data){
 	layui.$("#" + id).html(html);
 }
 
-function getDataUseHandlebars(source, data){
+function getDataUseHandlebars(source, data) {
 	//预编译模板
 	var template = Handlebars.compile(source);
 	//匹配json内容
@@ -271,9 +270,9 @@ function getDataUseHandlebars(source, data){
 	return html;
 }
 
-var postDownLoadFile = function(options) {
+var postDownLoadFile = function (options) {
 	var config = layui.$.extend(true, {
-		method : 'post'
+		method: 'post'
 	}, options);
 	var $iframe = layui.$('<iframe id="down-file-iframe" />');
 	var $form = layui.$('<form target="down-file-iframe" method="' + config.method + '" />');
@@ -324,7 +323,7 @@ function auth(urlNum) {
 			}
 		}
 	} else {
-		winui.window.msg('登录超时，即将返回登录页面.', {icon: 2, time: 2000}, function () {
+		winui.window.msg('登录超时，即将返回登录页面.', { icon: 2, time: 2000 }, function () {
 			var win = window;
 			while (win != win.top) {
 				win = win.top;
@@ -363,7 +362,7 @@ function loadAuthBtnGroup(tableId, urlNum) {
 					// 数据权限不为空
 					if (dataGroup[j].children.length > 0) {
 						var dataAuthPoint = dataGroup[j].children;
-						dataAuthPoint.sort(function(a, b) {
+						dataAuthPoint.sort(function (a, b) {
 							if (isNull(a.orderBy)) {
 								a.orderBy = 0;
 							}
@@ -392,17 +391,17 @@ function loadAuthBtnGroup(tableId, urlNum) {
  * 查找子结点，如果找到，返回true，否则返回false-----ztree查询时使用
  */
 function searchChildren(keyword, children) {
-	if(children == null || children.length == 0) {
+	if (children == null || children.length == 0) {
 		return false;
 	}
-	for(var i = 0; i < children.length; i++) {
+	for (var i = 0; i < children.length; i++) {
 		var node = children[i];
-		if(node.name.indexOf(keyword) != -1) {
+		if (node.name.indexOf(keyword) != -1) {
 			return true;
 		}
 		//递归查找子结点
 		var result = searchChildren(keyword, node.children);
-		if(result) {
+		if (result) {
 			return true;
 		}
 	}
@@ -413,10 +412,10 @@ function searchChildren(keyword, children) {
  * 查找当前结点和父结点，如果找到，返回ture，否则返回false
  */
 function searchParent(keyword, node) {
-	if(node == null) {
+	if (node == null) {
 		return false;
 	}
-	if(node.name.indexOf(keyword) != -1) {
+	if (node.name.indexOf(keyword) != -1) {
 		return true;
 	}
 	//递归查找父结点
@@ -434,7 +433,7 @@ function searchParent(keyword, node) {
  * @param {} type		图形展示类型。line：折线图；bar：柱形图
  * @return {}
  */
-function getOption(title, subtext, xNameData, yTitle, yNameData, type){
+function getOption(title, subtext, xNameData, yTitle, yNameData, type) {
 	return {
 		color: ['#3398DB', '#FFB6C1', '#C71585', '#8B008B', '#4169E1', '#00BFFF', '#008B8B'],
 		title: {
@@ -458,7 +457,7 @@ function getOption(title, subtext, xNameData, yTitle, yNameData, type){
 				mark: {							//'辅助线开关'
 					show: true
 				},
-				dataView : {					//数据视图工具，可以展现当前图表所用的数据，编辑后可以动态更新
+				dataView: {					//数据视图工具，可以展现当前图表所用的数据，编辑后可以动态更新
 					show: true,					//是否显示该工具。
 					title: "数据视图",
 					readOnly: false,			//是否不可编辑（只读）
@@ -499,13 +498,13 @@ function getOption(title, subtext, xNameData, yTitle, yNameData, type){
 			type: 'category',
 			axisLabel: {
 				interval: 0,
-				formatter: function(value) {
+				formatter: function (value) {
 					var ret = ""; //拼接加\n返回的类目项  
 					var maxLength = 4; //每项显示文字个数  
 					var valLength = value.length; //X轴类目项的文字个数  
 					var rowN = Math.ceil(valLength / maxLength); //类目项需要换行的行数  
-					if(rowN > 1){ //如果类目项的文字大于3,  
-						for(var i = 0; i < rowN; i++) {
+					if (rowN > 1) { //如果类目项的文字大于3,  
+						for (var i = 0; i < rowN; i++) {
 							var temp = ""; //每次截取的字符串  
 							var start = i * maxLength; //开始截取的位置  
 							var end = start + maxLength; //结束截取的位置  
@@ -540,7 +539,7 @@ function getOption(title, subtext, xNameData, yTitle, yNameData, type){
  * @param {} data	数据
  * @return {}
  */
-function getPieChatOption(title, subtext, data){
+function getPieChatOption(title, subtext, data) {
 	return {
 		title: {
 			text: title,
@@ -551,7 +550,7 @@ function getPieChatOption(title, subtext, data){
 			trigger: 'item'
 		},
 		legend: {
-			data:[],
+			data: [],
 			bottom: '5%',
 			left: 'center'
 		},
@@ -608,7 +607,7 @@ function subset(A, B) {
 }
 
 // b是否被a包含,是返回true,不是返回false
-isContained =(a, b)=>{
+isContained = (a, b) => {
 	if (!(a instanceof Array) || !(b instanceof Array))
 		return false;
 	if (a.length < b.length)
@@ -639,25 +638,25 @@ function getNowCheckTypeName(nowCheckType) {
 }
 /*****************工作计划模块结束**************/
 
-function matchingLanguage(){
+function matchingLanguage() {
 	var list = layui.$("language");
-	if(list.length > 0){
-		$.each(list, function(i, item) {
-			if(isNull($(item).html())){
+	if (list.length > 0) {
+		$.each(list, function (i, item) {
+			if (isNull($(item).html())) {
 				$(item).html(systemLanguage[$(item).attr("showName")][languageType]);
 			}
 		});
 	}
 	list = layui.$("[matchLanguage]");
-	if(list.length > 0){
-		$.each(list, function(i, item) {
-			try{
+	if (list.length > 0) {
+		$.each(list, function (i, item) {
+			try {
 				var jsonStr = $(item).attr("matchLanguage");
-				if (!isNull(jsonStr)){
-					jsonStr = jsonStr.replace(/\'/g,"\"");
+				if (!isNull(jsonStr)) {
+					jsonStr = jsonStr.replace(/\'/g, "\"");
 					var _json = JSON.parse(jsonStr);
-					$.each(_json, function(key, value){
-						if(key === "html"){
+					$.each(_json, function (key, value) {
+						if (key === "html") {
 							$(item).html(systemLanguage[value][languageType]);
 						} else {
 							$(item).attr(key, systemLanguage[value][languageType]);
@@ -665,7 +664,7 @@ function matchingLanguage(){
 					});
 					$(item).removeAttr("matchLanguage");
 				}
-			}catch(e){
+			} catch (e) {
 				console.error(e);
 			}
 		});
@@ -674,37 +673,37 @@ function matchingLanguage(){
 
 function initPasteDragImg(Editor) {
 	var doc = document.getElementById(Editor.id)
-	doc.addEventListener('paste', function(event) {
+	doc.addEventListener('paste', function (event) {
 		var items = (event.clipboardData || window.clipboardData).items;
 		var file = null;
-		if(items && items.length) {
+		if (items && items.length) {
 			// 搜索剪切板items
-			for(var i = 0; i < items.length; i++) {
-				if(items[i].type.indexOf('image') !== -1) {
+			for (var i = 0; i < items.length; i++) {
+				if (items[i].type.indexOf('image') !== -1) {
 					file = items[i].getAsFile();
 					break;
 				}
 			}
 		} else {
-			winui.window.msg("当前浏览器不支持", {icon: 2, time: 2000});
+			winui.window.msg("当前浏览器不支持", { icon: 2, time: 2000 });
 			return;
 		}
-		if(!file) {
+		if (!file) {
 			return;
 		}
 		uploadImg(file, Editor);
 	});
 
 	var dashboard = document.getElementById(Editor.id)
-	dashboard.addEventListener("dragover", function(e) {
+	dashboard.addEventListener("dragover", function (e) {
 		e.preventDefault()
 		e.stopPropagation()
 	})
-	dashboard.addEventListener("dragenter", function(e) {
+	dashboard.addEventListener("dragenter", function (e) {
 		e.preventDefault()
 		e.stopPropagation()
 	})
-	dashboard.addEventListener("drop", function(e) {
+	dashboard.addEventListener("drop", function (e) {
 		e.preventDefault()
 		e.stopPropagation()
 		var files = this.files || e.dataTransfer.files;
@@ -723,17 +722,17 @@ function uploadImg(file, Editor) {
 		processData: false,
 		contentType: false,
 		dataType: 'json',
-		success: function(json) {
+		success: function (json) {
 			if (json.returnCode == 0) {
 				var url = json.bean.picUrl;
 				var type = url.substr(url.lastIndexOf(".") + 1);
-				if($.inArray(type, imageType) >= 0){
+				if ($.inArray(type, imageType) >= 0) {
 					Editor.insertValue("![图片alt](" + url + " ''图片title'')");
 				} else {
 					Editor.insertValue("[下载附件](" + url + ")");
 				}
 			} else {
-				winui.window.msg(json.returnMessage, {icon: 2, time: 2000});
+				winui.window.msg(json.returnMessage, { icon: 2, time: 2000 });
 			}
 		}
 	});
@@ -751,8 +750,8 @@ function judgeInPoingArr(array, key, value) {
 	if (isNull(array)) {
 		return false;
 	}
-	for(var i = 0; i < array.length; i++){
-		if(array[i][key] == value){
+	for (var i = 0; i < array.length; i++) {
+		if (array[i][key] == value) {
 			return true;
 		}
 	}
@@ -772,9 +771,9 @@ function getInPoingArr(array, key, value, getKey) {
 	if (array == null) {
 		return null;
 	}
-	for(var i = 0; i < array.length; i++){
-		if(array[i][key] == value){
-			if(isNull(getKey)){
+	for (var i = 0; i < array.length; i++) {
+		if (array[i][key] == value) {
+			if (isNull(getKey)) {
 				return array[i];
 			}
 			return array[i][getKey];
@@ -791,8 +790,8 @@ function getInPoingArr(array, key, value, getKey) {
  * @returns {null|*}
  */
 function getArrIndexOfPointStr(array, value) {
-	for(var i = 0; i < array.length; i++){
-		if(value.indexOf(array[i]) > -1){
+	for (var i = 0; i < array.length; i++) {
+		if (value.indexOf(array[i]) > -1) {
 			return array[i];
 		}
 	}
@@ -805,12 +804,14 @@ function getArrIndexOfPointStr(array, value) {
  * @param staffId 员工id
  * @returns {string}
  */
-function getUserStaffHtmlMationByStaffId(staffId){
+function getUserStaffHtmlMationByStaffId(staffId) {
 	var html = "";
 	var template = getFileContent('tpl/common/userStaff/userStaffMationShowTop.tpl');
-	AjaxPostUtil.request({url: reqBasePath + "querySysUserStaffById", params: {id: staffId}, type: 'json', method: "GET", callback: function (json) {
-		html = getDataUseHandlebars(template, json);
-	}, async: false});
+	AjaxPostUtil.request({
+		url: reqBasePath + "querySysUserStaffById", params: { id: staffId }, type: 'json', method: "GET", callback: function (json) {
+			html = getDataUseHandlebars(template, json);
+		}, async: false
+	});
 	return html;
 }
 
@@ -820,7 +821,7 @@ function getUserStaffHtmlMationByStaffId(staffId){
  * @type {{}}
  */
 var stringManipulation = {
-	textAreaShow: function(str){
+	textAreaShow: function (str) {
 		if (isNull(str)) {
 			return '';
 		}
@@ -836,24 +837,24 @@ var stringManipulation = {
  * @param stateName 状态中文显示
  * @returns {string}
  */
-function getStateNameByState(state, stateName){
-	if(state == '0'){
+function getStateNameByState(state, stateName) {
+	if (state == '0') {
 		stateName = "<span>" + stateName + "</span>";
-	} else if (state == '1'){
+	} else if (state == '1') {
 		stateName = "<span class='state-new'>" + stateName + "</span>";
-	} else if (state == '2'){
+	} else if (state == '2') {
 		stateName = "<span class='state-up'>" + stateName + "</span>";
-	} else if (state == '3'){
+	} else if (state == '3') {
 		stateName = "<span class='state-down'>" + stateName + "</span>";
-	} else if (state == '4'){
+	} else if (state == '4') {
 		stateName = "<span class='state-down'>" + stateName + "</span>";
-	} else if (state == '5'){
+	} else if (state == '5') {
 		stateName = "<span class='state-error'>" + stateName + "</span>";
 	}
 	return stateName;
 }
 
-function returnModel(lang){
+function returnModel(lang) {
 	var type = {
 		'Java': 'text/x-java',
 		'C/C++': 'text/x-c++src',
@@ -883,7 +884,7 @@ function show(_object, url) {
 	}
 
 	var imgs = [];
-	if(layui.$.isPlainObject(_object)){
+	if (layui.$.isPlainObject(_object)) {
 		imgs = _object.find("input[type='hidden'][name='upload']").val().split(",");
 	} else {
 		imgs = layui.$(_object).find("input[type='hidden'][name='upload']").val().split(",");
@@ -896,7 +897,7 @@ function show(_object, url) {
  * @param {} imgs
  * @param {} defaultUrl 默认展示的图片地址
  */
-function showPicDisk(imgs, defaultUrl){
+function showPicDisk(imgs, defaultUrl) {
 	var data = [];
 	let startIndex = 0;
 	imgs = imgs.filter(img => !isNull(img));
@@ -966,19 +967,19 @@ function _getRandomString(len) {
 function fullScreen() {
 	var docElm = document.documentElement;
 	//W3C
-	if(docElm.requestFullscreen) {
+	if (docElm.requestFullscreen) {
 		docElm.requestFullscreen();
 	}
 	//FireFox
-	else if(docElm.mozRequestFullScreen) {
+	else if (docElm.mozRequestFullScreen) {
 		docElm.mozRequestFullScreen();
 	}
 	//Chrome等
-	else if(docElm.webkitRequestFullScreen) {
+	else if (docElm.webkitRequestFullScreen) {
 		docElm.webkitRequestFullScreen();
 	}
 	//IE11
-	else if(docElm.msRequestFullscreen) {
+	else if (docElm.msRequestFullscreen) {
 		document.body.msRequestFullscreen();
 	}
 }
@@ -986,15 +987,15 @@ function fullScreen() {
 /**
  * 禁用全屏
  */
-function exitFullScreen(){
+function exitFullScreen() {
 	if (document.fullscreenElement) {
-		if(document.exitFullscreen) {
+		if (document.exitFullscreen) {
 			document.exitFullscreen();
-		} else if(document.mozCancelFullScreen) {
+		} else if (document.mozCancelFullScreen) {
 			document.mozCancelFullScreen();
-		} else if(document.webkitCancelFullScreen) {
+		} else if (document.webkitCancelFullScreen) {
 			document.webkitCancelFullScreen();
-		} else if(document.msExitFullscreen) {
+		} else if (document.msExitFullscreen) {
 			document.msExitFullscreen();
 		}
 	}
@@ -1006,9 +1007,9 @@ function exitFullScreen(){
  * @returns {Boolean}
  */
 function checkURL(URL) {
-	var reg= /(https?|http|ftp|file):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/g;
+	var reg = /(https?|http|ftp|file):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/g;
 	URL = URL.match(reg);
-	if(isNull(URL) || URL.length == 0){
+	if (isNull(URL) || URL.length == 0) {
 		return false;
 	} else {
 		return true;
@@ -1020,11 +1021,11 @@ function checkURL(URL) {
  * @param  {String} url 目标文件地址
  * @return {cb}
  */
-function getBlob(url,cb) {
+function getBlob(url, cb) {
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', url, true);
 	xhr.responseType = 'blob';
-	xhr.onload = function() {
+	xhr.onload = function () {
 		if (xhr.status === 200) {
 			cb(xhr.response);
 		}
@@ -1060,7 +1061,7 @@ function saveAs(blob, filename) {
  * @param  {String} filename 想要保存的文件名称
  */
 function download(url, filename) {
-	getBlob(url, function(blob) {
+	getBlob(url, function (blob) {
 		saveAs(blob, filename);
 	});
 };
@@ -1085,7 +1086,7 @@ function downloadImage(path, imgName) {
 function isJsonFormat(str) {
 	try {
 		layui.$.parseJSON(str);
-	} catch(e) {
+	} catch (e) {
 		return false;
 	}
 	return true;
@@ -1096,12 +1097,12 @@ function isJsonFormat(str) {
  * @param strs
  * @param str
  */
-function judgeStrInStrs(strs, str){
-	if (!isNull(strs) && !isNull(str)){
+function judgeStrInStrs(strs, str) {
+	if (!isNull(strs) && !isNull(str)) {
 		var ss = strs.split(',');
 		var strIndex = -1;
-		layui.$.each(ss, function(i, item) {
-			if(str === item) {
+		layui.$.each(ss, function (i, item) {
+			if (str === item) {
 				strIndex = i;
 				return false;
 			}
@@ -1131,7 +1132,7 @@ function getSortFun(order, sortBy) {
  */
 function groupByField(items, field) {
 	var grouped = {};
-	$.each(items, function() {
+	$.each(items, function () {
 		let value = this[field];
 		if (grouped.hasOwnProperty(value)) {
 			grouped[value].push(this);
@@ -1150,12 +1151,12 @@ function isJSON(str) {
 	if (typeof str == 'string') {
 		try {
 			var obj = JSON.parse(str);
-			if(typeof obj == 'object' && obj ){
+			if (typeof obj == 'object' && obj) {
 				return true;
 			} else {
 				return false;
 			}
-		} catch(e) {
+		} catch (e) {
 			return false;
 		}
 	} else {
@@ -1169,8 +1170,8 @@ function isJSON(str) {
  * @param startCode
  * @param endCode
  */
-function strMatchAllByTwo(str, startCode, endCode){
-	if(str.length > 0){
+function strMatchAllByTwo(str, startCode, endCode) {
+	if (str.length > 0) {
 		var arr = [];
 		var firstStart = str.indexOf(startCode);
 		var firstEnd = str.indexOf(endCode);
@@ -1188,3 +1189,210 @@ function firstLetterUpper(str) {
 		return "";
 	}
 }
+
+/**
+ * 全局监听所有input元素，显示过长内容的完整信息
+ * 当鼠标悬停在input上时，会显示完整内容的提示框
+ */
+(function () {
+	// 创建自定义提示元素
+	let tooltipEl = null;
+
+	// 当前悬停的元素
+	let currentHoverElement = null;
+
+	// 延迟计时器
+	let hideTimer = null;
+	let showTimer = null;
+
+	// 文档加载完成后执行
+	document.addEventListener('DOMContentLoaded', function () {
+		// 创建提示元素
+		tooltipEl = document.createElement('div');
+		tooltipEl.className = 'input-full-content-tooltip';
+		tooltipEl.style.cssText = 'position: fixed; z-index: 19891014; background-color: #3595CC; color: #fff; padding: 8px 12px; border-radius: 4px; font-size: 12px; line-height: 1.5; max-width: 300px; word-wrap: break-word; word-break: break-all; white-space: normal; box-shadow: 0 2px 8px rgba(0,0,0,0.15); display: none; overflow-wrap: break-word; text-overflow: ellipsis; line-break: anywhere; pointer-events: none;';
+		document.body.appendChild(tooltipEl);
+
+		// 初始化监听所有input元素
+		initInputTooltips();
+
+		// 对动态添加的元素也进行监听
+		const observer = new MutationObserver(function () {
+			initInputTooltips();
+		});
+
+		// 监听DOM变化
+		observer.observe(document.body, {
+			childList: true,
+			subtree: true
+		});
+
+		// 处理滚动事件
+		let scrollTimer = null;
+		window.addEventListener('scroll', function () {
+			// 使用防抖动处理滚动事件
+			if (scrollTimer) clearTimeout(scrollTimer);
+
+			// 先隐藏提示
+			if (tooltipEl) tooltipEl.style.display = 'none';
+
+			scrollTimer = setTimeout(function () {
+				if (currentHoverElement) {
+					// 重新显示提示
+					showTooltip(currentHoverElement);
+				}
+			}, 200);
+		}, true);
+
+		// 监听窗口大小变化
+		window.addEventListener('resize', function () {
+			if (currentHoverElement) {
+				showTooltip(currentHoverElement);
+			}
+		});
+	});
+
+	// 更新提示框位置
+	function updateTooltipPosition(element) {
+		if (!element || !tooltipEl) return;
+
+		// 使用getBoundingClientRect获取元素相对于视口的位置
+		const rect = element.getBoundingClientRect();
+
+		// 元素是否在视口内
+		if (rect.bottom < 0 || rect.top > window.innerHeight ||
+			rect.right < 0 || rect.left > window.innerWidth) {
+			hideTooltip();
+			return;
+		}
+
+		// 计算提示框宽度
+		const tooltipWidth = Math.min(300, window.innerWidth - 20);
+
+		// 默认显示在元素上方
+		let top = rect.top - 10;
+		let marginTop = -tooltipEl.offsetHeight;
+
+		// 如果上方空间不足，则显示在元素下方
+		if (top - tooltipEl.offsetHeight < 5) {
+			top = rect.bottom + 10;
+			marginTop = 0;
+		}
+
+		// 水平位置，默认与元素左对齐
+		let left = rect.left;
+
+		// 调整以确保提示框不超出窗口
+		if (left + tooltipWidth > window.innerWidth - 5) {
+			left = window.innerWidth - tooltipWidth - 5;
+		}
+
+		// 确保提示框不会重叠到输入框
+		tooltipEl.style.position = 'fixed';
+		tooltipEl.style.top = top + 'px';
+		tooltipEl.style.marginTop = marginTop + 'px';
+		tooltipEl.style.left = left + 'px';
+		tooltipEl.style.maxWidth = tooltipWidth + 'px';
+	}
+
+	// 显示提示框
+	function showTooltip(element) {
+		if (!element || !tooltipEl) return;
+
+		// 清除之前的定时器
+		if (hideTimer) {
+			clearTimeout(hideTimer);
+			hideTimer = null;
+		}
+
+		// 检查元素是否在视口内
+		const rect = element.getBoundingClientRect();
+		if (rect.bottom < 0 || rect.top > window.innerHeight ||
+			rect.right < 0 || rect.left > window.innerWidth) {
+			hideTooltip();
+			return;
+		}
+
+		if (element.scrollWidth > element.clientWidth || (element.value && element.value.length > 20)) {
+			// 获取输入框的值
+			let content = element.value || element.placeholder || '';
+			if (!content.trim()) return; // 内容为空则不显示
+
+			// 处理长数字，每2位数字间插入零宽空格强制换行
+			if (/\d{10,}/.test(content)) {
+				content = content.replace(/(\d{2})(?=\d)/g, '$1\u200B');
+			}
+
+			// 设置内容
+			tooltipEl.innerHTML = content;
+
+			// 显示提示框
+			tooltipEl.style.display = 'block';
+
+			// 更新位置
+			updateTooltipPosition(element);
+		}
+	}
+
+	// 隐藏提示框
+	function hideTooltip() {
+		if (tooltipEl) {
+			tooltipEl.style.display = 'none';
+		}
+		currentHoverElement = null;
+	}
+
+	// 初始化所有input元素的tooltip功能
+	function initInputTooltips() {
+		const inputs = document.querySelectorAll('input[type="text"], input[type="search"], input:not([type]), textarea');
+
+		inputs.forEach(function (input) {
+			// 避免重复添加事件监听
+			if (input.getAttribute('data-tooltip-initialized')) {
+				return;
+			}
+
+			// 鼠标悬停时显示内容
+			input.addEventListener('mouseenter', function (e) {
+				// 清除可能的隐藏定时器
+				if (hideTimer) {
+					clearTimeout(hideTimer);
+					hideTimer = null;
+				}
+
+				currentHoverElement = this;
+
+				// 使用延迟显示，减少闪烁
+				if (showTimer) clearTimeout(showTimer);
+				showTimer = setTimeout(() => {
+					showTooltip(this);
+				}, 200);
+			});
+
+			// 鼠标移出时延迟关闭提示
+			input.addEventListener('mouseleave', function (e) {
+				// 清除显示定时器
+				if (showTimer) {
+					clearTimeout(showTimer);
+					showTimer = null;
+				}
+
+				// 延迟隐藏提示框，减少闪烁
+				if (hideTimer) clearTimeout(hideTimer);
+				hideTimer = setTimeout(() => {
+					hideTooltip();
+				}, 300);
+			});
+
+			// 输入内容变化时更新提示
+			input.addEventListener('input', function () {
+				if (currentHoverElement === this) {
+					showTooltip(this);
+				}
+			});
+
+			// 标记为已初始化
+			input.setAttribute('data-tooltip-initialized', 'true');
+		});
+	}
+})();
