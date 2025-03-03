@@ -84,29 +84,31 @@
                     <div class="layui-card">
                         <div class="layui-card-header">最新贴</div>
                         <div class="layui-card-body">
-                            <dl class="layuiadmin-card-status" id="newForumList">
-                                <!-- newForumListTemplate.tpl -->
-                                <script type="text/x-handlebars-template" id="newForumListTemplate">
-								{{#each rows}}
-									<div class="comment-item">
-										<div class="comment-user">
-											<img src="{{createMation.userPhoto}}" class="user-avatar">
-											<div class="comment-info">
-												<div class="user-name">{{createMation.userName}}</div>
-												<div class="comment-time">{{createTime}}</div>
+                            <div class="posts-scroll-container">
+                                <dl class="layuiadmin-card-status" id="newForumList">
+                                    <!-- newForumListTemplate.tpl -->
+                                    <script type="text/x-handlebars-template" id="newForumListTemplate">
+									{{#each rows}}
+										<div class="comment-item">
+											<div class="comment-user">
+												<img src="{{createMation.userPhoto}}" class="user-avatar">
+												<div class="comment-info">
+													<div class="user-name">{{createMation.userName}}</div>
+													<div class="comment-time">{{createTime}}</div>
+												</div>
+											</div>
+											<div class="comment-content">
+												<p  rowid="{{id}}">{{forumTitle}}</p>
+                                                <span class="forum-stats">
+                                                    <i class="fa fa-eye"></i> {{browseNum}}
+                                                    <i class="fa fa-comment-o"></i> {{commentNum}}
+                                                </span>
 											</div>
 										</div>
-										<div class="comment-content">
-											<p  rowid="{{id}}">{{forumTitle}}</p>
-                                            <span class="forum-stats">
-                                                <i class="fa fa-eye"></i> {{browseNum}}
-                                                <i class="fa fa-comment-o"></i> {{commentNum}}
-                                            </span>
-										</div>
-									</div>
-								{{/each}}
-								</script>
-                            </dl>
+									{{/each}}
+									</script>
+                                </dl>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -114,8 +116,12 @@
                 <div class="layui-col-md6">
                     <div class="layui-card">
                         <div class="layui-card-header">最新评论</div>
-                        <div class="layui-card-body" id="newCommentList">
-                            <!-- 评论列表将在这里显示 -->
+                        <div class="layui-card-body">
+                            <div class="comments-scroll-container">
+                                <div id="newCommentList">
+                                    <!-- 评论列表将在这里显示 -->
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -187,10 +193,12 @@
                 </div>
             </div>
             <div class="comment-content">
-                <p class="comment-text">{{content}}</p>
                 <div class="forum-link">
                     <i class="fa fa-comment-o"></i>
-                    <a href="../../tpl/forumshow/forumitem.html?id={{forumId}}">{{forumTitle}}</a>
+                    {{#if forumId}}
+                    <a href="../../tpl/forumshow/forumitem.html?id={{forumId}}">{{content}}</a>
+                    {{else}}
+                    {{/if}}
                 </div>
             </div>
         </div>
@@ -286,7 +294,7 @@
         }
 
         /* 活跃用户样式 */
-        .layui-col-xs3 {
+        .layui-col-ls3 {
             padding: 8px;
         }
 
@@ -364,6 +372,68 @@
 
         .layui-card-body {
             padding: 5px;
+        }
+
+        /* 最新贴滚动容器 */
+        .posts-scroll-container {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        /* 自定义滚动条样式 */
+        .posts-scroll-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .posts-scroll-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .posts-scroll-container::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 3px;
+        }
+
+        .posts-scroll-container::-webkit-scrollbar-thumb:hover {
+            background: #999;
+        }
+
+        /* 确保内部元素显示正常 */
+        .posts-scroll-container .comment-item:last-child {
+            margin-bottom: 5px;
+        }
+
+        /* 最新评论滚动容器 */
+        .comments-scroll-container {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        /* 确保评论滚动容器使用与帖子滚动容器相同的滚动条样式 */
+        .comments-scroll-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .comments-scroll-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .comments-scroll-container::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 3px;
+        }
+
+        .comments-scroll-container::-webkit-scrollbar-thumb:hover {
+            background: #999;
+        }
+
+        /* 确保最后一条评论底部有适当的间距 */
+        .comments-scroll-container .comment-item:last-child {
+            margin-bottom: 5px;
         }
     </style>
 </body>

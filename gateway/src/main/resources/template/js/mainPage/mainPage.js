@@ -33,7 +33,14 @@ layui.config({
 	}
 	
 	function initForumList(){
-		AjaxPostUtil.request({url: reqBasePath + "mainpage003", params: {}, type: 'json', callback: function (json) {
+		AjaxPostUtil.request({
+			url: sysMainMation.admBasePath + "queryHotForumList",
+			params: {
+				limit:10,
+				page:1
+			},
+			type: 'json',
+			callback: function (json) {
 			$("#forumContent").append(getDataUseHandlebars($("#forumContentTemplate").html(), json));
 			initKnowledgeList();
    		}});

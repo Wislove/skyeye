@@ -162,13 +162,25 @@ layui.config({
             pagination: false,
             template: commentTemplate,
             ajaxSendLoadBefore: function (hdb, json) {
+                // 处理图片路径和验证forumId
                 for (var i = 0; i < json.rows.length; i++) {
+                    // 处理用户头像
                     if (json.rows[i].createMation) {
                         json.rows[i].createMation.userPhoto = fileBasePath + json.rows[i].createMation.userPhoto;
+                    }
+
+                    // 如果缺少forumId，则使用评论自身的id作为forumId（临时解决方案）
+                    if (!json.rows[i].forumId && json.rows[i].id) {
+                        console.log("评论缺少forumId，临时使用评论id代替:", json.rows[i].id);
+                        json.rows[i].forumId = json.rows[i].id;
+                    } else if (!json.rows[i].forumId) {
+                        json.rows[i].forumId = ""; // 如果连id都没有，则设置为空
                     }
                 }
             },
             ajaxSendAfter: function (json) {
+                // 调试输出评论数据
+                console.log("评论数据:", json.rows);
             }
         });
     }
@@ -259,6 +271,23 @@ layui.config({
     $("body").on("click", "#hotForumList .layui-text-bottom-a a", function (e) {
         rowId = $(this).attr("rowId");
         location.href = "../../tpl/forumshow/forumtaglist.html?id=" + rowId;
+    });
+
+    // 直接点击评论链接，而不是评论文本
+    $("body").on("click", ".forum-link a", function (e) {
+        e.stopPropagation();
+    });
+
+    // 点击评论文本时检查是否有有效的forumId
+    $("body").on("click", ".comment-text", function (e) {
+        var parentItem = $(this).closest('.comment-item');
+        var linkElement = parentItem.find('.forum-link a');
+
+        if (linkElement.length > 0 && linkElement.attr('href')) {
+            window.location.href = linkElement.attr('href');
+        } else {
+            console.log("此评论未关联到有效帖子");
+        }
     });
 
     exports('forumlist', {});
