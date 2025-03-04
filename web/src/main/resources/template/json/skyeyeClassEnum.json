@@ -23,6 +23,7 @@
     "userIsTermOfValidity": {"name": "用户是否长期有效", "className": "skyeye-pro#com.skyeye.personnel.classenum.UserIsTermOfValidity"},
     "payType": {"name": "支付渠道编码", "className": "skyeye-pro#com.skyeye.pay.enums.PayType"},
     "payChannelVersion": {"name": "支付渠道版本", "className": "skyeye-pro#com.skyeye.pay.enums.PayChannelVersion"},
+    "enableEnum": {"name": "标签状态", "className": "skyeye-adm#com.skyeye.common.enumeration.EnableEnum"},
 
     "deliveryExpressType": {"name": "配送计费方式", "className": "skyeye-shop#com.skyeye.delivery.enums.DeliveryExpressType"},
     "menuType": {"name": "APP菜单类型", "className": "skyeye-pro#com.skyeye.menu.classenum.MenuType"},
