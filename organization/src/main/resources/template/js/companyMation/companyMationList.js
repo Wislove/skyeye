@@ -21,7 +21,7 @@ layui.config({
         where: getTableParams(),
         cols: [[
             { field: 'name', width: 300, title: '公司名称' },
-            { field: 'remark', width: 80, title: '公司简介', align: 'center', templet: function (d) {
+            { field: 'remark1', width: 80, title: '公司简介', align: 'center', templet: function (d) {
 	        	return '<i class="fa fa-fw fa-html5 cursor" lay-event="remark"></i>';
 	        }},
 	        { field: 'departmentNum', title: '部门数', width: 100 },
