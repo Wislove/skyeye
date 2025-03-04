@@ -1,4 +1,3 @@
-
 layui.config({
     base: basePath,
     version: skyeyeVersion
@@ -19,60 +18,71 @@ layui.config({
     loadList();
     function loadList() {
         $("#addList").empty();
-        showGrid({
-            id: "addList",
+        AjaxPostUtil.request({
             url: sysMainMation.admBasePath + "queryForumMyBrowerList",
-            params: {},
-            pagination: true,
-            pagesize: 12,
-            template: addListTemplate,
-            ajaxSendLoadBefore: function (hdb) {
+            params: {
+                page: 1,
+                limit: 12
             },
-            ajaxSendAfter: function (json) {
-                var row = json.rows;
-                for (var i = 0; i < row.length; i++) {
-                    var id = row[i].forumId;
-                    var tagName = row[i].tagName;
-                    if (!isNull(tagName)) {
-                        var tagArr = tagName.split(",");
-                        var tagStr = "";
-                        for (var j = 0; j < tagArr.length; j++) {
-                            tagStr += "<strong rowId='" + tagArr[j].split("-")[1] + "'>" + tagArr[j].split("-")[0] + "</strong>"
-                        }
-                        $(".my-forum-main-span").each(function () {
-                            var thisId = $(this).parents('div[class^="forum-main"]').eq(0).attr("rowId");
-                            if (thisId == id) {
-                                $(this).append(tagStr);
+            type: 'json',
+            callback: function (json) {
+                if (json.returnCode == 0) {
+                    if (json.rows && json.rows.length > 0) {
+                        // 处理用户头像路径
+                        for (var i = 0; i < json.rows.length; i++) {
+                            if (json.rows[i].createMation && json.rows[i].createMation.userPhoto) {
+                                json.rows[i].createMation.userPhoto = fileBasePath + json.rows[i].createMation.userPhoto;
                             }
-                        });
+                        }
+
+                        // 渲染模板
+                        var html = getDataUseHandlebars(addListTemplate, json);
+                        $("#addList").html(html);
+
+                        // 处理标签
+                        var row = json.rows;
+                        for (var i = 0; i < row.length; i++) {
+                            var id = row[i].id;
+                            var tagName = row[i].tagName;
+                            if (!isNull(tagName)) {
+                                var tagArr = tagName.split(",");
+                                var tagStr = "";
+                                for (var j = 0; j < tagArr.length; j++) {
+                                    tagStr += "<strong rowId='" + tagArr[j].split("-")[1] + "'>" + tagArr[j].split("-")[0] + "</strong>"
+                                }
+                                $(".my-forum-main-span").each(function () {
+                                    var thisId = $(this).parents('div[class^="forum-main"]').eq(0).attr("rowId");
+                                    if (thisId == id) {
+                                        $(this).append(tagStr);
+                                    }
+                                });
+                            }
+                        }
+                    } else {
+                        $("#addList").html('<div style="text-align:center;padding:20px;">暂无浏览记录</div>');
                     }
+                } else {
+                    winui.window.msg(json.returnMessage, { icon: 2, time: 2000 });
                 }
                 matchingLanguage();
             }
         });
     }
 
-    //详情
+    //详情点击事件
     $("body").on("click", "#addList .forum-main .forum-desc, .forum-main em", function (e) {
-        rowId = $(this).parents('div[class^="forum-main"]').eq(0).attr("rowId");
-        location.href = '../../tpl/forumshow/forumitem.html?id=' + rowId;
-    });
-
-    //我的操作
-    $("body").on("click", ".suspension-menu-icon", function (e) {
-        if ($(".drop-down-menu").is(':hidden')) {
-            $(".drop-down-menu").show();
-            $(".suspension-menu-icon").removeClass("rotate").addClass("rotate1");
-        } else {
-            $(".drop-down-menu").hide();
-            $(".suspension-menu-icon").removeClass("rotate1").addClass("rotate");
+        var rowId = $(this).parents('div[class^="forum-main"]').eq(0).attr("rowId");
+        if (rowId) {
+            location.href = '../../tpl/forumshow/forumitem.html?id=' + rowId;
         }
     });
 
     //标签点击事件
     $("body").on("click", "#addList .forum-main strong", function (e) {
-        rowId = $(this).attr("rowId");
-        location.href = "../../tpl/forumshow/forumtaglist.html?id=" + rowId;
+        var rowId = $(this).attr("rowId");
+        if (rowId) {
+            location.href = "../../tpl/forumshow/forumtaglist.html?id=" + rowId;
+        }
     });
 
     exports('mybrowse', {});
