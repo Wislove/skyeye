@@ -649,7 +649,7 @@ layui.define('layer', function(exports) {
 											} else if(item.tagName.toLowerCase() === 'optgroup') {
 												arr.push('<dt>' + item.label + '</dt>');
 											} else {
-												arr.push('<dd lay-value="' + item.value + '" class="' + (value === item.value ? THIS : '') + (item.disabled ? (' ' + DISABLED) : '') + '">' + item.innerHTML + '</dd>');
+												arr.push('<dd lay-value="' + item.value + '" class="' + (value === item.value ? THIS : '') + (item.disabled ? (' ' + DISABLED) : '') + '" title="' + item.innerHTML + '">' + item.innerHTML + '</dd>');
 											}
 										});
 										arr.length === 0 && arr.push('<dd lay-value="" class="' + DISABLED + '">没有选项</dd>');
