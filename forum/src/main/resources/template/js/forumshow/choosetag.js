@@ -22,16 +22,23 @@ layui.config({
             },
             type: 'json',
             callback: function (json) {
-                if (json.returnCode == 0 && json.bean && Array.isArray(json.bean)) {
+                if (json.returnCode == 0) {
                     var html = '';
-                    // 遍历 bean 数组
-                    $.each(json.bean, function (i, item) {
-                        if (item.state === 2) { // 假设 state=2 表示可用状态
-                            html += '<input type="checkbox" lay-filter="checkboxProperty" ' +
-                                'rowId="' + item.id + '" title="' + item.tagName + '" ' +
-                                'name="' + item.tagName + '" lay-skin="primary">';
-                        }
-                    });
+                    // 处理返回的数据
+                    if (json.bean) {
+                        // 如果是单个对象，转换为数组
+                        var tags = Array.isArray(json.bean) ? json.bean : [json.bean];
+
+                        // 遍历标签数据
+                        $.each(tags, function (i, item) {
+                            if (item.state === 1) { // 假设 state=1 表示可用状态
+                                html += '<input type="checkbox" lay-filter="checkboxProperty" ' +
+                                    'rowId="' + item.id + '" title="' + item.tagName + '" ' +
+                                    'name="' + item.tagName + '" lay-skin="primary">';
+                            }
+                        });
+                    }
+
                     $("#showForm").html(html);
 
                     // 如果有已选标签，设置选中状态

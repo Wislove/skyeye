@@ -179,8 +179,6 @@ layui.config({
                 }
             },
             ajaxSendAfter: function (json) {
-                // 调试输出评论数据
-                console.log("评论数据:", json.rows);
             }
         });
     }

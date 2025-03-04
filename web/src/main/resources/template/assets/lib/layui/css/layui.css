@@ -4926,6 +4926,7 @@ body .layui-util-face .layui-layer-content {
 .layui-anim-upbit {
     -webkit-animation-name: layui-upbit;
     animation-name: layui-upbit;
+    max-width: 200px;
 }
 
 @-webkit-keyframes layui-scale {
