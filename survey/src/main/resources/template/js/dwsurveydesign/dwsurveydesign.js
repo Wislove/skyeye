@@ -21,21 +21,11 @@ layui.config({
 	    $("#_operationmodel").html(_operationmodel);
 	    $("#_commonlyusedmodel").html(_commonlyusedmodel);
 	    $("body").append(_varioustemplates);
-	    
-	    showGrid({
-		 	id: "dw_body",
-		 	url: sysMainMation.surveyBasePath + "writeDwDirectory",
-		 	params: {
-				 rowId: parent.rowId,
-				surveyName: data.surveyName,
-				surveyModel: data.surveyModel,
-				dirType: data.dirType,
-				rule: data.rule,
-				answerNum: data.answerNum,
-				effectiveTime: data.effectiveTime,
-				endType: data.endType,
-				whetherDelete: data.whetherDelete
-			},
+
+		showGrid({
+			id: "dw_body",
+			url: sysMainMation.surveyBasePath + "dwsurveydirectory003",
+			params: {rowId: parent.rowId},
 		 	pagination: false,
 		 	template: getFileContent('tpl/dwsurveydesign/dwsurveydesignbean.tpl'),
 		 	ajaxSendLoadBefore: function(hdb, json){
