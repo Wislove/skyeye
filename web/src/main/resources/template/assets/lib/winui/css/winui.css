@@ -1519,6 +1519,14 @@ body .layer-ext-winconfirm .layui-layer-content {
     padding-top: 8px;
     min-height: 33px;
     font-family: initial;
+    word-wrap: break-word;
+    /* 允许长单词换行 */
+    overflow-wrap: break-word;
+    /* 现代浏览器使用的属性 */
+    word-break: break-word;
+    /* 在合适的断点处换行 */
+    white-space: normal;
+    /* 允许空白处换行 */
 }
 
 .padding-l-r-10{
