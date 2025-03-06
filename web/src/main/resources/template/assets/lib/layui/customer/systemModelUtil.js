@@ -19,9 +19,10 @@ var systemModelUtil = {
             method: "GET",
             async: false,
             template: getFileContent('tpl/template/select-option.tpl'),
-            ajaxSendLoadBefore: function(hdb) {
-            },
-            ajaxSendAfter: function (json) {
+            ajaxSendLoadBefore: function(hdb, json) {
+                json.rows.forEach(function (item) {
+                    item.name = item.typeName
+                })
             }
         });
     },
