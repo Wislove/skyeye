@@ -75,6 +75,9 @@ layui.config({
             id: 'messageTable',
             elem: '#messageTable',
             method: 'post',
+            page: true,
+            limits: getLimits(),
+            limit: getLimit(),
             url: schoolBasePath + 'queryFloorInfosByLocationId',
             where: getTableParams(),
             cols: [[
@@ -94,7 +97,6 @@ layui.config({
                 { field: 'lastUpdateTime', title: systemLanguage["com.skyeye.lastUpdateTime"][languageType], align: 'center', width: 150 },
                 { title: systemLanguage["com.skyeye.operation"][languageType], fixed: 'right', align: 'center', width: 240, toolbar: '#tableBar' }
             ]],
-            isPage: false,
             done: function(json) {
                 matchingLanguage();
                 initTableSearchUtil.initAdvancedSearch($("#messageTable")[0], json.searchFilter, form, "请输入名称", function () {
