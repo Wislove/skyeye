@@ -25,7 +25,10 @@ layui.config({
 			initTable();
 			initTableChooseUtil.deleteAllRow('fieldList');
 			$.each(json.bean.scoreFields, function(i, item) {
-				item['fieldId'] = item.fieldName + '(' + item.fieldKey + ')';
+				item['fieldMation'] = {
+					id: item.fieldKey,
+					name: item.fieldName + '(' + item.fieldKey + ')',
+				}
 				var trcusid = initTableChooseUtil.resetData('fieldList', item);
 				// 获取表格行号
 				var thisRowKey = trcusid.replace("tr", "");

@@ -23,7 +23,7 @@ layui.config({
 		cols: [[
 			{ field: 'name', title: '职位名称', width: 180 },
 			{ field: 'id', title: '职位简介', width: 80, align: 'center', templet: function (d) {
-				return '<i class="fa fa-fw fa-html5 cursor" lay-event="jobDesc"></i>';
+				return '<i class="fa fa-fw fa-html5 cursor" lay-event="detailRemark"></i>';
 			}},
 			{ field: 'userNum', title: '员工数', width: 100 },
 			{ field: 'companyName', title: '所属公司', width: 150 },
@@ -55,14 +55,14 @@ layui.config({
 			del(data, obj);
 		} else if (layEvent === 'edit') { //编辑
 			edit(data);
-		} else if (layEvent === 'jobDesc') { //职位简介
+		} else if (layEvent === 'detailRemark') { //职位简介
 			layer.open({
 				id: '职位简介',
 				type: 1,
 				title: '职位简介',
 				shade: 0.3,
 				area: ['90vw', '90vh'],
-				content: data.jobDesc
+				content: data.remark
 			});
 		} else if (layEvent === 'jobScore') { //岗位定级
 			jobScore(data);

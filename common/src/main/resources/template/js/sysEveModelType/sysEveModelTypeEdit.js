@@ -23,6 +23,7 @@ layui.config({
 				$("#parentId").val(json.bean.parentId);
 
 		 		matchingLanguage();
+				form.render();
 		 	    form.on('submit(formEditBean)', function (data) {
 		 	        if (winui.verifyForm(data.elem)) {
 		 	        	var params = {

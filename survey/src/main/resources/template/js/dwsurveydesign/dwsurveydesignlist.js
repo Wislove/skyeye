@@ -20,15 +20,16 @@ layui.config({
 	    elem: '#messageTable',
 	    method: 'post',
 	    url: sysMainMation.surveyBasePath + 'queryAllDwList',
-	    where: {surveyName: $("#surveyName").val(), surveyState: $("#surveyState").val()},
+	    // where: {surveyName: $("#surveyName").val(), surveyState: $("#surveyState").val()},
+		where: getTableParams(),
 	    even: false,
 	    page: true,
-	    limits: [8, 16, 24, 32, 40, 48, 56],
-	    limit: 8,
+	    limits:getLimits(),
+	    limit: getLimit(),
 	    cols: [[
 	        { title: systemLanguage["com.skyeye.serialNumber"][languageType], type: 'numbers' },
 	        { field: 'surveyName', width: 300, title: '问卷名称'},
-	        { field: 'answerNum', width: 140, title: '答卷'},
+	        { field: 'answerNum', align: 'center',width: 140, title: '回答次数'},
 	        { field: 'surveyState', width: 120, title: '状态',templet: function (d) {
 					var state = d.surveyState;
 					if (state == 0) {
@@ -184,13 +185,35 @@ layui.config({
 			}});
     });
     
-    function loadTable() {
-    	table.reloadData("messageTable", {where:{surveyName: $("#surveyName").val(), surveyState: $("#surveyState").val()}});
-    }
-    
-    function refreshTable(){
-    	table.reloadData("messageTable", {page: {curr: 1}, where:{surveyName: $("#surveyName").val(), surveyState: $("#surveyState").val()}});
-    }
-    
-    exports('dwsurveydesignlist', {});
+    // function loadTable() {
+    // 	table.reloadData("messageTable", {where:{surveyName: $("#surveyName").val(), surveyState: $("#surveyState").val()}});
+    // }
+    //
+    // function refreshTable(){
+    // 	table.reloadData("messageTable", {page: {curr: 1}, where:{surveyName: $("#surveyName").val(), surveyState: $("#surveyState").val()}});
+    // }
+
+	// function getTableParams() {
+	// 	return {
+	// 		keyword: $("#surveyName").val(),
+	// 		state: $("#surveyState").val()
+	// 	};
+	// }
+
+	function loadTable() {
+		table.reloadData("messageTable", {where: getTableParams()});
+	}
+
+	function refreshTable() {
+		table.reloadData("messageTable", {page: {curr: 1}, where: getTableParams()});
+	}
+
+	function getTableParams() {
+		return {
+			keyword: $("#surveyName").val(),
+			state: $("#surveyState").val()
+		};
+	}
+
+	exports('dwsurveydesignlist', {});
 });

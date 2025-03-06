@@ -23,14 +23,17 @@ layui.config({
 	    cols: [[
 	        { title: systemLanguage["com.skyeye.serialNumber"][languageType], type: 'numbers' },
 			{ field: 'typeName', title: '名称',  width: 360 },
-			{ field: 'createName', title: systemLanguage["com.skyeye.createName"][languageType], width: 120 },
+			{ field: 'createName', title: systemLanguage["com.skyeye.createName"][languageType], width: 140 },
 			{ field: 'createTime', title: systemLanguage["com.skyeye.createTime"][languageType], align: 'center', width: 150 },
-			{ field: 'lastUpdateName', title: systemLanguage["com.skyeye.lastUpdateName"][languageType], align: 'left', width: 120 },
+			{ field: 'lastUpdateName', title: systemLanguage["com.skyeye.lastUpdateName"][languageType], align: 'left', width: 140 },
 			{ field: 'lastUpdateTime', title: systemLanguage["com.skyeye.lastUpdateTime"][languageType], align: 'center', width: 150 },
 	        { title: systemLanguage["com.skyeye.operation"][languageType], fixed: 'right', align: 'center', width: 130, toolbar: '#tableBar'}
 	    ]],
 	    done: function(json) {
 	    	matchingLanguage();
+			initTableSearchUtil.initAdvancedSearch($("#messageTable")[0], json.searchFilter, form, "请输入名称", function () {
+				tableTree.reload("messageTable", {page: {curr: 1}, where: getTableParams()});
+			});
 	    }
 	}, {
 		keyId: 'id',
@@ -86,27 +89,17 @@ layui.config({
 			}});
 	}
 
-	// 刷新数据
-    $("body").on("click", "#reloadTable", function() {
-    	loadTable();
-    });
-
 	form.render();
-	form.on('submit(formSearch)', function (data) {
-		if (winui.verifyForm(data.elem)) {
-			loadTable();
-		}
-		return false;
+	$("body").on("click", "#reloadTable", function() {
+		loadTable();
 	});
-    
-    function loadTable() {
+
+	function loadTable() {
 		tableTree.reload("messageTable", {where: getTableParams()});
-    }
-    
-    function getTableParams() {
-    	return {
-    		typeName: $("#typeName").val()
-    	};
+	}
+
+	function getTableParams() {
+		return $.extend(true, {}, initTableSearchUtil.getSearchValue("messageTable"));
 	}
     
     exports('sysEveModelTypeList', {});

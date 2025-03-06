@@ -140,6 +140,18 @@ function calculatedTotalPrice() {
 				$("#taxMoney" + thisRowKey).val('0.00');
 				$("#taxRate" + thisRowKey).val('0.00');
 			}
+		} else if ('qualifiedNumber' === showTdByEdit || 'concessionNumber' === showTdByEdit) {// 质检的合格数量 || 让步接收数量
+			var qualifiedNumber = parseInt(isNull($("#qualifiedNumber" + thisRowKey).val()) ? 0 : $("#qualifiedNumber" + thisRowKey).val());
+			var concessionNumber = parseInt(isNull($("#concessionNumber" + thisRowKey).val()) ? 0 : $("#concessionNumber" + thisRowKey).val());
+			var number = qualifiedNumber + concessionNumber;
+			//输出金额
+			$("#allPrice" + thisRowKey).val((number * unitPrice).toFixed(2));
+			//输出税额=数量*税率*单价
+			$("#taxMoney" + thisRowKey).val((number * taxRate * unitPrice).toFixed(2));
+			//输出含税单价
+			$("#taxUnitPrice" + thisRowKey).val((taxRate * unitPrice + unitPrice).toFixed(2));
+			//输出合计价税
+			$("#taxLastMoney" + thisRowKey).val((number * taxRate * unitPrice + number * unitPrice).toFixed(2));
 		}
 		taxLastMoneyPrice += parseFloat($("#taxLastMoney" + thisRowKey).val());
 	});

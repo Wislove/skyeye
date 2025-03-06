@@ -20,6 +20,9 @@ layui.config({
 
             skyeyeClassEnumUtil.showEnumDataListByClassName("commonEnable", 'radio', "enabled", '', form);
 
+            skyeyeClassEnumUtil.showEnumDataListByClassName("commonEnable", 'radio', "quit", '', form);
+
+
             // //加载学期
             initSemesterId();
         });
@@ -131,6 +134,7 @@ layui.config({
                     classesId: $("#classesId").val(),
                     semesterId: $("#semesterId").val(),
                     enabled: dataShowType.getData('enabled'),
+                    quit: parseInt(dataShowType.getData('quit')),
                     objectId : objectId,
                     objectKey :objectKey
                 };

@@ -42,6 +42,17 @@
     <script type="text/javascript">
         layui.config({ base: '../../js/forumshow/' }).use('choosetag');
     </script>
+
+    <!-- 修改模板以适应新的数据结构 -->
+    <script type="text/x-handlebars-template" id="addListTemplate">
+    {{#each rows}}
+        <div class="caller-item">
+            <div class="forum-main caller-fl" rowId='{{id}}'>
+                <p><span class="my-forum-main-span">{{tagName}}</span></p>
+            </div>
+        </div>
+    {{/each}}
+    </script>
 </body>
 
 </html>
