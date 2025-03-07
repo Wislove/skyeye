@@ -13,7 +13,7 @@ layui.config({
 	    
 	    showGrid({
 		 	id: "showForm",
-		 	url: reqBasePath + "sysevemodel006",
+		 	url: reqBasePath + "sysevemodel004",
 		 	params: {id: parent.rowId},
 		 	pagination: false,
 		 	template: beanTemplate,

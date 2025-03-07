@@ -62,7 +62,6 @@ layui.config({
 
     function getTableParams() {
     	return {
-			title: "",
 			firstTypeId: firstType == "0" ? "" : firstType,
 			secondTypeId: secondType,
 			type: 1

@@ -74,7 +74,7 @@ layui.config({
 	// 选择
 	$("body").on("click", ".collection", function() {
 		var rowId = $(this).attr("rowid");
-		AjaxPostUtil.request({url: reqBasePath + "sysevemodel006", params: {id: rowId}, type: 'json', method: "GET", callback: function (json) {
+		AjaxPostUtil.request({url: reqBasePath + "sysevemodel004", params: {id: rowId}, type: 'json', method: "GET", callback: function (json) {
 			parent.systemModelUtil.chooseSysModel = json.bean;
 			parent.layer.close(index);
 			parent.refreshCode = '0';
@@ -83,7 +83,6 @@ layui.config({
 
     function getTableParams() {
     	return {
-			title: "",
 			firstTypeId: firstType == "0" ? "" : firstType,
 			secondTypeId: secondType,
 			type: 1

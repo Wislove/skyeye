@@ -14,14 +14,6 @@ layui.config({
 	
 	authBtn('1637494526858');
 
-	systemModelUtil.loadSysEveModelTypeByPId("firstTypeId", "0");
-
-	form.on('select(firstTypeId)', function(data) {
-		var thisRowValue = data.value;
-		systemModelUtil.loadSysEveModelTypeByPId("secondTypeId", isNull(thisRowValue) ? "-" : thisRowValue);
-		form.render('select');
-	});
-	
 	table.render({
 	    id: 'messageTable',
 	    elem: '#messageTable',
@@ -50,6 +42,9 @@ layui.config({
 	    ]],
 	    done: function(json) {
 	    	matchingLanguage();
+			initTableSearchUtil.initAdvancedSearch(this, json.searchFilter, form, "请输入标题", function () {
+				table.reloadData("messageTable", {page: {curr: 1}, where: getTableParams()});
+			});
 	    }
 	});
 	
@@ -118,33 +113,16 @@ layui.config({
 	}
 
 	form.render();
-	form.on('submit(formSearch)', function (data) {
-		if (winui.verifyForm(data.elem)) {
-			refreshTable();
-		}
-		return false;
+	$("body").on("click", "#reloadTable", function() {
+		loadTable();
 	});
 
-	// 刷新数据
-    $("body").on("click", "#reloadTable", function() {
-    	loadTable();
-    });
-    
-    function loadTable() {
-    	table.reloadData("messageTable", {where: getTableParams()});
-    }
-    
-    function refreshTable(){
-    	table.reloadData("messageTable", {page: {curr: 1}, where: getTableParams()});
-    }
+	function loadTable() {
+		table.reloadData("messageTable", {where: getTableParams()});
+	}
 
-    function getTableParams() {
-    	return {
-    		title: $("#title").val(),
-			firstTypeId: $("#firstTypeId").val(),
-			secondTypeId: $("#secondTypeId").val(),
-			type: 1
-    	};
+	function getTableParams() {
+		return $.extend(true, {type: 1}, initTableSearchUtil.getSearchValue("messageTable"));
 	}
     
     exports('sysEveModelList', {});
