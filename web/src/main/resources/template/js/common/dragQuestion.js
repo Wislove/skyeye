@@ -306,20 +306,20 @@ layui.define(["jquery", "form", "element"], function(exports) {
 		$("body").on("click", ".addOption,.addColumnOption,.addRowOption", function() {
 			var quItemBody = $(this).parents(".surveyQuItemBody");
 			var quType = quItemBody.find("input[name='quType']").val();
-			if(quType == "RADIO") {
+			if(quType == '1') {
 				//添加单选选项
 				editAble(addRadioItem(quItemBody, ""));
 				form.render('radio');
-			} else if(quType == "CHECKBOX") {
+			} else if(quType == '2') {
 				editAble(addCheckboxItem(quItemBody, ""));
 				form.render('checkbox');
-			} else if(quType == "SCORE") {
+			} else if(quType == '8') {
 				editAble(addScoreItem(quItemBody, "新选项"));
-			} else if(quType == "ORDERBY") {
+			} else if(quType == '9') {
 				editAble(addOrderquItem(quItemBody, "新选项"));
-			} else if(quType == "MULTIFILLBLANK") {
+			} else if(quType == '4') {
 				editAble(addMultiFillblankItem(quItemBody, "新选项"));
-			} else if(quType == "CHENRADIO" || quType == "CHENCHECKBOX" || quType == "CHENFBK" || quType == "CHENSCORE") { //矩陈单选题,矩阵多选题
+			} else if(quType == '11' || quType == '13' || quType == '12' || quType == '18') { //矩陈单选题,矩阵多选题
 				editAble(addChenItem($(this), quItemBody, "新选项"));
 				form.render('radio');
 				form.render('checkbox');
@@ -572,19 +572,19 @@ layui.define(["jquery", "form", "element"], function(exports) {
 			$.each(areaValSplits, function(i,item) {
 				item = $.trim(item);
 				if(item != ""){
-					if(quType == "RADIO"){
+					if(quType == '1'){
 						// 添加单选选项
 						addRadioItem(quItemBody, item);
-					} else if (quType == "CHECKBOX"){
+					} else if (quType == '2'){
 						// 添加多选选项
 						addCheckboxItem(quItemBody, item);	
-					} else if (quType == "SCORE"){
+					} else if (quType == '8'){
 						addScoreItem(quItemBody, item);
-					} else if (quType == "ORDERBY"){
+					} else if (quType == '9'){
 						addOrderquItem(quItemBody, item);
-					} else if (quType == "MULTIFILLBLANK"){
+					} else if (quType == '4'){
 						addMultiFillblankItem(quItemBody, item);
-					} else if (quType == "CHENRADIO" || quType == "CHENCHECKBOX" || quType == "CHENFBK" || quType == "CHENSCORE"){
+					} else if (quType == '11' || quType == '13' || quType == '13' || quType == '18'){
 						addChenItem(dwDialogObj, quItemBody, item);
 					}
 				}
@@ -720,10 +720,10 @@ layui.define(["jquery", "form", "element"], function(exports) {
 	    		quItemBody.find("input[name='cellCount']").val(setCellCount);
 	    		quItemBody.find("input[name='saveTag']").val(0);
 	    		var quType = quItemBody.find("input[name='quType']").val();
-	    		if (quType == "RADIO" || quType == "CHECKBOX" || quType == "FILLBLANK") {
+	    		if (quType == '1' || quType == '2' || quType == '3') {
 	    			quItemBody.find("input[name='contactsAttr']").val(setAutoContacts[0] ? 1 : 0);
 	    			quItemBody.find("input[name='contactsField']").val(setContactsField);
-	    		} else if (quType == "SCORE") {
+	    		} else if (quType == '8') {
 	    			quItemBody.find("input[name='paramInt01']").val(1);
 	    			var paramInt02 = $("#dwCommonDialog .scoreMinMax .maxScore");
 	    			if (paramInt02[0]) {
@@ -740,7 +740,7 @@ layui.define(["jquery", "form", "element"], function(exports) {
 	    					$(this).append("<td>" + i + "</td>");
 	    				}
 	    			});
-	    		} else if (quType === "MULTIFILLBLANK") {
+	    		} else if (quType === '4') {
 	    			var paramInt01 = $("#dwCommonDialog .minMaxLi .minNum");
 	    			if (paramInt01[0]) {
 	    				quItemBody.find("input[name='paramInt01']").val(paramInt01.val());
@@ -1341,18 +1341,18 @@ function showDialog(thDialogObj){
 		$("#dwCommonDialog input[name='setCellCount']").val(cellCount);
 
 		// 单选，多选 才启用选项随机排列
-		if(quType === "RADIO" || quType === "CHECKBOX"){
+		if(quType === '1' || quType === '2'){
 			$("#dwCommonDialog .optionAutoOrder").show();
 			$("#dwCommonDialog .optionRangeHv").show();
-		} else if (quType === "ORDERBY"){
+		} else if (quType === '9'){
 			$("#dwCommonDialog .optionAutoOrder").show();
-		} else if (quType === "SCORE"){
+		} else if (quType === '8'){
 			$("#dwCommonDialog .optionAutoOrder").show();
 			$("#dwCommonDialog .scoreMinMax").show();
 			if(paramInt02[0]){
 				$("#dwCommonDialog .scoreMinMax .maxScore").val(paramInt02.val());
 			}
-		} else if (quType === "MULTIFILLBLANK"){
+		} else if (quType === '4'){
 			$("#dwCommonDialog .optionAutoOrder").show();
 			$("#dwCommonDialog .minMaxLi").show();
 			$("#dwCommonDialog .minMaxLi .minSpan .lgleftLabel").text("最少回答");
@@ -1364,7 +1364,7 @@ function showDialog(thDialogObj){
 		}
 
 		// 单选，多选，填空题情况下才启用关联到联系设置项
-		if((quType == "RADIO" || quType == "CHECKBOX" || quType == "FILLBLANK")){
+		if((quType == '1' || quType == '2' || quType == '3')){
 			$("#dwCommonDialog .contactsAttrLi").show();
 			if( contactsAttr == 1){
 				$("#dwCommonDialog input[name='setAutoContacts']").prop("checked", true);
@@ -1699,13 +1699,13 @@ function addChenColumnItem(quItemBody, itemText) {
 		} else {
 			// 获取checkNameIn用作单选框
 			var checkNameIn = $(this).attr("checkNameInTr");
-			if(quType == "CHENRADIO") {
+			if(quType == '11') {
 				$(this).append("<td><input type='radio' class='chenRadioInput' name='" + checkNameIn + "'></td>");
-			} else if(quType == "CHENCHECKBOX") {
+			} else if(quType == '13') {
 				$(this).append('<td><input type="checkbox" class="chenCheckBoxInput"></td>');
-			} else if(quType == "CHENFBK") {
+			} else if(quType == '12') {
 				$(this).append("<td><input type='text' class='questionChenColumnValue'></td>");
-			} else if(quType == "CHENSCORE") {
+			} else if(quType == '18') {
 				$(this).append('<td><select class="quChenScoreSelect"><option value="0">-评分-</option><option value="1">1分</option><option value="2">2分</option><option value="3">3分</option><option value="4">4分</option><option value="5">5分</option></select></td>');
 			}
 		}
@@ -1740,13 +1740,13 @@ function addChenRowItem(quItemBody, itemText) {
 		if(i == 0) {
 			appendTrHtml += quChenRowHtml;
 		} else {
-			if(quType == "CHENRADIO") {
+			if(quType == '11') {
 				appendTrHtml += "<td><input type='radio' class='chenRadioInput' name='" + chenRadioInputRow + "'></td>";
-			} else if(quType == "CHENCHECKBOX") {
+			} else if(quType == '13') {
 				appendTrHtml += '<td><input type="checkbox" class="chenCheckBoxInput"></td>';
-			} else if(quType == "CHENFBK") {
+			} else if(quType == '12') {
 				appendTrHtml += "<td><input type='text' class='questionChenColumnValue'></td>";
-			} else if(quType == "CHENSCORE") {
+			} else if(quType == '18') {
 				appendTrHtml += '<td><select class="quChenScoreSelect"><option value="0">-评分-</option><option value="1">1分</option><option value="2">2分</option><option value="3">3分</option><option value="4">4分</option><option value="5">5分</option></select></td>';
 			}
 		}

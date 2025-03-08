@@ -6,7 +6,17 @@ function calculatedTotalPrice() {
 		// 获取行坐标
 		var thisRowKey = item;
 		// 获取数量
-		var operNumber = parseInt(isNull($("#operNumber" + thisRowKey).val()) ? 0 : $("#operNumber" + thisRowKey).val());
+		var operNumber;
+		if ($(".qualifiedNumber").length > 0 && $(".concessionNumber").length > 0) {
+			// 质检
+			var qualifiedNumber = parseInt(isNull($("#qualifiedNumber" + thisRowKey).val()) ? 0 : $("#qualifiedNumber" + thisRowKey).val());
+			var concessionNumber = parseInt(isNull($("#concessionNumber" + thisRowKey).val()) ? 0 : $("#concessionNumber" + thisRowKey).val());
+			operNumber = qualifiedNumber + concessionNumber;
+		} else {
+			// 其他
+			operNumber = parseInt(isNull($("#operNumber" + thisRowKey).val()) ? 0 : $("#operNumber" + thisRowKey).val());
+		}
+
 		// 获取单价
 		var unitPrice = parseFloat(isNull($("#unitPrice" + thisRowKey).val()) ? 0 : $("#unitPrice" + thisRowKey).val());
 		// 获取税率
@@ -141,17 +151,14 @@ function calculatedTotalPrice() {
 				$("#taxRate" + thisRowKey).val('0.00');
 			}
 		} else if ('qualifiedNumber' === showTdByEdit || 'concessionNumber' === showTdByEdit) {// 质检的合格数量 || 让步接收数量
-			var qualifiedNumber = parseInt(isNull($("#qualifiedNumber" + thisRowKey).val()) ? 0 : $("#qualifiedNumber" + thisRowKey).val());
-			var concessionNumber = parseInt(isNull($("#concessionNumber" + thisRowKey).val()) ? 0 : $("#concessionNumber" + thisRowKey).val());
-			var number = qualifiedNumber + concessionNumber;
 			//输出金额
-			$("#allPrice" + thisRowKey).val((number * unitPrice).toFixed(2));
+			$("#allPrice" + thisRowKey).val((operNumber * unitPrice).toFixed(2));
 			//输出税额=数量*税率*单价
-			$("#taxMoney" + thisRowKey).val((number * taxRate * unitPrice).toFixed(2));
+			$("#taxMoney" + thisRowKey).val((operNumber * taxRate * unitPrice).toFixed(2));
 			//输出含税单价
 			$("#taxUnitPrice" + thisRowKey).val((taxRate * unitPrice + unitPrice).toFixed(2));
 			//输出合计价税
-			$("#taxLastMoney" + thisRowKey).val((number * taxRate * unitPrice + number * unitPrice).toFixed(2));
+			$("#taxLastMoney" + thisRowKey).val((operNumber * taxRate * unitPrice + operNumber * unitPrice).toFixed(2));
 		}
 		taxLastMoneyPrice += parseFloat($("#taxLastMoney" + thisRowKey).val());
 	});
@@ -179,7 +186,8 @@ layui.define(["jquery"], function(exports) {
 	var jQuery = layui.jquery;
 	(function($) {
 		// 数量变化,税率变化
-		$("body").on("input", ".rkNum, .unitPrice, .amountOfMoney, .taxRate, .taxMoney, .taxUnitPrice, .taxLastMoney", function () {
+		$("body").on("input", ".rkNum, .unitPrice, .amountOfMoney, .taxRate, .taxMoney, .taxUnitPrice," +
+			" .taxLastMoney, .qualifiedNumber, .concessionNumber", function () {
 			var clazz = $(this).attr("class").replace("layui-input", "").replace("change-input", "").replace("layui-form-danger", "").replace(/\s+/g, "");
 			tableId = $(this).parents("table").parent().parent().attr("id");
 			if (clazz != showTdByEdit) {
@@ -189,7 +197,8 @@ layui.define(["jquery"], function(exports) {
 			}
 			calculatedTotalPrice();
 		});
-		$("body").on("change", ".rkNum, .unitPrice, .amountOfMoney, .taxRate, .taxMoney, .taxUnitPrice, .taxLastMoney", function () {
+		$("body").on("change", ".rkNum, .unitPrice, .amountOfMoney, .taxRate, .taxMoney, .taxUnitPrice," +
+			" .taxLastMoney, .qualifiedNumber, .concessionNumber", function () {
 			var clazz = $(this).attr("class").replace("layui-input", "").replace("change-input", "").replace("layui-form-danger", "").replace(/\s+/g, "");
 			tableId = $(this).parents("table").parent().parent().attr("id");
 			if (clazz != showTdByEdit) {
