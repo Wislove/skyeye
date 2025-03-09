@@ -525,6 +525,9 @@ var systemCommonUtil = {
         colorpicker.render({
             elem: '#iconBg',
             color: iconBg,
+            predefine: true,
+            alpha: true,
+            format: 'rgb',
             done: function(color) {
                 $('#iconBginput').val(color);
                 $("#iconShow").parent().css({'background-color': color});
@@ -536,7 +539,10 @@ var systemCommonUtil = {
 
         colorpicker.render({
             elem: '#iconColor',
+            predefine: true,
+            alpha: true,
             color: iconColor,
+            format: 'rgb',
             done: function(color) {
                 $('#iconColorinput').val(color);
                 var icon = $("#icon").val();

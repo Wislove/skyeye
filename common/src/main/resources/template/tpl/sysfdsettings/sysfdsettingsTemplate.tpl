@@ -2,7 +2,6 @@
     <div class="layui-tab">
         <ul class="layui-tab-title">
             <li class="layui-this">邮箱服务器</li>
-            <li>论坛数据</li>
             <li>CRM</li>
             <li>考勤制度</li>
             <li>订单审核制度</li>
@@ -38,16 +37,6 @@
                     <label class="layui-form-label">SSL 端口<i class="red">*</i></label>
                     <div class="layui-input-block">
                         <input type="text" id="emailSendServerPort" name="emailSendServerPort" placeholder="请填写发件SSL端口" class="layui-input" win-verify="required" value="{{emailSendServerPort}}"/>
-                    </div>
-                </div>
-            </div>
-
-            <div class="layui-tab-item">
-                <div class="layui-form-item layui-col-xs6">
-                    <label class="layui-form-label">用法说明：</label>
-                    <div class="layui-input-block">
-                        上次同步时间：<span id="synchronousTime"></span><button class="layui-btn layui-btn-xs layui-btn-normal" type="button" id="formAddBean">一键同步</button><br>
-                        <div class="layui-form-mid layui-word-aux">solr更换时，将数据库数据同步到solr中</div>
                     </div>
                 </div>
             </div>
