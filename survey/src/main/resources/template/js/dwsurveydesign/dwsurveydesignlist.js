@@ -210,7 +210,7 @@ layui.config({
 
 	function getTableParams() {
 		return {
-			keyword: $("#surveyName").val(),
+			surveyName: $("#surveyName").val(),
 			state: $("#surveyState").val()
 		};
 	}
