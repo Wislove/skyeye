@@ -91,11 +91,11 @@
 					<li title="设置" class="dwQuSet">
 						<div class="dwQuIcon"></div>
 					</li>
-					<li title="逻辑" class="dwQuLogic">
+					<!-- <li title="逻辑" class="dwQuLogic">
 						<div class="dwQuIcon">
 							<div class="quLogicInfo">{{questionLogic.length}}</div>
 						</div>
-					</li>
+					</li> -->
 					<li title="知识点" class="knowledgeQuLogic" knowledgeIds="{{knowledgeIds}}">
 						<div class="dwQuIcon">
 							<div class="quKnowledgeInfo">{{questionKnowledge.length}}</div>
@@ -147,7 +147,7 @@
 					{{#if hv}}
 					{{#compare1 hv '3'}}
 							<table class='tableQuColItem'>
-								{{#each questionRadio}}
+								{{#each radioTd}}
 									<tr>
 										{{#cellCount001 cellCount}}{{/cellCount001}}
 									</tr>
@@ -157,7 +157,7 @@
 							{{#if hv}}
 							{{#compare1 hv '1'}}
 									<ul class="transverse">
-										{{#each questionRadio}}
+										{{#each radioTd}}
 											<li class="quCoItemUlLi">
 												<input type="radio" name="radioName{{../id}}" {{isDefaultAnswer}}>
 												<label class="editAble quCoOptionEdit">{{optionName}}</label>
@@ -173,7 +173,7 @@
 									</ul>
 								{{else}}
 									<ul>
-										{{#each questionRadio}}
+										{{#each radioTd}}
 											<li class="quCoItemUlLi">
 												<input type="radio" name="radioName{{../id}}" {{isDefaultAnswer}}>
 												<label class="editAble quCoOptionEdit">{{optionName}}</label>
@@ -226,11 +226,11 @@
 					<li title="设置" class="dwQuSet">
 						<div class="dwQuIcon"></div>
 					</li>
-					<li title="逻辑" class="dwQuLogic">
-						<div class="dwQuIcon">
-							<div class="quLogicInfo">{{questionLogic.length}}</div>
-						</div>
-					</li>
+<!--					<li title="逻辑" class="dwQuLogic">-->
+<!--						<div class="dwQuIcon">-->
+<!--							<div class="quLogicInfo">{{questionLogic.length}}</div>-->
+<!--						</div>-->
+<!--					</li> -->
 					<li title="知识点" class="knowledgeQuLogic" knowledgeIds="{{knowledgeIds}}">
 						<div class="dwQuIcon">
 							<div class="quKnowledgeInfo">{{questionKnowledge.length}}</div>
@@ -280,7 +280,7 @@
 				<div class="quCoItem">
 					{{#if hv}} {{#compare1 hv '3'}}
 					<table class='tableQuColItem'>
-						{{#each questionCheckBox}}
+						{{#each checkboxTd}}
 						<tr>
 							{{#cellCount002 cellCount}}{{/cellCount002}}
 						</tr>
@@ -288,7 +288,7 @@
 					</table>
 					{{else}} {{#if hv}} {{#compare1 hv '1'}}
 					<ul class="transverse">
-						{{#each questionCheckBox}}
+						{{#each checkboxTd}}
 						<li class="quCoItemUlLi">
 							<input type="checkbox" name="checkBoxName{{../id}}" {{isDefaultAnswer}}><label class="editAble quCoOptionEdit">{{optionName}}</label>
 							<input type='text' class='optionInpText' style="{{#compare2 isNote 0}}{{/compare2}}" />
@@ -303,7 +303,7 @@
 					</ul>
 					{{else}}
 					<ul>
-						{{#each questionCheckBox}}
+						{{#each checkboxTd}}
 						<li class="quCoItemUlLi">
 							<input type="checkbox" name="checkBoxName{{../id}}" {{isDefaultAnswer}}><label class="editAble quCoOptionEdit">{{optionName}}</label>
 							<input type='text' class='optionInpText' style="{{#compare2 isNote 0}}{{/compare2}}" />
@@ -352,11 +352,11 @@
 					<li title="设置" class="dwQuSet">
 						<div class="dwQuIcon"></div>
 					</li>
-					<li title="逻辑" class="dwQuLogic">
-						<div class="dwQuIcon">
-							<div class="quLogicInfo">{{questionLogic.length}}</div>
-						</div>
-					</li>
+<!--					<li title="逻辑" class="dwQuLogic">-->
+<!--						<div class="dwQuIcon">-->
+<!--							<div class="quLogicInfo">{{questionLogic.length}}</div>-->
+<!--						</div>-->
+<!--					</li>-->
 					<li title="知识点" class="knowledgeQuLogic" knowledgeIds="{{knowledgeIds}}">
 						<div class="dwQuIcon">
 							<div class="quKnowledgeInfo">{{questionKnowledge.length}}</div>
@@ -494,7 +494,7 @@
 				<div class="quCoItem">
 					<div class="quOrderByLeft">
 						<ul>
-							{{#each questionOrderBy}}
+							{{#each orderbyTd}}
 							<li class="quCoItemUlLi"><label class="editAble quCoOptionEdit">{{optionName}}</label>
 								<div class="quItemInputCase">
 									<input type="hidden" name="quItemId" value="{{id}}">
@@ -506,7 +506,7 @@
 					</div>
 					<div class="quOrderByRight">
 						<table class="quOrderByTable">
-							{{#each questionOrderBy}}
+							{{#each orderbyTd}}
 							<tr>
 								<td class="quOrderyTableTd">{{showIndex @index}}</td>
 								<td></td>
@@ -610,11 +610,11 @@
 					<li title="设置" class="dwQuSet">
 						<div class="dwQuIcon"></div>
 					</li>
-					<li title="逻辑" class="dwQuLogic">
-						<div class="dwQuIcon">
-							<div class="quLogicInfo">{{questionLogic.length}}</div>
-						</div>
-					</li>
+<!--					<li title="逻辑" class="dwQuLogic">-->
+<!--						<div class="dwQuIcon">-->
+<!--							<div class="quLogicInfo">{{questionLogic.length}}</div>-->
+<!--						</div>-->
+<!--					</li>-->
 					<li title="知识点" class="knowledgeQuLogic" knowledgeIds="{{knowledgeIds}}">
 						<div class="dwQuIcon">
 							<div class="quKnowledgeInfo">{{questionKnowledge.length}}</div>
@@ -663,7 +663,7 @@
         		</div>
 				<div class="quCoItem">
 					<table class="mFillblankTable" cellpadding="0" cellspacing="0">
-						{{#each questionMultiFillBlank}}
+						{{#each multifillblankTd}}
 						<tr class="mFillblankTableTr">
 							<td align="right" class="mFillblankTableEditTd"><label class="editAble quCoOptionEdit">{{optionName}}</label>
 								<div class="quItemInputCase">
@@ -712,11 +712,11 @@
 					<li title="设置" class="dwQuSet">
 						<div class="dwQuIcon"></div>
 					</li>
-					<li title="逻辑" class="dwQuLogic">
-						<div class="dwQuIcon">
-							<div class="quLogicInfo">{{questionLogic.length}}</div>
-						</div>
-					</li>
+<!--					<li title="逻辑" class="dwQuLogic">-->
+<!--						<div class="dwQuIcon">-->
+<!--							<div class="quLogicInfo">{{questionLogic.length}}</div>-->
+<!--						</div>-->
+<!--					</li>-->
 					<li title="知识点" class="knowledgeQuLogic" knowledgeIds="{{knowledgeIds}}">
 						<div class="dwQuIcon">
 							<div class="quKnowledgeInfo">{{questionKnowledge.length}}</div>
@@ -768,7 +768,7 @@
 						<table class="quCoChenTable">
 							<tr>
 								<td></td>
-								{{#each questionChenColumn}}
+								{{#each columnTd}}
 								<td class="quChenColumnTd">
 									<label class="editAble quCoOptionEdit">{{optionName}}</label>
 									<div class="quItemInputCase">
@@ -778,7 +778,7 @@
 								</td>
 								{{/each}}
 							</tr>
-							{{#each questionChenRow}}
+							{{#each rowTd}}
 							<tr class="quChenRowTr" checkNameInTr="{{id}}">
 								<td class="quChenRowTd">
 									<label class="editAble quCoOptionEdit">{{optionName}}</label>
@@ -787,8 +787,8 @@
 										<input type="hidden" name="quItemSaveTag" value="{{quItemSaveTag}}">
 									</div>
 								</td>
-								{{#each questionChenColumn}}
-									<td><input type="radio" class="chenRadioInput" name="{{../id}}"></td>
+								{{#each ../columnTd}}
+									<td><input type="radio" class="chenRadioInput" name="row_{{../id}}"></td>
 								{{/each}}
 							</tr>
 							{{/each}}
@@ -840,11 +840,11 @@
 					<li title="设置" class="dwQuSet">
 						<div class="dwQuIcon"></div>
 					</li>
-					<li title="逻辑" class="dwQuLogic">
-						<div class="dwQuIcon">
-							<div class="quLogicInfo">{{questionLogic.length}}</div>
-						</div>
-					</li>
+<!--					<li title="逻辑" class="dwQuLogic">-->
+<!--						<div class="dwQuIcon">-->
+<!--							<div class="quLogicInfo">{{questionLogic.length}}</div>-->
+<!--						</div>-->
+<!--					</li>-->
 					<li title="知识点" class="knowledgeQuLogic" knowledgeIds="{{knowledgeIds}}">
 						<div class="dwQuIcon">
 							<div class="quKnowledgeInfo">{{questionKnowledge.length}}</div>
@@ -896,7 +896,7 @@
 						<table class="quCoChenTable">
 							<tr>
 								<td></td>
-								{{#each questionChenColumn}}
+								{{#each columnTd}}
 								<td class="quChenColumnTd"><label class="editAble quCoOptionEdit">{{optionName}}</label>
 									<div class="quItemInputCase">
 										<input type="hidden" name="quItemId" value="{{id}}">
@@ -905,7 +905,7 @@
 								</td>
 								{{/each}}
 							</tr>
-							{{#each questionChenRow}}
+							{{#each rowTd}}
 							<tr class="quChenRowTr">
 								<td class="quChenRowTd"><label class="editAble quCoOptionEdit">{{optionName}}</label>
 									<div class="quItemInputCase">
@@ -913,7 +913,7 @@
 										<input type="hidden" name="quItemSaveTag" value="{{quItemSaveTag}}">
 									</div>
 								</td>
-								{{#each questionChenColumn}}
+								{{#each ../columnTd}}
 									<td><input type="checkbox" class="chenCheckBoxInput"></td>
 								{{/each}}
 							</tr>
@@ -966,11 +966,11 @@
 					<li title="设置" class="dwQuSet">
 						<div class="dwQuIcon"></div>
 					</li>
-					<li title="逻辑" class="dwQuLogic">
-						<div class="dwQuIcon">
-							<div class="quLogicInfo">{{questionLogic.length}}</div>
-						</div>
-					</li>
+<!--					<li title="逻辑" class="dwQuLogic">-->
+<!--						<div class="dwQuIcon">-->
+<!--							<div class="quLogicInfo">{{questionLogic.length}}</div>-->
+<!--						</div>-->
+<!--					</li>-->
 					<li title="知识点" class="knowledgeQuLogic" knowledgeIds="{{knowledgeIds}}">
 						<div class="dwQuIcon">
 							<div class="quKnowledgeInfo">{{questionKnowledge.length}}</div>
@@ -1022,20 +1022,20 @@
 						<table class="quCoChenTable">
 							<tr>
 								<td></td>
-								{{#each questionChenColumn}}
+								{{#each columnTd}}
 								<td class="quChenColumnTd"><label class="editAble quCoOptionEdit">{{optionName}}</label>
 									<div class="quItemInputCase"><input type="hidden" name="quItemId" value="{{id}}"><input type="hidden" name="quItemSaveTag" value="{{quItemSaveTag}}"></div>
 								</td>
 								{{/each}}
 							</tr>
-							{{#each questionChenRow}}
+							{{#each rowTd}}
 							<tr class="quChenRowTr">
 								<td class="quChenRowTd"><label class="editAble quCoOptionEdit">{{optionName}}</label>
 									<div class="quItemInputCase"><input type="hidden" name="quItemId" value="{{id}}"><input type="hidden" name="quItemSaveTag" value="{{quItemSaveTag}}"></div>
 								</td>
-								{{#each questionChenColumn}}
+								/* {{#each ../columnTd}}
 									<td><input type="text" class="questionChenColumnValue" value="{{isDefaultAnswer}}"></td>
-								{{/each}}
+								{{/each}} */
 							</tr>
 							{{/each}}
 						</table>
@@ -1137,7 +1137,7 @@
 						<table class="quCoChenTable">
 							<tr>
 								<td></td>
-								{{#each questionChenColumn}}
+								{{#each columnTd}}
 								<td class="quChenColumnTd">
 									<label class="editAble quCoOptionEdit">{{optionName}}</label>
 									<div class="quItemInputCase">
@@ -1147,7 +1147,7 @@
 								</td>
 								{{/each}}
 							</tr>
-							{{#each questionChenRow}}
+							{{#each rowTd}}
 							<tr class="quChenRowTr">
 								<td class="quChenRowTd">
 									<label class="editAble quCoOptionEdit">{{optionName}}</label>
@@ -1156,7 +1156,7 @@
 										<input type="hidden" name="quItemSaveTag" value="{{quItemSaveTag}}">
 									</div>
 								</td>
-								{{#each questionChenColumn}}
+								{{#each ../columnTd}}
 									<td>
 										<select class="quChenScoreSelect"> 
 											<option value="0">-评分-</option>
@@ -1218,11 +1218,11 @@
 					<li title="设置" class="dwQuSet">
 						<div class="dwQuIcon"></div>
 					</li>
-					<li title="逻辑" class="dwQuLogic">
-						<div class="dwQuIcon">
-							<div class="quLogicInfo">{{questionLogic.length}}</div>
-						</div>
-					</li>
+<!--					<li title="逻辑" class="dwQuLogic">-->
+<!--						<div class="dwQuIcon">-->
+<!--							<div class="quLogicInfo">{{questionLogic.length}}</div>-->
+<!--						</div>-->
+<!--					</li>-->
 					<li title="知识点" class="knowledgeQuLogic" knowledgeIds="{{knowledgeIds}}">
 						<div class="dwQuIcon">
 							<div class="quKnowledgeInfo">{{questionKnowledge.length}}</div>
@@ -1271,7 +1271,7 @@
         		</div>
 				<div class="quCoItem">
 					<table class="quCoItemTable" cellpadding="0" cellspacing="0">
-						{{#each quScores}}
+						{{#each scoreTd}}
 						<tr class="quScoreOptionTr">
 							<td class="quCoItemTableTd quOptionEditTd">
 								<label class="editAble quCoOptionEdit">{{optionName}}</label>
@@ -1280,7 +1280,7 @@
 							<td class="quCoItemTableTd">
 								<table class="scoreNumTable">
 									<tr>
-										{{#showParamInt02 paramInt02}}{{/showParamInt02}}
+										{{#showParamInt02 ../paramInt02}}{{/showParamInt02}}
 									</tr>
 								</table>
 							</td>
