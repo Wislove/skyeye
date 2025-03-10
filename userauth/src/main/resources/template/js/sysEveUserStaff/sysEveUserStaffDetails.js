@@ -23,6 +23,9 @@ layui.config({
 		 	pagination: false,
 			method: "GET",
 		 	template: $("#beanTemplate").html(),
+			ajaxSendLoadBefore: function(hdb, json){
+				json.bean.userSex = skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("sexEnum", 'id', json.bean.userSex, 'name');
+			},
 		 	ajaxSendAfter:function (json) {
 		 		if (json.bean.state == 2) {
 					// 离职
