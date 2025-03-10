@@ -36,7 +36,7 @@ layui.config({
             { field: 'jobMation', title: '转正岗位', width: 150, templet: function (d) {
                 return getNotUndefinedVal(d.jobMation?.name);
             }},
-            { field: 'regularTime', title: '转正日期', align: 'center', width: 100 },
+            { field: 'regularTime', title: '申请转正日期', align: 'center', width: 100 },
             { field: 'processInstanceId', title: '流程ID', width: 100, templet: function (d) {
                 return '<a lay-event="processDetails" class="notice-title-click">' + getNotUndefinedVal(d.processInstanceId) + '</a>';
             }},
@@ -117,7 +117,7 @@ layui.config({
     function subApproval(data) {
         layer.confirm(systemLanguage["com.skyeye.approvalOperationMsg"][languageType], {icon: 3, title: systemLanguage["com.skyeye.approvalOperation"][languageType]}, function (index) {
             layer.close(index);
-            activitiUtil.startProcess(serviceClassName, function (approvalId) {
+            activitiUtil.startProcess(serviceClassName, null, function (approvalId) {
                 var params = {
                     id: data.id,
                     approvalId: approvalId
