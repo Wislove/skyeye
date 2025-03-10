@@ -115,18 +115,19 @@
 
 		<!-- 是否删除 -->
 		<div class="layui-form-item">
-			<label class="layui-form-label">删除状态</label>
+			<label class="layui-form-label">删除状态<i class="red">*</i></label>
 			<div class="layui-input-block">
-				<input type="checkbox" id="whetherDelete" name="whetherDelete" lay-skin="switch" lay-text="已删除|未删除">
+				<input type="radio" name="whetherDelete" value="0" title="未删除" checked>
+				<input type="radio" name="whetherDelete" value="1" title="删除">
 			</div>
 		</div>
 
-			        <div class="layui-form-item">
-			            <div class="layui-input-block">
-			                <button class="winui-btn" id="cancle"><language showName="com.skyeye.cancel"></language></button>
-			                <button class="winui-btn" lay-submit lay-filter="formAddBean"><language showName="com.skyeye.save"></language></button>
-			            </div>
-			        </div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="winui-btn" id="cancle"><language showName="com.skyeye.cancel"></language></button>
+				<button class="winui-btn" lay-submit lay-filter="formAddBean"><language showName="com.skyeye.save"></language></button>
+			</div>
+		</div>
 	</form>
 </div>
 <script src="../../assets/lib/layui/layui.js"></script>

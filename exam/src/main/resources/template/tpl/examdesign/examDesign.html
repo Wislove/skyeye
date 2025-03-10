@@ -11,11 +11,11 @@
     		text-align: center;
     		border-width: 1px;
     	}
-    	
+
     	.exam-fraction:hover {
 			border-color: #80bdff !important;
 		}
-		
+
 		.exam-fraction:focus {
 			border-color: #80bdff !important;
 			outline: 0;
@@ -56,7 +56,7 @@
 								</div>
 							</div>
 						</div>
-						
+
 						<div id="toolsPubBtn">
 							<div class="toolbars" style="padding: 0px 5px 0px 0px;">
 								<ul>
@@ -72,14 +72,14 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<!-- 内容项 -->
 			<div id="dw_body">
-				
+
 			</div>
 	    </form>
 	</div>
-	
+
 	<!-- 1单选题radio -->
 	<script type="text/x-handlebars-template" id="radioTemplate">
 		<div class="surveyQuItem">
@@ -106,7 +106,7 @@
 					</li>
 				</ul>
 			</div>
-	
+
 			<div class="surveyQuItemRightTools">
 				<ul class="surveyQuItemRightToolsUl">
 					<li class="questionUp">
@@ -214,7 +214,7 @@
 			</div>
 		</div>
 	</script>
-	
+
 	<!-- 2多选题checkbox -->
 	<script type="text/x-handlebars-template" id="checkBoxTemplate">
 		<div class="surveyQuItem">
@@ -340,7 +340,7 @@
 			</div>
 		</div>
 	</script>
-	
+
 	<!-- 3填空题fillblank -->
 	<script type="text/x-handlebars-template" id="fillblankTemplate">
 		<div class="surveyQuItem">
@@ -407,13 +407,17 @@
 					<ul>
 						<li class="quCoItemUlLi">
 							<div class="quFillblankItem">
-								{{#if answerInputRow}} 
+								{{#if answerInputRow}}
 									{{#compare1 answerInputRow '1'}}
-										<input type="text" style="width:{{answerInputWidth}}px; padding:5px;" class="quFillblankAnswerInput" value="{{isDefaultAnswer}}" />
-										<textarea rows="{{answerInputRow}}" style="width:{{answerInputWidth}}px; display: none;" class="quFillblankAnswerTextarea">{{isDefaultAnswer}}</textarea> 
+								<input type="text" style="width:{{answerInputWidth}}px; padding:5px;" class="quFillblankAnswerInput" value="" />
+								<textarea rows="{{answerInputRow}}" style="width:{{answerInputWidth}}px; display: none;" class="quFillblankAnswerTextarea"></textarea>
+<!--										<input type="text" style="width:{{answerInputWidth}}px; padding:5px;" class="quFillblankAnswerInput" value="{{isDefaultAnswer}}" />-->
+<!--										<textarea rows="{{answerInputRow}}" style="width:{{answerInputWidth}}px; display: none;" class="quFillblankAnswerTextarea">{{isDefaultAnswer}}</textarea>-->
 								{{else}}
-										<input type="text" style="width:{{answerInputWidth}}px; padding:5px; display: none;" class="quFillblankAnswerInput" value="{{isDefaultAnswer}}">
-										<textarea rows="{{answerInputRow}}" style="width:{{answerInputWidth}}px;" class="quFillblankAnswerTextarea">{{isDefaultAnswer}}</textarea>
+								<input type="text" style="width:{{answerInputWidth}}px; padding:5px; display: none;" class="quFillblankAnswerInput" value="">
+								<textarea rows="{{answerInputRow}}" style="width:{{answerInputWidth}}px;" class="quFillblankAnswerTextarea"></textarea>
+<!--										<input type="text" style="width:{{answerInputWidth}}px; padding:5px; display: none;" class="quFillblankAnswerInput" value="{{isDefaultAnswer}}">-->
+<!--										<textarea rows="{{answerInputRow}}" style="width:{{answerInputWidth}}px;" class="quFillblankAnswerTextarea">{{isDefaultAnswer}}</textarea>-->
 									{{/compare1}}
 								{{/if}}
 								<div class="dwFbMenuBtn"></div>
@@ -433,7 +437,7 @@
 			</div>
 		</div>
 	</script>
-	
+
 	<!-- 9排序题orderby -->
 	<script type="text/x-handlebars-template" id="orderbyTemplate">
 		<div class="surveyQuItem">
@@ -494,7 +498,7 @@
 				<div class="quCoItem">
 					<div class="quOrderByLeft">
 						<ul>
-							{{#each orderbyTd}}
+							{{#each orderByTd}}
 							<li class="quCoItemUlLi"><label class="editAble quCoOptionEdit">{{optionName}}</label>
 								<div class="quItemInputCase">
 									<input type="hidden" name="quItemId" value="{{id}}">
@@ -506,7 +510,7 @@
 					</div>
 					<div class="quOrderByRight">
 						<table class="quOrderByTable">
-							{{#each orderbyTd}}
+							{{#each orderByTd}}
 							<tr>
 								<td class="quOrderyTableTd">{{showIndex @index}}</td>
 								<td></td>
@@ -538,7 +542,7 @@
 			</div>
 		</div>
 	</script>
-	
+
 	<!-- 16分页pagetag -->
 	<script type="text/x-handlebars-template" id="pagetagTemplate">
 		<div class="surveyQuItem">
@@ -565,7 +569,7 @@
 			</div>
 		</div>
 	</script>
-	
+
 	<!-- 17段落paragraph -->
 	<script type="text/x-handlebars-template" id="paragraphTemplate">
 		<div class="surveyQuItem">
@@ -672,7 +676,8 @@
 								</div>
 							</td>
 							<td>
-								<input type="text" style="width:200px; padding:5px;" class="multiFillBlank" value="{{isDefaultAnswer}}" />
+								<input type="text" style="width:200px; padding:5px;" class="multiFillBlank" value=""/>
+<!--								<input type="text" style="width:200px; padding:5px;" class="multiFillBlank" value="{{isDefaultAnswer}}" />-->
 							</td>
 						</tr>
 						{{/each}}
@@ -700,7 +705,7 @@
 			</div>
 		</div>
 	</script>
-	
+
 	<!-- 11矩阵单选题chen-radio -->
 	<script type="text/x-handlebars-template" id="chenRadioTemplate">
 		<div class="surveyQuItem">
@@ -828,7 +833,7 @@
 			</div>
 		</div>
 	</script>
-	
+
 	<!-- 13矩阵多选题chen-checkbox -->
 	<script type="text/x-handlebars-template" id="chenCheckboxTemplate">
 		<div class="surveyQuItem">
@@ -954,7 +959,7 @@
 			</div>
 		</div>
 	</script>
-	
+
 	<!-- 12矩阵填空题chen-fbk -->
 	<script type="text/x-handlebars-template" id="chenFbkTemplate">
 		<div class="surveyQuItem">
@@ -1074,7 +1079,7 @@
 			</div>
 		</div>
 	</script>
-	
+
 	<!-- 18矩阵评分题chen-score -->
 	<script type="text/x-handlebars-template" id="chenScoreTemplate">
 		<div class="surveyQuItem">
@@ -1158,7 +1163,7 @@
 								</td>
 								{{#each ../columnTd}}
 									<td>
-										<select class="quChenScoreSelect"> 
+										<select class="quChenScoreSelect">
 											<option value="0">-评分-</option>
 											<option value="1">1分</option>
 											<option value="2">2分</option>
@@ -1206,7 +1211,7 @@
 			</div>
 		</div>
 	</script>
-	
+
 	<!-- 8评分题score -->
 	<script type="text/x-handlebars-template" id="scoreTemplate">
 		<div class="surveyQuItem">
@@ -1311,7 +1316,7 @@
 			</div>
 		</div>
 	</script>
-	
+
 	<script src="../../assets/lib/layui/layui.js"></script>
    	<script src="../../assets/lib/layui/custom.js"></script>
    	<!-- dragQuestion.js根据这个字段加载对应的文件1.问卷2.试卷 -->

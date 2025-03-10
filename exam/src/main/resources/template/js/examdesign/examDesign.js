@@ -41,7 +41,7 @@ layui.config({
                 callback: function (json) {
                     json.total = 1;
                     $.each(json.rows, function (i, item) {
-                        console.log("item",item)
+                        console.log("item", item)
                         console.log("questionLogic:", item.questionLogic);
                         item.saveTag = 1;
                     });
@@ -64,7 +64,7 @@ layui.config({
                 ajaxSendLoadBefore: function (hdb, json) {
                     console.log("json.rows", json.rows);
                     $.each(json.rows, function (i, item) {
-                        console.log("item",item)
+                        console.log("item", item)
                         if (isNull(item.id)) {
                             item.id = getRandomValueToString();
                             item.noQuId = 1;
@@ -75,12 +75,12 @@ layui.config({
                         return parseInt(v1) + 1;
                     });
 
-                    hdb.registerHelper('eq', function(v1, v2) {
+                    hdb.registerHelper('eq', function (v1, v2) {
                         return v1 === v2;
                     });
 
                     hdb.registerHelper("showQuestionIndex", function (v1, options) {
-                        console.log("1111v1",v1)
+                        console.log("1111v1", v1)
                         if (v1 == '16' || v1 == '17') {
                         } else {
                             quIndex++;
@@ -362,23 +362,30 @@ layui.config({
 
         // 删除题目
         $("body").on("click", ".dwQuDelete", function () {
-            console.log(ondwQuDelete)
             var quBody = $(this).parents(".surveyQuItemBody");
             layer.confirm("确认要删除此题吗？", {icon: 3, title: '删除题目'}, function (index) {
                 layer.close(index);
                 var quId = quBody.find("input[name='quId']").val();
                 if (!isNull(quId)) {
-                    AjaxPostUtil.request({
-                        url: schoolBasePath + "exam015", params: {quId: quId}, type: 'json', callback: function (json) {
-                            quBody.hide("slow", function () {
-                                $(this).parent().remove();
-                                // 重置序号
-                                resetQuItem();
-                                // 重置左侧设计目录序号
-                                resetQuLeftItem();
-                            });
-                        }
-                    });
+                    quBody.data("deleteTag", true);
+                    quBody.hide("slow", function () {
+                        $(this).parent().remove();
+                        // 重置序号
+                        resetQuItem();
+                        // 重置左侧设计目录序号
+                        resetQuLeftItem();
+                    })
+                    // AjaxPostUtil.request({
+                    //     url: schoolBasePath + "exam015", params: {quId: quId}, type: 'json', callback: function (json) {
+                    //         quBody.hide("slow", function () {
+                    //             $(this).parent().remove();
+                    //             // 重置序号
+                    //             resetQuItem();
+                    //             // 重置左侧设计目录序号
+                    //             resetQuLeftItem();
+                    //         });
+                    //     }
+                    // });
                 } else {
                     quBody.hide("slow", function () {
                         $(this).parent().remove();
@@ -470,7 +477,7 @@ layui.config({
                     $.each(schoolKnowledgeMationList, function (i, item) {
                         strIds.push(item.id);
                     });
-                    console.log("str",strIds)
+                    console.log("str", strIds)
                     $(_this).attr("knowledgeIds", strIds.toString());
                     $(_this).find(".quKnowledgeInfo").html(schoolKnowledgeMationList.length);
                     // 设置题目为编辑，可以进行保存
@@ -497,7 +504,7 @@ layui.config({
                 callBack: function (refreshCode) {
                     initPageJson(function () {
                         quIndex = 0, quLeftIndex = 0;
-                        if(loadPageJson && loadPageJson.rows && loadPageJson.bean && loadPageJson.bean.questionLeftList) {
+                        if (loadPageJson && loadPageJson.rows && loadPageJson.bean && loadPageJson.bean.questionLeftList) {
                             $.each(questionMationList, function (i, item) {
                                 // 加载试题数据
                                 item.saveTag = 0;
@@ -513,19 +520,19 @@ layui.config({
                             initPage();
                         } else {
                             // 如果必要的对象未初始化，则初始化它们
-                            if(!loadPageJson) {
+                            if (!loadPageJson) {
                                 loadPageJson = {};
                             }
-                            if(!loadPageJson.rows) {
+                            if (!loadPageJson.rows) {
                                 loadPageJson.rows = [];
                             }
-                            if(!loadPageJson.bean) {
+                            if (!loadPageJson.bean) {
                                 loadPageJson.bean = {};
                             }
-                            if(!loadPageJson.bean.questionLeftList) {
+                            if (!loadPageJson.bean.questionLeftList) {
                                 loadPageJson.bean.questionLeftList = [];
                             }
-                            
+
                             // 现在可以安全地添加数据
                             $.each(questionMationList, function (i, item) {
                                 item.saveTag = 0;
@@ -556,7 +563,7 @@ layui.config({
             resetQuItemHover(null);
             // 构建试卷基本信息
             var examData = {
-                id:loadPageJson.bean.id || "",
+                id: loadPageJson.bean.id || "",
                 belongId: parent.rowId,
                 surveyName: $("#dwSurveyName").text(),
                 surveyNote: $("#dwSurveyNoteEdit").text(),
@@ -567,8 +574,8 @@ layui.config({
                 majorId: loadPageJson.bean.majorId || "",
                 gradeld: loadPageJson.bean.gradeld || "",
                 classId: loadPageJson.bean.classId || "",
-                surveyModel:loadPageJson.bean.surveyModel,
-                surveyState:loadPageJson.bean.surveyState,
+                surveyModel: loadPageJson.bean.surveyModel,
+                surveyState: loadPageJson.bean.surveyState,
                 semesterId: loadPageJson.bean.semesterId || "",
                 subjectId: loadPageJson.bean.subjectId || "",
                 fraction: loadPageJson.bean.fraction || 0,
@@ -578,9 +585,18 @@ layui.config({
 
             // 调用 saveQus 方法收集所有题目的参数
             saveQus(function (questionMation) {
+                // 遍历题目，处理删除逻辑
+                questionMation = questionMation.map(question => {
+                    if (question.deleteTag) {
+                        // 如果是删除的题目，移除 belongId
+                        delete question.belongId;
+                    }
+                    return question;
+                });
                 examData.questionMation = questionMation; // 将题目参数添加到试卷数据中
                 examData.questionMation = JSON.stringify(examData.questionMation);
                 examData.whetherDelete = 1;
+                console.log("examData:", examData); // 添加日志输出
                 saveExam(examData); // 调用统一接口保存试卷
             });
 
@@ -601,9 +617,9 @@ layui.config({
                 type: 'json',
                 callback: function (json) {
                     if (json.bean) {
-                        winui.window.msg("保存成功", { icon: 1, time: 2000 });
+                        winui.window.msg("保存成功", {icon: 1, time: 2000});
                     } else {
-                        winui.window.msg("保存失败：" + json.message, { icon: 2, time: 2000 });
+                        winui.window.msg("保存失败：" + json.message, {icon: 2, time: 2000});
                     }
                 }
             });
@@ -624,72 +640,111 @@ layui.config({
          * 1=表示已经保存同步
          */
         function saveQus(callback) {
-            var questionMation = []; // 用于存放所有题目的参数对象
+            var questionMation = [];
 
-            // 定义题型映射
+            // 定义题型映射表
             var quTypeMap = {
-                'RADIO': 1,        // 单选题
-                'CHECKBOX': 2,     // 多选题
-                'FILLBLANK': 3,    // 填空题
-                'SCORE': 8,        // 评分题
-                'ORDERBY': 9,      // 排序题
-                'MULTIFILLBLANK': 4, // 多项填空题
-                'CHENRADIO': 11,   // 矩阵单选题
-                'CHENCHECKBOX': 13, // 矩阵多选题
-                'CHENFBK': 12,     // 矩阵填空题
-                'CHENSCORE': 18    // 矩阵评分题
+                // 数字到字符串的映射
+                1: 'RADIO',
+                2: 'CHECKBOX',
+                3: 'FILLBLANK',
+                4: 'MULTIFILLBLANK',
+                8: 'SCORE',
+                9: 'ORDERBY',
+                11: 'CHENRADIO',
+                12: 'CHENFBK',
+                13: 'CHENCHECKBOX',
+                18: 'CHENSCORE',
+                // 字符串到数字的映射
+                'RADIO': 1,
+                'CHECKBOX': 2,
+                'FILLBLANK': 3,
+                'MULTIFILLBLANK': 4,
+                'SCORE': 8,
+                'ORDERBY': 9,
+                'CHENRADIO': 11,
+                'CHENFBK': 12,
+                'CHENCHECKBOX': 13,
+                'CHENSCORE': 18
             };
 
             // 遍历所有题目
             $("#dwSurveyQuContent .surveyQuItemBody").each(function () {
                 var quItemBody = $(this);
-                var quType = quItemBody.find("input[name='quType']").val(); // 获取题型的 quType 值
-                var quTypeNum = quTypeMap[quType]; // 将字母形式的 quType 转换为数字
+                var quType = quItemBody.find("input[name='quType']").val();
+                console.log("保存时，quType:", quType, typeof quType); // 调试信息
+
+                // 统一处理 quType
+                var quTypeStr, quTypeNum;
+
+                console.log("保存时，quType:", quType, typeof quType); // 调试信息
+
+                if (!isNaN(parseInt(quType))) {
+                    // 如果 quType 是数字字符串，转换为数字
+                    quTypeNum = parseInt(quType);
+                    quTypeStr = quTypeMap[quTypeNum]; // 根据数字获取对应的题型字符串
+                    console.log("数字字符串转换后，quTypeNum:", quTypeNum, "quTypeStr:", quTypeStr); // 调试信息
+                } else if (quTypeMap[quType]) {
+                    // 如果 quType 是字符串形式的题型名称（如 "RADIO"），转换为数字
+                    quTypeStr = quType;
+                    quTypeNum = quTypeMap[quType]; // 根据字符串获取对应的数字
+                    // console.log("题型名称转换后，quTypeStr:", quTypeStr, "quTypeNum:", quTypeNum); // 调试信息
+                } else {
+                    console.warn("未知题型：" + quType);
+                }
+                console.log("题型名称转换后，quTypeStr:", quTypeStr, "quTypeNum:", quTypeNum);
+                var quId = quItemBody.find("input[name='quId']").val(); // 获取题目 ID
+                // 判断是新增还是编辑
+                var isEdit = !isNull(quId); // 如果 quId 存在，则是编辑；否则是新增
 
                 // 根据题型调用对应的保存方法
                 var questionData;
-                switch (quType) {
-                    case 'RADIO': // 单选题
-                        questionData = saveRadio(quItemBody);
+                switch (quTypeStr) {
+                    case 'RADIO':
+                        questionData = saveRadio(quItemBody, isEdit);
+                        console.log(111111111111)
                         break;
-                    case 'CHECKBOX': // 多选题
-                        questionData = saveCheckbox(quItemBody);
+                    case 'CHECKBOX':
+                        questionData = saveCheckbox(quItemBody, isEdit);
                         break;
-                    case 'FILLBLANK': // 填空题
-                        questionData = saveFillblank(quItemBody);
+                    case 'FILLBLANK':
+                        questionData = saveFillblank(quItemBody, isEdit);
                         break;
-                    case 'SCORE': // 评分题
-                        questionData = saveScore(quItemBody);
+                    case 'SCORE':
+                        questionData = saveScore(quItemBody, isEdit);
                         break;
-                    case 'ORDERBY': // 排序题
-                        questionData = saveOrderqu(quItemBody);
+                    case 'ORDERBY':
+                        questionData = saveOrderqu(quItemBody, isEdit);
                         break;
-                    case 'MULTIFILLBLANK': // 多项填空题
-                        questionData = saveMultiFillblank(quItemBody);
+                    case 'MULTIFILLBLANK':
+                        questionData = saveMultiFillblank(quItemBody, isEdit);
                         break;
-                    case 'CHENRADIO': // 矩阵单选题
-                    case 'CHENCHECKBOX': // 矩阵多选题
-                    case 'CHENFBK': // 矩阵填空题
-                    case 'CHENSCORE': // 矩阵评分题
-                        questionData = saveChen(quItemBody);
+                    case 'CHENRADIO':
+                    case 'CHENCHECKBOX':
+                    case 'CHENFBK':
+                    case 'CHENSCORE':
+                        questionData = saveChen(quItemBody, isEdit);
                         break;
                     default:
-                        console.warn("未知题型：" + quType);
+                        console.warn("未知题型：" + quTypeStr);
                         return;
                 }
 
                 // 将转换后的 quType 添加到 questionData
                 questionData.quType = quTypeNum;
+                console.log("questionData:", questionData); // 调试信息
 
                 // 将题目参数对象添加到 questionMation 数组
                 questionMation.push(questionData);
             });
+
 
             // 调用回调函数
             if (typeof callback === "function") {
                 callback(questionMation);
             }
         }
+
         /**
          * 公共获取提交参数部分
          */
@@ -712,7 +767,7 @@ layui.config({
                 tabIndex = 0;
             }
             return {
-                quId: quItemBody.find("input[name='quId']").val(),
+                id: quItemBody.find("input[name='quId']").val(),
                 hv: quItemBody.find("input[name='hv']").val(),
                 randOrder: quItemBody.find("input[name='randOrder']").val(),
                 cellCount: quItemBody.find("input[name='cellCount']").val(),
@@ -731,52 +786,58 @@ layui.config({
         }
 
         /** 保存单选题 **/
-        function saveRadio(quItemBody, callback) {
+        function saveRadio(quItemBody, isEdit) {
+            console.log("我被调用啦啊啊啊啊")
             var saveTag = quItemBody.find("input[name='saveTag']").val();
             // if (saveTag == 0) {
-                var data = {
-                    contactsAttr: quItemBody.find("input[name='contactsAttr']").val(),
-                    contactsField: quItemBody.find("input[name='contactsField']").val()
-                };
-                console.log("data:",data);
-                $.extend(data, getCommonParams(quItemBody));
-                var quItemOptions = null;
-                if (data.hv == 3) {
-                    //还有是table的情况需要处理
-                    quItemOptions = quItemBody.find(".quCoItem table.tableQuColItem tr td");
-                } else {
-                    quItemOptions = quItemBody.find(".quCoItem li.quCoItemUlLi");
-                }
-                var radioTd = [];
-                $.each(quItemOptions, function (i) {
-                    var quItemSaveTag = $(this).find(".quItemInputCase input[name='quItemSaveTag']").val();
-                    if (quItemSaveTag == 0) {
-                        // 是否是默认答案  1.是  2.否
-                        var isDefaultAnswer = 2;
-                        if ($(this).find("input[type='radio']").is(':checked')) {
-                            isDefaultAnswer = 1
-                        }
-                        var s = {
-                            optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
-                            optionValue: encodeURI($(this).find("label.quCoOptionEdit").html()),
-                            optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
-                            isNote: $(this).find(".quItemInputCase input[name='isNote']").val(),
-                            checkType: $(this).find(".quItemInputCase input[name='checkType']").val(),
-                            isRequiredFill: $(this).find(".quItemInputCase input[name='isRequiredFill']").val(),
-                            // isDefaultAnswer: isDefaultAnswer,
-                            key: i
-                        };
-                        radioTd.push(s);
+            var data = {
+                contactsAttr: quItemBody.find("input[name='contactsAttr']").val(),
+                contactsField: quItemBody.find("input[name='contactsField']").val()
+            };
+            console.log("data:", data);
+            $.extend(data, getCommonParams(quItemBody));
+            var quItemOptions = null;
+            if (data.hv == 3) {
+                //还有是table的情况需要处理
+                quItemOptions = quItemBody.find(".quCoItem table.tableQuColItem tr td");
+            } else {
+                quItemOptions = quItemBody.find(".quCoItem li.quCoItemUlLi");
+            }
+            var radioTd = [];
+            $.each(quItemOptions, function (i) {
+                var quItemSaveTag = $(this).find(".quItemInputCase input[name='quItemSaveTag']").val();
+                if (quItemSaveTag == 0) {
+                    // 是否是默认答案  1.是  2.否
+                    var isDefaultAnswer = 2;
+                    if ($(this).find("input[type='radio']").is(':checked')) {
+                        isDefaultAnswer = 1
                     }
-                    //更新 字母 title标记到选项上.
-                    $(this).addClass("quOption_" + i);
-                });
-                data.radioTd = JSON.stringify(radioTd);
+                    var s = {
+                        optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
+                        // optionValue: encodeURI($(this).find("label.quCoOptionEdit").html()),
+                        // optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
+                        isNote: $(this).find(".quItemInputCase input[name='isNote']").val(),
+                        checkType: $(this).find(".quItemInputCase input[name='checkType']").val(),
+                        isRequiredFill: $(this).find(".quItemInputCase input[name='isRequiredFill']").val(),
+                        // isDefaultAnswer: isDefaultAnswer,
+                        orderById: i
+                    };
+                    // console.log("isEdit:",isEdit)
+                    // 如果是编辑，传入 optionId
+                    if (isEdit) {
+                        s.optionId = $(this).find(".quItemInputCase input[name='quItemId']").val();
+                    }
+                    radioTd.push(s);
+                }
+                //更新 字母 title标记到选项上.
+                $(this).addClass("quOption_" + i);
+            });
+            data.radioTd = JSON.stringify(radioTd);
 
-                // 逻辑选项
-                var list = [].concat(getLogic(quItemBody));
-                data.logic = JSON.stringify(list);
-                return data;
+            // 逻辑选项
+            // var list = [].concat(getLogic(quItemBody));
+            // data.logic = JSON.stringify(list);
+            return data;
 
             // } else {
             //     saveQus(quItemBody.next(), callback);
@@ -812,67 +873,71 @@ layui.config({
         }
 
         /** 保存多选题 **/
-        function saveCheckbox(quItemBody, callback) {
+        function saveCheckbox(quItemBody, isEdit) {
             // var saveTag = quItemBody.find("input[name='saveTag']").val();
             // if (saveTag == 0) {
-                var data = {
-                    contactsAttr: quItemBody.find("input[name='contactsAttr']").val(),
-                    contactsField: quItemBody.find("input[name='contactsField']").val()
-                };
-                $.extend(data, getCommonParams(quItemBody));
-                var quItemOptions = null;
-                if (data.hv == 3) {
-                    //还有是table的情况需要处理
-                    quItemOptions = quItemBody.find(".quCoItem table.tableQuColItem tr td");
-                } else {
-                    quItemOptions = quItemBody.find(".quCoItem li.quCoItemUlLi");
-                }
-                var checkboxTd = [];
-                $.each(quItemOptions, function (i) {
-                    var quItemSaveTag = $(this).find(".quItemInputCase input[name='quItemSaveTag']").val();
-                    if (quItemSaveTag == 0) {
-                        // 是否是默认答案  1.是  2.否
-                        var isDefaultAnswer = 2;
-                        if ($(this).find("input[type='checkbox']").is(':checked')) {
-                            isDefaultAnswer = 1
-                        }
-                        var s = {
-                            optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
-                            optionValue: encodeURI($(this).find("label.quCoOptionEdit").html()),
-                            optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
-                            isNote: $(this).find(".quItemInputCase input[name='isNote']").val(),
-                            checkType: $(this).find(".quItemInputCase input[name='checkType']").val(),
-                            isRequiredFill: $(this).find(".quItemInputCase input[name='isRequiredFill']").val(),
-                            isDefaultAnswer: isDefaultAnswer,
-                            key: i
-                        };
-                        checkboxTd.push(s);
+            var data = {
+                contactsAttr: quItemBody.find("input[name='contactsAttr']").val(),
+                contactsField: quItemBody.find("input[name='contactsField']").val()
+            };
+            $.extend(data, getCommonParams(quItemBody));
+            var quItemOptions = null;
+            if (data.hv == 3) {
+                //还有是table的情况需要处理
+                quItemOptions = quItemBody.find(".quCoItem table.tableQuColItem tr td");
+            } else {
+                quItemOptions = quItemBody.find(".quCoItem li.quCoItemUlLi");
+            }
+            var checkboxTd = [];
+            $.each(quItemOptions, function (i) {
+                var quItemSaveTag = $(this).find(".quItemInputCase input[name='quItemSaveTag']").val();
+                if (quItemSaveTag == 0) {
+                    // 是否是默认答案  1.是  2.否
+                    var isDefaultAnswer = 2;
+                    if ($(this).find("input[type='checkbox']").is(':checked')) {
+                        isDefaultAnswer = 1
                     }
-                    //更新 字母 title标记到选项上.
-                    $(this).addClass("quOption_" + i);
-                });
-                data.checkboxTd = JSON.stringify(checkboxTd);
-                // 逻辑选项
-                var list = [].concat(getLogic(quItemBody));
-                data.logic = JSON.stringify(list);
-                return data;
-                // AjaxPostUtil.request({
-                //     url: schoolBasePath + "exam011", params: data, type: 'json', callback: function (json) {
-                //         var quId = json.bean.quId;
-                //         quItemBody.find("input[name='saveTag']").val(1);
-                //         quItemBody.find(".quCoTitle input[name='quTitleSaveTag']").val(1);
-                //         quItemBody.find("input[name='quId']").val(quId);
-                //
-                //         //重置问题选项和业务逻辑
-                //         resetLogicAndItem(quItemBody, json);
-                //
-                //         //执行保存下一题
-                //         saveQus(quItemBody.next(), callback);
-                //         //同步-更新题目排序号
-                //         quCBNum2++;
-                //         exeQuCBNum();
-                //     }
-                // });
+                    var s = {
+                        optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
+                        // optionValue: encodeURI($(this).find("label.quCoOptionEdit").html()),
+                        // optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
+                        isNote: $(this).find(".quItemInputCase input[name='isNote']").val(),
+                        checkType: $(this).find(".quItemInputCase input[name='checkType']").val(),
+                        isRequiredFill: $(this).find(".quItemInputCase input[name='isRequiredFill']").val(),
+                        isDefaultAnswer: isDefaultAnswer,
+                        orderById: i
+                    };
+                    // 如果是编辑，传入 optionId
+                    if (isEdit) {
+                        s.optionId = $(this).find(".quItemInputCase input[name='quItemId']").val();
+                    }
+                    checkboxTd.push(s);
+                }
+                //更新 字母 title标记到选项上.
+                $(this).addClass("quOption_" + i);
+            });
+            data.checkboxTd = JSON.stringify(checkboxTd);
+            // 逻辑选项
+            // var list = [].concat(getLogic(quItemBody));
+            // data.logic = JSON.stringify(list);
+            return data;
+            // AjaxPostUtil.request({
+            //     url: schoolBasePath + "exam011", params: data, type: 'json', callback: function (json) {
+            //         var quId = json.bean.quId;
+            //         quItemBody.find("input[name='saveTag']").val(1);
+            //         quItemBody.find(".quCoTitle input[name='quTitleSaveTag']").val(1);
+            //         quItemBody.find("input[name='quId']").val(quId);
+            //
+            //         //重置问题选项和业务逻辑
+            //         resetLogicAndItem(quItemBody, json);
+            //
+            //         //执行保存下一题
+            //         saveQus(quItemBody.next(), callback);
+            //         //同步-更新题目排序号
+            //         quCBNum2++;
+            //         exeQuCBNum();
+            //     }
+            // });
             // } else {
             //     saveQus(quItemBody.next(), callback);
             // }
@@ -973,97 +1038,102 @@ layui.config({
         }
 
         /** 保存填空题 **/
-        function saveFillblank(quItemBody, callback) {
+        function saveFillblank(quItemBody, isEdit) {
             // var saveTag = quItemBody.find("input[name='saveTag']").val();
             // if (saveTag == 0) {
-                var data = {
-                    answerInputWidth: quItemBody.find("input[name='answerInputWidth']").val(),
-                    answerInputRow: quItemBody.find("input[name='answerInputRow']").val(),
-                    contactsAttr: quItemBody.find("input[name='contactsAttr']").val(),
-                    contactsField: quItemBody.find("input[name='contactsField']").val(),
-                    checkType: quItemBody.find("input[name='checkType']").val(),
-                    isDefaultAnswer: quItemBody.find("input[class='quFillblankAnswerInput']").val()
-                };
-                $.extend(data, getCommonParams(quItemBody));
-                // 逻辑选项
-                var list = [].concat(getLogic(quItemBody));
-                data.logic = JSON.stringify(list);
-                return data;
-                // AjaxPostUtil.request({
-                //     url: schoolBasePath + "exam006", params: data, type: 'json', callback: function (json) {
-                //         var quId = json.bean.quId;
-                //         quItemBody.find("input[name='saveTag']").val(1);
-                //         quItemBody.find(".quCoTitle input[name='quTitleSaveTag']").val(1);
-                //         quItemBody.find("input[name='quId']").val(quId);
-                //         // 同步logic Id信息
-                //         var quLogics = json.bean.quLogics;
-                //         if (!isNull(quLogics)) {
-                //             $.each(quLogics, function (i, item) {
-                //                 var logicItem = quItemBody.find(".quLogicItem_" + item.title);
-                //                 logicItem.find("input[name='quLogicId']").val(item.id);
-                //                 logicItem.find("input[name='logicSaveTag']").val(1);
-                //             });
-                //         }
-                //         // 执行保存下一题
-                //         saveQus(quItemBody.next(), callback);
-                //         // 同步-更新题目排序号
-                //         quCBNum2++;
-                //         exeQuCBNum();
-                //     }
-                // });
+            var data = {
+                answerInputWidth: quItemBody.find("input[name='answerInputWidth']").val(),
+                answerInputRow: quItemBody.find("input[name='answerInputRow']").val(),
+                contactsAttr: quItemBody.find("input[name='contactsAttr']").val(),
+                contactsField: quItemBody.find("input[name='contactsField']").val(),
+                checkType: quItemBody.find("input[name='checkType']").val(),
+                isDefaultAnswer: quItemBody.find("input[class='quFillblankAnswerInput']").val()
+            };
+            $.extend(data, getCommonParams(quItemBody));
+            // 逻辑选项
+            // var list = [].concat(getLogic(quItemBody));
+            // data.logic = JSON.stringify(list);
+            return data;
+            // AjaxPostUtil.request({
+            //     url: schoolBasePath + "exam006", params: data, type: 'json', callback: function (json) {
+            //         var quId = json.bean.quId;
+            //         quItemBody.find("input[name='saveTag']").val(1);
+            //         quItemBody.find(".quCoTitle input[name='quTitleSaveTag']").val(1);
+            //         quItemBody.find("input[name='quId']").val(quId);
+            //         // 同步logic Id信息
+            //         var quLogics = json.bean.quLogics;
+            //         if (!isNull(quLogics)) {
+            //             $.each(quLogics, function (i, item) {
+            //                 var logicItem = quItemBody.find(".quLogicItem_" + item.title);
+            //                 logicItem.find("input[name='quLogicId']").val(item.id);
+            //                 logicItem.find("input[name='logicSaveTag']").val(1);
+            //             });
+            //         }
+            //         // 执行保存下一题
+            //         saveQus(quItemBody.next(), callback);
+            //         // 同步-更新题目排序号
+            //         quCBNum2++;
+            //         exeQuCBNum();
+            //     }
+            // });
             // } else {
             //     saveQus(quItemBody.next(), callback);
             // }
         }
 
         /** 保存评分题 **/
-        function saveScore(quItemBody, callback) {
+        function saveScore(quItemBody, isEdit) {
             // var saveTag = quItemBody.find("input[name='saveTag']").val();
             // if (saveTag == 0) {
-                var data = {
-                    paramInt01: quItemBody.find("input[name='paramInt01']").val(),
-                    paramInt02: quItemBody.find("input[name='paramInt02']").val()
-                };
-                $.extend(data, getCommonParams(quItemBody));
-                //评分题选项td
-                var quItemOptions = quItemBody.find(".quCoItem table.quCoItemTable tr td.quOptionEditTd");
-                var scoreTd = [];
-                $.each(quItemOptions, function (i) {
-                    var quItemSaveTag = $(this).find(".quItemInputCase input[name='quItemSaveTag']").val();
-                    if (quItemSaveTag == 0) {
-                        var s = {
-                            optionValue: encodeURI($(this).find("label.quCoOptionEdit").html()),
-                            optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
-                            key: i
-                        };
-                        scoreTd.push(s);
+            var data = {
+                paramInt01: quItemBody.find("input[name='paramInt01']").val(),
+                paramInt02: quItemBody.find("input[name='paramInt02']").val()
+            };
+            $.extend(data, getCommonParams(quItemBody));
+            //评分题选项td
+            var quItemOptions = quItemBody.find(".quCoItem table.quCoItemTable tr td.quOptionEditTd");
+            var scoreTd = [];
+            $.each(quItemOptions, function (i) {
+                var quItemSaveTag = $(this).find(".quItemInputCase input[name='quItemSaveTag']").val();
+                if (quItemSaveTag == 0) {
+                    var s = {
+                        optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
+                        // optionValue: encodeURI($(this).find("label.quCoOptionEdit").html()),
+                        // optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
+                        orderById: i
+                    };
+                    // 如果是编辑，传入 optionId
+                    if (isEdit) {
+                        s.optionId = $(this).find(".quItemInputCase input[name='quItemId']").val();
                     }
-                    //更新 字母 title标记到选项上.
-                    $(this).addClass("quOption_" + i);
-                });
-                data.scoreTd = JSON.stringify(scoreTd);
+                    scoreTd.push(s);
+                }
+                //更新 字母 title标记到选项上.
+                $(this).addClass("quOption_" + i);
+            });
+            data.scoreTd = JSON.stringify(scoreTd);
 
-                // 逻辑选项
-                var list = [].concat(getLogic(quItemBody));
-                data.logic = JSON.stringify(list);
-                return data;
-                // AjaxPostUtil.request({
-                //     url: schoolBasePath + "exam007", params: data, type: 'json', callback: function (json) {
-                //         var quId = json.bean.quId;
-                //         quItemBody.find("input[name='saveTag']").val(1);
-                //         quItemBody.find(".quCoTitle input[name='quTitleSaveTag']").val(1);
-                //         quItemBody.find("input[name='quId']").val(quId);
-                //
-                //         //重置问题选项和业务逻辑
-                //         resetLogicAndItem(quItemBody, json);
-                //
-                //         //执行保存下一题
-                //         saveQus(quItemBody.next(), callback);
-                //         //同步-更新题目排序号
-                //         quCBNum2++;
-                //         exeQuCBNum();
-                //     }
-                // });
+            // 逻辑选项
+            // var list = [].concat(getLogic(quItemBody));
+            // data.logic = JSON.stringify(list);
+            return data;
+            // AjaxPostUtil.request({
+            //     url: schoolBasePath + "exam007", params: data, type: 'json', callback: function (json) {
+            //         var quId = json.bean.quId;
+            //         quItemBody.find("input[name='saveTag']").val(1);
+            //         quItemBody.find(".quCoTitle input[name='quTitleSaveTag']").val(1);
+            //         quItemBody.find("input[name='quId']").val(quId);
+            //
+            //         //重置问题选项和业务逻辑
+            //         resetLogicAndItem(quItemBody, json);
+            //
+            //         //执行保存下一题
+            //         saveQus(quItemBody.next(), callback);
+            //         //同步-更新题目排序号
+            //         quCBNum2++;
+            //         exeQuCBNum();
+            //     }
+            // });
             // } else {
             //     saveQus(quItemBody.next(), callback);
             // }
@@ -1091,50 +1161,55 @@ layui.config({
         }
 
         /** 保存排序题 **/
-        function saveOrderqu(quItemBody, callback) {
+        function saveOrderqu(quItemBody, isEdit) {
             // var saveTag = quItemBody.find("input[name='saveTag']").val();
             // if (saveTag == 0) {
-                var data = {};
-                $.extend(data, getCommonParams(quItemBody));
-                //评分题选项td
-                var quItemOptions = quItemBody.find(".quCoItem .quOrderByLeft  li.quCoItemUlLi");
-                var orderquTd = [];
-                $.each(quItemOptions, function (i) {
-                    var quItemSaveTag = $(this).find(".quItemInputCase input[name='quItemSaveTag']").val();
-                    if (quItemSaveTag == 0) {
-                        var s = {
-                            optionValue: encodeURI($(this).find("label.quCoOptionEdit").html()),
-                            optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
-                            key: i
-                        };
-                        orderquTd.push(s);
+            var data = {};
+            $.extend(data, getCommonParams(quItemBody));
+            //评分题选项td
+            var quItemOptions = quItemBody.find(".quCoItem .quOrderByLeft  li.quCoItemUlLi");
+            var orderByTd = [];
+            $.each(quItemOptions, function (i) {
+                var quItemSaveTag = $(this).find(".quItemInputCase input[name='quItemSaveTag']").val();
+                if (quItemSaveTag == 0) {
+                    var s = {
+                        optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
+                        // optionValue: encodeURI($(this).find("label.quCoOptionEdit").html()),
+                        // optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
+                        orderById: i
+                    };
+                    // 如果是编辑，传入 optionId
+                    if (isEdit) {
+                        s.optionId = $(this).find(".quItemInputCase input[name='quItemId']").val();
                     }
-                    $(this).addClass("quOption_" + i);
-                });
-                data.orderquTd = JSON.stringify(orderquTd);
+                    orderByTd.push(s);
+                }
+                $(this).addClass("quOption_" + i);
+            });
+            data.orderByTd = JSON.stringify(orderByTd);
 
-                // 逻辑选项
-                var list = [].concat(getLogic(quItemBody));
-                data.logic = JSON.stringify(list);
-                return data;
+            // 逻辑选项
+            // var list = [].concat(getLogic(quItemBody));
+            // data.logic = JSON.stringify(list);
+            return data;
 
-                // AjaxPostUtil.request({
-                //     url: schoolBasePath + "exam008", params: data, type: 'json', callback: function (json) {
-                //         var quId = json.bean.quId;
-                //         quItemBody.find("input[name='saveTag']").val(1);
-                //         quItemBody.find(".quCoTitle input[name='quTitleSaveTag']").val(1);
-                //         quItemBody.find("input[name='quId']").val(quId);
-                //
-                //         //重置问题选项和业务逻辑
-                //         resetLogicAndItem(quItemBody, json);
-                //
-                //         //执行保存下一题
-                //         saveQus(quItemBody.next(), callback);
-                //         //同步-更新题目排序号
-                //         quCBNum2++;
-                //         exeQuCBNum();
-                //     }
-                // });
+            // AjaxPostUtil.request({
+            //     url: schoolBasePath + "exam008", params: data, type: 'json', callback: function (json) {
+            //         var quId = json.bean.quId;
+            //         quItemBody.find("input[name='saveTag']").val(1);
+            //         quItemBody.find(".quCoTitle input[name='quTitleSaveTag']").val(1);
+            //         quItemBody.find("input[name='quId']").val(quId);
+            //
+            //         //重置问题选项和业务逻辑
+            //         resetLogicAndItem(quItemBody, json);
+            //
+            //         //执行保存下一题
+            //         saveQus(quItemBody.next(), callback);
+            //         //同步-更新题目排序号
+            //         quCBNum2++;
+            //         exeQuCBNum();
+            //     }
+            // });
             // } else {
             //     saveQus(quItemBody.next(), callback);
             // }
@@ -1169,29 +1244,29 @@ layui.config({
         function savePagetag(quItemBody, callback) {
             // var saveTag = quItemBody.find("input[name='saveTag']").val();
             // if (saveTag == 0) {
-                var data = {};
-                $.extend(data, getCommonParams(quItemBody));
-                // 逻辑选项
-                var list = [].concat(getLogic(quItemBody));
-                data.logic = JSON.stringify(list);
-                return data;
-                // AjaxPostUtil.request({
-                //     url: schoolBasePath + "exam009", params: data, type: 'json', callback: function (json) {
-                //         var quId = json.bean.quId;
-                //         quItemBody.find("input[name='saveTag']").val(1);
-                //         quItemBody.find(".quCoTitle input[name='quTitleSaveTag']").val(1);
-                //         quItemBody.find("input[name='quId']").val(quId);
-                //
-                //         //重置问题选项和业务逻辑
-                //         resetLogicAndItem(quItemBody, json);
-                //
-                //         //执行保存下一题
-                //         saveQus(quItemBody.next(), callback);
-                //         //同步-更新题目排序号
-                //         quCBNum2++;
-                //         exeQuCBNum();
-                //     }
-                // });
+            var data = {};
+            $.extend(data, getCommonParams(quItemBody));
+            // 逻辑选项
+            // var list = [].concat(getLogic(quItemBody));
+            // data.logic = JSON.stringify(list);
+            return data;
+            // AjaxPostUtil.request({
+            //     url: schoolBasePath + "exam009", params: data, type: 'json', callback: function (json) {
+            //         var quId = json.bean.quId;
+            //         quItemBody.find("input[name='saveTag']").val(1);
+            //         quItemBody.find(".quCoTitle input[name='quTitleSaveTag']").val(1);
+            //         quItemBody.find("input[name='quId']").val(quId);
+            //
+            //         //重置问题选项和业务逻辑
+            //         resetLogicAndItem(quItemBody, json);
+            //
+            //         //执行保存下一题
+            //         saveQus(quItemBody.next(), callback);
+            //         //同步-更新题目排序号
+            //         quCBNum2++;
+            //         exeQuCBNum();
+            //     }
+            // });
             // } else {
             //     saveQus(quItemBody.next(), callback);
             // }
@@ -1201,85 +1276,90 @@ layui.config({
         function saveParagraph(quItemBody, callback) {
             // var saveTag = quItemBody.find("input[name='saveTag']").val();
             // if (saveTag == 0) {
-                var data = {};
-                $.extend(data, getCommonParams(quItemBody));
-                // 逻辑选项
-                var list = [].concat(getLogic(quItemBody));
-                data.logic = JSON.stringify(list);
-                return data;
-                // AjaxPostUtil.request({
-                //     url: schoolBasePath + "exam013", params: data, type: 'json', callback: function (json) {
-                //         var quId = json.bean.quId;
-                //         quItemBody.find("input[name='saveTag']").val(1);
-                //         quItemBody.find(".quCoTitle input[name='quTitleSaveTag']").val(1);
-                //         quItemBody.find("input[name='quId']").val(quId);
-                //         //同步logic Id信息
-                //         var quLogics = json.bean.quLogics;
-                //         $.each(quLogics, function (i, item) {
-                //             var logicItem = quItemBody.find(".quLogicItem_" + item.title);
-                //             logicItem.find("input[name='quLogicId']").val(item.id);
-                //             logicItem.find("input[name='logicSaveTag']").val(1);
-                //         });
-                //         //执行保存下一题
-                //         saveQus(quItemBody.next(), callback);
-                //         //同步-更新题目排序号
-                //         quCBNum2++;
-                //         exeQuCBNum();
-                //     }
-                // });
+            var data = {};
+            $.extend(data, getCommonParams(quItemBody));
+            // 逻辑选项
+            // var list = [].concat(getLogic(quItemBody));
+            // data.logic = JSON.stringify(list);
+            return data;
+            // AjaxPostUtil.request({
+            //     url: schoolBasePath + "exam013", params: data, type: 'json', callback: function (json) {
+            //         var quId = json.bean.quId;
+            //         quItemBody.find("input[name='saveTag']").val(1);
+            //         quItemBody.find(".quCoTitle input[name='quTitleSaveTag']").val(1);
+            //         quItemBody.find("input[name='quId']").val(quId);
+            //         //同步logic Id信息
+            //         var quLogics = json.bean.quLogics;
+            //         $.each(quLogics, function (i, item) {
+            //             var logicItem = quItemBody.find(".quLogicItem_" + item.title);
+            //             logicItem.find("input[name='quLogicId']").val(item.id);
+            //             logicItem.find("input[name='logicSaveTag']").val(1);
+            //         });
+            //         //执行保存下一题
+            //         saveQus(quItemBody.next(), callback);
+            //         //同步-更新题目排序号
+            //         quCBNum2++;
+            //         exeQuCBNum();
+            //     }
+            // });
             // } else {
             //     saveQus(quItemBody.next(), callback);
             // }
         }
 
         /** 新保存多项填空题 **/
-        function saveMultiFillblank(quItemBody, callback) {
+        function saveMultiFillblank(quItemBody, isEdit) {
             // var saveTag = quItemBody.find("input[name='saveTag']").val();
             // if (saveTag == 0) {
-                var data = {
-                    paramInt01: quItemBody.find("input[name='paramInt01']").val(),
-                    paramInt02: quItemBody.find("input[name='paramInt02']").val()
-                };
-                $.extend(data, getCommonParams(quItemBody));
-                // 评分题选项td
-                var quItemOptions = quItemBody.find(".quCoItem table.mFillblankTable tr");
-                var multiFillblankTd = [];
-                $.each(quItemOptions, function (i) {
-                    var quItemSaveTag = $(this).find(".quItemInputCase input[name='quItemSaveTag']").val();
-                    if (quItemSaveTag == 0) {
-                        var s = {
-                            optionValue: encodeURI($(this).find("label.quCoOptionEdit").html()),
-                            optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
-                            isDefaultAnswer: $(this).find("input[class='multiFillBlank']").val(),
-                            key: i
-                        };
-                        multiFillblankTd.push(s);
+            var data = {
+                paramInt01: quItemBody.find("input[name='paramInt01']").val(),
+                paramInt02: quItemBody.find("input[name='paramInt02']").val()
+            };
+            $.extend(data, getCommonParams(quItemBody));
+            // 评分题选项td
+            var quItemOptions = quItemBody.find(".quCoItem table.mFillblankTable tr");
+            var multifillblankTd = [];
+            $.each(quItemOptions, function (i) {
+                var quItemSaveTag = $(this).find(".quItemInputCase input[name='quItemSaveTag']").val();
+                if (quItemSaveTag == 0) {
+                    var s = {
+                        optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
+                        // optionValue: encodeURI($(this).find("label.quCoOptionEdit").html()),
+                        // optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
+                        isDefaultAnswer: $(this).find("input[class='multiFillBlank']").val(),
+                        orderById: i
+                    };
+                    // 如果是编辑，传入 optionId
+                    if (isEdit) {
+                        s.optionId = $(this).find(".quItemInputCase input[name='quItemId']").val();
                     }
-                    // 更新 字母 title标记到选项上.
-                    $(this).addClass("quOption_" + i);
-                });
-                data.multiFillblankTd = JSON.stringify(multiFillblankTd);
-                // 逻辑选项
-                var list = [].concat(getLogic(quItemBody));
-                data.logic = JSON.stringify(list);
-                return data;
-                // AjaxPostUtil.request({
-                //     url: schoolBasePath + "exam012", params: data, type: 'json', callback: function (json) {
-                //         var quId = json.bean.quId;
-                //         quItemBody.find("input[name='saveTag']").val(1);
-                //         quItemBody.find(".quCoTitle input[name='quTitleSaveTag']").val(1);
-                //         quItemBody.find("input[name='quId']").val(quId);
-                //
-                //         // 重置问题选项和业务逻辑
-                //         resetLogicAndItem(quItemBody, json);
-                //
-                //         // 执行保存下一题
-                //         saveQus(quItemBody.next(), callback);
-                //         // 同步-更新题目排序号
-                //         quCBNum2++;
-                //         exeQuCBNum();
-                //     }
-                // });
+                    multifillblankTd.push(s);
+                }
+                // 更新 字母 title标记到选项上.
+                $(this).addClass("quOption_" + i);
+            });
+            data.multifillblankTd = JSON.stringify(multifillblankTd);
+            // 逻辑选项
+            // var list = [].concat(getLogic(quItemBody));
+            // data.logic = JSON.stringify(list);
+            return data;
+            // AjaxPostUtil.request({
+            //     url: schoolBasePath + "exam012", params: data, type: 'json', callback: function (json) {
+            //         var quId = json.bean.quId;
+            //         quItemBody.find("input[name='saveTag']").val(1);
+            //         quItemBody.find(".quCoTitle input[name='quTitleSaveTag']").val(1);
+            //         quItemBody.find("input[name='quId']").val(quId);
+            //
+            //         // 重置问题选项和业务逻辑
+            //         resetLogicAndItem(quItemBody, json);
+            //
+            //         // 执行保存下一题
+            //         saveQus(quItemBody.next(), callback);
+            //         // 同步-更新题目排序号
+            //         quCBNum2++;
+            //         exeQuCBNum();
+            //     }
+            // });
             // } else {
             //     saveQus(quItemBody.next(), callback);
             // }
@@ -1307,179 +1387,193 @@ layui.config({
         }
 
         /** 保存矩阵题 **/
-        function saveChen(quItemBody, callback) {
+        function saveChen(quItemBody, isEdit) {
             // var saveTag = quItemBody.find("input[name='saveTag']").val();
             // if (saveTag == 0) {
-                var data = {
-                    quType: quItemBody.find("input[name='quType']").val()
-                };
-                $.extend(data, getCommonParams(quItemBody));
-                // 矩阵列选项td
-                var quColumnOptions = quItemBody.find(".quCoItem table.quCoChenTable tr td.quChenColumnTd");
-                var column = [];
-                $.each(quColumnOptions, function (i) {
-                    var quItemSaveTag = $(this).find(".quItemInputCase input[name='quItemSaveTag']").val();
-                    if (quItemSaveTag == 0) {
-                        var s = {
-                            optionValue: encodeURI($(this).find("label.quCoOptionEdit").html()),
-                            optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
-                            key: i
-                        };
-                        column.push(s);
+            var data = {
+                quType: quItemBody.find("input[name='quType']").val()
+            };
+            $.extend(data, getCommonParams(quItemBody));
+            // 矩阵列选项td
+            var quColumnOptions = quItemBody.find(".quCoItem table.quCoChenTable tr td.quChenColumnTd");
+            var columnTd = [];
+            $.each(quColumnOptions, function (i) {
+                var quItemSaveTag = $(this).find(".quItemInputCase input[name='quItemSaveTag']").val();
+                if (quItemSaveTag == 0) {
+                    var s = {
+                        optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
+                        // optionValue: encodeURI($(this).find("label.quCoOptionEdit").html()),
+                        // optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
+                        visibility: 1,
+                        orderById:i
+                        // key: i
+                    };
+                    // 如果是编辑，传入 optionId
+                    if (isEdit) {
+                        s.optionId = $(this).find(".quItemInputCase input[name='quItemId']").val();
                     }
-                    // 更新 字母 title标记到选项上.
-                    $(this).addClass("quColumnOption_" + i);
-                });
-                data.column = JSON.stringify(column);
-                // 矩阵行选项td
-                var quColumnOptions = quItemBody.find(".quCoItem table.quCoChenTable tr td.quChenRowTd");
-                var row = [];
-                $.each(quColumnOptions, function (i) {
-                    var quItemSaveTag = $(this).find(".quItemInputCase input[name='quItemSaveTag']").val();
-                    if (quItemSaveTag == 0) {
-                        var s = {
-                            optionValue: encodeURI($(this).find("label.quCoOptionEdit").html()),
-                            optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
-                            key: i
-                        };
-                        row.push(s);
-                    }
-                    // 更新 字母 title标记到选项上.
-                    $(this).addClass("quRowOption_" + i);
-                });
-
-                // 答案
-                if (data.quType === "CHENCHECKBOX") {
-                    var answer = quItemBody.find(".quCoItem table.quCoChenTable tr input.chenCheckBoxInput");
-                    var isDefaultAnswer = new Array();
-                    var columuLength = quColumnOptions.length;
-                    var xIndex = 0;
-                    var yIndex = 1;
-                    $.each(answer, function (i) {
-                        if (i % columuLength == 0) {
-                            xIndex++;
-                            yIndex = 1;
-                        } else {
-                            yIndex++;
-                        }
-                        var s = {
-                            x: xIndex,
-                            y: yIndex,
-                            value: $(this).prop("checked")
-                        };
-                        isDefaultAnswer.push(s);
-                    });
-                    data.isDefaultAnswer = JSON.stringify(isDefaultAnswer);
-                } else if (data.quType === "CHENRADIO") {
-                    var answer = quItemBody.find(".quCoItem table.quCoChenTable tr input.chenRadioInput");
-                    var isDefaultAnswer = new Array();
-                    var columuLength = quColumnOptions.length;
-                    var xIndex = 0;
-                    var yIndex = 1;
-                    $.each(answer, function (i) {
-                        if (i % columuLength == 0) {
-                            xIndex++;
-                            yIndex = 1;
-                        } else {
-                            yIndex++;
-                        }
-                        var s = {
-                            x: xIndex,
-                            y: yIndex,
-                            value: $(this).prop("checked")
-                        };
-                        isDefaultAnswer.push(s);
-                    });
-                    data.isDefaultAnswer = JSON.stringify(isDefaultAnswer);
-                } else if (data.quType === "CHENSCORE") {
-                    var answer = quItemBody.find(".quCoItem table.quCoChenTable tr select.quChenScoreSelect");
-                    var isDefaultAnswer = new Array();
-                    var columuLength = quColumnOptions.length;
-                    var xIndex = 0;
-                    var yIndex = 1;
-                    $.each(answer, function (i) {
-                        if (i % columuLength == 0) {
-                            xIndex++;
-                            yIndex = 1;
-                        } else {
-                            yIndex++;
-                        }
-                        var s = {
-                            x: xIndex,
-                            y: yIndex,
-                            value: $(this).val()
-                        };
-                        isDefaultAnswer.push(s);
-                    });
-                    data.isDefaultAnswer = JSON.stringify(isDefaultAnswer);
-                } else if (data.quType === "CHENFBK") {
-                    var answer = quItemBody.find(".quCoItem table.quCoChenTable tr input.questionChenColumnValue");
-                    var isDefaultAnswer = new Array();
-                    var columuLength = quColumnOptions.length;
-                    var xIndex = 0;
-                    var yIndex = 1;
-                    $.each(answer, function (i) {
-                        if (i % columuLength == 0) {
-                            xIndex++;
-                            yIndex = 1;
-                        } else {
-                            yIndex++;
-                        }
-                        var s = {
-                            x: xIndex,
-                            y: yIndex,
-                            value: $(this).val()
-                        };
-                        isDefaultAnswer.push(s);
-                    });
-                    data.isDefaultAnswer = JSON.stringify(isDefaultAnswer);
+                    columnTd.push(s);
                 }
+                // 更新 字母 title标记到选项上.
+                $(this).addClass("quColumnOption_" + i);
+            });
+            data.columnTd = JSON.stringify(columnTd);
+            // 矩阵行选项td
+            var quColumnOptions = quItemBody.find(".quCoItem table.quCoChenTable tr td.quChenRowTd");
+            var rowTd = [];
+            $.each(quColumnOptions, function (i) {
+                var quItemSaveTag = $(this).find(".quItemInputCase input[name='quItemSaveTag']").val();
+                if (quItemSaveTag == 0) {
+                    var s = {
+                        optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
+                        // optionValue: encodeURI($(this).find("label.quCoOptionEdit").html()),
+                        // optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
+                        visibility: 1,
+                        orderById:i
+                        // key: i
+                    };
+                    // 如果是编辑，传入 optionId
+                    if (isEdit) {
+                        s.optionId = $(this).find(".quItemInputCase input[name='quItemId']").val();
+                    }
+                    rowTd.push(s);
+                }
+                // 更新 字母 title标记到选项上.
+                $(this).addClass("quRowOption_" + i);
+            });
 
-                data.row = JSON.stringify(row);
-                // 逻辑选项
-                var list = [].concat(getLogic(quItemBody));
-                data.logic = JSON.stringify(list);
-                return data;
-                // AjaxPostUtil.request({
-                //     url: schoolBasePath + "exam014", params: data, type: 'json', callback: function (json) {
-                //         var quId = json.bean.quId;
-                //         quItemBody.find("input[name='saveTag']").val(1);
-                //         quItemBody.find(".quCoTitle input[name='quTitleSaveTag']").val(1);
-                //         quItemBody.find("input[name='quId']").val(quId);
-                //         // 列选项
-                //         var quColumnItems = json.bean.quColumnItems;
-                //         if (!isNull(quColumnItems)) {
-                //             $.each(quColumnItems, function (i, item) {
-                //                 var quItemOption = quItemBody.find(".quColumnOption_" + item.title);
-                //                 quItemOption.find("input[name='quItemId']").val(item.id);
-                //                 quItemOption.find(".quItemInputCase input[name='quItemSaveTag']").val(1);
-                //             });
-                //         }
-                //         // 行选项
-                //         var quRowItems = json.bean.quRowItems;
-                //         if (!isNull(quRowItems)) {
-                //             $.each(quRowItems, function (i, item) {
-                //                 var quItemOption = quItemBody.find(".quRowOption_" + item.title);
-                //                 quItemOption.find("input[name='quItemId']").val(item.id);
-                //                 quItemOption.find(".quItemInputCase input[name='quItemSaveTag']").val(1);
-                //             });
-                //         }
-                //         // 同步logic Id信息
-                //         var quLogics = json.bean.quLogics;
-                //         if (!isNull(quLogics)) {
-                //             $.each(quLogics, function (i, item) {
-                //                 var logicItem = quItemBody.find(".quLogicItem_" + item.title);
-                //                 logicItem.find("input[name='quLogicId']").val(item.id);
-                //                 logicItem.find("input[name='logicSaveTag']").val(1);
-                //             });
-                //         }
-                //         // 执行保存下一题
-                //         saveQus(quItemBody.next(), callback);
-                //         // 同步-更新题目排序号
-                //         quCBNum2++;
-                //         exeQuCBNum();
-                //     }
-                // });
+            // 答案
+            if (data.quType === "CHENCHECKBOX") {
+                var answer = quItemBody.find(".quCoItem table.quCoChenTable tr input.chenCheckBoxInput");
+                var isDefaultAnswer = new Array();
+                var columuLength = quColumnOptions.length;
+                var xIndex = 0;
+                var yIndex = 1;
+                $.each(answer, function (i) {
+                    if (i % columuLength == 0) {
+                        xIndex++;
+                        yIndex = 1;
+                    } else {
+                        yIndex++;
+                    }
+                    var s = {
+                        x: xIndex,
+                        y: yIndex,
+                        value: $(this).prop("checked")
+                    };
+                    isDefaultAnswer.push(s);
+                });
+                data.isDefaultAnswer = JSON.stringify(isDefaultAnswer);
+            } else if (data.quType === "CHENRADIO") {
+                var answer = quItemBody.find(".quCoItem table.quCoChenTable tr input.chenRadioInput");
+                var isDefaultAnswer = new Array();
+                var columuLength = quColumnOptions.length;
+                var xIndex = 0;
+                var yIndex = 1;
+                $.each(answer, function (i) {
+                    if (i % columuLength == 0) {
+                        xIndex++;
+                        yIndex = 1;
+                    } else {
+                        yIndex++;
+                    }
+                    var s = {
+                        x: xIndex,
+                        y: yIndex,
+                        value: $(this).prop("checked")
+                    };
+                    isDefaultAnswer.push(s);
+                });
+                data.isDefaultAnswer = JSON.stringify(isDefaultAnswer);
+            } else if (data.quType === "CHENSCORE") {
+                var answer = quItemBody.find(".quCoItem table.quCoChenTable tr select.quChenScoreSelect");
+                var isDefaultAnswer = new Array();
+                var columuLength = quColumnOptions.length;
+                var xIndex = 0;
+                var yIndex = 1;
+                $.each(answer, function (i) {
+                    if (i % columuLength == 0) {
+                        xIndex++;
+                        yIndex = 1;
+                    } else {
+                        yIndex++;
+                    }
+                    var s = {
+                        x: xIndex,
+                        y: yIndex,
+                        value: $(this).val()
+                    };
+                    isDefaultAnswer.push(s);
+                });
+                data.isDefaultAnswer = JSON.stringify(isDefaultAnswer);
+            } else if (data.quType === "CHENFBK") {
+                var answer = quItemBody.find(".quCoItem table.quCoChenTable tr input.questionChenColumnValue");
+                var isDefaultAnswer = new Array();
+                var columuLength = quColumnOptions.length;
+                var xIndex = 0;
+                var yIndex = 1;
+                $.each(answer, function (i) {
+                    if (i % columuLength == 0) {
+                        xIndex++;
+                        yIndex = 1;
+                    } else {
+                        yIndex++;
+                    }
+                    var s = {
+                        x: xIndex,
+                        y: yIndex,
+                        value: $(this).val()
+                    };
+                    isDefaultAnswer.push(s);
+                });
+                data.isDefaultAnswer = JSON.stringify(isDefaultAnswer);
+            }
+
+            data.rowTd = JSON.stringify(rowTd);
+            // 逻辑选项
+            // var list = [].concat(getLogic(quItemBody));
+            // data.logic = JSON.stringify(list);
+            return data;
+            // AjaxPostUtil.request({
+            //     url: schoolBasePath + "exam014", params: data, type: 'json', callback: function (json) {
+            //         var quId = json.bean.quId;
+            //         quItemBody.find("input[name='saveTag']").val(1);
+            //         quItemBody.find(".quCoTitle input[name='quTitleSaveTag']").val(1);
+            //         quItemBody.find("input[name='quId']").val(quId);
+            //         // 列选项
+            //         var quColumnItems = json.bean.quColumnItems;
+            //         if (!isNull(quColumnItems)) {
+            //             $.each(quColumnItems, function (i, item) {
+            //                 var quItemOption = quItemBody.find(".quColumnOption_" + item.title);
+            //                 quItemOption.find("input[name='quItemId']").val(item.id);
+            //                 quItemOption.find(".quItemInputCase input[name='quItemSaveTag']").val(1);
+            //             });
+            //         }
+            //         // 行选项
+            //         var quRowItems = json.bean.quRowItems;
+            //         if (!isNull(quRowItems)) {
+            //             $.each(quRowItems, function (i, item) {
+            //                 var quItemOption = quItemBody.find(".quRowOption_" + item.title);
+            //                 quItemOption.find("input[name='quItemId']").val(item.id);
+            //                 quItemOption.find(".quItemInputCase input[name='quItemSaveTag']").val(1);
+            //             });
+            //         }
+            //         // 同步logic Id信息
+            //         var quLogics = json.bean.quLogics;
+            //         if (!isNull(quLogics)) {
+            //             $.each(quLogics, function (i, item) {
+            //                 var logicItem = quItemBody.find(".quLogicItem_" + item.title);
+            //                 logicItem.find("input[name='quLogicId']").val(item.id);
+            //                 logicItem.find("input[name='logicSaveTag']").val(1);
+            //             });
+            //         }
+            //         // 执行保存下一题
+            //         saveQus(quItemBody.next(), callback);
+            //         // 同步-更新题目排序号
+            //         quCBNum2++;
+            //         exeQuCBNum();
+            //     }
+            // });
             // } else {
             //     saveQus(quItemBody.next(), callback);
             // }
