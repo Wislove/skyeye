@@ -26,15 +26,6 @@ layui.config({
 				 id = json.bean.id;
 		 		// 设置未指定负责人选中
 		 		$("input:radio[name=noChargeId][value=" + json.bean.noChargeId + "]").attr("checked", true);
-		 		
-		 		// 获取上一次solr数据同步的时间
-		        AjaxPostUtil.request({url: sysMainMation.forumBasePath + "forumcontent019", params: {}, type: 'json', callback: function (json) {
-					if (!isNull(json.bean.synchronousTime)){
-						$("#synchronousTime").text(json.bean.synchronousTime);
-					} else {
-						$("#synchronousTime").text("无");
-					}
-		        }});
 
 		        // 加载假期类型
 				loadHolidayType(json);
@@ -301,18 +292,7 @@ layui.config({
 			});
 			return isIn;
 		}
-	    
-        // 同步solr数据
-        $("body").on("click", "#formAddBean", function (e) {
-            winui.window.msg("数据同步中...", {icon: 6,time: 2000});
-            AjaxPostUtil.request({url: sysMainMation.forumBasePath + "forumcontent020", params: {}, type: 'json', callback: function (json) {
-				winui.window.msg("数据同步成功", {icon: 1, time: 2000});
-				if (!isNull(json.bean.synchronousTime)){
-					$("#synchronousTime").text(json.bean.synchronousTime);
-				}
-            }});
-        });
-
+		
         /****************************假期设置开始**************************/
 		// 新增行
 		$("body").on("click", "#addHolidaysTypeJsonRow", function() {

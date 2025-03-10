@@ -189,11 +189,11 @@ layui.define(["jquery"], function(exports) {
             function split_cleanup(input){
                 var li = input.closest('li'), sub_tags = input.val().replace(/ +/, ' ').split(o.dregex), old_tag = input.data('old_tag');
                 var old_tags = tag_list.slice(0); // copy tag_list
-                for (i in sub_tags) {
+                for (var i = 0, len = sub_tags.length; i < len; i++) {
                     tag = $.trim(sub_tags[i]).slice(0, o.maxLength);
                     if (tag) {
                         o.beforeTagSave(el, ed, old_tags, old_tag, tag);
-                        // remove duplicates
+                        // 移除重复标签
                         if (~$.inArray(tag, old_tags))
                             $('.tag-editor-tag', ed).each(function(){ if ($(this).html() == tag) $(this).closest('li').remove(); });
                         old_tags.push(tag);
