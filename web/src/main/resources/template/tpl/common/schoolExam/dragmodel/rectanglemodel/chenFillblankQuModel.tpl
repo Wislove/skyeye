@@ -29,11 +29,6 @@
 						<li title="设置" class="dwQuSet">
 							<div class=dwQuIcon></div>
 						</li>
-						<li title="逻辑" class="dwQuLogic">
-							<div class="dwQuIcon">
-								<div class="quLogicInfo"></div>
-							</div>
-						</li>
 						<li title="知识点" class="knowledgeQuLogic">
 							<div class="dwQuIcon">
 								<div class="quKnowledgeInfo"></div>
