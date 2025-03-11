@@ -41,8 +41,6 @@ layui.config({
                 callback: function (json) {
                     json.total = 1;
                     $.each(json.rows, function (i, item) {
-                        console.log("item", item)
-                        console.log("questionLogic:", item.questionLogic);
                         item.saveTag = 1;
                     });
                     loadPageJson = json;
@@ -654,6 +652,7 @@ layui.config({
                 11: 'CHENRADIO',
                 12: 'CHENFBK',
                 13: 'CHENCHECKBOX',
+                16: 'PAGETAG',
                 18: 'CHENSCORE',
                 // 字符串到数字的映射
                 'RADIO': 1,
@@ -665,6 +664,7 @@ layui.config({
                 'CHENRADIO': 11,
                 'CHENFBK': 12,
                 'CHENCHECKBOX': 13,
+                'PAGETAG': 16,
                 'CHENSCORE': 18
             };
 
@@ -702,7 +702,6 @@ layui.config({
                 switch (quTypeStr) {
                     case 'RADIO':
                         questionData = saveRadio(quItemBody, isEdit);
-                        console.log(111111111111)
                         break;
                     case 'CHECKBOX':
                         questionData = saveCheckbox(quItemBody, isEdit);
@@ -724,6 +723,9 @@ layui.config({
                     case 'CHENFBK':
                     case 'CHENSCORE':
                         questionData = saveChen(quItemBody, isEdit);
+                        break;
+                    case 'PAGETAG':
+                        questionData = savePagetag(quItemBody, isEdit);
                         break;
                     default:
                         console.warn("未知题型：" + quTypeStr);
@@ -787,7 +789,6 @@ layui.config({
 
         /** 保存单选题 **/
         function saveRadio(quItemBody, isEdit) {
-            console.log("我被调用啦啊啊啊啊")
             var saveTag = quItemBody.find("input[name='saveTag']").val();
             // if (saveTag == 0) {
             var data = {
@@ -1279,8 +1280,8 @@ layui.config({
             var data = {};
             $.extend(data, getCommonParams(quItemBody));
             // 逻辑选项
-            // var list = [].concat(getLogic(quItemBody));
-            // data.logic = JSON.stringify(list);
+            var list = [].concat(getLogic(quItemBody));
+            data.logic = JSON.stringify(list);
             return data;
             // AjaxPostUtil.request({
             //     url: schoolBasePath + "exam013", params: data, type: 'json', callback: function (json) {
