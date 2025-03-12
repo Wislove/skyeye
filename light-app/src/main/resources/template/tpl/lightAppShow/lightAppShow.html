@@ -16,9 +16,9 @@
 			</div>
 		</div>
 	    <div class="light-app-right" id="showForm">
-	    	<div class="h1" id="title"><i class="font-icon icon-reorder"></i>全部</div>
-	    		<ul class="app-list" id="appList" style="float:left">
-	    		</ul>
+	    	<div class="h1 line-1" id="title"><i class="font-icon icon-reorder"></i>全部</div>
+			<ul class="app-list" id="appList" style="float:left">
+			</ul>
 	    </div>
 	</div>
 
@@ -27,7 +27,7 @@
 		{{#each rows}}
 		<a rowid="{{id}}" rowname="{{name}}">
 			<div style="line-height: 40px; width: 60px; float: left">{{{iconHtml}}}</div>
-			<div style="width: calc(100% - 60px); float: left; text-align: left;">{{name}}</div>
+			<div style="width: calc(100% - 60px); float: left; text-align: left;" class="line-1" title="{{name}}">{{name}}</div>
 		</a>
 		{{/each}}
 	</script>
@@ -39,8 +39,8 @@
 				<img src="{{logo}}" rowurl="{{appUrl}}" rowtitle="{{name}}"  style="height:65px; width:65px; margin-top:15px;">
 			</div>
 			<div class="text">
-				<div class="name">{{name}}</div>
-				<div class="copyright">{{remark}}</div>
+				<div class="name line-1" title="{{name}}">{{name}}</div>
+				<div class="copyright line-1" title="{{remark}}">{{remark}}</div>
 			</div>
 			<div class="btn-group action">
 				<button type="button" class="btn btn-sm btn-default" rowid="{{id}}">添加</button>

@@ -52,6 +52,7 @@ layui.config({
 		var clickName = $(this).attr("rowname");
 		var clickId = $(this).attr("rowid");
 		$("#title").text(clickName);
+		$("#title").attr("title", clickName);
 	    showList(clickId);
 	});
 	
