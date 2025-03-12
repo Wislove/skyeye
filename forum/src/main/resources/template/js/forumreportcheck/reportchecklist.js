@@ -78,7 +78,7 @@ layui.config({
 		    id: 'messageNoCheckTable',
 		    elem: '#messageNoCheckTable',
 		    method: 'post',
-		    url: sysMainMation.forumBasePath + 'forumreport002',
+		    url: sysMainMation.forumBasePath + 'queryReportNoCheckList',
 		    where: {title: $("#title").val(), reportTypeId: $("#reportType").val(), reportstartTime: reportstartTime, reportendTime: reportendTime},
 		    even: false,
 		    page: true,
@@ -101,7 +101,7 @@ layui.config({
 		        		return "参数错误";
 		        	}
 		        }},
-		        { field: 'reportUser', title: '举报人', align: 'center', width: 120},
+		        { field: 'createName', title: '举报人', align: 'center', width: 120},
 		        { field: 'reportTime', title: '举报时间', align: 'center', width: 200},
 		        { title: systemLanguage["com.skyeye.operation"][languageType], fixed: 'right', align: 'center', width: 250, toolbar: '#tableBar'}
 		    ]],
@@ -214,7 +214,7 @@ layui.config({
 		    id: 'messageCheckedTable',
 		    elem: '#messageCheckedTable',
 		    method: 'post',
-		    url: sysMainMation.forumBasePath + 'forumreport004',
+		    url: sysMainMation.forumBasePath + 'queryReportNoCheckList',
 		    where: {title: $("#checkedtitle").val(), reportTypeId: $("#checkedReportType").val(), reportstartTime: checkedreportstartTime, reportendTime: checkedreportendTime, examinestartTime: checkedexaminestartTime, examineendTime: checkedexamineendTime},
 		    even: false,
 		    page: true,
@@ -226,7 +226,7 @@ layui.config({
                     return '<a lay-event="forumdetails" class="notice-title-click">' + d.title + '</a>';
                 }},
 		        { field: 'reportType', title: '举报类型', align: 'center', width: 120 },
-		        { field: 'reportUser', title: '举报人', align: 'center', width: 120},
+		        { field: 'createName', title: '举报人', align: 'center', width: 120},
 		        { field: 'reportTime', title: '举报时间', align: 'center', width: 200},
 		        { field: 'examineState', title: '状态', width: 100, align: 'center', templet: function (d) {
 		        	if(d.examineState == '1'){

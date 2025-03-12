@@ -2,19 +2,19 @@
 	<div class="layui-form-item layui-col-xs12">
 		<label class="layui-form-label">帖子标题：</label>
 		<div class="layui-input-block ver-center">
-			{{title}}
+			{{forumMation.forumTitle}}
 		</div>
 	</div>
 	<div class="layui-form-item layui-col-xs12">
 	    <label class="layui-form-label">举报类型：</label>
 	    <div class="layui-input-block ver-center">
-	        {{reportType}}
+	        {{reportTypeId}}
 	    </div>
 	</div>
 	<div class="reportcontent layui-form-item layui-col-xs12">
 	    <label class="layui-form-label">举报内容：</label>
 	    <div class="layui-input-block ver-center">
-	        {{reportContent}}
+	        {{reportOtherContent}}
 	    </div>
 	</div>
 	<div class="layui-form-item layui-col-xs12">
@@ -26,7 +26,7 @@
 	<div class="layui-form-item layui-col-xs12">
         <label class="layui-form-label">举报人：</label>
         <div class="layui-input-block ver-center">
-        	{{reportUser}}
+        	{{reportMation.userName}}
         </div>
     </div>
     <div class="layui-form-item layui-col-xs12">
@@ -50,13 +50,13 @@
     <div class="examine layui-form-item layui-col-xs12">
         <label class="layui-form-label">审核人：</label>
         <div class="layui-input-block ver-center">
-        	{{examineUser}}
+        	{{examineMation.userName}}
         </div>
     </div>
     <div class="examine layui-form-item layui-col-xs12">
         <label class="layui-form-label">审核时间：</label>
         <div class="layui-input-block ver-center">
-        	{{examineTime}}
+        	{{lastUpdateTime}}
         </div>
     </div>
 {{/bean}}
