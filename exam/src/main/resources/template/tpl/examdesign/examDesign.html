@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8" />
-    <title></title>
-    <link href="../../assets/lib/layui/css/layui.css" rel="stylesheet" />
-    <link href="../../assets/lib/winui/css/winui.css" rel="stylesheet" />
-    <style type="text/css">
-    	.exam-fraction{
-    		width: 30px;
-    		text-align: center;
-    		border-width: 1px;
-    	}
 
-    	.exam-fraction:hover {
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<link href="../../assets/lib/layui/css/layui.css" rel="stylesheet" />
+	<link href="../../assets/lib/winui/css/winui.css" rel="stylesheet" />
+	<style type="text/css">
+		.exam-fraction {
+			width: 30px;
+			text-align: center;
+			border-width: 1px;
+		}
+
+		.exam-fraction:hover {
 			border-color: #80bdff !important;
 		}
 
@@ -21,12 +22,13 @@
 			outline: 0;
 			box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25);
 		}
-    </style>
+	</style>
 </head>
+
 <body>
 	<div>
-	    <form class="layui-form" action="" id="showForm" autocomplete="off">
-	        <div id="tools_wrap">
+		<form class="layui-form" action="" id="showForm" autocomplete="off">
+			<div id="tools_wrap">
 				<div id="tools">
 					<div class="tools_tabs">
 						<div class="tools_tabs_left">
@@ -38,19 +40,22 @@
 					<div class="tools_contents">
 						<div id="tools_tab1" class="tools_tab_div" style="display: inline;">
 							<div id="toolsBashQu" class="tools_item">
-								<div class="tooltext" style="text-align: left; padding-left: 5px; width: auto;">基本题型</div>
+								<div class="tooltext" style="text-align: left; padding-left: 5px; width: auto;">基本题型
+								</div>
 								<div class="toolbars">
 									<ul class="dragQuUl" id="_basemodel"></ul>
 								</div>
 							</div>
 							<div id="toolsChenQu" class="tools_item">
-								<div class="tooltext" style="text-align: left; padding-left: 5px; width: auto;">矩阵题型</div>
+								<div class="tooltext" style="text-align: left; padding-left: 5px; width: auto;">矩阵题型
+								</div>
 								<div class="toolbars">
 									<ul class="dragQuUl" id="_rectanglemodel"></ul>
 								</div>
 							</div>
 							<div id="toolsAuxiliaryQu" class="tools_item">
-								<div class="tooltext" style="text-align: left; padding-left: 5px; width: auto;">辅助组件</div>
+								<div class="tooltext" style="text-align: left; padding-left: 5px; width: auto;">辅助组件
+								</div>
 								<div class="toolbars">
 									<ul class="dragQuUl" id="_auxiliarymodel"></ul>
 								</div>
@@ -66,7 +71,7 @@
 									<li id="saveBtn" class="Btn">
 										<div class="dwToolbar_icon">保存</div>
 									</li>
-							    </ul>
+								</ul>
 							</div>
 						</div>
 					</div>
@@ -77,7 +82,7 @@
 			<div id="dw_body">
 
 			</div>
-	    </form>
+		</form>
 	</div>
 
 	<!-- 1单选题radio -->
@@ -88,9 +93,9 @@
 					<li title="移动排序" class="dwQuMove">
 						<div class="dwQuIcon"></div>
 					</li>
-					<li title="设置" class="dwQuSet">
+					<!-- <li title="设置" class="dwQuSet">
 						<div class="dwQuIcon"></div>
-					</li>
+					</li> -->
 					<!-- <li title="逻辑" class="dwQuLogic">
 						<div class="dwQuIcon">
 							<div class="quLogicInfo">{{questionLogic.length}}</div>
@@ -223,14 +228,14 @@
 					<li title="移动排序" class="dwQuMove">
 						<div class="dwQuIcon"></div>
 					</li>
-					<li title="设置" class="dwQuSet">
-						<div class="dwQuIcon"></div>
-					</li>
+<!--					<li title="设置" class="dwQuSet">-->
+<!--						<div class="dwQuIcon"></div>-->
+<!--					</li>-->
 <!--					<li title="逻辑" class="dwQuLogic">-->
 <!--						<div class="dwQuIcon">-->
 <!--							<div class="quLogicInfo">{{questionLogic.length}}</div>-->
 <!--						</div>-->
-<!--					</li> -->
+<!--					</li>-->
 					<li title="知识点" class="knowledgeQuLogic" knowledgeIds="{{knowledgeIds}}">
 						<div class="dwQuIcon">
 							<div class="quKnowledgeInfo">{{questionKnowledge.length}}</div>
@@ -349,9 +354,9 @@
 					<li title="移动排序" class="dwQuMove">
 						<div class="dwQuIcon"></div>
 					</li>
-					<li title="设置" class="dwQuSet">
-						<div class="dwQuIcon"></div>
-					</li>
+<!--					<li title="设置" class="dwQuSet">-->
+<!--						<div class="dwQuIcon"></div>-->
+<!--					</li>-->
 <!--					<li title="逻辑" class="dwQuLogic">-->
 <!--						<div class="dwQuIcon">-->
 <!--							<div class="quLogicInfo">{{questionLogic.length}}</div>-->
@@ -446,9 +451,9 @@
 					<li title="移动排序" class="dwQuMove">
 						<div class="dwQuIcon"></div>
 					</li>
-					<li title="设置" class="dwQuSet">
-						<div class="dwQuIcon"></div>
-					</li>
+<!--					<li title="设置" class="dwQuSet">-->
+<!--						<div class="dwQuIcon"></div>-->
+<!--					</li>-->
 					<li title="知识点" class="knowledgeQuLogic" knowledgeIds="{{knowledgeIds}}">
 						<div class="dwQuIcon">
 							<div class="quKnowledgeInfo">{{questionKnowledge.length}}</div>
@@ -611,9 +616,9 @@
 					<li title="移动排序" class="dwQuMove">
 						<div class="dwQuIcon"></div>
 					</li>
-					<li title="设置" class="dwQuSet">
-						<div class="dwQuIcon"></div>
-					</li>
+<!--					<li title="设置" class="dwQuSet">-->
+<!--						<div class="dwQuIcon"></div>-->
+<!--					</li>-->
 <!--					<li title="逻辑" class="dwQuLogic">-->
 <!--						<div class="dwQuIcon">-->
 <!--							<div class="quLogicInfo">{{questionLogic.length}}</div>-->
@@ -714,9 +719,9 @@
 					<li title="移动排序" class="dwQuMove">
 						<div class="dwQuIcon"></div>
 					</li>
-					<li title="设置" class="dwQuSet">
-						<div class="dwQuIcon"></div>
-					</li>
+<!--					<li title="设置" class="dwQuSet">-->
+<!--						<div class="dwQuIcon"></div>-->
+<!--					</li>-->
 <!--					<li title="逻辑" class="dwQuLogic">-->
 <!--						<div class="dwQuIcon">-->
 <!--							<div class="quLogicInfo">{{questionLogic.length}}</div>-->
@@ -842,9 +847,9 @@
 					<li title="移动排序" class="dwQuMove">
 						<div class="dwQuIcon"></div>
 					</li>
-					<li title="设置" class="dwQuSet">
-						<div class="dwQuIcon"></div>
-					</li>
+<!--					<li title="设置" class="dwQuSet">-->
+<!--						<div class="dwQuIcon"></div>-->
+<!--					</li>-->
 <!--					<li title="逻辑" class="dwQuLogic">-->
 <!--						<div class="dwQuIcon">-->
 <!--							<div class="quLogicInfo">{{questionLogic.length}}</div>-->
@@ -968,9 +973,9 @@
 					<li title="移动排序" class="dwQuMove">
 						<div class="dwQuIcon"></div>
 					</li>
-					<li title="设置" class="dwQuSet">
-						<div class="dwQuIcon"></div>
-					</li>
+<!--					<li title="设置" class="dwQuSet">-->
+<!--						<div class="dwQuIcon"></div>-->
+<!--					</li>-->
 <!--					<li title="逻辑" class="dwQuLogic">-->
 <!--						<div class="dwQuIcon">-->
 <!--							<div class="quLogicInfo">{{questionLogic.length}}</div>-->
@@ -1038,9 +1043,9 @@
 								<td class="quChenRowTd"><label class="editAble quCoOptionEdit">{{optionName}}</label>
 									<div class="quItemInputCase"><input type="hidden" name="quItemId" value="{{id}}"><input type="hidden" name="quItemSaveTag" value="{{quItemSaveTag}}"></div>
 								</td>
-								/* {{#each ../columnTd}}
+								{{#each ../columnTd}}
 									<td><input type="text" class="questionChenColumnValue" value="{{isDefaultAnswer}}"></td>
-								{{/each}} */
+								{{/each}}
 							</tr>
 							{{/each}}
 						</table>
@@ -1088,9 +1093,9 @@
 					<li title="移动排序" class="dwQuMove">
 						<div class="dwQuIcon"></div>
 					</li>
-					<li title="设置" class="dwQuSet">
-						<div class="dwQuIcon"></div>
-					</li>
+<!--					<li title="设置" class="dwQuSet">-->
+<!--						<div class="dwQuIcon"></div>-->
+<!--					</li>-->
 					<li title="知识点" class="knowledgeQuLogic" knowledgeIds="{{knowledgeIds}}">
 						<div class="dwQuIcon">
 							<div class="quKnowledgeInfo">{{questionKnowledge.length}}</div>
@@ -1220,9 +1225,9 @@
 					<li title="移动排序" class="dwQuMove">
 						<div class="dwQuIcon"></div>
 					</li>
-					<li title="设置" class="dwQuSet">
-						<div class="dwQuIcon"></div>
-					</li>
+<!--					<li title="设置" class="dwQuSet">-->
+<!--						<div class="dwQuIcon"></div>-->
+<!--					</li>-->
 <!--					<li title="逻辑" class="dwQuLogic">-->
 <!--						<div class="dwQuIcon">-->
 <!--							<div class="quLogicInfo">{{questionLogic.length}}</div>-->
@@ -1318,11 +1323,12 @@
 	</script>
 
 	<script src="../../assets/lib/layui/layui.js"></script>
-   	<script src="../../assets/lib/layui/custom.js"></script>
-   	<!-- dragQuestion.js根据这个字段加载对应的文件1.问卷2.试卷 -->
-   	<script src="../../js/common/dragQuestion.js?type=2"></script>
-   	<script type="text/javascript">
-        layui.config({base: '../../js/examdesign/'}).use('examDesign');
-    </script>
+	<script src="../../assets/lib/layui/custom.js"></script>
+	<!-- dragQuestion.js根据这个字段加载对应的文件1.问卷2.试卷 -->
+	<script src="../../js/common/dragQuestion.js?type=2"></script>
+	<script type="text/javascript">
+		layui.config({ base: '../../js/examdesign/' }).use('examDesign');
+	</script>
 </body>
+
 </html>

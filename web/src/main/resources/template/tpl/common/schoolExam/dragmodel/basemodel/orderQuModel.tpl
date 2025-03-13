@@ -25,7 +25,6 @@
 				<div class="surveyQuItemLeftTools">
 					<ul class="surveyQuItemLeftToolsUl">
 						<li title="移动排序" class="dwQuMove"><div class="dwQuIcon"></div></li>
-						<li title="设置" class="dwQuSet"><div class=dwQuIcon></div></li>
 						<li title="知识点" class="knowledgeQuLogic"><div class="dwQuIcon"><div class="quKnowledgeInfo"></div></div></li>
 						<li title="删除" class="dwQuDelete"><div class="dwQuIcon"></div></li>
 					</ul>

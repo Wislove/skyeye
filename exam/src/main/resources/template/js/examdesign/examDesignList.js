@@ -127,7 +127,7 @@ layui.config({
                         return d.classesMation ? d.classesMation?.majorMation?.name : '';
                 }},
                 {field: 'subjectMation.name', width: 80, align: 'center', title: '科目', templet: function (d) {
-                        return d.subjectMation ? d.subjectMation?.name : '';
+                        return d.subjectMation ? d.classesMation?.subjectMation?.name : '';
                     }},
                 {field: 'createName', width: 120, title: systemLanguage["com.skyeye.createName"][languageType], align: 'left',
                     templet: function (d) {return d.createName || '';

@@ -119,8 +119,6 @@ layui.config({
             });
         });
         
-        console.log("格式化后的数据:", formattedData);
-        
         // 将选中的知识点传回父窗口
         parent.knowledgeReturnList = formattedData;
         
@@ -133,8 +131,6 @@ layui.config({
     
     // 清空选择按钮点击事件
     $("body").on("click", "#clearSelection", function() {
-        console.log("清空选择");
-        
         // 清空选中数据
         tableCheckBoxUtil.setIds({
             gridId: 'knowledgeTable',

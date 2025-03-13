@@ -3,6 +3,12 @@ var quIndex = 0, quLeftIndex = 0;// 问题序号
 // 从题库中选择的试题
 var questionMationList = new Array();
 
+// 要删除的行选项ID列表
+var deleteRowList = new Array();
+
+// 要删除的列选项ID列表（用于矩阵题）
+var deleteColumnList = new Array();
+
 // 知识点选择必备参数
 var schoolKnowledgeCheckType = 2;// 知识点选择类型：1.单选schoolKnowledgeMation；2.多选schoolKnowledgeMationList
 var schoolKnowledgeMationList = new Array();
@@ -35,7 +41,7 @@ layui.config({
         function initPageJson(callback) {
             AjaxPostUtil.request({
                 url: schoolBasePath + "queryDirectoryById",
-                params: {id: parent.rowId},
+                params: { id: parent.rowId },
                 pagination: false,
                 type: 'json',
                 callback: function (json) {
@@ -60,16 +66,18 @@ layui.config({
                 pagination: false,
                 template: getFileContent('tpl/examdesign/examDesignBean.tpl'),
                 ajaxSendLoadBefore: function (hdb, json) {
-                    console.log("json.rows", json.rows);
                     $.each(json.rows, function (i, item) {
-                        console.log("item", item)
                         if (isNull(item.id)) {
                             item.id = getRandomValueToString();
                             item.noQuId = 1;
                         }
+                        // 设置知识点数量
+                        if (!isNull(item.knowledgeIds)) {
+                            var knowledgeIds = item.knowledgeIds.split(',');
+                            item.questionKnowledge = knowledgeIds; // 用于模板显示知识点数量
+                        }
                     });
                     hdb.registerHelper("showIndex", function (v1, options) {
-                        console.log(11111)
                         return parseInt(v1) + 1;
                     });
 
@@ -78,7 +86,6 @@ layui.config({
                     });
 
                     hdb.registerHelper("showQuestionIndex", function (v1, options) {
-                        console.log("1111v1", v1)
                         if (v1 == '16' || v1 == '17') {
                         } else {
                             quIndex++;
@@ -111,7 +118,6 @@ layui.config({
                     });
 
                     hdb.registerHelper('showQuestion', function (v1, i, options) {
-                        console.log("showQuestion called with:", {v1, i, row: json.rows[i]});
                         switch (v1) {
                             case 1://1单选题radio
                                 return new Handlebars.SafeString(getDataUseHandlebars($("#radioTemplate").html(), json.rows[i]));
@@ -152,7 +158,7 @@ layui.config({
                         }
                     });
 
-                    //左侧设计目录显示
+                    //右侧设计目录显示
                     hdb.registerHelper('compareShowLeft', function (v1, options) {
                         if (v1 != '16' && v1 != '17') {
                             return options.fn(this);
@@ -222,6 +228,9 @@ layui.config({
 
                     // 绑定变动
                     bindQuHoverItem();
+
+                    // 初始化右侧目录
+                    resetQuLeftItem(); // 确保在页面加载时调用
 
                     $("#dwSurveyName").click(function () {
                         editAble($(this));
@@ -340,6 +349,11 @@ layui.config({
                     qBodyItem.find("input[name='quId'][value='" + bean.id + "']").val("");
                     bean.id = "";
                 }
+                // 设置知识点数量
+                if (!isNull(bean.knowledgeIds)) {
+                    var knowledgeIds = bean.knowledgeIds.split(',');
+                    qBodyItem.find(".quKnowledgeInfo").text(knowledgeIds.length);
+                }
             });
             form.render();
         }
@@ -354,14 +368,41 @@ layui.config({
             "CHENCHECKBOX": deleteChenOption, // 删除矩阵题
             "CHENFBK": deleteChenOption, // 删除矩阵题
             "CHENSCORE": deleteChenOption, // 删除矩阵题
-            "SAVEQUS": saveQus // 保存题目信息
+            "SAVEQUS": saveQus, // 保存题目信息
+            // 添加类型转换函数
+            convertQuType: function (quType) {
+                // 数字到字符串的映射
+                var quTypeMap = {
+                    1: 'RADIO',
+                    2: 'CHECKBOX',
+                    3: 'FILLBLANK',
+                    4: 'MULTIFILLBLANK',
+                    8: 'SCORE',
+                    9: 'ORDERBY',
+                    11: 'CHENRADIO',
+                    12: 'CHENFBK',
+                    13: 'CHENCHECKBOX',
+                    16: 'PAGETAG',
+                    17: 'PARAGRAPH',
+                    18: 'CHENSCORE'
+                };
+
+                // 如果是数字或数字字符串，转换为对应的类型字符串
+                if (!isNaN(quType)) {
+                    return quTypeMap[parseInt(quType)] || quType;
+                }
+                // 如果已经是字符串类型，直接返回
+                return quType;
+            }
         };
+
+        // 注册到 layui
         layui.exam = exam;
 
         // 删除题目
         $("body").on("click", ".dwQuDelete", function () {
             var quBody = $(this).parents(".surveyQuItemBody");
-            layer.confirm("确认要删除此题吗？", {icon: 3, title: '删除题目'}, function (index) {
+            layer.confirm("确认要删除此题吗？", { icon: 3, title: '删除题目' }, function (index) {
                 layer.close(index);
                 var quId = quBody.find("input[name='quId']").val();
                 if (!isNull(quId)) {
@@ -373,17 +414,7 @@ layui.config({
                         // 重置左侧设计目录序号
                         resetQuLeftItem();
                     })
-                    // AjaxPostUtil.request({
-                    //     url: schoolBasePath + "exam015", params: {quId: quId}, type: 'json', callback: function (json) {
-                    //         quBody.hide("slow", function () {
-                    //             $(this).parent().remove();
-                    //             // 重置序号
-                    //             resetQuItem();
-                    //             // 重置左侧设计目录序号
-                    //             resetQuLeftItem();
-                    //         });
-                    //     }
-                    // });
+
                 } else {
                     quBody.hide("slow", function () {
                         $(this).parent().remove();
@@ -401,54 +432,57 @@ layui.config({
          * 删除矩陈单选题选项
          */
         function deleteChenOption() {
-            var curEditTd = $(curEditObj).parents("td");
-            var curEditTdClass = curEditTd.attr("class");
-            if (curEditTdClass.indexOf("Column") >= 0) {
-                deleteChenColumnOption();
-            } else {
-                deleteChenRowOption();
-            }
-        }
-
-        /**
-         * 删除矩阵单选题列选项
-         */
-        function deleteChenColumnOption() {
             var optionParent = null;
-            optionParent = $(curEditObj).parents("td.quChenColumnTd");
-            var quOptionId = $(optionParent).find("input[name='quItemId']").val();
-            if (!isNull(quOptionId) && quOptionId != "0") {
-                AjaxPostUtil.request({
-                    url: schoolBasePath + "exam016",
-                    params: {quItemId: quOptionId},
-                    type: 'json',
-                    callback: function (json) {
-                        delQuOptionCallBack(optionParent);
-                    }
-                });
-            } else {
-                delQuOptionCallBack(optionParent);
-            }
-        }
+            var quItemBody = $(curEditObj).parents(".surveyQuItemBody");
 
-        /**
-         * 删除矩阵单选题行选项
-         */
-        function deleteChenRowOption() {
-            var optionParent = null;
-            optionParent = $(curEditObj).parents("td.quChenRowTd");
-            var quOptionId = $(optionParent).find("input[name='quItemId']").val();
-            if (!isNull(quOptionId) && quOptionId != "0") {
-                AjaxPostUtil.request({
-                    url: schoolBasePath + "exam017",
-                    params: {quItemId: quOptionId},
-                    type: 'json',
-                    callback: function (json) {
-                        delQuOptionCallBack(optionParent);
-                    }
+            // 判断是删除行还是列
+            if ($(curEditObj).parents("td.quChenColumnTd")[0]) {
+                // 删除列
+                optionParent = $(curEditObj).parents("td.quChenColumnTd");
+                var columnIndex = $(optionParent).index();
+                var quCoChenTable = quItemBody.find("table.quCoChenTable");
+                var columnCount = quCoChenTable.find("tr:first td").length;
+
+                // 检查是否只剩最后一列（减1是因为第一列是标题列）
+                if (columnCount <= 2) {
+                    winui.window.msg("至少需要保留一个选项", { icon: 2, time: 2000 });
+                    return;
+                }
+
+                // 记录要删除的选项ID
+                var quOptionId = $(optionParent).find("input[name='quItemId']").val();
+                if (quOptionId != "" && quOptionId != "0") {
+                    deleteColumnList.push(quOptionId);
+                }
+
+                // 删除该列所有单元格
+                quCoChenTable.find("tr").each(function () {
+                    $(this).find("td").eq(columnIndex).remove();
                 });
+
             } else {
-                delQuOptionCallBack(optionParent);
+                // 删除行
+                optionParent = $(curEditObj).parents("tr.quChenRowTr");
+                if (!optionParent.length) {
+                    optionParent = $(curEditObj).parents("tr");
+                }
+
+                var rowCount = quItemBody.find("table.quCoChenTable tr").length;
+
+                // 检查是否只剩最后一行（减1是因为第一行是标题行）
+                if (rowCount <= 2) {
+                    winui.window.msg("至少需要保留一个选项", { icon: 2, time: 2000 });
+                    return;
+                }
+
+                // 记录要删除的选项ID
+                var quOptionId = $(optionParent).find("input[name='quItemId']").val();
+                if (quOptionId != "" && quOptionId != "0") {
+                    deleteRowList.push(quOptionId);
+                }
+
+                // 直接从UI移除整行
+                $(optionParent).remove();
             }
         }
 
@@ -464,23 +498,26 @@ layui.config({
                     });
                 });
             }
+            knowledgeReturnList = [].concat(schoolKnowledgeMationList);
+
             _openNewWindows({
                 url: "../../tpl/schoolKnowledgePoints/schoolKnowledgePointsChoose.html",
                 title: "知识点选择",
                 pageId: "schoolKnowledgePointsChoose",
                 area: ['90vw', '90vh'],
                 callBack: function (refreshCode) {
-                    var strIds = new Array();
-                    schoolKnowledgeMationList = [].concat(knowledgeReturnList);
-                    $.each(schoolKnowledgeMationList, function (i, item) {
-                        strIds.push(item.id);
-                    });
-                    console.log("str", strIds)
-                    $(_this).attr("knowledgeIds", strIds.toString());
-                    $(_this).find(".quKnowledgeInfo").html(schoolKnowledgeMationList.length);
-                    // 设置题目为编辑，可以进行保存
-                    var quItemBody = $(_this).parents(".surveyQuItemBody");
-                    quItemBody.find("input[name='saveTag']").val(0);
+                    if (refreshCode == '0') {
+                        schoolKnowledgeMationList = [].concat(knowledgeReturnList);
+                        var strIds = new Array();
+                        $.each(schoolKnowledgeMationList, function (i, item) {
+                            strIds.push(item.id);
+                        });
+                        $(_this).attr("knowledgeIds", strIds.toString());
+                        $(_this).find(".quKnowledgeInfo").text(schoolKnowledgeMationList.length);
+                        // 设置题目为编辑，可以进行保存
+                        var quItemBody = $(_this).parents(".surveyQuItemBody");
+                        quItemBody.find("input[name='saveTag']").val(0);
+                    }
                 }
             });
         });
@@ -594,18 +631,9 @@ layui.config({
                 examData.questionMation = questionMation; // 将题目参数添加到试卷数据中
                 examData.questionMation = JSON.stringify(examData.questionMation);
                 examData.whetherDelete = 1;
-                console.log("examData:", examData); // 添加日志输出
                 saveExam(examData); // 调用统一接口保存试卷
             });
 
-            // winui.window.msg('保存中', {icon: 1, time: 1000});
-            // saveSurvey(function () {
-            //     isSaveProgress = false;
-            //     winui.window.msg(systemLanguage["com.skyeye.addOperationSuccessMsg"][languageType], {
-            //         icon: 1,
-            //         time: 2000
-            //     });
-            // });
         }
 
         function saveExam(examData) {
@@ -615,18 +643,12 @@ layui.config({
                 type: 'json',
                 callback: function (json) {
                     if (json.bean) {
-                        winui.window.msg("保存成功", {icon: 1, time: 2000});
+                        winui.window.msg("保存成功", { icon: 1, time: 2000 });
                     } else {
-                        winui.window.msg("保存失败：" + json.message, {icon: 2, time: 2000});
+                        winui.window.msg("保存失败：" + json.message, { icon: 2, time: 2000 });
                     }
                 }
             });
-        }
-
-        function saveSurvey(callback) {
-            isSaveProgress = true;
-            var fristQuItemBody = $("#dwSurveyQuContent .li_surveyQuItemBody").first();
-            saveQus(fristQuItemBody, callback);
         }
 
         /**
@@ -672,27 +694,21 @@ layui.config({
             $("#dwSurveyQuContent .surveyQuItemBody").each(function () {
                 var quItemBody = $(this);
                 var quType = quItemBody.find("input[name='quType']").val();
-                console.log("保存时，quType:", quType, typeof quType); // 调试信息
 
                 // 统一处理 quType
                 var quTypeStr, quTypeNum;
-
-                console.log("保存时，quType:", quType, typeof quType); // 调试信息
 
                 if (!isNaN(parseInt(quType))) {
                     // 如果 quType 是数字字符串，转换为数字
                     quTypeNum = parseInt(quType);
                     quTypeStr = quTypeMap[quTypeNum]; // 根据数字获取对应的题型字符串
-                    console.log("数字字符串转换后，quTypeNum:", quTypeNum, "quTypeStr:", quTypeStr); // 调试信息
                 } else if (quTypeMap[quType]) {
                     // 如果 quType 是字符串形式的题型名称（如 "RADIO"），转换为数字
                     quTypeStr = quType;
                     quTypeNum = quTypeMap[quType]; // 根据字符串获取对应的数字
-                    // console.log("题型名称转换后，quTypeStr:", quTypeStr, "quTypeNum:", quTypeNum); // 调试信息
                 } else {
-                    console.warn("未知题型：" + quType);
+                    winui.window.msg("未知题型：" + quType, { icon: 2, time: 2000 });
                 }
-                console.log("题型名称转换后，quTypeStr:", quTypeStr, "quTypeNum:", quTypeNum);
                 var quId = quItemBody.find("input[name='quId']").val(); // 获取题目 ID
                 // 判断是新增还是编辑
                 var isEdit = !isNull(quId); // 如果 quId 存在，则是编辑；否则是新增
@@ -728,14 +744,12 @@ layui.config({
                         questionData = savePagetag(quItemBody, isEdit);
                         break;
                     default:
-                        console.warn("未知题型：" + quTypeStr);
+                        winui.window.msg("未知题型：" + quTypeStr, { icon: 2, time: 2000 });
                         return;
                 }
 
                 // 将转换后的 quType 添加到 questionData
                 questionData.quType = quTypeNum;
-                console.log("questionData:", questionData); // 调试信息
-
                 // 将题目参数对象添加到 questionMation 数组
                 questionMation.push(questionData);
             });
@@ -759,7 +773,7 @@ layui.config({
             if (tabIndex != 0 && tabIndex >= 0) {
                 fileUrl = quItemBody.find(".layui-tab-content").find(".layui-show").find(".upload").find("input[type='hidden'][name='upload']").attr("oldurl");
                 if (isNull(fileUrl)) {
-                    winui.window.msg('请上传文件.', {icon: 2, time: 2000});
+                    winui.window.msg('请上传文件.', { icon: 2, time: 2000 });
                     throw err = new Error('请上传文件');
                 }
             } else {
@@ -789,13 +803,10 @@ layui.config({
 
         /** 保存单选题 **/
         function saveRadio(quItemBody, isEdit) {
-            var saveTag = quItemBody.find("input[name='saveTag']").val();
-            // if (saveTag == 0) {
             var data = {
                 contactsAttr: quItemBody.find("input[name='contactsAttr']").val(),
                 contactsField: quItemBody.find("input[name='contactsField']").val()
             };
-            console.log("data:", data);
             $.extend(data, getCommonParams(quItemBody));
             var quItemOptions = null;
             if (data.hv == 3) {
@@ -815,15 +826,11 @@ layui.config({
                     }
                     var s = {
                         optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
-                        // optionValue: encodeURI($(this).find("label.quCoOptionEdit").html()),
-                        // optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
                         isNote: $(this).find(".quItemInputCase input[name='isNote']").val(),
                         checkType: $(this).find(".quItemInputCase input[name='checkType']").val(),
                         isRequiredFill: $(this).find(".quItemInputCase input[name='isRequiredFill']").val(),
-                        // isDefaultAnswer: isDefaultAnswer,
                         orderById: i
                     };
-                    // console.log("isEdit:",isEdit)
                     // 如果是编辑，传入 optionId
                     if (isEdit) {
                         s.optionId = $(this).find(".quItemInputCase input[name='quItemId']").val();
@@ -834,49 +841,37 @@ layui.config({
                 $(this).addClass("quOption_" + i);
             });
             data.radioTd = JSON.stringify(radioTd);
-
-            // 逻辑选项
-            // var list = [].concat(getLogic(quItemBody));
-            // data.logic = JSON.stringify(list);
             return data;
-
-            // } else {
-            //     saveQus(quItemBody.next(), callback);
-            // }
         }
 
         /**
          * 删除单选题选项
          */
         function deleteRadioOption() {
-            //判断是否是table类型
             var quItemBody = $(curEditObj).parents(".surveyQuItemBody");
             var hv = quItemBody.find("input[name='hv']").val();
             var optionParent = null;
             if (hv == 3) {
                 optionParent = $(curEditObj).parents("td");
+                // 检查表格中的选项数量
+                if (quItemBody.find(".quCoItem td").length <= 1) {
+                    winui.window.msg('至少需要保留一个选项', { icon: 2, time: 2000 });
+                    return false;
+                }
             } else {
                 optionParent = $(curEditObj).parents("li.quCoItemUlLi");
+                // 检查列表中的选项数量
+                if (quItemBody.find(".quCoItem li.quCoItemUlLi").length <= 1) {
+                    winui.window.msg('至少需要保留一个选项', { icon: 2, time: 2000 });
+                    return false;
+                }
             }
-            var quOptionId = $(optionParent).find("input[name='quItemId']").val();
-            if (quOptionId != "" && quOptionId != "0") {
-                AjaxPostUtil.request({
-                    url: schoolBasePath + "exam018",
-                    params: {quItemId: quOptionId},
-                    type: 'json',
-                    callback: function (json) {
-                        delQuOptionCallBack(optionParent);
-                    }
-                });
-            } else {
-                delQuOptionCallBack(optionParent);
-            }
+            // 直接移除选项
+            $(optionParent).remove();
         }
 
         /** 保存多选题 **/
         function saveCheckbox(quItemBody, isEdit) {
-            // var saveTag = quItemBody.find("input[name='saveTag']").val();
-            // if (saveTag == 0) {
             var data = {
                 contactsAttr: quItemBody.find("input[name='contactsAttr']").val(),
                 contactsField: quItemBody.find("input[name='contactsField']").val()
@@ -900,8 +895,6 @@ layui.config({
                     }
                     var s = {
                         optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
-                        // optionValue: encodeURI($(this).find("label.quCoOptionEdit").html()),
-                        // optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
                         isNote: $(this).find(".quItemInputCase input[name='isNote']").val(),
                         checkType: $(this).find(".quItemInputCase input[name='checkType']").val(),
                         isRequiredFill: $(this).find(".quItemInputCase input[name='isRequiredFill']").val(),
@@ -918,58 +911,34 @@ layui.config({
                 $(this).addClass("quOption_" + i);
             });
             data.checkboxTd = JSON.stringify(checkboxTd);
-            // 逻辑选项
-            // var list = [].concat(getLogic(quItemBody));
-            // data.logic = JSON.stringify(list);
+
             return data;
-            // AjaxPostUtil.request({
-            //     url: schoolBasePath + "exam011", params: data, type: 'json', callback: function (json) {
-            //         var quId = json.bean.quId;
-            //         quItemBody.find("input[name='saveTag']").val(1);
-            //         quItemBody.find(".quCoTitle input[name='quTitleSaveTag']").val(1);
-            //         quItemBody.find("input[name='quId']").val(quId);
-            //
-            //         //重置问题选项和业务逻辑
-            //         resetLogicAndItem(quItemBody, json);
-            //
-            //         //执行保存下一题
-            //         saveQus(quItemBody.next(), callback);
-            //         //同步-更新题目排序号
-            //         quCBNum2++;
-            //         exeQuCBNum();
-            //     }
-            // });
-            // } else {
-            //     saveQus(quItemBody.next(), callback);
-            // }
         }
 
         /**
          * 删除多选题选项
          */
         function deleteCheckboxOption() {
-            //判断是否是table类型
             var quItemBody = $(curEditObj).parents(".surveyQuItemBody");
             var hv = quItemBody.find("input[name='hv']").val();
             var optionParent = null;
             if (hv == 3) {
                 optionParent = $(curEditObj).parents("td");
+                // 检查表格中的选项数量
+                if (quItemBody.find(".quCoItem td").length <= 1) {
+                    winui.window.msg('至少需要保留一个选项', { icon: 2, time: 2000 });
+                    return false;
+                }
             } else {
                 optionParent = $(curEditObj).parents("li.quCoItemUlLi");
+                // 检查列表中的选项数量
+                if (quItemBody.find(".quCoItem li.quCoItemUlLi").length <= 1) {
+                    winui.window.msg('至少需要保留一个选项', { icon: 2, time: 2000 });
+                    return false;
+                }
             }
-            var quOptionId = $(optionParent).find("input[name='quItemId']").val();
-            if (quOptionId != "" && quOptionId != "0") {
-                AjaxPostUtil.request({
-                    url: schoolBasePath + "exam019",
-                    params: {quItemId: quOptionId},
-                    type: 'json',
-                    callback: function (json) {
-                        delQuOptionCallBack(optionParent);
-                    }
-                });
-            } else {
-                delQuOptionCallBack(optionParent);
-            }
+            // 直接移除选项
+            $(optionParent).remove();
         }
 
         function delQuOptionCallBack(optionParent) {
@@ -1040,8 +1009,6 @@ layui.config({
 
         /** 保存填空题 **/
         function saveFillblank(quItemBody, isEdit) {
-            // var saveTag = quItemBody.find("input[name='saveTag']").val();
-            // if (saveTag == 0) {
             var data = {
                 answerInputWidth: quItemBody.find("input[name='answerInputWidth']").val(),
                 answerInputRow: quItemBody.find("input[name='answerInputRow']").val(),
@@ -1051,41 +1018,11 @@ layui.config({
                 isDefaultAnswer: quItemBody.find("input[class='quFillblankAnswerInput']").val()
             };
             $.extend(data, getCommonParams(quItemBody));
-            // 逻辑选项
-            // var list = [].concat(getLogic(quItemBody));
-            // data.logic = JSON.stringify(list);
             return data;
-            // AjaxPostUtil.request({
-            //     url: schoolBasePath + "exam006", params: data, type: 'json', callback: function (json) {
-            //         var quId = json.bean.quId;
-            //         quItemBody.find("input[name='saveTag']").val(1);
-            //         quItemBody.find(".quCoTitle input[name='quTitleSaveTag']").val(1);
-            //         quItemBody.find("input[name='quId']").val(quId);
-            //         // 同步logic Id信息
-            //         var quLogics = json.bean.quLogics;
-            //         if (!isNull(quLogics)) {
-            //             $.each(quLogics, function (i, item) {
-            //                 var logicItem = quItemBody.find(".quLogicItem_" + item.title);
-            //                 logicItem.find("input[name='quLogicId']").val(item.id);
-            //                 logicItem.find("input[name='logicSaveTag']").val(1);
-            //             });
-            //         }
-            //         // 执行保存下一题
-            //         saveQus(quItemBody.next(), callback);
-            //         // 同步-更新题目排序号
-            //         quCBNum2++;
-            //         exeQuCBNum();
-            //     }
-            // });
-            // } else {
-            //     saveQus(quItemBody.next(), callback);
-            // }
         }
 
         /** 保存评分题 **/
         function saveScore(quItemBody, isEdit) {
-            // var saveTag = quItemBody.find("input[name='saveTag']").val();
-            // if (saveTag == 0) {
             var data = {
                 paramInt01: quItemBody.find("input[name='paramInt01']").val(),
                 paramInt02: quItemBody.find("input[name='paramInt02']").val()
@@ -1099,8 +1036,6 @@ layui.config({
                 if (quItemSaveTag == 0) {
                     var s = {
                         optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
-                        // optionValue: encodeURI($(this).find("label.quCoOptionEdit").html()),
-                        // optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
                         orderById: i
                     };
                     // 如果是编辑，传入 optionId
@@ -1113,31 +1048,7 @@ layui.config({
                 $(this).addClass("quOption_" + i);
             });
             data.scoreTd = JSON.stringify(scoreTd);
-
-            // 逻辑选项
-            // var list = [].concat(getLogic(quItemBody));
-            // data.logic = JSON.stringify(list);
             return data;
-            // AjaxPostUtil.request({
-            //     url: schoolBasePath + "exam007", params: data, type: 'json', callback: function (json) {
-            //         var quId = json.bean.quId;
-            //         quItemBody.find("input[name='saveTag']").val(1);
-            //         quItemBody.find(".quCoTitle input[name='quTitleSaveTag']").val(1);
-            //         quItemBody.find("input[name='quId']").val(quId);
-            //
-            //         //重置问题选项和业务逻辑
-            //         resetLogicAndItem(quItemBody, json);
-            //
-            //         //执行保存下一题
-            //         saveQus(quItemBody.next(), callback);
-            //         //同步-更新题目排序号
-            //         quCBNum2++;
-            //         exeQuCBNum();
-            //     }
-            // });
-            // } else {
-            //     saveQus(quItemBody.next(), callback);
-            // }
         }
 
         /**
@@ -1146,19 +1057,23 @@ layui.config({
         function deleteScoreOption() {
             var optionParent = null;
             optionParent = $(curEditObj).parents("tr.quScoreOptionTr");
+
+            // 检查是否只剩最后一个选项
+            var quItemBody = $(optionParent).parents(".surveyQuItemBody");
+            var scoreOptions = quItemBody.find("tr.quScoreOptionTr");
+            if (scoreOptions.length <= 1) {
+                layer.msg("至少需要保留一个选项", { icon: 2, time: 2000 });
+                return;
+            }
+
+            // 记录要删除的选项ID
             var quOptionId = $(optionParent).find("input[name='quItemId']").val();
             if (quOptionId != "" && quOptionId != "0") {
-                AjaxPostUtil.request({
-                    url: schoolBasePath + "exam020",
-                    params: {quItemId: quOptionId},
-                    type: 'json',
-                    callback: function (json) {
-                        delQuOptionCallBack(optionParent);
-                    }
-                });
-            } else {
-                delQuOptionCallBack(optionParent);
+                deleteRowList.push(quOptionId);
             }
+
+            // 直接从UI移除
+            $(optionParent).remove();
         }
 
         /** 保存排序题 **/
@@ -1175,8 +1090,6 @@ layui.config({
                 if (quItemSaveTag == 0) {
                     var s = {
                         optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
-                        // optionValue: encodeURI($(this).find("label.quCoOptionEdit").html()),
-                        // optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
                         orderById: i
                     };
                     // 如果是编辑，传入 optionId
@@ -1188,32 +1101,8 @@ layui.config({
                 $(this).addClass("quOption_" + i);
             });
             data.orderByTd = JSON.stringify(orderByTd);
-
-            // 逻辑选项
-            // var list = [].concat(getLogic(quItemBody));
-            // data.logic = JSON.stringify(list);
             return data;
 
-            // AjaxPostUtil.request({
-            //     url: schoolBasePath + "exam008", params: data, type: 'json', callback: function (json) {
-            //         var quId = json.bean.quId;
-            //         quItemBody.find("input[name='saveTag']").val(1);
-            //         quItemBody.find(".quCoTitle input[name='quTitleSaveTag']").val(1);
-            //         quItemBody.find("input[name='quId']").val(quId);
-            //
-            //         //重置问题选项和业务逻辑
-            //         resetLogicAndItem(quItemBody, json);
-            //
-            //         //执行保存下一题
-            //         saveQus(quItemBody.next(), callback);
-            //         //同步-更新题目排序号
-            //         quCBNum2++;
-            //         exeQuCBNum();
-            //     }
-            // });
-            // } else {
-            //     saveQus(quItemBody.next(), callback);
-            // }
         }
 
         /**
@@ -1222,96 +1111,52 @@ layui.config({
         function deleteOrderquOption() {
             var optionParent = null;
             optionParent = $(curEditObj).parents("li.quCoItemUlLi");
-            var quItemBody = $(curEditObj).parents(".surveyQuItemBody");
-            var rmQuOrderTableTr = quItemBody.find(".quOrderByRight table.quOrderByTable tr:last");
+
+            // 检查是否只剩最后一个选项
+            var quItemBody = $(optionParent).parents(".surveyQuItemBody");
+            var orderOptions = quItemBody.find("li.quCoItemUlLi");
+            if (orderOptions.length <= 1) {
+                layer.msg("至少需要保留一个选项", { icon: 2, time: 2000 });
+                return;
+            }
+
+            // 记录要删除的选项ID
             var quOptionId = $(optionParent).find("input[name='quItemId']").val();
             if (quOptionId != "" && quOptionId != "0") {
-                AjaxPostUtil.request({
-                    url: schoolBasePath + "exam021",
-                    params: {quItemId: quOptionId},
-                    type: 'json',
-                    callback: function (json) {
-                        delQuOptionCallBack(optionParent);
-                        rmQuOrderTableTr.remove();
-                    }
-                });
-            } else {
-                delQuOptionCallBack(optionParent);
-                rmQuOrderTableTr.remove();
+                deleteRowList.push(quOptionId);
             }
+
+            // 同时删除右侧序号表格中对应的行
+            var orderTableTr = quItemBody.find(".quOrderByRight table.quOrderByTable tr").eq($(optionParent).index());
+            $(orderTableTr).remove();
+
+            // 直接从UI移除
+            $(optionParent).remove();
+
+            // 重新排序右侧序号
+            var quOrderByTable = quItemBody.find(".quOrderByRight table.quOrderByTable");
+            refquOrderTableTdNum(quOrderByTable);
         }
 
         /** 保存分页标记 **/
         function savePagetag(quItemBody, callback) {
-            // var saveTag = quItemBody.find("input[name='saveTag']").val();
-            // if (saveTag == 0) {
             var data = {};
             $.extend(data, getCommonParams(quItemBody));
-            // 逻辑选项
-            // var list = [].concat(getLogic(quItemBody));
-            // data.logic = JSON.stringify(list);
             return data;
-            // AjaxPostUtil.request({
-            //     url: schoolBasePath + "exam009", params: data, type: 'json', callback: function (json) {
-            //         var quId = json.bean.quId;
-            //         quItemBody.find("input[name='saveTag']").val(1);
-            //         quItemBody.find(".quCoTitle input[name='quTitleSaveTag']").val(1);
-            //         quItemBody.find("input[name='quId']").val(quId);
-            //
-            //         //重置问题选项和业务逻辑
-            //         resetLogicAndItem(quItemBody, json);
-            //
-            //         //执行保存下一题
-            //         saveQus(quItemBody.next(), callback);
-            //         //同步-更新题目排序号
-            //         quCBNum2++;
-            //         exeQuCBNum();
-            //     }
-            // });
-            // } else {
-            //     saveQus(quItemBody.next(), callback);
-            // }
         }
 
         /** 保存段落题 **/
         function saveParagraph(quItemBody, callback) {
-            // var saveTag = quItemBody.find("input[name='saveTag']").val();
-            // if (saveTag == 0) {
             var data = {};
             $.extend(data, getCommonParams(quItemBody));
             // 逻辑选项
             var list = [].concat(getLogic(quItemBody));
             data.logic = JSON.stringify(list);
             return data;
-            // AjaxPostUtil.request({
-            //     url: schoolBasePath + "exam013", params: data, type: 'json', callback: function (json) {
-            //         var quId = json.bean.quId;
-            //         quItemBody.find("input[name='saveTag']").val(1);
-            //         quItemBody.find(".quCoTitle input[name='quTitleSaveTag']").val(1);
-            //         quItemBody.find("input[name='quId']").val(quId);
-            //         //同步logic Id信息
-            //         var quLogics = json.bean.quLogics;
-            //         $.each(quLogics, function (i, item) {
-            //             var logicItem = quItemBody.find(".quLogicItem_" + item.title);
-            //             logicItem.find("input[name='quLogicId']").val(item.id);
-            //             logicItem.find("input[name='logicSaveTag']").val(1);
-            //         });
-            //         //执行保存下一题
-            //         saveQus(quItemBody.next(), callback);
-            //         //同步-更新题目排序号
-            //         quCBNum2++;
-            //         exeQuCBNum();
-            //     }
-            // });
-            // } else {
-            //     saveQus(quItemBody.next(), callback);
-            // }
         }
 
         /** 新保存多项填空题 **/
         function saveMultiFillblank(quItemBody, isEdit) {
-            // var saveTag = quItemBody.find("input[name='saveTag']").val();
-            // if (saveTag == 0) {
             var data = {
                 paramInt01: quItemBody.find("input[name='paramInt01']").val(),
                 paramInt02: quItemBody.find("input[name='paramInt02']").val()
@@ -1340,30 +1185,7 @@ layui.config({
                 $(this).addClass("quOption_" + i);
             });
             data.multifillblankTd = JSON.stringify(multifillblankTd);
-            // 逻辑选项
-            // var list = [].concat(getLogic(quItemBody));
-            // data.logic = JSON.stringify(list);
             return data;
-            // AjaxPostUtil.request({
-            //     url: schoolBasePath + "exam012", params: data, type: 'json', callback: function (json) {
-            //         var quId = json.bean.quId;
-            //         quItemBody.find("input[name='saveTag']").val(1);
-            //         quItemBody.find(".quCoTitle input[name='quTitleSaveTag']").val(1);
-            //         quItemBody.find("input[name='quId']").val(quId);
-            //
-            //         // 重置问题选项和业务逻辑
-            //         resetLogicAndItem(quItemBody, json);
-            //
-            //         // 执行保存下一题
-            //         saveQus(quItemBody.next(), callback);
-            //         // 同步-更新题目排序号
-            //         quCBNum2++;
-            //         exeQuCBNum();
-            //     }
-            // });
-            // } else {
-            //     saveQus(quItemBody.next(), callback);
-            // }
         }
 
         /**
@@ -1372,25 +1194,27 @@ layui.config({
         function deleteMultiFillblankOption() {
             var optionParent = null;
             optionParent = $(curEditObj).parents("tr.mFillblankTableTr");
+
+            // 检查是否只剩最后一个选项
+            var quItemBody = $(optionParent).parents(".surveyQuItemBody");
+            var fillblankOptions = quItemBody.find("tr.mFillblankTableTr");
+            if (fillblankOptions.length <= 1) {
+                layer.msg("至少需要保留一个选项", { icon: 2, time: 2000 });
+                return;
+            }
+
+            // 记录要删除的选项ID
             var quOptionId = $(optionParent).find("input[name='quItemId']").val();
             if (quOptionId != "" && quOptionId != "0") {
-                AjaxPostUtil.request({
-                    url: schoolBasePath + "exam022",
-                    params: {quItemId: quOptionId},
-                    type: 'json',
-                    callback: function (json) {
-                        delQuOptionCallBack(optionParent);
-                    }
-                });
-            } else {
-                delQuOptionCallBack(optionParent);
+                deleteRowList.push(quOptionId);
             }
+
+            // 直接从UI移除
+            $(optionParent).remove();
         }
 
         /** 保存矩阵题 **/
         function saveChen(quItemBody, isEdit) {
-            // var saveTag = quItemBody.find("input[name='saveTag']").val();
-            // if (saveTag == 0) {
             var data = {
                 quType: quItemBody.find("input[name='quType']").val()
             };
@@ -1403,11 +1227,8 @@ layui.config({
                 if (quItemSaveTag == 0) {
                     var s = {
                         optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
-                        // optionValue: encodeURI($(this).find("label.quCoOptionEdit").html()),
-                        // optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
                         visibility: 1,
-                        orderById:i
-                        // key: i
+                        orderBy: i
                     };
                     // 如果是编辑，传入 optionId
                     if (isEdit) {
@@ -1427,11 +1248,8 @@ layui.config({
                 if (quItemSaveTag == 0) {
                     var s = {
                         optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
-                        // optionValue: encodeURI($(this).find("label.quCoOptionEdit").html()),
-                        // optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
                         visibility: 1,
-                        orderById:i
-                        // key: i
+                        orderBy: i
                     };
                     // 如果是编辑，传入 optionId
                     if (isEdit) {
@@ -1531,53 +1349,7 @@ layui.config({
             }
 
             data.rowTd = JSON.stringify(rowTd);
-            // 逻辑选项
-            // var list = [].concat(getLogic(quItemBody));
-            // data.logic = JSON.stringify(list);
             return data;
-            // AjaxPostUtil.request({
-            //     url: schoolBasePath + "exam014", params: data, type: 'json', callback: function (json) {
-            //         var quId = json.bean.quId;
-            //         quItemBody.find("input[name='saveTag']").val(1);
-            //         quItemBody.find(".quCoTitle input[name='quTitleSaveTag']").val(1);
-            //         quItemBody.find("input[name='quId']").val(quId);
-            //         // 列选项
-            //         var quColumnItems = json.bean.quColumnItems;
-            //         if (!isNull(quColumnItems)) {
-            //             $.each(quColumnItems, function (i, item) {
-            //                 var quItemOption = quItemBody.find(".quColumnOption_" + item.title);
-            //                 quItemOption.find("input[name='quItemId']").val(item.id);
-            //                 quItemOption.find(".quItemInputCase input[name='quItemSaveTag']").val(1);
-            //             });
-            //         }
-            //         // 行选项
-            //         var quRowItems = json.bean.quRowItems;
-            //         if (!isNull(quRowItems)) {
-            //             $.each(quRowItems, function (i, item) {
-            //                 var quItemOption = quItemBody.find(".quRowOption_" + item.title);
-            //                 quItemOption.find("input[name='quItemId']").val(item.id);
-            //                 quItemOption.find(".quItemInputCase input[name='quItemSaveTag']").val(1);
-            //             });
-            //         }
-            //         // 同步logic Id信息
-            //         var quLogics = json.bean.quLogics;
-            //         if (!isNull(quLogics)) {
-            //             $.each(quLogics, function (i, item) {
-            //                 var logicItem = quItemBody.find(".quLogicItem_" + item.title);
-            //                 logicItem.find("input[name='quLogicId']").val(item.id);
-            //                 logicItem.find("input[name='logicSaveTag']").val(1);
-            //             });
-            //         }
-            //         // 执行保存下一题
-            //         saveQus(quItemBody.next(), callback);
-            //         // 同步-更新题目排序号
-            //         quCBNum2++;
-            //         exeQuCBNum();
-            //     }
-            // });
-            // } else {
-            //     saveQus(quItemBody.next(), callback);
-            // }
         }
 
         //分数变化事件

@@ -95,22 +95,49 @@ layui.define(["jquery", 'form'], function (exports) {
         //触发显示题目标题编辑框
         function editAble(editAbleObj) {
             curEditCallback();
-
             var thClass = $(editAbleObj).attr("class");
             var editOffset = $(editAbleObj).offset();
             $("#dwCommonEditRoot").removeClass();
+            // 移除之前的事件监听
+            $("#dwComEditContent").off("input");
+            
             if (thClass.indexOf("quCoTitleEdit") > 0) {
                 //题目标题
                 $("#dwCommonEditRoot").addClass("quEdit");
+                // 添加题目长度限制
+                $("#dwComEditContent").on("input", function() {
+                    if(this.innerText.length > 400) {
+                        this.innerText = this.innerText.substring(0, 400);
+                        // 将光标移到末尾
+                        var range = document.createRange();
+                        var sel = window.getSelection();
+                        range.selectNodeContents(this);
+                        range.collapse(false);
+                        sel.removeAllRanges();
+                        sel.addRange(range);
+                    }
+                });
             } else if (thClass.indexOf("quCoOptionEdit") > 0) {
                 //题目选项
                 $("#dwCommonEditRoot").addClass("quOptionEdit");
+                // 添加选项长度限制
+                $("#dwComEditContent").on("input", function() {
+                    if(this.innerText.length > 50) {
+                        this.innerText = this.innerText.substring(0, 50);
+                        // 将光标移到末尾
+                        var range = document.createRange();
+                        var sel = window.getSelection();
+                        range.selectNodeContents(this);
+                        range.collapse(false);
+                        sel.removeAllRanges();
+                        sel.addRange(range);
+                    }
+                });
             }
             $("#dwCommonEditRoot").show();
             $("#dwCommonEditRoot").offset({top: editOffset.top, left: editOffset.left});
             $("#dwComEditContent").focus();
             $("#dwComEditContent").html($(editAbleObj).html());
-
             $("#dwCommonEditRoot .dwCommonEdit").css("min-width", 200);
             setSelectText($("#dwComEditContent"));
             curEditObj = $(editAbleObj);

@@ -1,5 +1,3 @@
-
-
 // 问卷-基本题型
 var _basemodel;
 // 问卷-矩阵题型
@@ -65,7 +63,7 @@ layui.define(["jquery", "form", "element"], function(exports) {
 							+ getFileContent('tpl/common/dragQuestion/dragmodel/rectanglemodel/chenScoreQuModel.tpl')
 							+ getFileContent('tpl/common/dragQuestion/dragmodel/rectanglemodel/chenFillblankQuModel.tpl');
 			// 辅助组件
-			_auxiliarymodel = getFileContent('tpl/common/dragQuestion/dragmodel/auxiliarymodel/pageQuModel.tpl')
+			_auxiliarymodel = getFileContent('tpl/common/dragQuestion/dragmodel/auxiliarymodel/pageQuModel.tpl');
 							+ getFileContent('tpl/common/dragQuestion/dragmodel/auxiliarymodel/paragraphQuModel.tpl');
 			// 操作
 			_operationmodel = getFileContent('tpl/common/dragQuestion/dragmodel/operationmodel/surveyAttrSetToolbar.tpl')
@@ -83,6 +81,7 @@ layui.define(["jquery", "form", "element"], function(exports) {
 							+ getFileContent('tpl/common/dragQuestion/dragmodel/commonlyusedmodel/companyQuModel.tpl')
 							+ getFileContent('tpl/common/dragQuestion/dragmodel/commonlyusedmodel/salaryQuModel.tpl')
 							+ getFileContent('tpl/common/dragQuestion/dragmodel/commonlyusedmodel/dateQuModel.tpl');
+
 			// 各种模板
 			_varioustemplates = getFileContent('tpl/common/dragQuestion/dwcommon/dwCommonEditRoot.tpl');
 		} else if (type == 2){
@@ -102,8 +101,8 @@ layui.define(["jquery", "form", "element"], function(exports) {
 							+ getFileContent('tpl/common/schoolExam/dragmodel/rectanglemodel/chenScoreQuModel.tpl')
 							+ getFileContent('tpl/common/schoolExam/dragmodel/rectanglemodel/chenFillblankQuModel.tpl');
 		    // 辅助组件
-		    _auxiliarymodelSchool = getFileContent('tpl/common/schoolExam/dragmodel/auxiliarymodel/pageQuModel.tpl')
-							+ getFileContent('tpl/common/schoolExam/dragmodel/auxiliarymodel/paragraphQuModel.tpl');
+		    _auxiliarymodelSchool = getFileContent('tpl/common/schoolExam/dragmodel/auxiliarymodel/pageQuModel.tpl');
+							// + getFileContent('tpl/common/schoolExam/dragmodel/auxiliarymodel/paragraphQuModel.tpl');
 		    // 逻辑设计模板
 		    _varioustemplatesSchool = getFileContent('tpl/common/schoolExam/examcommon/examCommonEditRoot.tpl');
 		}
@@ -306,23 +305,29 @@ layui.define(["jquery", "form", "element"], function(exports) {
 		$("body").on("click", ".addOption,.addColumnOption,.addRowOption", function() {
 			var quItemBody = $(this).parents(".surveyQuItemBody");
 			var quType = quItemBody.find("input[name='quType']").val();
-			if(quType == '1') {
+			
+			if(quType === '1' || quType === 'RADIO') {
 				//添加单选选项
 				editAble(addRadioItem(quItemBody, ""));
 				form.render('radio');
-			} else if(quType == '2') {
+			} else if(quType === '2' || quType === 'CHECKBOX') {
 				editAble(addCheckboxItem(quItemBody, ""));
 				form.render('checkbox');
-			} else if(quType == '8') {
+			} else if(quType === '8' || quType === 'SCORE') {
 				editAble(addScoreItem(quItemBody, "新选项"));
-			} else if(quType == '9') {
+			} else if(quType === '9' || quType === 'ORDERBY') {
 				editAble(addOrderquItem(quItemBody, "新选项"));
-			} else if(quType == '4') {
+			} else if(quType === '4' || quType === 'MULTIFILLBLANK') {
 				editAble(addMultiFillblankItem(quItemBody, "新选项"));
-			} else if(quType == '11' || quType == '13' || quType == '12' || quType == '18') { //矩陈单选题,矩阵多选题
+			} else if(quType === '11' || quType === 'CHENRADIO' || 
+                     quType === '13' || quType === 'CHENCHECKBOX' || 
+                     quType === '12' || quType === 'CHENFBK' || 
+                     quType === '18' || quType === 'CHENSCORE') {
+				//矩阵题处理
 				editAble(addChenItem($(this), quItemBody, "新选项"));
 				form.render('radio');
 				form.render('checkbox');
+				form.render('select');
 			}
 			bindQuHoverItem();
 			return false;
@@ -366,22 +371,22 @@ layui.define(["jquery", "form", "element"], function(exports) {
 				var nextLi = null;
 				var prevLi = null;
 				var nextLiAfterHtml = "";
-				if(quType === "RADIO" || quType === "CHECKBOX" || quType === "ORDERBY"){
+				if(quType === "RADIO" || quType === "1" || quType === "CHECKBOX" || quType === "2" || quType === "ORDERBY" || quType === "9"){
 					nextLi = $(curEditObj).parents("li.quCoItemUlLi");
 					prevLi = nextLi.prev();
 					var prevLiHtml = prevLi.html();
 					nextLiAfterHtml = "<li class='quCoItemUlLi'>" + prevLiHtml + "</li>";
-				} else if (quType === "SCORE"){
+				} else if (quType === "SCORE" || quType === "8"){
 					nextLi = $(curEditObj).parents("tr.quScoreOptionTr");
 					prevLi = nextLi.prev();
 					var prevLiHtml = prevLi.html();
 					nextLiAfterHtml = "<tr class='quScoreOptionTr'>" + prevLiHtml + "</tr>";
-				} else if (quType === "MULTIFILLBLANK"){
+				} else if (quType === "MULTIFILLBLANK" || quType === "4"){
 					nextLi = $(curEditObj).parents("tr.mFillblankTableTr");
 					prevLi = nextLi.prev();
 					var prevLiHtml = prevLi.html();
 					nextLiAfterHtml = "<tr class='mFillblankTableTr'>" + prevLiHtml + "</tr>";
-				} else if (quType === "CHENRADIO" || quType === "CHENCHECKBOX" || quType === "CHENSCORE" || quType === "CHENFBK"){
+				} else if (quType === "CHENRADIO" || quType === "11" || quType === "CHENCHECKBOX" || quType === "13" || quType === "CHENSCORE" || quType === "18" || quType === "CHENFBK" || quType === "12"){
 					nextLi = $(curEditObj).parents("tr.quChenRowTr");
 					if(nextLi[0]){
 						prevLi = nextLi.prev();
@@ -433,29 +438,29 @@ layui.define(["jquery", "form", "element"], function(exports) {
 						prevTd = prevTr.find("td").last();
 						dwOptionUp_1(prevTr, nextTr);
 					} else {
-						alert("已经是第一个了！");
+						alert("已经是最后一个了！");
 					}
 				}
 			} else {
 				var prevLi = null;
 				var nextLi = null;
 				var prevLiBeforeHtml = "";
-				if(quType === "RADIO" || quType === "CHECKBOX" || quType === "ORDERBY"){
+				if(quType === "RADIO" || quType === "1" || quType === "CHECKBOX" || quType === "2" || quType === "ORDERBY" || quType === "9"){
 					prevLi = $(curEditObj).parents("li.quCoItemUlLi");
 					nextLi = prevLi.next();
 					var nextLiHtml = nextLi.html();
 					prevLiBeforeHtml = "<li class='quCoItemUlLi'>" + nextLiHtml + "</li>";
-				} else if (quType === "SCORE"){
+				} else if (quType === "SCORE" || quType === "8"){
 					prevLi = $(curEditObj).parents("tr.quScoreOptionTr");
 					nextLi = prevLi.next();
 					var nextLiHtml = nextLi.html();
 					prevLiBeforeHtml = "<tr class='quScoreOptionTr'>" + nextLiHtml + "</tr>";
-				} else if (quType === "MULTIFILLBLANK"){
+				} else if (quType === "MULTIFILLBLANK" || quType === "4"){
 					prevLi = $(curEditObj).parents("tr.mFillblankTableTr");
 					nextLi = prevLi.next();
 					var nextLiHtml = nextLi.html();
 					prevLiBeforeHtml = "<tr class='mFillblankTableTr'>" + nextLiHtml + "</tr>";
-				} else if (quType === "CHENRADIO" || quType === "CHENCHECKBOX" || quType === "CHENSCORE" || quType === "CHENFBK"){
+				} else if (quType === "CHENRADIO" || quType === "11" || quType === "CHENCHECKBOX" || quType === "13" || quType === "CHENSCORE" || quType === "18" || quType === "CHENFBK" || quType === "12"){
 					prevLi = $(curEditObj).parents("tr.quChenRowTr");
 					if(prevLi[0]){
 						nextLi = prevLi.next();
@@ -572,19 +577,23 @@ layui.define(["jquery", "form", "element"], function(exports) {
 			$.each(areaValSplits, function(i,item) {
 				item = $.trim(item);
 				if(item != ""){
-					if(quType == '1'){
+					// 处理数字类型和字符串类型的题目类型
+					if(quType == '1' || quType == 'RADIO'){
 						// 添加单选选项
 						addRadioItem(quItemBody, item);
-					} else if (quType == '2'){
+					} else if (quType == '2' || quType == 'CHECKBOX'){
 						// 添加多选选项
-						addCheckboxItem(quItemBody, item);	
-					} else if (quType == '8'){
+						addCheckboxItem(quItemBody, item);    
+					} else if (quType == '8' || quType == 'SCORE'){
 						addScoreItem(quItemBody, item);
-					} else if (quType == '9'){
+					} else if (quType == '9' || quType == 'ORDERBY'){
 						addOrderquItem(quItemBody, item);
-					} else if (quType == '4'){
+					} else if (quType == '4' || quType == 'MULTIFILLBLANK'){
 						addMultiFillblankItem(quItemBody, item);
-					} else if (quType == '11' || quType == '13' || quType == '13' || quType == '18'){
+					} else if (quType == '11' || quType == 'CHENRADIO' || 
+							  quType == '13' || quType == 'CHENCHECKBOX' || 
+							  quType == '12' || quType == 'CHENFBK' || 
+							  quType == '18' || quType == 'CHENSCORE'){
 						addChenItem(dwDialogObj, quItemBody, item);
 					}
 				}
@@ -592,6 +601,8 @@ layui.define(["jquery", "form", "element"], function(exports) {
 			$("#dwQuMoreTextarea").val("");
 			bindQuHoverItem();
 			dwCommonDialogHide();
+			// 重新渲染表单元素
+			form.render();
 		});
 		
 		/**
@@ -1077,7 +1088,7 @@ function resetQuLeftItem(){
 	var sa = "";
 	$.each(surveyQuItems,function(i){
 		var quType = $(this).find("input[name='quType']").val();
-		if(quType != "PAGETAG" && quType != "PARAGRAPH"){
+		if(quType != "PAGETAG" && quType != "PARAGRAPH" && quType != '16' && quType != '17'){
 			var id = $(this).find("input[name='quId']").val();
 			var title = $(this).find(".quCoTitle .quCoTitleEdit").html();
 			if(type == 1){
@@ -1207,7 +1218,6 @@ function resetQuItemHover(quItemBody){
  * @param {} editAbleObj
  */
 function editAble(editAbleObj){
-	dwCommonDialogHide();
 	curEditCallback();
 
 	var quItemBody = $(editAbleObj).parents(".surveyQuItemBody");
@@ -1216,12 +1226,41 @@ function editAble(editAbleObj){
 	var thClass = $(editAbleObj).attr("class");
 	var editOffset = $(editAbleObj).offset();
 	$("#dwCommonEditRoot").removeClass();
+	// 移除之前的事件监听
+	$("#dwComEditContent").off("input");
+	
 	if(thClass.indexOf("quCoTitleEdit") > 0){
 		//题目标题
 		$("#dwCommonEditRoot").addClass("quEdit");
+		// 添加题目长度限制
+		$("#dwComEditContent").on("input", function() {
+			if(this.innerText.length > 400) {
+				this.innerText = this.innerText.substring(0, 4);
+				// 将光标移到末尾
+				var range = document.createRange();
+				var sel = window.getSelection();
+				range.selectNodeContents(this);
+				range.collapse(false);
+				sel.removeAllRanges();
+				sel.addRange(range);
+			}
+		});
 	} else if (thClass.indexOf("quCoOptionEdit") > 0){
 		//题目选项
 		$("#dwCommonEditRoot").addClass("quOptionEdit");
+		// 添加选项长度限制
+		$("#dwComEditContent").on("input", function() {
+			if(this.innerText.length > 50) {
+				this.innerText = this.innerText.substring(0, 50);
+				// 将光标移到末尾
+				var range = document.createRange();
+				var sel = window.getSelection();
+				range.selectNodeContents(this);
+				range.collapse(false);
+				sel.removeAllRanges();
+				sel.addRange(range);
+			}
+		});
 	} else if (thClass.indexOf("dwSvyNoteEdit") >= 0){
 		//问卷欢迎语
 		$("#dwCommonEditRoot").addClass("svyNoteEdit");
@@ -1699,13 +1738,13 @@ function addChenColumnItem(quItemBody, itemText) {
 		} else {
 			// 获取checkNameIn用作单选框
 			var checkNameIn = $(this).attr("checkNameInTr");
-			if(quType == '11') {
+			if(quType == '11' || quType == 'CHENRADIO') {
 				$(this).append("<td><input type='radio' class='chenRadioInput' name='" + checkNameIn + "'></td>");
-			} else if(quType == '13') {
+			} else if(quType == '13' || quType == 'CHENCHECKBOX') {
 				$(this).append('<td><input type="checkbox" class="chenCheckBoxInput"></td>');
-			} else if(quType == '12') {
+			} else if(quType == '12' || quType == 'CHENFBK') {
 				$(this).append("<td><input type='text' class='questionChenColumnValue'></td>");
-			} else if(quType == '18') {
+			} else if(quType == '18' || quType == 'CHENSCORE') {
 				$(this).append('<td><select class="quChenScoreSelect"><option value="0">-评分-</option><option value="1">1分</option><option value="2">2分</option><option value="3">3分</option><option value="4">4分</option><option value="5">5分</option></select></td>');
 			}
 		}
@@ -1740,13 +1779,13 @@ function addChenRowItem(quItemBody, itemText) {
 		if(i == 0) {
 			appendTrHtml += quChenRowHtml;
 		} else {
-			if(quType == '11') {
+			if(quType == '11' || quType == 'CHENRADIO') {
 				appendTrHtml += "<td><input type='radio' class='chenRadioInput' name='" + chenRadioInputRow + "'></td>";
-			} else if(quType == '13') {
+			} else if(quType == '13'  || quType == 'CHENCHECKBOX') {
 				appendTrHtml += '<td><input type="checkbox" class="chenCheckBoxInput"></td>';
-			} else if(quType == '12') {
+			} else if(quType == '12' || quType == 'CHENFBK') {
 				appendTrHtml += "<td><input type='text' class='questionChenColumnValue'></td>";
-			} else if(quType == '18') {
+			} else if(quType == '18' || quType == 'CHENSCORE') {
 				appendTrHtml += '<td><select class="quChenScoreSelect"><option value="0">-评分-</option><option value="1">1分</option><option value="2">2分</option><option value="3">3分</option><option value="4">4分</option><option value="5">5分</option></select></td>';
 			}
 		}
@@ -2119,19 +2158,18 @@ function setSaveTag0() {
  * 删除选项
  */
 function deleteDwOption(){
-	if(curEditObj!=null){
-		var quItemBody = $(curEditObj).parents(".surveyQuItemBody");
-		var quType = quItemBody.find("input[name='quType']").val();
-		// 类型有："RADIO"，"CHECKBOX"，"SCORE"，"ORDERBY"，"MULTIFILLBLANK"，
-		// "CHENRADIO"，"CHENCHECKBOX"，"CHENFBK"，"CHENSCORE"
-		if(type == 1){
-			// 问卷
-			layui.survey[quType]();
-		} else if (type == 2){
-			// 试卷
-			layui.exam[quType]();
-		}
-	}
+    if(curEditObj!=null){
+        var quItemBody = $(curEditObj).parents(".surveyQuItemBody");
+        var quType = quItemBody.find("input[name='quType']").val();
+        if(type == 1){
+            // 问卷
+            layui.survey[quType]();
+        } else if (type == 2){
+            // 试卷 - 使用转换函数
+            quType = layui.exam.convertQuType(quType);
+            layui.exam[quType]();
+        }
+    }
 }
 
 

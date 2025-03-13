@@ -1310,7 +1310,7 @@ li.addMoreOption .dwQuIcon,li.addMoreColumnOption .dwQuIcon,li.addMoreRowOption 
     border: 1px solid #DDE1E7;
     width: 300px;
     margin-top: 2px;
-    background: url("../../../images/piont_lv.png");
+    background: url("../../../../images/piont_lv.png");
     background-repeat: repeat;
 }
 .scoreNumTable tr td{
