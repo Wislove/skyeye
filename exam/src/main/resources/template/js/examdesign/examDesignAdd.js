@@ -83,7 +83,6 @@ layui.config({
 			} else {
 				majorId = data.value;  // 设置当前选中的专业ID
 				initSubject();
-				initClass();
 			}
 		});
 
@@ -102,6 +101,17 @@ layui.config({
 				}
 			});
 		}
+
+		// 科目选择事件
+		form.on('select(subjectId)', function(data) {
+			if(isNull(data.value) || data.value === '请选择'){
+				$("#classList").html("");
+				form.render('select');
+			} else {
+				subjectId = data.value;  // 设置当前选中的科目ID
+				initClass();
+			}
+		});
 
 		//初始化学期
 		function initSemester(){
@@ -123,11 +133,11 @@ layui.config({
 		function initClass() {
 			showGrid({
 				id: "classList",
-				url: schoolBasePath + "queryClassListByMajorId",
-				params: {majorId: $("#majorId").val()},  // 修正参数名
+				url: schoolBasePath + "queryNoPageSubjectClassesList",
+				params: {objectId: $("#subjectId").val()},
 				pagination: false,
 				template: getFileContent('tpl/template/checkbox-property.tpl'),
-				method: 'GET',
+				method: 'POST',
 				ajaxSendLoadBefore: function(hdb) {},
 				ajaxSendAfter:function (json) {
 					form.render('checkbox');
@@ -166,13 +176,11 @@ layui.config({
 		function loadData() {
 			// 如果试卷id不为空，则说明是编辑，加载编辑信息
 			if (!isNull(parent.rowId)) {
-				console.log("编辑模式，有parent.rowId");
 				AjaxPostUtil.request({
 					url: schoolBasePath + "queryDirectoryById",
 					params: {id: parent.rowId},
 					type: 'json',
 					callback: function (json) {
-						console.log("获取到的试卷数据:", json);
 						// 基础信息赋值
 						$("#schoolId").val(json.bean.schoolId);
 						$("#surveyName").val(json.bean.surveyName);
@@ -221,11 +229,11 @@ layui.config({
 												// 加载班级并设置选中状态
 												showGrid({
 													id: "classList",
-													url: schoolBasePath + "queryClassListByMajorId",
-													params: {majorId: $("#majorId").val()},
+													url: schoolBasePath + "queryNoPageSubjectClassesList",
+													params: {objectId: $("#subjectId").val()},
 													pagination: false,
 													template: getFileContent('tpl/template/checkbox-property.tpl'),
-													method: "GET",
+													method: "POST",
 													ajaxSendLoadBefore: function (hdb) {},
 													ajaxSendAfter: function (data) {
 														// 设置班级选中状态
@@ -278,7 +286,6 @@ layui.config({
 					}
 				});
 			} else {
-				console.log("新增模式，无parent.rowId")
 				initFaculty();
 				initSemester();
 			}
@@ -306,6 +313,7 @@ layui.config({
 	            }
 
 	        	var params = {
+                    id: parent.rowId || "", // 添加id参数，编辑时使用parent.rowId，新增时为空
         			surveyName: $("#surveyName").val(),
         			schoolId: $("#schoolId").val(),
         			semesterId: $("#semesterId").val(),
@@ -318,9 +326,8 @@ layui.config({
 					surveyModel: $("input[name='surveyModel']:checked").val(),
 					surveyState: 0,
 					readerList: readerList
-        			// propertyIds: propertyIds
 	        	};
-	        	AjaxPostUtil.request({url:schoolBasePath + "createExamDirectory", params: params, type: 'json', callback: function (json) {
+	        	AjaxPostUtil.request({url:schoolBasePath + "writeExamDirectory", params: params, type: 'json', callback: function (json) {
 					parent.layer.close(index);
 					parent.refreshCode = '0';
 	 	   		}});
