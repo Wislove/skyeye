@@ -38,10 +38,38 @@ layui.config({
 	}
 	if (authPermission['myCreate']) {
 		var defaultClassName = firstBtn ? 'plan-select' : '';
+		firstBtn = false;
 		btnStr += `<button type="button" class="layui-btn layui-btn-primary type-btn ${defaultClassName}" data-type="myCreate" table-id="messageTable"><i class="layui-icon"></i>我创建的</button>`
+	}
+	if (authPermission['simpleByDepartment']) {
+		var defaultClassName = firstBtn ? 'plan-select' : '';
+		btnStr += `<button type="button" class="layui-btn layui-btn-primary type-btn ${defaultClassName}" data-type="simpleByDepartment" table-id="messageTable"><i class="layui-icon"></i>同部门其他人员</button>`
 	}
 	btnStr += `</div>`;
 	$(".winui-toolbar").before(btnStr);
+
+	getSameDepartmentMembers();
+	function getSameDepartmentMembers() {
+		const params = {
+			chooseOrNotMy: 2,
+			chooseOrNotEmail: 2
+		}
+		AjaxPostUtil.request({url: sysMainMation.reqBasePath + "commonselpeople005", params: params, type: 'json', method: 'GET', callback: function (json) {
+			$(".winui-tool").append(`<form class="layui-form layui-form-pane" action="" autocomplete="off" id="searchForm">
+									<div class="layui-form-item">
+										<div class="layui-inline">
+											<label class="layui-form-label">人员选择</label>
+											<div class="layui-input-inline">
+												<select id="chooseMembers" lay-filter="chooseMembers" lay-search>` + getDataUseHandlebars(getFileContent('tpl/template/select-option.tpl'), json) + `</select>
+											</div>
+										</div>
+									</div>
+									</form>`);
+			if ($(".type-group").find(".plan-select").attr("data-type") != "simpleByDepartment") {
+				$("#searchForm").hide();
+			}
+		}});
+	}
 
 	/********* tree 处理   start *************/
 	fsTree.render({
@@ -346,11 +374,24 @@ layui.config({
 		tableTree.reload("messageTable", {where: getTableParams()});
 	}
 
+	$("body").on("click", ".type-btn", function (e) {
+		var type = $(this).attr("data-type");
+		if (type == "simpleByDepartment") {
+			$("#searchForm").show();
+		} else {
+			$("#searchForm").hide();
+ 		}
+	});
+	form.on('select(chooseMembers)', function(data) {
+		tableTree.reload("messageTable", {page: {curr: 1}, where: getTableParams()});
+	});
+
 	function getTableParams() {
 		let params = {
 			objectKey: objectKey,
 			objectId: objectId,
-			holderId: holderId == '0' ? '' : holderId
+			holderId: holderId == '0' ? '' : holderId,
+			chargePersonId: $(".type-group").find(".plan-select").attr("data-type") == "simpleByDepartment" ? $("#chooseMembers").val() : '',
 		};
 		return $.extend(true, params, initTableSearchUtil.getSearchValue("messageTable"));
 	}
