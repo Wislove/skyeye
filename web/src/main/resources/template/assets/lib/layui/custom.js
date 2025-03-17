@@ -38,7 +38,6 @@ if (isNull(localStorage.getItem("sysMainMation"))) {
 } else {
 	sysMainMation = JSON.parse(unescape(localStorage.getItem("sysMainMation")));
 	initBaseParams();
-	console.log(getOffice())
 }
 
 function getOffice() {
