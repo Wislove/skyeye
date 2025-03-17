@@ -68,6 +68,10 @@ layui.config({
 			documentType = "text";
 			mode = "view";
 		}
+
+		if (getOffice().check == 'onlyOffice') {
+			document.write('<script type="text/javascript" src="' + getOffice().onlyOffice?.server + '/web-apps/apps/api/documents/api.js"><\/script>');
+		}
 		
 		$("title").html(title);
 		// 获取当前登录员工信息
