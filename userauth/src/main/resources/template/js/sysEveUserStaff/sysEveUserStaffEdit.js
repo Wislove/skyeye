@@ -1,227 +1,265 @@
-
 var companyId = "";
 var departmentId = "";
 var jobId = "";
 var jobScoreId = "";
 
 layui.config({
-	base: basePath, 
-	version: skyeyeVersion
+    base: basePath,
+    version: skyeyeVersion
 }).extend({
     window: 'js/winui.window'
 }).define(['window', 'table', 'jquery', 'winui', 'fileUpload', 'dtree', 'laydate'], function (exports) {
-	winui.renderColor();
-	layui.use(['form'], function (form) {
-		var index = parent.layer.getFrameIndex(window.name);
-	    var $ = layui.$,
-			laydate = layui.laydate,
-	    	dtree = layui.dtree;
-		let userMation = {};
-	    
-	    showGrid({
-		 	id: "showForm",
-		 	url: reqBasePath + "querySysUserStaffById",
-		 	params: {id: parent.rowId},
-		 	pagination: false,
-			method: "GET",
-		 	template: $("#beanTemplate").html(),
-		 	ajaxSendLoadBefore: function(hdb) {
-		 		hdb.registerHelper("compare1", function(v1, options) {
-					if (isNull(v1)) {
-						return path + "assets/img/uploadPic.png";
-					} else {
-						return basePath + v1;
-					}
-				});
-		 	},
-		 	
-		 	ajaxSendAfter:function (json) {
-				userMation = json.bean;
-				// 参加工作时间
-				laydate.render({elem: '#workTime', range: false});
+    winui.renderColor();
+    layui.use(['form'], function (form) {
+        var index = parent.layer.getFrameIndex(window.name);
+        var $ = layui.$,
+            laydate = layui.laydate,
+            dtree = layui.dtree;
+        let userMation = {};
 
-		 		// 设置性别
-		 		$("input:radio[name=userSex][value=" + json.bean.userSex + "]").attr("checked", true);
-				// 初始化上传
-				$("#userPhoto").upload(systemCommonUtil.uploadCommon003Config('userPhoto', 6, json.bean.userPhoto, 1));
+        showGrid({
+            id: "showForm",
+            url: reqBasePath + "querySysUserStaffById",
+            params: { id: parent.rowId },
+            pagination: false,
+            method: "GET",
+            template: $("#beanTemplate").html(),
+            ajaxSendLoadBefore: function (hdb) {
+                hdb.registerHelper("compare1", function (v1, options) {
+                    if (isNull(v1)) {
+                        return path + "assets/img/uploadPic.png";
+                    } else {
+                        return basePath + v1;
+                    }
+                });
+            },
 
-		 		// 初始化公司
-		 		dtree.render({
-		 			elem: "#demoTree1",  // 绑定元素
-		 			url: reqBasePath + 'queryCompanyMationListTree', // 异步接口
-		 			dataStyle: 'layuiStyle',
-		 			done: function(data) {
-						if ($("#demoTree1 li").length > 0) {
-							for (var i = 0; i < $("#demoTree1 li").length; i++) {
-								if ($("#demoTree1 li").eq(i).attr("data-id") == json.bean.companyId) {
-									$("#demoTree1 li").eq(i).children('div').click();
-									return;
-								}
-							}
-						}
-		 			}
-		 		});
-		 		
-		 		dtree.on("node('demoTree1')" ,function(param) {
-		 			companyId = param.nodeId;
-		 			// 初始化部门
-		 			dtree.render({
-		 				elem: "#demoTree2",  // 绑定元素
-		 				url: reqBasePath + 'companydepartment006?companyId=' + companyId, // 异步接口
-		 				dataStyle: 'layuiStyle',
-		 				done: function(data) {
-		 					departmentId = "";
-		 					if ($("#demoTree2 li").length > 0) {
-		 						for (var i = 0; i < $("#demoTree2 li").length; i++) {
-		 							if ($("#demoTree2 li").eq(i).attr("data-id") == json.bean.departmentId) {
-		 								$("#demoTree2 li").eq(i).children('div').click();
-		 								return;
-		 							}
-		 						}
-		 					} else {
-		 						jobId = "";
-		 						//初始化职位
-		 			 			dtree.render({
-		 			 				elem: "#demoTree3",  //绑定元素
-		 			 				url: reqBasePath + 'companyjob006?departmentId=0', //异步接口
-		 			 				dataStyle: 'layuiStyle',
-		 			 				done: function(json) {
-		 			 				}
-		 			 			});
-		 					}
-		 				}
-		 			});
-		 		});
-		 		
-		 		dtree.on("node('demoTree2')" ,function(param) {
-		 			departmentId = param.nodeId;
-		 			//初始化职位
-		 			dtree.render({
-		 				elem: "#demoTree3",  //绑定元素
-		 				url: reqBasePath + 'companyjob006?departmentId=' + departmentId, //异步接口
-		 				dataStyle: 'layuiStyle',
-		 				done: function(data) {
-		 					jobId = "";
-							if ($("#demoTree3 li").length > 0) {
-								for (var i = 0; i < $("#demoTree3 li").length; i++) {
-									if ($("#demoTree3 li").eq(i).attr("data-id") == json.bean.jobId) {
-										$("#demoTree3 li").eq(i).children('div').click();
-										return;
-									}
-								}
-							}
-		 				}
-		 			});
-		 		});
+            ajaxSendAfter: function (json) {
+                userMation = json.bean;
+                // 参加工作时间
+                laydate.render({ elem: '#workTime', range: false });
 
-				dtree.on("node('demoTree3')" ,function(param){
-					jobId = param.nodeId;
-					// 初始化职位定级
-					dtree.render({
-						elem: "#demoTree4",
-						url: reqBasePath + 'companyjobscore008?jobId=' + jobId,
-						dataStyle: 'layuiStyle',
-						method: 'GET',
-						done: function(data) {
-							jobScoreId = "";
-							if ($("#demoTree4 li").length > 0) {
-								for (var i = 0; i < $("#demoTree4 li").length; i++) {
-									if ($("#demoTree4 li").eq(i).attr("data-id") == json.bean.jobScoreId) {
-										$("#demoTree4 li").eq(i).children('div').click();
-										return;
-									}
-								}
-							}
-						}
-					});
-				});
+                // 设置性别
+                $("input:radio[name=userSex][value=" + json.bean.userSex + "]").attr("checked", true);
+                // 初始化上传
+                $("#userPhoto").upload(systemCommonUtil.uploadCommon003Config('userPhoto', 6, json.bean.userPhoto, 1));
 
-				dtree.on("node('demoTree4')" ,function(param){
-					jobScoreId = param.nodeId;
-				});
-		 		
-		 		// 考勤时间段
-		 		showGrid({
-			     	id: "checkTimeBox",
-			     	url: sysMainMation.checkworkBasePath + "queryEnableCheckWorkTimeList",
-			     	params: {},
-					method: 'GET',
-			     	pagination: false,
-			     	template: $("#checkTimeStrTemplate").html(),
-			     	ajaxSendLoadBefore: function(hdb) {
-			     	},
-			     	ajaxSendAfter:function(data) {
-			     		for(var i in json.bean.timeList){
-							$('input:checkbox[rowId="' + json.bean.timeList[i].timeId + '"]').attr("checked", true);
-						}
-			     		form.render('checkbox');
-			     	}
-			    });
-		 		
-			    matchingLanguage();
-		 		form.render();
-		 	    form.on('submit(formEditBean)', function (data) {
-		 	        if (winui.verifyForm(data.elem)) {
-		 	        	if(isNull(companyId)){
-		 	        		winui.window.msg('请选择所属公司', {icon: 2, time: 2000});
-		 	        		return false;
-		 	        	}
-		 	        	if(isNull(departmentId)){
-		 	        		winui.window.msg('请选择所属部门', {icon: 2, time: 2000});
-		 	        		return false;
-		 	        	}
-		 	        	if(isNull(jobId)){
-		 	        		winui.window.msg('请选择职位信息', {icon: 2, time: 2000});
-		 	        		return false;
-		 	        	}
+                // 初始化公司
+                dtree.render({
+                    elem: "#demoTree1",  // 绑定元素
+                    url: reqBasePath + 'queryCompanyMationListTree', // 异步接口
+                    dataStyle: 'layuiStyle',
+                    done: function (data) {
+                        if ($("#demoTree1 li").length > 0) {
+                            for (var i = 0; i < $("#demoTree1 li").length; i++) {
+                                if ($("#demoTree1 li").eq(i).attr("data-id") == json.bean.companyId) {
+                                    $("#demoTree1 li").eq(i).children('div').click();
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                });
 
-						var timeIds = [];
-						$.each($('input:checkbox:checked'),function(){
-							timeIds.push($(this).attr("rowId"));
-						});
-						if (timeIds.length == 0) {
-		 	        		winui.window.msg('请选择考勤段', {icon: 2, time: 2000});
-		 	        		return false;
-		 	        	}
-		 	        	
-		 	        	var params = {
-		 	        		id: parent.rowId,
-		 	        		userIdCard: $("#userIdCard").val(),
-							userName: isNull(userMation.userName) ? "" : userMation.userName.replace(/[\n\t]/g, ""),
-		 	        		userSex: $("input[name='userSex']:checked").val(),
-		 	        		email: $("#email").val(),
-		 	        		qq: $("#qq").val(),
-		 	        		phone: $("#phone").val(),
-		 	        		homePhone: $("#homePhone").val(),
-		 	        		userSign: $("#userSign").val(),
-							workTime: $("#workTime").val(),
-							entryTime: isNull(userMation.entryTime)? "" : userMation.entryTime.replace(/[\n\t]/g, ""),
-		 	        		companyId: companyId,
-		 	        		departmentId: departmentId,
-		 	        		jobId: jobId,
-							jobScoreId: jobScoreId,
-							timeIdList: JSON.stringify(timeIds),
-							state: $("#state").attr("state"),
-							trialTime: isNull(userMation.trialTime)? "" : userMation.trialTime.replace(/[\n\t]/g, ""),
-		 	        	};
-		 	        	params.userPhoto = $("#userPhoto").find("input[type='hidden'][name='upload']").attr("oldurl");
-		 	        	if(isNull(params.userPhoto)){
-		 	        		winui.window.msg('请上传头像', {icon: 2, time: 2000});
-		 	        		return false;
-		 	        	}
+                dtree.on("node('demoTree1')", function (param) {
+                    companyId = param.nodeId;
+                    // 初始化部门
+                    dtree.render({
+                        elem: "#demoTree2",  // 绑定元素
+                        url: reqBasePath + 'companydepartment006?companyId=' + companyId, // 异步接口
+                        dataStyle: 'layuiStyle',
+                        done: function (data) {
+                            departmentId = "";
+                            if ($("#demoTree2 li").length > 0) {
+                                for (var i = 0; i < $("#demoTree2 li").length; i++) {
+                                    if ($("#demoTree2 li").eq(i).attr("data-id") == json.bean.departmentId) {
+                                        $("#demoTree2 li").eq(i).children('div').click();
+                                        return;
+                                    }
+                                }
+                            } else {
+                                jobId = "";
+                                //初始化职位
+                                dtree.render({
+                                    elem: "#demoTree3",  //绑定元素
+                                    url: reqBasePath + 'companyjob006?departmentId=0', //异步接口
+                                    dataStyle: 'layuiStyle',
+                                    done: function (json) {
+                                    }
+                                });
+                            }
+                        }
+                    });
+                });
 
-		 	        	AjaxPostUtil.request({url: reqBasePath + "writeSysUserStaff", params: params, type: 'json', method: 'POST', callback: function (json) {
-							parent.layer.close(index);
-							parent.refreshCode = '0';
-			 	   		}});
-		 	        }
-		 	        return false;
-		 	    });
-		 	}
-		});
-	    
-	    $("body").on("click", "#cancle", function() {
-	    	parent.layer.close(index);
-	    });
-	});
+                dtree.on("node('demoTree2')", function (param) {
+                    departmentId = param.nodeId;
+                    //初始化职位
+                    dtree.render({
+                        elem: "#demoTree3",  //绑定元素
+                        url: reqBasePath + 'companyjob006?departmentId=' + departmentId, //异步接口
+                        dataStyle: 'layuiStyle',
+                        done: function (data) {
+                            jobId = "";
+                            if ($("#demoTree3 li").length > 0) {
+                                for (var i = 0; i < $("#demoTree3 li").length; i++) {
+                                    if ($("#demoTree3 li").eq(i).attr("data-id") == json.bean.jobId) {
+                                        $("#demoTree3 li").eq(i).children('div').click();
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+                    });
+                });
+
+                dtree.on("node('demoTree3')", function (param) {
+                    jobId = param.nodeId;
+                    // 初始化职位定级
+                    dtree.render({
+                        elem: "#demoTree4",
+                        url: reqBasePath + 'companyjobscore008?jobId=' + jobId,
+                        dataStyle: 'layuiStyle',
+                        method: 'GET',
+                        done: function (data) {
+                            jobScoreId = "";
+                            if ($("#demoTree4 li").length > 0) {
+                                for (var i = 0; i < $("#demoTree4 li").length; i++) {
+                                    if ($("#demoTree4 li").eq(i).attr("data-id") == json.bean.jobScoreId) {
+                                        $("#demoTree4 li").eq(i).children('div').click();
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+                    });
+                });
+                // 参加工作时间
+                laydate.render({
+                    elem: '#workTime',
+                    range: false,
+                    done: function (value, date) {
+                        if (!isNull(value)) {
+                            // 获取入职时间（从只读元素中）
+                            var entryTimeStr = $("#entryTime").text().trim();
+                            if (!isNull(entryTimeStr)) {
+                                var workDate = new Date(value);
+                                var entryDate = new Date(entryTimeStr);
+
+                                // 比较参加工作时间和入职时间
+                                if (entryDate < workDate) { // 入职时间早于参加工作时间
+                                    $("#workTime").val('');
+                                    winui.window.msg('参加工作时间不能晚于入职时间', { icon: 2, time: 2000 });
+                                }
+                            }
+                        }
+                    }
+                });
+
+                dtree.on("node('demoTree4')", function (param) {
+                    jobScoreId = param.nodeId;
+                });
+
+                // 考勤时间段
+                showGrid({
+                    id: "checkTimeBox",
+                    url: sysMainMation.checkworkBasePath + "queryEnableCheckWorkTimeList",
+                    params: {},
+                    method: 'GET',
+                    pagination: false,
+                    template: $("#checkTimeStrTemplate").html(),
+                    ajaxSendLoadBefore: function (hdb) {
+                    },
+                    ajaxSendAfter: function (data) {
+                        for (var i in json.bean.timeList) {
+                            $('input:checkbox[rowId="' + json.bean.timeList[i].timeId + '"]').attr("checked", true);
+                        }
+                        form.render('checkbox');
+                    }
+                });
+
+                matchingLanguage();
+                form.render();
+                form.on('submit(formEditBean)', function (data) {
+                    if (winui.verifyForm(data.elem)) {
+                        var workTimeVal = $("#workTime").val();
+                        if (!isNull(workTimeVal)) {
+                            // 获取入职时间文本
+                            var entryTimeStr = $("#entryTime").text().trim();
+                            if (!isNull(entryTimeStr)) {
+                                var workTime = new Date(workTimeVal);
+                                var entryTime = new Date(entryTimeStr);
+
+                                // 如果参加工作时间晚于入职时间，提示错误
+                                if (entryTime < workTime) {
+                                    winui.window.msg('参加工作时间不能晚于入职时间', { icon: 2, time: 2000 });
+                                    return false;
+                                }
+                            }
+                        }
+
+                        if (isNull(companyId)) {
+                            winui.window.msg('请选择所属公司', { icon: 2, time: 2000 });
+                            return false;
+                        }
+                        if (isNull(departmentId)) {
+                            winui.window.msg('请选择所属部门', { icon: 2, time: 2000 });
+                            return false;
+                        }
+                        if (isNull(jobId)) {
+                            winui.window.msg('请选择职位信息', { icon: 2, time: 2000 });
+                            return false;
+                        }
+
+                        var timeIds = [];
+                        $.each($('input:checkbox:checked'), function () {
+                            timeIds.push($(this).attr("rowId"));
+                        });
+                        if (timeIds.length == 0) {
+                            winui.window.msg('请选择考勤段', { icon: 2, time: 2000 });
+                            return false;
+                        }
+
+                        var params = {
+                            id: parent.rowId,
+                            userIdCard: $("#userIdCard").val(),
+                            userName: isNull(userMation.userName) ? "" : userMation.userName.replace(/[\n\t]/g, ""),
+                            userSex: $("input[name='userSex']:checked").val(),
+                            email: $("#email").val(),
+                            qq: $("#qq").val(),
+                            phone: $("#phone").val(),
+                            homePhone: $("#homePhone").val(),
+                            userSign: $("#userSign").val(),
+                            workTime: $("#workTime").val(),
+                            entryTime: isNull(userMation.entryTime) ? "" : userMation.entryTime.replace(/[\n\t]/g, ""),
+                            companyId: companyId,
+                            departmentId: departmentId,
+                            jobId: jobId,
+                            jobScoreId: jobScoreId,
+                            timeIdList: JSON.stringify(timeIds),
+                            state: $("#state").attr("state"),
+                            trialTime: isNull(userMation.trialTime) ? "" : userMation.trialTime.replace(/[\n\t]/g, ""),
+                        };
+                        params.userPhoto = $("#userPhoto").find("input[type='hidden'][name='upload']").attr("oldurl");
+                        if (isNull(params.userPhoto)) {
+                            winui.window.msg('请上传头像', { icon: 2, time: 2000 });
+                            return false;
+                        }
+
+                        AjaxPostUtil.request({
+                            url: reqBasePath + "writeSysUserStaff", params: params, type: 'json', method: 'POST', callback: function (json) {
+                                parent.layer.close(index);
+                                parent.refreshCode = '0';
+                            }
+                        });
+                    }
+                    return false;
+                });
+            }
+        });
+
+        $("body").on("click", "#cancle", function () {
+            parent.layer.close(index);
+        });
+    });
 });
