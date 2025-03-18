@@ -12,6 +12,7 @@ layui.config({
         form = layui.form,
         layer = layui.layer,
         laydate = layui.laydate;
+    const selOption = getFileContent('tpl/template/select-option.tpl');
     objectKey = GetUrlParam("objectKey");
     objectId = GetUrlParam("objectId");
     if (isNull(objectKey) || isNull(objectId)) {
@@ -22,7 +23,7 @@ layui.config({
     // 根据供应商id获取所有审批通过之后的里程碑列表
     let milestoneList = [];
     AjaxPostUtil.request({url: sysMainMation.projectBasePath + "queryAllApprovalMilestoneList", params: {objectId: objectId}, type: 'json', method: 'GET', callback: function (json) {
-        $("#milestoneId").html(getDataUseHandlebars(getFileContent('tpl/template/select-option-must.tpl'), json));
+        $("#milestoneId").html(getDataUseHandlebars(selOption, json));
         milestoneList = json.rows;
 
         var authPermission = teamObjectPermissionUtil.checkTeamBusinessAuthPermission(objectId, 'taskAuthEnum');
@@ -40,16 +41,35 @@ layui.config({
         }
         if (authPermission['myCreate']) {
             var defaultClassName = firstBtn ? 'plan-select' : '';
+            firstBtn = false;
             btnStr += `<button type="button" class="layui-btn layui-btn-primary type-btn ${defaultClassName}" data-type="myCreate" table-id="messageTable"><i class="layui-icon"></i>我创建的</button>`
+        }
+        if (authPermission['simpleByDepartment']) {
+            var defaultClassName = firstBtn ? 'plan-select' : '';
+            btnStr += `<button type="button" class="layui-btn layui-btn-primary type-btn ${defaultClassName}" data-type="simpleByDepartment" table-id="messageTable"><i class="layui-icon"></i>同部门其他人员</button>`
         }
         btnStr += `</div>`;
         $(".txtcenter").before(btnStr);
+        getSameDepartmentMembers();
 
         matchingLanguage();
         form.render();
         renderPanel();
         render();
     }});
+
+    function getSameDepartmentMembers() {
+        const params = {
+            chooseOrNotMy: 2,
+            chooseOrNotEmail: 2
+        }
+        AjaxPostUtil.request({url: sysMainMation.reqBasePath + "commonselpeople005", params: params, type: 'json', method: 'GET', callback: function (json) {
+            $("#chooseMembers").html(getDataUseHandlebars(selOption, json));
+            if ($(".type-group").find(".plan-select").attr("data-type") != "simpleByDepartment") {
+                $(".chooseMembersMation").hide();
+            }
+        }});
+    }
 
     function renderPanel() {
         document.getElementById('device_load').style.cssText = 'height:' + ($(window).height() - 140) + 'px';
@@ -69,7 +89,6 @@ layui.config({
         name: "text",
         label: "任务名称",
         width: 200,
-        align: "center",
         tree: true,
         resize: true
     }, {
@@ -140,19 +159,19 @@ layui.config({
     gantt.i18n.setLocale("cn");  //使用中文
     function render() {
         let milestoneId = $("#milestoneId").val();
-        if (isNull(milestoneId)) {
-            winui.window.msg("请选择里程碑", {icon: 2, time: 2000});
-            return false;
-        }
         let params = {
             objectId: objectId,
             objectKey: objectKey,
             holderId: milestoneId,
-            type: $("#type .plan-select").attr("data-type")
+            type: $("#type .plan-select").attr("data-type"),
+            chargePersonId: $(".type-group").find(".plan-select").attr("data-type") == "simpleByDepartment" ? $("#chooseMembers").val() : ''
         };
-        var tem = getInPoingArr(milestoneList, "id", milestoneId, null);
-        gantt.config.start_date = new Date(tem.startTime);
-        gantt.config.end_date = new Date(tem.endTime);
+        if (!isNull(milestoneId)) {
+            var tem = getInPoingArr(milestoneList, "id", milestoneId, null);
+            gantt.config.start_date = new Date(tem.startTime);
+            gantt.config.end_date = new Date(tem.endTime);
+        }
+
         AjaxPostUtil.request({url: sysMainMation.projectBasePath + "queryProTaskListForGantt", params: params, type: 'json', method: 'POST', callback: function (json) {
             gantt.clearAll();  //清空缓存
             let nodeList = json.bean.node;
@@ -197,6 +216,12 @@ layui.config({
     }
 
     $("body").on("click", ".type-btn", function (e) {
+        var type = $(this).attr("data-type");
+        if (type == "simpleByDepartment") {
+            $(".chooseMembersMation").show();
+        } else {
+            $(".chooseMembersMation").hide();
+        }
         $(this).parent().find('.type-btn').removeClass("plan-select");
         $(this).addClass("plan-select");
         render();

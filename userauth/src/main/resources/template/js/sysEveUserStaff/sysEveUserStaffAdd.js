@@ -39,7 +39,7 @@ layui.config({
                 // 当选择了入职时间后，检查是否早于参加工作时间
                 var entryDate = new Date(value);
                 var workDate = new Date($("#workTime").val());
-                if (entryDate < workDate) {
+                if (entryDate > workDate || entryDate === workDate) {
                     $("#entryTime").val('');
                     winui.window.msg('入职时间不能早于参加工作时间', { icon: 2, time: 2000 });
                 }
@@ -54,7 +54,7 @@ layui.config({
                 // 当选择了参加工作时间后，限制入职时间不能晚于参加工作时间
                 var workDate = new Date(value);
                 var entryDate = new Date($("#entryTime").val());
-                if (entryDate > workDate) {
+                if (entryDate < workDate || entryDate === workDate) {
                     $("#workTime").val('');
                     winui.window.msg('参加工作时间不能晚于入职时间', { icon: 2, time: 2000 });
                 }
