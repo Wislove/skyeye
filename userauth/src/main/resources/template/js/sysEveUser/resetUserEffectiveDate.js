@@ -81,6 +81,10 @@ layui.config({
 				startTime: $("#startTime").val(),
 				endTime: $("#endTime").val()
 			};
+			if (params.isTermOfValidity == 1) {
+				params.startTime = '';
+				params.endTime = '';
+			}
 			AjaxPostUtil.request({url: reqBasePath + "resetUserEffectiveDate", params: params, type: 'json', method: "POST", callback: function (json) {
 				parent.layer.close(index);
 				parent.refreshCode = '0';
