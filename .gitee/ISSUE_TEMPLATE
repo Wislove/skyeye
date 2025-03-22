@@ -1,0 +1,11 @@
+➜ git:(company_server) tree -L 2 .
+.
+├── .gitee  # 兼容 .github 目录（优先选择 .gitee 目录）
+│   ├── ISSUE_TEMPLATE    # Issue 模板配置目录
+│   │   ├── feature.yml   # 适用于 Feature 建议的 Issue 表单模板
+│   │   ├── bug.yml       # 适用于 Bug 反馈的 Issue 表单模板
+│   │   └── config.yaml   # 模板选择器配置
+│   └── issue_template.md # Issue 空白模板（可选）
+├── LICENSE
+├── ...
+└── README.md
