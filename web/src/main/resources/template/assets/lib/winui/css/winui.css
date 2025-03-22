@@ -6658,7 +6658,7 @@ body .layer-ext-winconfirm .layui-layer-content {
 
 .input-icon {
     position: absolute;
-    top: 5px;
+    top: 8px;
     right: 8px;
     cursor: pointer;
     color: gray;

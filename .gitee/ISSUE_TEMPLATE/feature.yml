@@ -1,0 +1,22 @@
+name: 需求
+description: 用户对系统或产品的期望
+labels: ["enhancement"]
+placeholder: |
+    请输入需求标题，字数在15字左右
+body:
+  - type: textarea
+    id: related-problem
+    attributes:
+      label: 实现步骤
+      placeholder: |
+         请描述清楚功能的位置和操作
+    validations:
+      required: true
+  - type: textarea
+    id: desired-solution
+    attributes:
+      label: 预期结果
+      placeholder: |
+         请输入预期结果
+    validations:
+      required: true
