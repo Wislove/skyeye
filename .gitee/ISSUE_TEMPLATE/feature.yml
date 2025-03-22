@@ -1,5 +1,4 @@
 name: 需求
-title: " "
 labels: ["enhancement"]
 placeholder: |
     请输入需求标题，字数在15字左右
