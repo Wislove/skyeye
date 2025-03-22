@@ -1,5 +1,5 @@
 name: Bug
-description: 用户对系统或产品的期望
+description: 系统中不符合需求或设计预期的行为
 labels: ["bug"]
 body:
   - type: textarea
