@@ -1,4 +1,5 @@
 name: Bug
+description: 用户对系统或产品的期望
 labels: ["bug"]
 body:
   - type: textarea
