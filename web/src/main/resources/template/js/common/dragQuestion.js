@@ -2163,7 +2163,7 @@ function deleteDwOption(){
         var quType = quItemBody.find("input[name='quType']").val();
         if(type == 1){
             // 问卷
-            layui.survey[quType]();
+            layui.survey.convertQuType(quType);
         } else if (type == 2){
             // 试卷 - 使用转换函数
             quType = layui.exam.convertQuType(quType);
@@ -2171,7 +2171,6 @@ function deleteDwOption(){
         }
     }
 }
-
 
 
 

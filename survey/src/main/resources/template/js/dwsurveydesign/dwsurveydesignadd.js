@@ -32,7 +32,7 @@ layui.config({
 					answerNum: parseInt($("#answerNum").val()), // 回答次数（整数）
 					effectiveTime: parseInt($("#effectiveTime").val()), // 冷却时间（分钟）
 					endType: $("#endType").val(),                // 结束方式 1/2/3
-					whetherDelete: $("input[name='rule']:checked").val(),
+					whetherDelete: 1
 				};
 				console.log("effectiveTime:", $("#effectiveTime").val());
 				console.log("answerNum:", $("#answerNum").val());// 其他字段同理

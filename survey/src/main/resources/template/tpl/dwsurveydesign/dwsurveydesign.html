@@ -117,7 +117,7 @@
 					{{#if hv}}
 					{{#compare1 hv '3'}}
 							<table class='tableQuColItem'>
-								{{#each questionRadio}}
+								{{#each radioTd}}
 									<tr>
 										{{#cellCount001 cellCount}}{{/cellCount001}}
 									</tr>
@@ -127,7 +127,7 @@
 							{{#if hv}}
 							{{#compare1 hv '1'}}
 									<ul class="transverse">
-										{{#each questionRadio}}
+										{{#each radioTd}}
 											<li class="quCoItemUlLi">
 												<input type="radio"><label class="editAble quCoOptionEdit">{{optionName}}</label>
 												<input type='text' class='optionInpText' style="{{#compare2 isNote 0}}{{/compare2}}" />
@@ -142,7 +142,7 @@
 									</ul>
 								{{else}}
 									<ul>
-										{{#each questionRadio}}
+										{{#each radioTd}}
 											<li class="quCoItemUlLi">
 												<input type="radio"><label class="editAble quCoOptionEdit">{{optionName}}</label>
 												<input type='text' class='optionInpText' style="{{#compare2 isNote 0}}{{/compare2}}" />
@@ -214,7 +214,7 @@
 				<div class="quCoItem">
 					{{#if hv}} {{#compare1 hv '3'}}
 					<table class='tableQuColItem'>
-						{{#each questionCheckBox}}
+						{{#each checkboxTd}}
 						<tr>
 							{{#cellCount002 cellCount}}{{/cellCount002}}
 						</tr>
@@ -222,7 +222,7 @@
 					</table>
 					{{else}} {{#if hv}} {{#compare1 hv '1'}}
 					<ul class="transverse">
-						{{#each questionCheckBox}}
+						{{#each checkboxTd}}
 						<li class="quCoItemUlLi">
 							<input type="checkbox"><label class="editAble quCoOptionEdit">{{optionName}}</label>
 							<input type='text' class='optionInpText' style="{{#compare2 isNote 0}}{{/compare2}}" />
@@ -237,7 +237,7 @@
 					</ul>
 					{{else}}
 					<ul>
-						{{#each questionCheckBox}}
+						{{#each checkboxTd}}
 						<li class="quCoItemUlLi">
 							<input type="checkbox"><label class="editAble quCoOptionEdit">{{optionName}}</label>
 							<input type='text' class='optionInpText' style="{{#compare2 isNote 0}}{{/compare2}}" />
@@ -356,7 +356,7 @@
 				<div class="quCoItem">
 					<div class="quOrderByLeft">
 						<ul>
-							{{#each questionOrderBy}}
+							{{#each orderByTd}}
 							<li class="quCoItemUlLi"><label class="editAble quCoOptionEdit">{{optionName}}</label>
 								<div class="quItemInputCase"><input type="hidden" name="quItemId" value="{{id}}"><input type="hidden" name="quItemSaveTag" value="1"></div>
 							</li>
@@ -365,7 +365,7 @@
 					</div>
 					<div class="quOrderByRight">
 						<table class="quOrderByTable">
-							{{#each questionOrderBy}}
+							{{#each orderByTd}}
 							<tr>
 								<td class="quOrderyTableTd">{{showIndex @index}}</td>
 								<td></td>
@@ -488,8 +488,8 @@
 				</div>
 				<div class="quCoItem">
 					<table class="mFillblankTable" cellpadding="0" cellspacing="0">
-						{{#each questionMultiFillBlank}}
-						<tr class="mFillblankTableTr">
+						{{#each multifillblankTd}}
+						<tr class="multifillblankTd">
 							<td align="right" class="mFillblankTableEditTd"><label class="editAble quCoOptionEdit">{{optionName}}</label>
 								<div class="quItemInputCase"><input type="hidden" name="quItemId" value="{{id}}"><input type="hidden" name="quItemSaveTag" value="1"></div>
 							</td>
@@ -554,18 +554,26 @@
 						<table class="quCoChenTable">
 							<tr>
 								<td></td>
-								{{#each questionChenColumn}}
-								<td class="quChenColumnTd"><label class="editAble quCoOptionEdit">{{optionName}}</label>
-									<div class="quItemInputCase"><input type="hidden" name="quItemId" value="{{id}}"><input type="hidden" name="quItemSaveTag" value="1"></div>
+								{{#each columnTd}}
+								<td class="quChenColumnTd">
+									<label class="editAble quCoOptionEdit">{{optionName}}</label>
+									<div class="quItemInputCase">
+										<input type="hidden" name="quItemId" value="{{id}}">
+										<input type="hidden" name="quItemSaveTag" value="{{quItemSaveTag}}">
+									</div>
 								</td>
 								{{/each}}
 							</tr>
-							{{#each questionChenRow}}
+							{{#each rowTd}}
 							<tr class="quChenRowTr">
-								<td class="quChenRowTd"><label class="editAble quCoOptionEdit">{{optionName}}</label>
-									<div class="quItemInputCase"><input type="hidden" name="quItemId" value="{{id}}"><input type="hidden" name="quItemSaveTag" value="1"></div>
+								<td class="quChenRowTd">
+									<label class="editAble quCoOptionEdit">{{optionName}}</label>
+									<div class="quItemInputCase">
+										<input type="hidden" name="quItemId" value="{{id}}">
+										<input type="hidden" name="quItemSaveTag" value="{{quItemSaveTag}}">
+									</div>
 								</td>
-								{{#each questionChenColumn}}
+								{{#each ../columnTd}}
 								<td><input type="radio" name="dwDesignRadio"> </td>
 								{{/each}}
 							</tr>
@@ -640,18 +648,18 @@
 						<table class="quCoChenTable">
 							<tr>
 								<td></td>
-								{{#each questionChenColumn}}
+								{{#each columnTd}}
 								<td class="quChenColumnTd"><label class="editAble quCoOptionEdit">{{optionName}}</label>
 									<div class="quItemInputCase"><input type="hidden" name="quItemId" value="{{id}}"><input type="hidden" name="quItemSaveTag" value="1"></div>
 								</td>
 								{{/each}}
 							</tr>
-							{{#each questionChenRow}}
+							{{#each rowTd}}
 							<tr class="quChenRowTr">
 								<td class="quChenRowTd"><label class="editAble quCoOptionEdit">{{optionName}}</label>
 									<div class="quItemInputCase"><input type="hidden" name="quItemId" value="{{id}}"><input type="hidden" name="quItemSaveTag" value="1"></div>
 								</td>
-								{{#each questionChenColumn}}
+								{{#each ../columnTd}}
 								<td><input type="checkbox"> </td>
 								{{/each}}
 							</tr>
@@ -726,18 +734,18 @@
 						<table class="quCoChenTable">
 							<tr>
 								<td></td>
-								{{#each questionChenColumn}}
+								{{#each columnTd}}
 								<td class="quChenColumnTd"><label class="editAble quCoOptionEdit">{{optionName}}</label>
 									<div class="quItemInputCase"><input type="hidden" name="quItemId" value="{{id}}"><input type="hidden" name="quItemSaveTag" value="1"></div>
 								</td>
 								{{/each}}
 							</tr>
-							{{#each questionChenRow}}
+							{{#each rowTd}}
 							<tr class="quChenRowTr">
 								<td class="quChenRowTd"><label class="editAble quCoOptionEdit">{{optionName}}</label>
 									<div class="quItemInputCase"><input type="hidden" name="quItemId" value="{{id}}"><input type="hidden" name="quItemSaveTag" value="1"></div>
 								</td>
-								{{#each questionChenColumn}}
+								{{#each ../columnTd}}
 								<td><input type="text"> </td>
 								{{/each}}
 							</tr>
@@ -807,18 +815,22 @@
 						<table class="quCoChenTable">
 							<tr>
 								<td></td>
-								{{#each questionChenColumn}}
+								{{#each columnTd}}
 								<td class="quChenColumnTd"><label class="editAble quCoOptionEdit">{{optionName}}</label>
 									<div class="quItemInputCase"><input type="hidden" name="quItemId" value="{{id}}"><input type="hidden" name="quItemSaveTag" value="1"></div>
 								</td>
 								{{/each}}
 							</tr>
-							{{#each questionChenRow}}
+							{{#each rowTd}}
 							<tr class="quChenRowTr">
-								<td class="quChenRowTd"><label class="editAble quCoOptionEdit">{{optionName}}</label>
-									<div class="quItemInputCase"><input type="hidden" name="quItemId" value="{{id}}"><input type="hidden" name="quItemSaveTag" value="1"></div>
+								<td class="quChenRowTd">
+									<label class="editAble quCoOptionEdit">{{optionName}}</label>
+									<div class="quItemInputCase">
+										<input type="hidden" name="quItemId" value="{{id}}">
+										<input type="hidden" name="quItemSaveTag" value="{{quItemSaveTag}}">
+									</div>
 								</td>
-								{{#each questionChenColumn}}
+								{{#each ../columnTd}}
 								<td>评分</td>
 								{{/each}}
 							</tr>
@@ -890,7 +902,7 @@
 				</div>
 				<div class="quCoItem">
 					<table class="quCoItemTable" cellpadding="0" cellspacing="0">
-						{{#each quScores}}
+						{{#each scoreTd}}
 						<tr class="quScoreOptionTr">
 							<td class="quCoItemTableTd quOptionEditTd">
 								<label class="editAble quCoOptionEdit">{{optionName}}</label>
@@ -899,7 +911,7 @@
 							<td class="quCoItemTableTd">
 								<table class="scoreNumTable">
 									<tr>
-										{{#showParamInt02 paramInt02}}{{/showParamInt02}}
+										{{#showParamInt02 ../paramInt02}}{{/showParamInt02}}
 									</tr>
 								</table>
 							</td>
