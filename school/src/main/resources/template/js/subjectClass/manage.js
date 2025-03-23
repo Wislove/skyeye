@@ -21,19 +21,19 @@ layui.config({
 		}],
 		suffixData: [{
 			title: '章节',
-			pageUrl: '../../tpl/chapter/chapterList.html?subjectClassesId=' + subjectClassesId
+			pageUrl: '../../tpl/chapter/chapterList.html'
 		}, {
 			title: '知识点',
-			pageUrl: '../../tpl/knowledge/knowledgeList.html?subjectClassesId=' + subjectClassesId
+			pageUrl: '../../tpl/knowledge/knowledgeList.html'
 		}, {
 			title: '互动课件',
-			pageUrl: '../../tpl/courseware/coursewareList.html?subjectClassesId=' + subjectClassesId
+			pageUrl: '../../tpl/courseware/coursewareList.html'
 		}, {
 			title: '作业',
 			pageUrl: '../../tpl/homework/homeworkList.html?subjectClassesId=' + subjectClassesId
 		}, {
 			title: '资料',
-			pageUrl: '../../tpl/material/materialList.html?subjectClassesId=' + subjectClassesId
+			pageUrl: '../../tpl/material/materialList.html'
 		}, {
 			title: '公告',
 			pageUrl: '../../tpl/announcement/announcementList.html?subjectClassesId=' + subjectClassesId

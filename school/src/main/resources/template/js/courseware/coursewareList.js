@@ -14,7 +14,6 @@ layui.config({
         table = layui.table;
     objectKey = GetUrlParam("objectKey");
     objectId = GetUrlParam("objectId");
-    subjectClassesId = GetUrlParam("subjectClassesId");
     if (isNull(objectKey) || isNull(objectId)) {
         winui.window.msg("请传入适用对象信息", {icon: 2, time: 2000});
         return false;
@@ -24,7 +23,7 @@ layui.config({
         id: 'messageTable',
         elem: '#messageTable',
         method: 'get',
-        url: sysMainMation.schoolBasePath + 'queryCoursewareListBySubjectClassesId',
+        url: sysMainMation.schoolBasePath + 'queryCoursewareListBySubjectId',
         where: getTableParams(),
         even: false,
         page: false,
@@ -70,7 +69,7 @@ layui.config({
     // 新增
     $("body").on("click", "#addBean", function() {
         parent._openNewWindows({
-            url: '../../tpl/courseware/write.html?objectId=' + objectId + '&objectKey=' + objectKey + '&subjectClassesId=' + subjectClassesId,
+            url: '../../tpl/courseware/write.html?objectId=' + objectId + '&objectKey=' + objectKey,
             title: systemLanguage["com.skyeye.addPageTitle"][languageType],
             pageId: "coursewareAdd",
             area: ['90vw', '90vh'],
@@ -83,7 +82,7 @@ layui.config({
     // 编辑
     function edit(data) {
         parent._openNewWindows({
-            url: '../../tpl/courseware/write.html?objectId=' + objectId + '&objectKey=' + objectKey + '&subjectClassesId=' + subjectClassesId+ '&id=' + data.id,
+            url: '../../tpl/courseware/write.html?objectId=' + objectId + '&objectKey=' + objectKey + '&id=' + data.id,
             title: systemLanguage["com.skyeye.editPageTitle"][languageType],
             pageId: "coursewareEdit",
             area: ['90vw', '90vh'],
@@ -124,7 +123,7 @@ layui.config({
     }
 
     function getTableParams() {
-        return $.extend(true, {objectKey: objectKey, objectId: subjectClassesId,subjectClassesId: subjectClassesId}, initTableSearchUtil.getSearchValue("messageTable"));
+        return $.extend(true, {objectKey: objectKey, objectId: objectId}, initTableSearchUtil.getSearchValue("messageTable"));
     }
 
     exports('coursewareList', {});

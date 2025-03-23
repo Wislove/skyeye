@@ -25,7 +25,6 @@ layui.config({
             savePreParams: function (params) {
                 params.objectId = objectId;
                 params.objectKey = objectKey;
-                params.subjectClassesId = subjectClassesId;
             }
         });
     } else {
@@ -40,7 +39,6 @@ layui.config({
                     savePreParams: function (params) {
                         params.objectId = objectId;
                         params.objectKey = objectKey;
-                        params.subjectClassesId = subjectClassesId;
                     }
                 });
             }
