@@ -120,11 +120,11 @@ layui.config({
                             return d.surveyState; // 兜底返回，以防state值不在预期范围内
                         }}},
                 {field: 'schoolMation.name', width: 200, title: '所属学校', templet: function (d) {
-                        return d.classesMation ? d.classesMation?.schoolMation?.name : '';}},
+                        return d.schoolMation ? d.schoolMation?.name : '';}},
                 {field: 'facultyMation.name', width: 200, align: 'center', title: '所属院系', templet: function (d) {
-                        return d.classesMation ? d.classesMation?.facultyMation?.name : '';}},
+                        return d.facultyMation ? d.facultyMation?.name : '';}},
                 {field: 'majorMation.name', width: 200, align: 'center', title: '所属专业', templet: function (d) {
-                        return d.classesMation ? d.classesMation?.majorMation?.name : '';
+                        return d.majorMation ? d.majorMation?.name : '';
                 }},
                 {field: 'subjectMation.name', width: 80, align: 'center', title: '科目', templet: function (d) {
                         return d.subjectMation ? d.subjectMation?.name : '';

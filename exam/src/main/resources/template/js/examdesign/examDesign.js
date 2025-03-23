@@ -790,8 +790,7 @@ layui.config({
                 quTitle: encodeURI(quItemBody.find(".quCoTitleEdit").html()),
                 quType: quItemBody.find("input[name='quType']").val(),
                 fraction: isNull(quItemBody.find("input[name='fraction']").val()) ? 0 : quItemBody.find("input[name='fraction']").val(),
-                knowledgeIds: isNull(quItemBody.find("li[class='knowledgeQuLogic']").attr("knowledgeIds")) ?
-                    "" : quItemBody.find("li[class='knowledgeQuLogic']").attr("knowledgeIds"),
+                knowledgeIds: quItemBody.find(".knowledgeQuLogic").attr("knowledgeIds") || "",
                 fileUrl: fileUrl,
                 fileType: tabIndex,//试题类型，0.默认没有，1.视频，2.音频，3.图片
                 whetherUpload: whetherUpload,//是否允许拍照/上传图片选中，1.是，2.否

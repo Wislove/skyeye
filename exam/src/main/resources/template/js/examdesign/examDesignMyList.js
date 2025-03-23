@@ -149,17 +149,17 @@ layui.config({
                 },
                 {
                     field: 'schoolMation.name', width: 200, title: '所属学校', templet: function (d) {
-                        return d.classesMation ? d.classesMation?.schoolMation?.name : '';
+                        return d.schoolMation ? d.schoolMation?.name : '';
                     }
                 },
                 {
                     field: 'facultyMation.name', width: 200, align: 'center', title: '所属院系', templet: function (d) {
-                        return d.classesMation ? d.classesMation?.facultyMation?.name : '';
+                        return d.facultyMation ? d.facultyMation?.name : '';
                     }
                 },
                 {
                     field: 'majorMation.name', width: 200, align: 'center', title: '所属专业', templet: function (d) {
-                        return d.classesMation ? d.classesMation?.majorMation?.name : '';
+                        return d.majorMation ? d.majorMation?.name : '';
                     }
                 },
                 {

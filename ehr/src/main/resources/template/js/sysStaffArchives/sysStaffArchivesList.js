@@ -37,13 +37,13 @@ layui.config({
 			{ field: 'custodyPlace', title: '档案保管地', width: 150 },
 			{ field: 'archivesCenter', title: '档案室', width: 150 },
 			{ field: 'educationId', title: '档案学历', width: 120, templet: function (d) {
-					return sysDictDataUtil.getDictDataNameByCodeAndKey("EMPLOYEE_EDUCATION", d.educationId);
+				return sysDictDataUtil.getDictDataNameByCodeAndKey("EMPLOYEE_EDUCATION", d.educationId);
 			}},
 			{ field: 'state', title: '是否有效', width: 100, align: 'center', templet: function (d) {
 				return skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("whetherEnum", 'id', d.state, 'name');
 			}},
 			{ field: 'whetherArchives', title: '是否在档', width: 100, align: 'center', templet: function (d) {
-				return skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("whetherEnum", 'id', d.state, 'name');
+				return skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("whetherEnum", 'id', d.whetherArchives, 'name');
 			}},
 			{ field: 'archivesTime', title: '入档时间', align: 'center', width: 100 },
 			{ field: 'createName', title: systemLanguage["com.skyeye.createName"][languageType], align: 'left', width: 120 },

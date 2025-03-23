@@ -40,6 +40,14 @@ if (isNull(localStorage.getItem("sysMainMation"))) {
 	initBaseParams();
 }
 
+function getOffice() {
+	var office = sysMainMation.office;
+	if (isNull(office)) {
+		return {};
+	}
+	return parseConfigToJson(office);
+}
+
 var dsFormPageUrl = "../../tpl/dsFormPage/pageShow.html?pageId=";
 var reportPageShowUrl = "../../tpl/reportPage/reportPageShow.html?id=";
 
@@ -1396,3 +1404,130 @@ function firstLetterUpper(str) {
 		});
 	}
 })();
+
+/**
+ * 将特定格式的配置字符串转换为JSON对象
+ *
+ * 例如："{check=onlyOffice, kingsoftConfig={server=https://preview.kdocs.cn/office/k, appId=your-app-id}}"
+ * 转换为：{"check":"onlyOffice", "kingsoftConfig":{"server":"https://preview.kdocs.cn/office/k", "appId":"your-app-id"}}
+ *
+ * @param {string} configStr 配置字符串
+ * @returns {object} 解析后的JSON对象
+ */
+function parseConfigToJson(configStr) {
+	// 移除最外层的大括号（如果有）
+	if (configStr.startsWith('{') && configStr.endsWith('}')) {
+		configStr = configStr.substring(1, configStr.length - 1);
+	}
+
+	return parseObject(configStr);
+}
+
+/**
+ * 解析配置字符串为对象
+ * @param {string} str 配置字符串内容
+ * @returns {object} 解析后的对象
+ */
+function parseObject(str) {
+	const result = {};
+	let index = 0;
+	let key = '';
+	let value = '';
+	let inKey = true;
+
+	while (index < str.length) {
+		// 跳过空白字符
+		if (str[index] === ' ' || str[index] === '\t' || str[index] === '\n' || str[index] === '\r') {
+			index++;
+			continue;
+		}
+
+		// 如果是在解析键
+		if (inKey) {
+			// 如果遇到等号，表示键结束
+			if (str[index] === '=') {
+				inKey = false;
+				index++;
+				continue;
+			}
+
+			// 否则累加键名
+			key += str[index];
+		}
+		// 如果是在解析值
+		else {
+			// 如果值是一个对象（以大括号开始）
+			if (str[index] === '{') {
+				// 找到匹配的右花括号
+				const startPos = index;
+				let braceCount = 1;
+				index++;
+
+				while (braceCount > 0 && index < str.length) {
+					if (str[index] === '{') braceCount++;
+					if (str[index] === '}') braceCount--;
+					index++;
+				}
+
+				// 递归解析子对象
+				const objStr = str.substring(startPos + 1, index - 1);
+				result[key.trim()] = parseObject(objStr);
+
+				// 重置键值，准备解析下一个键值对
+				key = '';
+				value = '';
+				inKey = true;
+
+				// 跳过逗号（如果有）
+				if (index < str.length && str[index] === ',') {
+					index++;
+				}
+				continue;
+			}
+
+			// 如果遇到逗号，表示当前键值对结束
+			if (str[index] === ',') {
+				result[key.trim()] = processValue(value.trim());
+				key = '';
+				value = '';
+				inKey = true;
+				index++;
+				continue;
+			}
+
+			// 否则累加值
+			value += str[index];
+		}
+
+		index++;
+	}
+
+	// 处理最后一个键值对
+	if (key && !inKey) {
+		result[key.trim()] = processValue(value.trim());
+	}
+
+	return result;
+}
+
+/**
+ * 处理值的类型转换
+ * @param {string} value 值字符串
+ * @returns {any} 转换后的值
+ */
+function processValue(value) {
+	// 判断是否为数字
+	if (/^-?\d+(\.\d+)?$/.test(value)) {
+		return Number(value);
+	}
+
+	// 判断是否为布尔值
+	if (value === 'true') return true;
+	if (value === 'false') return false;
+
+	// 判断是否为null
+	if (value === 'null') return null;
+
+	// 默认为字符串
+	return value;
+}

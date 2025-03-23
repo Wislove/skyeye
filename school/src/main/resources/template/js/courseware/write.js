@@ -17,17 +17,15 @@ layui.config({
     var id = GetUrlParam("id");
     var objectId = GetUrlParam("objectId");
     var objectKey = GetUrlParam("objectKey");
-    objectParams.subjectClassesId = GetUrlParam("subjectClassesId");
 
     if (isNull(id)) {
         dsFormUtil.initAddPageForStatic('content', 'FP2024070900003', {
             savePreParams: function (params) {
                 params.objectId = objectId;
                 params.objectKey = objectKey;
-                params.subjectClassesId = objectParams.subjectClassesId;
             }
         });
-    }else{
+    } else {
         AjaxPostUtil.request({
             url: sysMainMation.schoolBasePath + "queryCoursewareById",
             params: {id: id},
@@ -39,12 +37,9 @@ layui.config({
                     savePreParams: function (params) {
                         params.objectId = objectId;
                         params.objectKey = objectKey;
-                        params.subjectClassesId = objectParams.subjectClassesId;
                     }
                 });
             }
         });
-
     }
-
 });

@@ -122,6 +122,9 @@ layui.config({
         // 将选中的知识点传回父窗口
         parent.knowledgeReturnList = formattedData;
         
+        // 添加这一行代码 - 将知识点ID字符串直接添加到父窗口的全局变量中
+        parent.selectedKnowledgeIds = selectedIds.join(",");
+        
         // 设置回调标志
         parent.refreshCode = '0';
         
