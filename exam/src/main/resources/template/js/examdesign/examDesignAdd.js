@@ -10,6 +10,8 @@ layui.config({
 	    var $ = layui.$,
 	    	form = layui.form;
 
+		const classTemplate = `{{#each rows}}<input type="checkbox" name="limitrequire" title="{{classesMation.name}}" rowId="{{classesId}}" lay-filter="checkboxProperty" />{{/each}}`;
+
 		// 定义全局变量
 		var readerList = '';  // 添加全局变量存储审批人ID列表
 
@@ -136,7 +138,7 @@ layui.config({
 				url: schoolBasePath + "queryNoPageSubjectClassesList",
 				params: {objectId: $("#subjectId").val()},
 				pagination: false,
-				template: getFileContent('tpl/template/checkbox-property.tpl'),
+				template: classTemplate,
 				method: 'POST',
 				ajaxSendLoadBefore: function(hdb) {},
 				ajaxSendAfter:function (json) {
@@ -232,7 +234,7 @@ layui.config({
 													url: schoolBasePath + "queryNoPageSubjectClassesList",
 													params: {objectId: $("#subjectId").val()},
 													pagination: false,
-													template: getFileContent('tpl/template/checkbox-property.tpl'),
+													template: classTemplate,
 													method: "POST",
 													ajaxSendLoadBefore: function (hdb) {},
 													ajaxSendAfter: function (data) {
