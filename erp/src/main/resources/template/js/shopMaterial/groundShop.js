@@ -31,6 +31,7 @@ layui.config({
         AjaxPostUtil.request({url: sysMainMation.erpBasePath + "queryTransMaterialById", params: {id: id}, type: 'json', method: 'GET', callback: function (json) {
             const material = json.bean.materialMation;
             $(".note-title").html(material.name);
+            $(".note-title").attr("title", material.name);
             $(".right-content").html(getDataUseHandlebars($("#materialTemplate").html(), json));
             const randomId = getRandomValueToString();
             $("#contentBox").html(`<script id="content${randomId}" name="content${randomId}" type="text/plain"></script>`);
