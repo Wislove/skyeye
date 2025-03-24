@@ -1,4 +1,3 @@
-
 var rowId = "";
 
 var surveyName = "";
@@ -13,14 +12,13 @@ layui.config({
 	var $ = layui.$,
 		form = layui.form,
 		table = layui.table;
-	
+
 	authBtn('1553649420346');
 	table.render({
 	    id: 'messageTable',
 	    elem: '#messageTable',
 	    method: 'post',
-	    url: sysMainMation.surveyBasePath + 'queryAllDwList',
-	    // where: {surveyName: $("#surveyName").val(), surveyState: $("#surveyState").val()},
+	    url: sysMainMation.surveyBasePath + 'queryFilterDwLists',
 		where: getTableParams(),
 	    even: false,
 	    page: true,
@@ -28,7 +26,7 @@ layui.config({
 	    limit: getLimit(),
 	    cols: [[
 	        { title: systemLanguage["com.skyeye.serialNumber"][languageType], type: 'numbers' },
-	        { field: 'surveyName', width: 300, title: '问卷名称'},
+	        { field: 'surveyName', width: 300, title: '问卷名称',},
 	        { field: 'answerNum', align: 'center',width: 140, title: '回答次数'},
 	        { field: 'surveyState', width: 120, title: '状态',templet: function (d) {
 					var state = d.surveyState;
@@ -38,10 +36,11 @@ layui.config({
 						return '执行中';
 					} else if (state == 2) {
 						return '结束';
-					}
-				}},
-	        { field: 'createName', width: 120, title: systemLanguage["com.skyeye.createName"][languageType]},
-	        { field: 'createTime', title: systemLanguage["com.skyeye.createTime"][languageType], width: 180 },
+					} else {
+						return d.surveyState; // 兜底返回，以防state值不在预期范围内
+				}}},
+	        { field: 'createName', width: 150, align: 'center', title: systemLanguage["com.skyeye.createName"][languageType]},
+	        { field: 'createTime', align: 'center',title: systemLanguage["com.skyeye.createTime"][languageType], width: 180 },
 	        { title: systemLanguage["com.skyeye.operation"][languageType], fixed: 'right', align: 'center', width: 300, toolbar: '#tableBar'}
 	    ]],
 	    done: function(json) {
@@ -161,6 +160,7 @@ layui.config({
 		layer.confirm(msg, { icon: 3, title: '结束调查' }, function (index) {
 			layer.close(index);
             AjaxPostUtil.request({url: sysMainMation.surveyBasePath + "updateDwMationEndById", params: {surveyId: data.id,id:data.id}, type: 'json',method: 'POST', callback: function (json) {
+				console.log('hsdufhaiohf',data.surveyState)
 				winui.window.msg("结束成功", {icon: 1, time: 2000});
 				loadTable();
     		}});
@@ -178,27 +178,12 @@ layui.config({
 			url: "../../tpl/dwsurveydesign/dwsurveydesignadd.html", 
 			title: "新增问卷",
 			pageId: "dwsurveydesignadd",
-			area: ['500px', '300px'],
+			area: ['800px', '500px'],
 			callBack: function (refreshCode) {
 				winui.window.msg(systemLanguage["com.skyeye.successfulOperation"][languageType], {icon: 1, time: 2000});
 				loadTable();
 			}});
     });
-    
-    // function loadTable() {
-    // 	table.reloadData("messageTable", {where:{surveyName: $("#surveyName").val(), surveyState: $("#surveyState").val()}});
-    // }
-    //
-    // function refreshTable(){
-    // 	table.reloadData("messageTable", {page: {curr: 1}, where:{surveyName: $("#surveyName").val(), surveyState: $("#surveyState").val()}});
-    // }
-
-	// function getTableParams() {
-	// 	return {
-	// 		keyword: $("#surveyName").val(),
-	// 		state: $("#surveyState").val()
-	// 	};
-	// }
 
 	function loadTable() {
 		table.reloadData("messageTable", {where: getTableParams()});
@@ -210,7 +195,7 @@ layui.config({
 
 	function getTableParams() {
 		return {
-			surveyName: $("#surveyName").val(),
+			keyword: $("#surveyName").val(),
 			state: $("#surveyState").val()
 		};
 	}
