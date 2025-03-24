@@ -127,7 +127,7 @@ layui.config({
     }
 
     function getTableParams() {
-        return $.extend(true, {objectKey: objectKey, objectId: objectId}, initTableSearchUtil.getSearchValue("messageTable"));
+        return $.extend(true, {objectKey: objectKey, subjectId: objectId}, initTableSearchUtil.getSearchValue("messageTable"));
     }
 
     exports('materialList', {});
