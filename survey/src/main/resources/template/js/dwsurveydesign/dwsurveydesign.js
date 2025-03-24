@@ -940,6 +940,7 @@ layui.config({
 		 * 删除单选题选项
 		 */
 		function deleteRadioOption() {
+			console.log("删除单选题选项");
 			//判断是否是table类型
 			var quItemBody = $(curEditObj).parents(".surveyQuItemBody");
 			var hv = quItemBody.find("input[name='hv']").val();
