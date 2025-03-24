@@ -251,21 +251,21 @@
 			<div class="layui-form-item layui-col-xs6">
 				<label class="layui-form-label">所属院系：</label>
 				<div class="layui-input-block ver-center">
-					{{classesMation.facultyMation.name}}
+					{{facultyMation.name}}
 				</div>
 			</div>
 			<div class="layui-form-item layui-col-xs6">
 				<label class="layui-form-label">所属专业：</label>
 				<div class="layui-input-block ver-center">
-					{{classesMation.majorMation.name}}
+					{{majorMation.name}}
 				</div>
 			</div>
-	        <div class="layui-form-item layui-col-xs6">
+	        <!-- <div class="layui-form-item layui-col-xs6">
 	            <label class="layui-form-label">第几届：</label>
 	            <div class="layui-input-block ver-center">
                 	{{classesMation.year}}
                 </div>
-	        </div>
+	        </div> -->
 	        <div class="layui-form-item layui-col-xs6">
 	            <label class="layui-form-label">考试科目：</label>
 	            <div class="layui-input-block ver-center">
@@ -275,7 +275,7 @@
 	        <div class="layui-form-item layui-col-xs12">
 	            <label class="layui-form-label">考试班级：</label>
                	<div class="layui-input-block ver-center">
-                	{{classesMation.name}}
+                	{{formatClassNames classesMation}}
                 </div>
 	        </div>
 	        <div class="layui-form-item layui-col-xs6">
@@ -297,8 +297,21 @@
 		    </div>
 		    <div class="layui-form-item layui-col-xs6">
 		        <label class="layui-form-label">状态：</label>
-		        <div class="layui-input-block ver-center">
-                	{{surveyState}}
+		        <div class="layui-input-block">
+                    {{#if surveyState}}
+                        {{#compare surveyState 0}}
+                            <span class="layui-badge layui-bg-blue">设计</span>
+                        {{/compare}}
+                        {{#compare surveyState 1}}
+                            <span class="layui-badge layui-bg-green">执行中</span>
+                            <i class="fa fa-pencil-square fa-fw cursor vary-color" title="点击前往考试"></i>
+                        {{/compare}}
+                        {{#compare surveyState 2}}
+                            <span class="layui-badge layui-bg-gray">结束</span>
+                        {{/compare}}
+                    {{else}}
+                        <span class="layui-badge layui-bg-gray">未知状态</span>
+                    {{/if}}
                 </div>
 		    </div>
 		    <div class="layui-form-item layui-col-xs6">
@@ -998,11 +1011,15 @@
 							});
 						},
 						ajaxSendAfter: function(json) {
+							console.log("json.value",json);
+							console.log("surveyState type:", typeof json.bean.surveyState);
+							console.log("surveyState value:", json.bean.surveyState);
 							$("#showForm").html(getDataUseHandlebars($("#examMationTemplate").html(), json.bean));
 							// 回显阅卷人
 			   				var str = "";
+							console.log("json.bean.readerMationList",json.bean.readerMationList);
 					        $.each(json.bean.readerMationList, function(i, row){
-					        	str += row.userName + '(' + row.userSex + ')，';
+					        	str += row.userName +(row.userSex === 1 ? '(男)' : '(女)');
 					        });
 					        $("#markPeople").html(str);
 					        
@@ -1274,7 +1291,7 @@
 							var logicId = loginItem.find(".logicId").val();
 							var logicType = loginItem.find(".logicType").val();
 							if(logicType === "2") {
-								//逻辑类型为“显示”2  则初始化为隐藏
+								//逻辑类型为"显示"2  则初始化为隐藏
 								var hidQuItemBody = $(".quId[value='" + skQuId + "']").parents(".li_surveyQuItemBody");
 								hidQuItemBody.hide();
 								hidQuItemBody.addClass("hidFor" + logicId);
@@ -1284,6 +1301,19 @@
 				    }
 					
 				});
+			});
+
+			// 添加自定义helper来处理班级信息的展示
+			Handlebars.registerHelper('formatClassNames', function(classesMation) {
+				if (!classesMation || !classesMation.length) return '';
+				
+				var name = [];
+				for (var i = 0; i < classesMation.length; i++) {
+					if (classesMation[i] && classesMation[i].name) {
+						name.push(classesMation[i].name);
+					}
+				}
+				return name.join('、');
 			});
 		</script>
 	</body>

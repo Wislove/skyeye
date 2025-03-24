@@ -122,7 +122,8 @@ layui.config({
                 {field: 'schoolMation.name', width: 200, title: '所属学校', templet: function (d) {
                         return d.schoolMation ? d.schoolMation?.name : '';}},
                 {field: 'facultyMation.name', width: 200, align: 'center', title: '所属院系', templet: function (d) {
-                        return d.facultyMation ? d.facultyMation?.name : '';}},
+                        return d.facultyMation ? d.facultyMation?.name : '';
+                }},
                 {field: 'majorMation.name', width: 200, align: 'center', title: '所属专业', templet: function (d) {
                         return d.majorMation ? d.majorMation?.name : '';
                 }},
@@ -265,6 +266,9 @@ layui.config({
 
     //详情
     function details(data) {
+        console.log("试卷详情数据:", data);
+        console.log("院系信息:", data.facultyMation.name);
+        console.log("专业信息:", data.majorMation.name);
         rowId = data.id;
         _openNewWindows({
             url: "../../tpl/examDetail/examPCDetail.html",

@@ -30,7 +30,7 @@
 							<div class="initLine"></div>
 							<!-- 题目基础信息 -->
 							<div class="quInputCase" style="display: none;">
-								<input type="hidden" name="quType" value="{{quTypeName}}">
+								<input type="hidden" name="quType" value="{{quType}}">
 								<input type="hidden" name="quId" value="{{id}}">
 								<input type="hidden" name="orderById" value="{{orderById}}" />
 								<input type="hidden" name="saveTag" value="1">
