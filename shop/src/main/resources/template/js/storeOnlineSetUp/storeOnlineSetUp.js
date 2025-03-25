@@ -132,6 +132,10 @@ layui.config({
         });
     }
 
+    $("body").on("click", "#reloadTable", function() {
+        loadStoreMation($("#storeId").val());
+    });
+
     $("body").on("click", "#calc", function() {
         var startTime = $("#businessStartTime").val();
         if(isNull(startTime)){
