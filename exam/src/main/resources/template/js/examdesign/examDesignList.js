@@ -227,8 +227,6 @@ layui.config({
 
     //发布
     function showFb(data, obj) {
-        console.log(data, obj)
-        console.log(222)
         var msg = obj ? '确认发布试卷【' + obj.data.surveyName + '】吗？' : '确认发布选中数据吗？';
         layer.confirm(msg, {icon: 3, title: '试卷发布'}, function (index) {
             layer.close(index);
@@ -266,9 +264,6 @@ layui.config({
 
     //详情
     function details(data) {
-        console.log("试卷详情数据:", data);
-        console.log("院系信息:", data.facultyMation.name);
-        console.log("专业信息:", data.majorMation.name);
         rowId = data.id;
         _openNewWindows({
             url: "../../tpl/examDetail/examPCDetail.html",
