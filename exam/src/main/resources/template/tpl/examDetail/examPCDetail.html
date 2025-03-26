@@ -297,14 +297,13 @@
 		    </div>
 		    <div class="layui-form-item layui-col-xs6">
 		        <label class="layui-form-label">状态：</label>
-		        <div class="layui-input-block">
+		        <div class="layui-input-block ver-center">
                     {{#if surveyState}}
                         {{#compare surveyState 0}}
                             <span class="layui-badge layui-bg-blue">设计</span>
                         {{/compare}}
                         {{#compare surveyState 1}}
                             <span class="layui-badge layui-bg-green">执行中</span>
-                            <i class="fa fa-pencil-square fa-fw cursor vary-color" title="点击前往考试"></i>
                         {{/compare}}
                         {{#compare surveyState 2}}
                             <span class="layui-badge layui-bg-gray">结束</span>
@@ -1304,6 +1303,14 @@
 				    }
 					
 				});
+			});
+
+			// 注册 compare helper
+			Handlebars.registerHelper('compare', function(v1, v2, options) {
+				if(v1 === v2) {
+					return options.fn(this);
+				}
+				return options.inverse(this);
 			});
 
 			// 添加自定义helper来处理班级信息的展示
