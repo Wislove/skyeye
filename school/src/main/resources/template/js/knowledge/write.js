@@ -17,6 +17,7 @@ layui.config({
     var id = GetUrlParam("id");
     var objectId = GetUrlParam("objectId");
     var objectKey = GetUrlParam("objectKey");
+    objectParams.subjectId = objectId;
 
     if (isNull(id)) {
         dsFormUtil.initAddPageForStatic('content', 'FP2023082800013', {
