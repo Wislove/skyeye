@@ -19,9 +19,22 @@ layui.config({
 			pageUrl: systemCommonUtil.getUrl('FP2023082800004&id=' + objectId, null)
 		}],
 		suffixData: [{
+			title:'章节',
+			pageUrl:'../../tpl/chapter/chapterList.html'
+		},{
 			title: '班级',
 			pageUrl: '../../tpl/subjectClass/list.html'
+		}, {
+			title: '知识点',
+			pageUrl: '../../tpl/knowledge/knowledgeList.html'
+		}, {
+			title: '互动课件',
+			pageUrl: '../../tpl/courseware/coursewareList.html'
+		},{
+			title: '资料',
+			pageUrl: '../../tpl/material/materialList.html'
 		}],
+
 		element: layui.element,
 		object: {
 			objectId: objectId,
