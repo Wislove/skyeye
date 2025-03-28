@@ -180,25 +180,14 @@ layui.define(["jquery", "form", "element"], function(exports) {
 		$("body").on("click", ".questionUp", function() {
 			var nextQuBody = $(this).parents(".li_surveyQuItemBody");
 			var prevQuBody = nextQuBody.prev();
-			if(prevQuBody[0]){
-				// 获取上一项的html
-				var prevQuBodyHtml = prevQuBody.html();
+			if (prevQuBody[0]) {
 				// 在当前项后面追加
-				nextQuBody.after('<li class="li_surveyQuItemBody">' + prevQuBodyHtml + '</li>');
-				var newNextObj = nextQuBody.next();
-				newNextObj.hide();
-				newNextObj.slideDown("slow");
-				prevQuBody.slideUp("slow", function() {
-					// 移除上一项
-					prevQuBody.remove();
-					// 重置序号
-					resetQuItem();
-					// 重置左侧设计目录序号
-					resetQuLeftItem();
-					bindQuHoverItem();
-				});
-				nextQuBody.find("input[name='saveTag']").val(0);
-				newNextObj.find("input[name='saveTag']").val(0);
+				nextQuBody.after(prevQuBody);
+				// 重置序号
+				resetQuItem();
+				// 重置左侧设计目录序号
+				resetQuLeftItem();
+				bindQuHoverItem();
 				form.render();
 			} else {
 				winui.window.msg("已经是第一个了！", {icon: 2,time: 1000});
@@ -209,22 +198,13 @@ layui.define(["jquery", "form", "element"], function(exports) {
 		$("body").on("click", ".questionDown", function() {
 			var prevQuBody = $(this).parents(".li_surveyQuItemBody");
 			var nextQuBody = prevQuBody.next();
-			if(nextQuBody[0]){
-				var nextQuBodyHtml = nextQuBody.html();
-				prevQuBody.before("<li class='li_surveyQuItemBody' >" + nextQuBodyHtml + "</li>");
-				var newPrevObj = prevQuBody.prev();
-				newPrevObj.hide();
-				newPrevObj.slideDown("slow");
-				nextQuBody.slideUp("slow", function() {
-					nextQuBody.remove();
-					// 重置序号
-					resetQuItem();
-					// 重置左侧设计目录序号
-					resetQuLeftItem();
-					bindQuHoverItem();
-				});
-				prevQuBody.find("input[name='saveTag']").val(0);
-				newPrevObj.find("input[name='saveTag']").val(0);
+			if (nextQuBody[0]) {
+				prevQuBody.before(nextQuBody);
+				// 重置序号
+				resetQuItem();
+				// 重置左侧设计目录序号
+				resetQuLeftItem();
+				bindQuHoverItem();
 				form.render();
 			} else {
 				winui.window.msg("已经是最后一个了！", {icon: 2,time: 1000});
