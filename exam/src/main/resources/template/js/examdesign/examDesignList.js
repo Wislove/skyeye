@@ -122,7 +122,8 @@ layui.config({
                 {field: 'schoolMation.name', width: 200, title: '所属学校', templet: function (d) {
                         return d.schoolMation ? d.schoolMation?.name : '';}},
                 {field: 'facultyMation.name', width: 200, align: 'center', title: '所属院系', templet: function (d) {
-                        return d.facultyMation ? d.facultyMation?.name : '';}},
+                        return d.facultyMation ? d.facultyMation?.name : '';
+                }},
                 {field: 'majorMation.name', width: 200, align: 'center', title: '所属专业', templet: function (d) {
                         return d.majorMation ? d.majorMation?.name : '';
                 }},
@@ -226,8 +227,6 @@ layui.config({
 
     //发布
     function showFb(data, obj) {
-        console.log(data, obj)
-        console.log(222)
         var msg = obj ? '确认发布试卷【' + obj.data.surveyName + '】吗？' : '确认发布选中数据吗？';
         layer.confirm(msg, {icon: 3, title: '试卷发布'}, function (index) {
             layer.close(index);
@@ -314,7 +313,7 @@ layui.config({
             url: "../../tpl/examdesign/examDesignAdd.html",
             title: "新增试卷",
             pageId: "examDesignAdd",
-            area: ['70vw', '60vh'],
+            area: ['90vw', '90vh'],
             beforeOpen: function () {
                 // 确保打开窗口前rowId为空
                 rowId = "";

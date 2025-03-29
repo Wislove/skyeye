@@ -1169,8 +1169,6 @@ layui.config({
                 if (quItemSaveTag == 0) {
                     var s = {
                         optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
-                        // optionValue: encodeURI($(this).find("label.quCoOptionEdit").html()),
-                        // optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
                         isDefaultAnswer: $(this).find("input[class='multiFillBlank']").val(),
                         orderById: i
                     };

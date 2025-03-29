@@ -251,21 +251,21 @@
 			<div class="layui-form-item layui-col-xs6">
 				<label class="layui-form-label">所属院系：</label>
 				<div class="layui-input-block ver-center">
-					{{classesMation.facultyMation.name}}
+					{{facultyMation.name}}
 				</div>
 			</div>
 			<div class="layui-form-item layui-col-xs6">
 				<label class="layui-form-label">所属专业：</label>
 				<div class="layui-input-block ver-center">
-					{{classesMation.majorMation.name}}
+					{{majorMation.name}}
 				</div>
 			</div>
-	        <div class="layui-form-item layui-col-xs6">
+	        <!-- <div class="layui-form-item layui-col-xs6">
 	            <label class="layui-form-label">第几届：</label>
 	            <div class="layui-input-block ver-center">
                 	{{classesMation.year}}
                 </div>
-	        </div>
+	        </div> -->
 	        <div class="layui-form-item layui-col-xs6">
 	            <label class="layui-form-label">考试科目：</label>
 	            <div class="layui-input-block ver-center">
@@ -275,7 +275,7 @@
 	        <div class="layui-form-item layui-col-xs12">
 	            <label class="layui-form-label">考试班级：</label>
                	<div class="layui-input-block ver-center">
-                	{{classesMation.name}}
+                	{{formatClassNames classesMation}}
                 </div>
 	        </div>
 	        <div class="layui-form-item layui-col-xs6">
@@ -298,7 +298,19 @@
 		    <div class="layui-form-item layui-col-xs6">
 		        <label class="layui-form-label">状态：</label>
 		        <div class="layui-input-block ver-center">
-                	{{surveyState}}
+                    {{#if surveyState}}
+                        {{#compare surveyState 0}}
+                            <span class="layui-badge layui-bg-blue">设计</span>
+                        {{/compare}}
+                        {{#compare surveyState 1}}
+                            <span class="layui-badge layui-bg-green">执行中</span>
+                        {{/compare}}
+                        {{#compare surveyState 2}}
+                            <span class="layui-badge layui-bg-gray">结束</span>
+                        {{/compare}}
+                    {{else}}
+                        <span class="layui-badge layui-bg-gray">未知状态</span>
+                    {{/if}}
                 </div>
 		    </div>
 		    <div class="layui-form-item layui-col-xs6">
@@ -322,7 +334,7 @@
 					<div class="quCoTitle">
 						<div class="quCoNum">{{showQuestionIndex quType}}、</div>
 						<div class="quCoTitleEdit" >{{quTitle}}<span class="fraction">（{{fraction}}分）</span>
-							<span class="quKnowledgeInfoList">知识点：{{questionKnowledge}}个</span></div>
+							<span class="quKnowledgeInfoList">知识点：{{countKnowledgePoints knowledgeIds}}个</span></div>
 					</div>
 					<div class="showOtherFile">
 						
@@ -331,7 +343,7 @@
 					{{#if hv}}
 						{{#compare1 hv '3'}}
 							<table class='tableQuColItem'>
-								{{#each questionRadio}}
+								{{#each radioTd}}
 									<tr>
 										{{#cellCount001 cellCount}}{{/cellCount001}}
 									</tr>
@@ -342,7 +354,7 @@
 						{{#if hv}}
 						{{#compare1 hv '1'}}
 							<ul class="transverse">
-								{{#each questionRadio}}
+								{{#each radioTd}}
 									<li class="quCoItemUlLi">
 										<div class="dwQuOptionItemContent">
 											<input type="radio" name="radioName{{../id}}" {{isDefaultAnswer}} disabled="" />
@@ -354,7 +366,7 @@
 							</ul>
 						{{else}}
 							<ul>
-								{{#each questionRadio}}
+								{{#each radioTd}}
 									<li class="quCoItemUlLi">
 										<div class="dwQuOptionItemContent">
 											<input type="radio" name="radioName{{../id}}" {{isDefaultAnswer}} disabled="" />
@@ -380,7 +392,7 @@
 					<div class="quCoTitle">
 						<div class="quCoNum">{{showQuestionIndex quType}}、</div>
 						<div class="quCoTitleEdit" >{{quTitle}}<span class="fraction">（{{fraction}}分）</span>
-							<span class="quKnowledgeInfoList">知识点：{{questionKnowledge}}个</span></div>
+							<span class="quKnowledgeInfoList">知识点：{{countKnowledgePoints knowledgeIds}}个</span></div>
 					</div>
 					<div class="showOtherFile">
 						
@@ -389,7 +401,7 @@
 						{{#if hv}}
 						{{#compare1 hv '3'}}
 								<table class='tableQuColItem'>
-									{{#each questionCheckBox}}
+									{{#each checkboxTd}}
 										<tr>
 											{{#cellCount002 cellCount}}{{/cellCount002}}
 										</tr>
@@ -399,7 +411,7 @@
 								{{#if hv}}
 								{{#compare1 hv '1'}}
 										<ul class="transverse">
-											{{#each questionCheckBox}}
+											{{#each checkboxTd}}
 												<li class="quCoItemUlLi">
 													<div class="dwQuOptionItemContent">
 														<input type="checkbox" name="checkBoxName{{../id}}" {{isDefaultAnswer}} disabled="" />
@@ -411,7 +423,7 @@
 										</ul>
 									{{else}}
 										<ul>
-											{{#each questionCheckBox}}
+											{{#each checkboxTd}}
 												<li class="quCoItemUlLi">
 													<div class="dwQuOptionItemContent">
 														<input type="checkbox" name="checkBoxName{{../id}}" {{isDefaultAnswer}} disabled="" />
@@ -437,7 +449,7 @@
 					<div class="quCoTitle">
 						<div class="quCoNum">{{showQuestionIndex quType}}、</div>
 						<div class="quCoTitleEdit" >{{quTitle}}<span class="fraction">（{{fraction}}分）</span>
-							<span class="quKnowledgeInfoList">知识点：{{questionKnowledge}}个</span></div>
+							<span class="quKnowledgeInfoList">知识点：{{countKnowledgePoints knowledgeIds}}个</span></div>
 					</div>
 					<div class="showOtherFile">
 						
@@ -472,7 +484,7 @@
 					<div class="quCoTitle">
 						<div class="quCoNum">{{showQuestionIndex quType}}、</div>
 						<div class="quCoTitleEdit">{{quTitle}}<span class="fraction">（{{fraction}}分）</span>
-							<span class="quKnowledgeInfoList">知识点：{{questionKnowledge}}个</span></div>
+							<span class="quKnowledgeInfoList">知识点：{{countKnowledgePoints knowledgeIds}}个</span></div>
 					</div>
 					<div class="showOtherFile">
 						
@@ -480,7 +492,7 @@
 					<div class="quCoItem quOrderByCoItem">
 						<div class="quOrderByRight">
 							<table class="quOrderByTable" style="padding:5px;">
-								{{#each questionOrderBy}}
+								{{#each orderByTd}}
 									<tr class="quOrderByTableTr">
 										<td class="quOrderyTableTd">{{showIndex @index}}</td>
 										<td class="quOrderTabConnect"></td>
@@ -490,7 +502,7 @@
 						</div>
 						<div  class="quOrderByLeft">
 							<ul class="quOrderByLeftUl">
-								{{#each questionOrderBy}}
+								{{#each orderByTd}}
 									<li class="quCoItemUlLi">
 										<label class="quCoOptionEdit">{{optionName}}
 											<input name="item_qu_{{quType}}_{{quId}}_{{id}}" value="1" type="hidden" class="quOrderItemHidInput">
@@ -540,14 +552,14 @@
 					<div class="quCoTitle">
 						<div class="quCoNum">{{showQuestionIndex quType}}、</div>
 						<div class="quCoTitleEdit" >{{quTitle}}<span class="fraction">（{{fraction}}分）</span>
-							<span class="quKnowledgeInfoList">知识点：{{questionKnowledge}}个</span></div>
+							<span class="quKnowledgeInfoList">知识点：{{countKnowledgePoints knowledgeIds}}个</span></div>
 					</div>
 					<div class="showOtherFile">
 						
 					</div>
 					<div class="quCoItem">
 						<table class="mFillblankTable" cellpadding="0" cellspacing="0">
-							{{#each questionMultiFillBlank}}
+							{{#each multifillblankTd}}
 								<tr class="mFillblankTableTr">
 									<td align="right" class="mFillblankTableEditTd">
 										<label class="quCoOptionEdit">{{optionName}}：</label>
@@ -570,7 +582,7 @@
 					<div class="quCoTitle">
 						<div class="quCoNum">{{showQuestionIndex quType}}、</div>
 						<div class="quCoTitleEdit">{{quTitle}}<span class="fraction">（{{fraction}}分）</span>
-							<span class="quKnowledgeInfoList">知识点：{{questionKnowledge}}个</span></div>
+							<span class="quKnowledgeInfoList">知识点：{{countKnowledgePoints knowledgeIds}}个</span></div>
 					</div>
 					<div class="showOtherFile">
 						
@@ -579,18 +591,18 @@
 						<div class="quCoItemLeftChenTableDiv">
 							<table class="quCoChenTable" >
 								<tr><td></td>
-									{{#each questionChenColumn}}
+									{{#each columnTd}}
 										<td class="quChenColumnTd">
 											<label class="quCoOptionEdit">{{optionName}}</label>
 										</td>
 									{{/each}}
 								</tr>
-								{{#each questionChenRow}}
+								{{#each rowTd}}
 									<tr class="dwQuCoChenRowTr">
 										<td class="quChenRowTd">
 											<label class="quCoOptionEdit">{{optionName}}</label>
 										</td>
-										{{#each questionChenColumn}}
+										{{#each ../columnTd}}
 											<td>
 												<div class="dwQuOptionItemContent">
 													<input type="radio" class="chenRadioInput" name="{{../id}}" disabled="" />
@@ -614,7 +626,7 @@
 					<div class="quCoTitle">
 						<div class="quCoNum">{{showQuestionIndex quType}}、</div>
 						<div class="quCoTitleEdit">{{quTitle}}<span class="fraction">（{{fraction}}分）</span>
-							<span class="quKnowledgeInfoList">知识点：{{questionKnowledge}}个</span></div>
+							<span class="quKnowledgeInfoList">知识点：{{countKnowledgePoints knowledgeIds}}个</span></div>
 					</div>
 					<div class="showOtherFile">
 						
@@ -623,18 +635,18 @@
 						<div class="quCoItemLeftChenTableDiv">
 							<table class="quCoChenTable" >
 								<tr><td></td>
-									{{#each questionChenColumn}}
+									{{#each columnTd}}
 										<td class="quChenColumnTd">
 											<label class="quCoOptionEdit">{{optionName}}</label>
 										</td>
 									{{/each}}
 								</tr>
-								{{#each questionChenRow}}
+								{{#each rowTd}}
 									<tr class="dwQuCoChenRowTr">
 										<td class="quChenRowTd">
 											<label class="quCoOptionEdit">{{optionName}}</label>
 										</td>
-										{{#each questionChenColumn}}
+										{{#each ../columnTd}}
 											<td>
 												<div class="dwQuOptionItemContent">
 													<input type="checkbox" class="chenCheckBoxInput" disabled="" />
@@ -658,7 +670,7 @@
 					<div class="quCoTitle">
 						<div class="quCoNum">{{showQuestionIndex quType}}、</div>
 						<div class="quCoTitleEdit" >{{quTitle}}<span class="fraction">（{{fraction}}分）</span>
-							<span class="quKnowledgeInfoList">知识点：{{questionKnowledge}}个</span></div>
+							<span class="quKnowledgeInfoList">知识点：{{countKnowledgePoints knowledgeIds}}个</span></div>
 					</div>
 					<div class="showOtherFile">
 						
@@ -667,18 +679,18 @@
 						<div class="quCoItemLeftChenTableDiv">
 							<table class="quCoChenTable" >
 								<tr><td></td>
-									{{#each questionChenColumn}}
+									{{#each columnTd}}
 										<td class="quChenColumnTd">
 											<label class="quCoOptionEdit">{{optionName}}</label>
 										</td>
 									{{/each}}
 								</tr>
-								{{#each questionChenRow}}
+								{{#each rowTd}}
 									<tr class="dwQuCoChenRowTr">
 										<td class="quChenRowTd">
 											<label class="quCoOptionEdit">{{optionName}}</label>
 										</td>
-										{{#each questionChenColumn}}
+										{{#each ../columnTd}}
 											<td>
 												<div class="dwQuChenFbkOptionItemContent">
 													<input name="fbk_item_qu_{{quType}}_{{quId}}_{{../id}}_{{id}}" class="inputSytle_1 dwChenMFillblankInput questionChenColumnValue" type="text" value="{{isDefaultAnswer}}" disabled="" /> 
@@ -702,7 +714,7 @@
 					<div class="quCoTitle">
 						<div class="quCoNum">{{showQuestionIndex quType}}、</div>
 						<div class="quCoTitleEdit" >{{quTitle}}<span class="fraction">（{{fraction}}分）</span>
-							<span class="quKnowledgeInfoList">知识点：{{questionKnowledge}}个</span></div>
+							<span class="quKnowledgeInfoList">知识点：{{countKnowledgePoints knowledgeIds}}个</span></div>
 					</div>
 					<div class="showOtherFile">
 						
@@ -711,18 +723,18 @@
 						<div class="quCoItemLeftChenTableDiv">
 							<table class="quCoChenTable" >
 								<tr><td></td>
-									{{#each questionChenColumn}}
+									{{#each columnTd}}
 										<td class="quChenColumnTd">
 											<label class="quCoOptionEdit">{{optionName}}</label>
 										</td>
 									{{/each}}
 								</tr>
-								{{#each questionChenRow}}
+								{{#each rowTd}}
 									<tr class="dwQuCoChenRowTr">
 										<td class="quChenRowTd">
 											<label class="quCoOptionEdit">{{optionName}}</label>
 										</td>
-										{{#each questionChenColumn}}
+										{{#each ../columnTd}}
 											<td>
 												<div class="dwQuScoreOptionItemContent">
 													<select name="cs_item_qu_{{quType}}_{{quId}}_{{../id}}_{{id}}" class="quChenScoreSelect" disabled=""> 
@@ -749,22 +761,22 @@
 					<div class="quCoTitle">
 						<div class="quCoNum">{{showQuestionIndex quType}}、</div>
 						<div class="quCoTitleEdit" >{{quTitle}}<span class="fraction">（{{fraction}}分）</span>
-							<span class="quKnowledgeInfoList">知识点：{{questionKnowledge}}个</span></div>
+							<span class="quKnowledgeInfoList">知识点：{{countKnowledgePoints knowledgeIds}}个</span></div>
 					</div>
 					<div class="showOtherFile">
 						
 					</div>
 					<div class="quCoItem">
 						<table class="quCoItemTable" cellpadding="0" cellspacing="0">
-							{{#each quScores}}
+							{{#each scoreTd}}
 								<tr class="quScoreOptionTr">
 									<td class="quCoItemTableTd quOptionEditTd">
 										<label class="quCoOptionEdit">{{optionName}}</label>
 									</td>
 									<td class="quCoItemTableTd">
-										<table class="scoreNumTable" border="0" cellspacing="0" cellpadding="1" style="border-collapse: initial;">
+										<table class="scoreNumTable" style="border-collapse: initial;">
 											<tr>
-												{{#showParamInt02 paramInt02}}{{/showParamInt02}}
+												{{#showParamInt02 ../paramInt02}}{{/showParamInt02}}
 											</tr>
 										</table>
 									</td>
@@ -803,6 +815,7 @@
 						pagination: false,
 						template: getFileContent('tpl/examDetail/examPCDetail.tpl'),
 						ajaxSendLoadBefore: function(hdb, json) {
+							json.total = 1;
 							hdb.registerHelper("showQuestionIndex", function(v1, options) {
 								if(v1 == '16' || v1 == '17'){
 								} else {
@@ -996,13 +1009,19 @@
 								}
 								return str;
 							});
+
+							// 添加计算知识点数量的辅助函数
+							hdb.registerHelper("countKnowledgePoints", function(knowledgeIds) {
+								if (!knowledgeIds) return 0;
+								return knowledgeIds.split(',').length;
+							});
 						},
 						ajaxSendAfter: function(json) {
 							$("#showForm").html(getDataUseHandlebars($("#examMationTemplate").html(), json.bean));
 							// 回显阅卷人
 			   				var str = "";
 					        $.each(json.bean.readerMationList, function(i, row){
-					        	str += row.userName + '(' + row.userSex + ')，';
+					        	str += row.userName +(row.userSex === 1 ? '(男)' : '(女)');
 					        });
 					        $("#markPeople").html(str);
 					        
@@ -1274,7 +1293,7 @@
 							var logicId = loginItem.find(".logicId").val();
 							var logicType = loginItem.find(".logicType").val();
 							if(logicType === "2") {
-								//逻辑类型为“显示”2  则初始化为隐藏
+								//逻辑类型为"显示"2  则初始化为隐藏
 								var hidQuItemBody = $(".quId[value='" + skQuId + "']").parents(".li_surveyQuItemBody");
 								hidQuItemBody.hide();
 								hidQuItemBody.addClass("hidFor" + logicId);
@@ -1284,6 +1303,27 @@
 				    }
 					
 				});
+			});
+
+			// 注册 compare helper
+			Handlebars.registerHelper('compare', function(v1, v2, options) {
+				if(v1 === v2) {
+					return options.fn(this);
+				}
+				return options.inverse(this);
+			});
+
+			// 添加自定义helper来处理班级信息的展示
+			Handlebars.registerHelper('formatClassNames', function(classesMation) {
+				if (!classesMation || !classesMation.length) return '';
+				
+				var name = [];
+				for (var i = 0; i < classesMation.length; i++) {
+					if (classesMation[i] && classesMation[i].name) {
+						name.push(classesMation[i].name);
+					}
+				}
+				return name.join('、');
 			});
 		</script>
 	</body>
