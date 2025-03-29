@@ -160,7 +160,6 @@ layui.config({
 		layer.confirm(msg, { icon: 3, title: '结束调查' }, function (index) {
 			layer.close(index);
             AjaxPostUtil.request({url: sysMainMation.surveyBasePath + "updateDwMationEndById", params: {surveyId: data.id,id:data.id}, type: 'json',method: 'POST', callback: function (json) {
-				console.log('hsdufhaiohf',data.surveyState)
 				winui.window.msg("结束成功", {icon: 1, time: 2000});
 				loadTable();
     		}});

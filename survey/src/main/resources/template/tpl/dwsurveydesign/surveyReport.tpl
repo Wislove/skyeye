@@ -38,7 +38,7 @@
 												{{#if quType}}
 												{{#compare1 quType '1'}}<!-- radio -->
 							    						<table class="suQuTable" border="0" cellpadding="0" cellspacing="0">
-															{{#each questionRadio}}
+															{{#each radioTd}}
 																<tr class="quTrOptions">
 																	<td width="15px">&nbsp;</td>
 																	<td width="520px" class="optionName">{{optionName}}</td>
@@ -83,7 +83,7 @@
 							    						{{#if quType}}
 														{{#compare1 quType '2'}}<!-- checkbox -->
 																<table class="suQuTable" border="0" cellpadding="0" cellspacing="0">
-																	{{#each questionCheckBox}}
+																	{{#each checkboxTd}}
 																		<tr class="quTrOptions">
 																			<td width="15px">&nbsp;</td>
 																			<td width="520px" class="optionName">{{optionName}}</td>
@@ -138,7 +138,7 @@
 																		{{#if quType}}
 																		{{#compare1 quType '9'}}<!-- orderby -->
 																				<table class="suQuTable" border="0" cellpadding="0" cellspacing="0">
-																					{{#each questionOrderBy}}
+																					{{#each orderByTd}}
 																					<c:forEach items="${en.quOrderbys }" var="quEn" varStatus="quI">
 																						<tr  class="quTrOptions" >
 																							<td width="15px">&nbsp;</td>
@@ -163,7 +163,7 @@
 																				{{#if quType}}
 																				{{#compare1 quType '4'}}<!-- multi-fillblank -->
 																						<table class="suQuTable" border="0" cellpadding="0" cellspacing="0">
-																							{{#each questionMultiFillBlank}}
+																							{{#each multifillblankTd}}
 																								<tr class="quTrOptions">
 																									<td width="15px">&nbsp;</td>
 																									<td width="520px">{{optionName}}</td>
@@ -178,7 +178,7 @@
 																						{{#if quType}}
 																						{{#compare1 quType '11'}}<!-- chen-radio -->
 																								<table class="suQuTable" border="0" cellpadding="0" cellspacing="0">
-																									{{#each questionChenRow}}
+																									{{#each columnTd}}
 																										<tr class="rowItemTr">
 																											<td width="15px">&nbsp;
 																												<div class="rowItemOptionName" style="display: none;">{{optionName}}</div>
@@ -189,7 +189,7 @@
 																										<tr class="columnItemTr">
 																											<td colspan="6">
 																												<table class="anColumnTable">
-																													{{#each questionChenColumn}}
+																													{{#each rowTd}}
 																														<tr class="columnItemTr">
 																															<td width="15px">&nbsp;</td>
 																															<td width="520" class="quChenRowTd" style="padding-left: 15px;"><label class="editAble quCoOptionEdit">{{optionName}}</label></td>
@@ -206,7 +206,7 @@
 																											</td>
 																										</tr>
 																									{{/each}}
-																									{{#each anChenRadios}}
+																									{{#each ../columnTd}}
 																										<script type="text/javascript">
 																											layui.define(["jquery", 'jqueryUI'], function(exports) {
 																												var jQuery = layui.jquery;
@@ -242,7 +242,7 @@
 																								{{#if quType}}
 																								{{#compare1 quType '13'}}<!-- chen-checkbox -->
 																										<table class="suQuTable" border="0" cellpadding="0" cellspacing="0">
-																											{{#each questionChenRow}}
+																											{{#each columnTd}}
 																												<tr class="rowItemTr">
 																													<td width="15px">&nbsp;
 																														<div class="rowItemOptionName" style="display: none;">{{optionName}}</div>
@@ -253,7 +253,7 @@
 																												<tr class="columnItemTr">
 																													<td colspan="6">
 																														<table class="anColumnTable" style="width: 100%;">
-																															{{#each questionChenColumn}}
+																															{{#each rowTd}}
 																																<tr class="columnItemTr">
 																																	<td width="15px">&nbsp;</td>
 																																	<td width="520" class="quChenRowTd" style="padding-left: 15px;"><label class="editAble quCoOptionEdit">{{optionName}}</label></td>
@@ -270,7 +270,7 @@
 																													</td>
 																												</tr>
 																											{{/each}}
-																											{{#each anChenCheckboxs}}
+																											{{#each ../columnTd}}
 																												<script type="text/javascript">
 																													layui.define(["jquery", 'jqueryUI'], function(exports) {
 																														var jQuery = layui.jquery;
@@ -306,12 +306,12 @@
 																										{{#if quType}}
 																										{{#compare1 quType '12'}}<!-- chen-fbk -->
 																												<table class="suQuTable" border="0" cellpadding="0" cellspacing="0" >
-																													{{#each questionChenRow}}
+																													{{#each columnTd}}
 																														<tr class="rowItemTr">
 																															<td width="15px">&nbsp;</td>
 																															<td class="quChenRowTd" colspan="4"><label class="editAble quCoOptionEdit" style="font-size: 14px;">{{showXhIndex @index}}、{{optionName}}</label></td>
 																														</tr>
-																														{{#each questionChenColumn}}
+																														{{#each rowTd}}
 																															<tr class="columnItemTr">
 																																<td width="15px">&nbsp;</td>
 																																<td width="520" class="quChenRowTd" style="padding-left: 15px;"><label class="editAble quCoOptionEdit">{{optionName}}</label></td>
@@ -322,7 +322,7 @@
 																															</tr>
 																														{{/each}}
 																													{{/each}}
-																													{{#each anChenFbks}}
+																													{{#each ../columnTd}}
 																														<script type="text/javascript">
 																															layui.define(["jquery"], function(exports) {
 																																var jQuery = layui.jquery;
@@ -340,7 +340,7 @@
 																												{{#if quType}}
 																												{{#compare1 quType '18'}}<!-- chen-score -->
 																														<table class="suQuTable" border="0" cellpadding="0" cellspacing="0">
-																															{{#each questionChenRow}}
+																															{{#each columnTd}}
 																																<tr class="rowItemTr">
 																																	<td width="15px">&nbsp;
 																																		<div class="rowItemOptionName" style="display: none;">{{optionName}}</div>
@@ -351,7 +351,7 @@
 																																<tr class="columnItemTr">
 																																	<td colspan="6">
 																																		<table class="anColumnTable">
-																																			{{#each questionChenColumn}}
+																																			{{#each rowTd}}
 																																				<tr class="columnItemTr">
 																																					<td width="15px">&nbsp;</td>
 																																					<td width="520" class="quChenRowTd" style="padding-left: 15px;"><label class="editAble quCoOptionEdit">{{optionName}}</label></td>
@@ -369,7 +369,7 @@
 																																	</td>
 																																</tr>
 																															{{/each}}
-																															{{#each anChenScores}}
+																															{{#each ../columnTd}}
 																																<script type="text/javascript">
 																																	layui.define(["jquery", 'jqueryUI'], function(exports) {
 																																		var jQuery = layui.jquery;
@@ -406,7 +406,7 @@
 																														{{#compare1 quType '8'}}<!-- score -->
 																																<input type="hidden" name="paramInt02" value="{{paramInt02}}">
 																																<table class="suQuTable" border="0" cellpadding="0" cellspacing="0">
-																																	{{#each quScores}}
+																																	{{#each scoreTd}}
 																																		<tr class="quTrOptions">
 																																			<td width="15px">&nbsp;</td>
 																																			<td width="520px" class="optionName">{{optionName}}</td>

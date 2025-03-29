@@ -22,7 +22,7 @@
 									<div class="surveyQuItemBody">
 										<div class="initLine"></div>
 										<div class="quInputCase" style="display: none;">
-											<input type="hidden" class="quType" value="{{quTypeName}}" />
+											<input type="hidden" class="quType" value="{{quType}}" />
 											<input type="hidden" class="quId" value="{{id}}" />
 											<input type="hidden" class="orderById" value="{{orderById}}" />
 											<input type="hidden" name="isRequired" value="{{isRequired}}" />
@@ -56,6 +56,10 @@
 									<div class="surveyQuItemBody">
 										<div class="surveyQuItem">
 											<div class="surveyQuItemContent" style="padding-top: 12px;height: 30px;min-height: 30px;">
+											        <div class="quInputCase" style="display: none;">
+                                                        <input type="hidden" class="quType" value="SUBMIT" /> <!-- 自定义类型 -->
+                                                        <input type="hidden" class="isRequired" value="0" />  <!-- 非必填 -->
+                                                    </div>
 												<a href="#" id="submitSurvey" class="sbtn24 sbtn24_0 submitSurvey" >提&nbsp;交</a>&nbsp;&nbsp;&nbsp;&nbsp;
 												{{#if pageNo}}
 												{{#compare3 pageNo 1}}

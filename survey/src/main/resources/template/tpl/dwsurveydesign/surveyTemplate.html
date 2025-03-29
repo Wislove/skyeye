@@ -173,7 +173,7 @@
 					{{#if hv}}
 						{{#compare1 hv '3'}}
 							<table class='tableQuColItem'>
-								{{#each questionRadio}}
+								{{#each radioTd}}
 									<tr>
 										{{#cellCount001 cellCount}}{{/cellCount001}}
 									</tr>
@@ -184,7 +184,7 @@
 						{{#if hv}}
 						{{#compare1 hv '1'}}
 							<ul class="transverse">
-								{{#each questionRadio}}
+								{{#each radioTd}}
 									<li class="quCoItemUlLi">
 										<div class="dwQuOptionItemContent">
 											<label class="dwRedioStyle dwQuInputLabel" ></label>
@@ -197,7 +197,7 @@
 							</ul>
 						{{else}}
 							<ul>
-								{{#each questionRadio}}
+								{{#each radioTd}}
 									<li class="quCoItemUlLi">
 										<div class="dwQuOptionItemContent">
 											<label class="dwRedioStyle dwQuInputLabel" ></label>
@@ -229,7 +229,7 @@
 						{{#if hv}}
 						{{#compare1 hv '3'}}
 								<table class='tableQuColItem'>
-									{{#each questionCheckBox}}
+									{{#each checkboxTd}}
 										<tr>
 											{{#cellCount002 cellCount}}{{/cellCount002}}
 										</tr>
@@ -239,7 +239,7 @@
 								{{#if hv}}
 								{{#compare1 hv '1'}}
 										<ul class="transverse">
-											{{#each questionCheckBox}}
+											{{#each checkboxTd}}
 												<li class="quCoItemUlLi">
 													<div class="dwQuOptionItemContent">
 														<label class="dwCheckboxStyle dwQuInputLabel" ></label>
@@ -252,7 +252,7 @@
 										</ul>
 									{{else}}
 										<ul>
-											{{#each questionCheckBox}}
+											{{#each checkboxTd}}
 												<li class="quCoItemUlLi">
 													<div class="dwQuOptionItemContent">
 														<label class="dwCheckboxStyle dwQuInputLabel" ></label>
@@ -314,7 +314,7 @@
 					<div class="quCoItem quOrderByCoItem">
 						<div class="quOrderByRight">
 							<table class="quOrderByTable" style="padding:5px;">
-								{{#each questionOrderBy}}
+								{{#each orderByTd}}
 									<tr class="quOrderByTableTr">
 										<td class="quOrderyTableTd">{{showIndex @index}}</td>
 										<td class="quOrderTabConnect"></td>
@@ -324,7 +324,7 @@
 						</div>
 						<div  class="quOrderByLeft">
 							<ul class="quOrderByLeftUl">
-								{{#each questionOrderBy}}
+								{{#each orderByTd}}
 									<li class="quCoItemUlLi">
 										<label class="quCoOptionEdit">{{optionName}}
 											<input name="item_qu_{{quType}}_{{quId}}_{{id}}" value="1" type="hidden" class="quOrderItemHidInput">
@@ -377,7 +377,7 @@
 					</div>
 					<div class="quCoItem">
 						<table class="mFillblankTable" cellpadding="0" cellspacing="0">
-							{{#each questionMultiFillBlank}}
+							{{#each multifillblankTd}}
 								<tr class="mFillblankTableTr">
 									<td align="right" class="mFillblankTableEditTd"><label class="quCoOptionEdit">{{optionName}}</label>
 										<input class="dwMFillblankOptionId" type="hidden" value="{{id}}" disabled="disabled">
@@ -404,18 +404,18 @@
 						<div class="quCoItemLeftChenTableDiv">
 							<table class="quCoChenTable" >
 								<tr><td></td>
-									{{#each questionChenColumn}}
+									{{#each columnTd}}
 										<td class="quChenColumnTd">
 											<label class="quCoOptionEdit">{{optionName}}</label>
 										</td>
 									{{/each}}
 								</tr>
-								{{#each questionChenRow}}
+								{{#each rowTd}}
 									<tr class="dwQuCoChenRowTr">
 										<td class="quChenRowTd"><label class="quCoOptionEdit">{{optionName}}</label>
 											<input type="hidden" class="answerTag" value="0" >
 										</td>
-										{{#each questionChenColumn}}
+										{{#each ../columnTd}}
 											<td>
 												<div class="dwQuOptionItemContent">
 													<label class="dwRedioStyle dwQuInputLabel" ></label>
@@ -446,19 +446,19 @@
 						<div class="quCoItemLeftChenTableDiv">
 							<table class="quCoChenTable" >
 								<tr><td></td>
-									{{#each questionChenColumn}}
+									{{#each columnTd}}
 										<td class="quChenColumnTd">
 											<label class="quCoOptionEdit">{{optionName}}</label>
 										</td>
 									{{/each}}
 								</tr>
-								{{#each questionChenRow}}
+								{{#each rowTd}}
 									<tr class="dwQuCoChenRowTr">
 										<td class="quChenRowTd"><label class="quCoOptionEdit">{{optionName}}</label>
 											<input type="hidden" name="item_qu_{{quType}}_{{quId}}_{{id}}" value="ck_item_qu_{{quType}}_{{quId}}_{{id}}_" />
 											<input type="hidden" class="answerTag" value="0" >
 										</td>
-										{{#each questionChenColumn}}
+										{{#each ../columnTd}}
 											<td>
 												<div class="dwQuOptionItemContent">
 													<label class="dwCheckboxStyle dwQuInputLabel" ></label>
@@ -489,17 +489,17 @@
 						<div class="quCoItemLeftChenTableDiv">
 							<table class="quCoChenTable" >
 								<tr><td></td>
-									{{#each questionChenColumn}}
+									{{#each columnTd}}
 										<td class="quChenColumnTd"><label class="quCoOptionEdit">{{optionName}}</label>
 										</td>
 									{{/each}}
 								</tr>
-								{{#each questionChenRow}}
+								{{#each rowTd}}
 									<tr class="dwQuCoChenRowTr">
 										<td class="quChenRowTd"><label class="quCoOptionEdit">{{optionName}}</label>
 											<input type="hidden" name="item_qu_{{quType}}_{{quId}}_{{id}}" value="fbk_item_qu_{{quType}}_{{quId}}_{{id}}_" />
 										</td>
-										{{#each questionChenColumn}}
+										{{#each ../columnTd}}
 											<td>
 												<div class="dwQuChenFbkOptionItemContent">
 													<input type="hidden" class="dwChenInputTemp" disabled="disabled" value="{{../id}}:{{id}}">
@@ -530,24 +530,24 @@
 						<div class="quCoItemLeftChenTableDiv">
 							<table class="quCoChenTable" >
 								<tr><td></td>
-									{{#each questionChenColumn}}
+									{{#each columnTd}}
 										<td class="quChenColumnTd"><label class="quCoOptionEdit">{{optionName}}</label>
 										</td>
 									{{/each}}
 								</tr>
-								{{#each questionChenRow}}
+								{{#each rowTd}}
 									<tr class="dwQuCoChenRowTr">
 										<td class="quChenRowTd"><label class="quCoOptionEdit">{{optionName}}</label>
 											<input type="hidden" name="item_qu_{{quType}}_{{quId}}_{{id}}" value="cs_item_qu_{{quType}}_{{quId}}_{{id}}_" />
 										</td>
-										{{#each questionChenColumn}}
+										{{#each ../columnTd}}
 											<td>
 												<div class="dwQuScoreOptionItemContent">
 													<input type="hidden" class="dwChenInputTemp" disabled="disabled" value="{{../id}}:{{id}}">
-													<select name="cs_item_qu_{{quType}}_{{quId}}_{{../id}}_{{id}}" class="quChenScoreSelect" > 
+													<select name="cs_item_qu_{{quType}}_{{quId}}_{{../id}}_{{id}}" class="quChenScoreSelect" >
 														<option value="0">-评分-</option>
 														{{#scoreNum001 5}}{{/scoreNum001}}
-													</select> 
+													</select>
 													<input type="hidden" class="answerTag" value="0" >
 												</div>
 											</td>
@@ -572,7 +572,7 @@
 					</div>
 					<div class="quCoItem">
 						<table class="quCoItemTable" cellpadding="0" cellspacing="0">
-							{{#each quScores}}
+							{{#each scoreTd}}
 								<tr class="quScoreOptionTr">
 									<td class="quCoItemTableTd quOptionEditTd">
 										<label class="quCoOptionEdit">{{optionName}}</label>
@@ -580,14 +580,14 @@
 										<input type="hidden" class="answerTag" value="0" >
 									</td>
 									<td class="quCoItemTableTd">
-										<table class="scoreNumTable" border="0" cellspacing="0" cellpadding="1" style="border-collapse: initial;">
+										<table class="scoreNumTable">
 											<tr>
-												{{#showParamInt02 paramInt02}}{{/showParamInt02}}
+												{{#showParamInt02 ../paramInt02}}{{/showParamInt02}}
 											</tr>
 										</table>
 										<input name="item_qu_{{quType}}_{{quId}}_{{id}}" value="" type="hidden" class="scoreNumInput" >
 									</td>
-									<td class="quCoItemTableTd scoreNumText">分</td>
+									<td class="quCoItemTableTd">分</td>
 								</tr>
 							{{/each}}
 						</table>
@@ -606,6 +606,11 @@
 			var ruleCode = "";//密码
 			
 			var bgAnDate = "";//答卷开始时间
+
+			function getTotalQuestionCount() {
+				return $(".answerTag:enabled").length;
+			}
+
 			layui.config({
 				base: basePath,
 				version: skyeyeVersion
@@ -618,11 +623,11 @@
 					var $ = layui.$,
 						form = layui.form;
 					bgAnDate = getFormatDate();
-					AjaxPostUtil.request({url: sysMainMation.surveyBasePath + "dwsurveydirectory028", params: {surveyId: getUrlParam("rowId")}, type: 'json', callback: function (json) {
+					AjaxPostUtil.request({url: sysMainMation.surveyBasePath + "takeExam", params: {id: getUrlParam("rowId")}, type: 'json', callback: function (json) {
 						showGrid({
 							id: "wrap",
-							url: sysMainMation.surveyBasePath + "dwsurveydirectory024",
-							params: {rowId: getUrlParam("rowId")},
+							url: sysMainMation.surveyBasePath + "queryDwSurveyDirectoryMationByIdToHTML",
+							params: {id: getUrlParam("rowId")},
 							pagination: false,
 							template: getFileContent('tpl/dwsurveydesign/surveyTemplate.tpl'),
 							ajaxSendLoadBefore: function(hdb, json) {
@@ -1110,13 +1115,22 @@
 				    }
 
 					$("body").on("click", ".submitSurvey", function(e) {
+
+						if(!validateForms()) {
+							return false;
+						}
 						if(validateForms()) {
+							var endAnDate = getFormatDate();
 							var params = {
 								jsonData: JSON.stringify($("#surveyForm").serializeJson()), 
-								bgAnDate: bgAnDate
+								bgAnDate: bgAnDate,
+								handleState: "0",
+								dataSource:"0",
+								endAnDate: endAnDate,
+
 							};
 							params = $.extend({}, params, $("#surveyForm").serializeJson());
-							AjaxPostUtil.request({url: sysMainMation.surveyBasePath + "dwsurveydirectory029", params: params, type: 'json', callback: function (json) {
+							AjaxPostUtil.request({url: sysMainMation.surveyBasePath + "writeDwSurveyAnswer", params: params, type: 'json', callback: function (json) {
 								$("#wrap").html('<span class="messageSpan">' + '答题完成，感谢您的参与。' + '</span>');
 				 	   		}});
 						}
@@ -1312,11 +1326,33 @@
 					}
 
 					function validateCheck(quItemBody, isSubForm) {
+						var quTypeMap = {
+							1: 'RADIO',
+							2: 'CHECKBOX',
+							3: 'FILLBLANK',
+							4: 'MULTIFILLBLANK',
+							8: 'SCORE',
+							9: 'ORDERBY',
+							11: 'CHENRADIO',
+							12: 'CHENFBK',
+							13: 'CHENCHECKBOX',
+							16: 'PAGETAG',
+							17: 'PARAGRAPH',
+							18: 'CHENSCORE',
+						};
+
 						if(quItemBody.is(":visible")) {
+							// var quId = quItemBody.find(".quId").val();
+							// var quType = quItemBody.find(".quType").val();
+							// var isRequired = quItemBody.find(".isRequired").val();
+							// var validateStatus = false;
+
 							var quId = quItemBody.find(".quId").val();
-							var quType = quItemBody.find(".quType").val();
+							var quTypeNum = quItemBody.find(".quType").val(); // 获取数字类型的quType
+							var quType = quTypeMap[quTypeNum] || quTypeNum; // 转换为映射的字符串或保持原值
 							var isRequired = quItemBody.find(".isRequired").val();
 							var validateStatus = false;
+
 							if(isRequired === "0") {
 								validateStatus = true;
 								return true;
@@ -1674,89 +1710,107 @@
 					}
 
 					/**********************处理答题进度条************************/
+
 					function answerProgressbar(thObj) {
-						var quItemBody = thObj.parents(".li_surveyQuItemBody ");
-						var quType = quItemBody.find(".quType").val();
-						if(quType === "RADIO") {
+						// 定义映射表
+						var quTypeMap = {
+							1: "RADIO",
+							2: "CHECKBOX",
+							3: "FILLBLANK",
+							4: "MULTIFILLBLANK",
+							8: "SCORE",
+							9: "ORDERQU",
+							11: "CHENRADIO",
+							12: "CHENFBK",
+							13: "CHENCHECKBOX",
+							18: "CHENSCORE"
+						};
+
+						var quItemBody = thObj.closest(".li_surveyQuItemBody");
+						var quTypeInput = quItemBody.find("input.quType"); // 确保使用正确的选择器
+						var quTypeIndex = quTypeInput.val(); // 从 input.quType 获取值
+						var quType = quTypeMap[quTypeIndex];
+
+						// 根据题型字符串值来处理逻辑
+						if (quType === "RADIO") {
 							var checks = quItemBody.find("input[type='radio']:checked");
-							if(checks[0]) {
+							if (checks[0]) {
 								quItemBody.find(".answerTag").val(1);
 							} else {
 								quItemBody.find(".answerTag").val(0);
 							}
-						} else if(quType == "CHECKBOX") {
+						} else if (quType === "CHECKBOX") {
 							var checks = quItemBody.find("input[type='checkbox']:checked");
-							if(checks[0]) {
+							if (checks[0]) {
 								quItemBody.find(".answerTag").val(1);
 							} else {
 								quItemBody.find(".answerTag").val(0);
 							}
-						} else if(quType === "FILLBLANK") {
+						} else if (quType === "FILLBLANK") {
 							var thVal = thObj.val();
-							if(thVal != "") {
+							if (thVal != "") {
 								quItemBody.find(".answerTag").val(1);
 							} else {
 								quItemBody.find(".answerTag").val(0);
 							}
-						} else if(quType === "ORDERQU") {
+						} else if (quType === "ORDERQU") {
 							var orderByLabels = quItemBody.find(".quOrderByLeftUl label");
-							if(!orderByLabels[0]) {
+							if (!orderByLabels[0]) {
 								quItemBody.find(".answerTag").val(1);
 							} else {
 								quItemBody.find(".answerTag").val(0);
 							}
-						} else if(quType === "SCORE") {
+						} else if (quType === "SCORE") {
 							var quScoreOptionTr = thObj.parents(".quScoreOptionTr");
 							var scoreNumInput = quScoreOptionTr.find(".scoreNumInput");
-							if(scoreNumInput.val() != "") {
+							if (scoreNumInput.val() != "") {
 								quScoreOptionTr.find(".answerTag").val(1);
 							} else {
 								quScoreOptionTr.find(".answerTag").val(0);
 							}
-						} else if(quType === "MULTIFILLBLANK") {
+						} else if (quType === "MULTIFILLBLANK") {
 							var mFillblankTableTr = thObj.parents(".mFillblankTableTr");
-							if(thObj.val() != "") {
+							if (thObj.val() != "") {
 								mFillblankTableTr.find(".answerTag").val(1);
 							} else {
 								mFillblankTableTr.find(".answerTag").val(0);
 							}
-						} else if(quType === "CHENRADIO") {
+						} else if (quType === "CHENRADIO") {
 							var dwQuCoChenRowTr = thObj.parents(".dwQuCoChenRowTr");
 							dwQuCoChenRowTr.find(".answerTag").val(1);
-						} else if(quType === "CHENCHECKBOX") {
+						} else if (quType === "CHENCHECKBOX") {
 							var dwQuCoChenRowTr = thObj.parents(".dwQuCoChenRowTr");
 							var checks = dwQuCoChenRowTr.find("input[type='checkbox']:checked");
-							if(checks[0]) {
+							if (checks[0]) {
 								dwQuCoChenRowTr.find(".answerTag").val(1);
 							} else {
 								dwQuCoChenRowTr.find(".answerTag").val(0);
 							}
-						} else if(quType === "CHENSCORE") {
+						} else if (quType === "CHENSCORE") {
 							var dwQuScoreOptionItemContent = thObj.parents(".dwQuScoreOptionItemContent");
-							if(thObj.val() != "0") {
+							if (thObj.val() != "0") {
 								dwQuScoreOptionItemContent.find(".answerTag").val(1);
 							} else {
 								dwQuScoreOptionItemContent.find(".answerTag").val(0);
 							}
-						} else if(quType === "CHENFBK") {
+						} else if (quType === "CHENFBK") {
 							var dwQuChenFbkOptionItemContent = thObj.parents(".dwQuChenFbkOptionItemContent");
-							if(thObj.val() != "") {
+							if (thObj.val() != "") {
 								dwQuChenFbkOptionItemContent.find(".answerTag").val(1);
 							} else {
 								dwQuChenFbkOptionItemContent.find(".answerTag").val(0);
 							}
 						}
+
+						// 计算答题进度
 						var totalQuSize = $(".answerTag:enabled").size();
 						var answerTag1 = $(".answerTag[value='1']:enabled");
-						var answerQuSize = 0;
-						if(answerTag1[0]) {
-							answerQuSize = answerTag1.size();
-						}
+						var answerQuSize = answerTag1.size();
 						var newValue = parseInt(answerQuSize / totalQuSize * 100);
 						$("#resultProgressRoot .progress-label").text("完成度：" + newValue + "%");
 						$("#resultProgress").progressbar("option", "value", newValue);
 					}
-					
+
 				});
 			});
 		</script>
