@@ -286,6 +286,18 @@ var dsFormUtil = {
                 dsFormUtil.loadComponentValueDetails(showBoxId, content, null, data);
             }
         });
+        // 图片点击放大
+        $("body").on("click", ".photo-img", function() {
+            var url = $(this).attr("src");
+            systemCommonUtil.showPicImg(url);
+        });
+
+        // 下载
+        $("body").on("click", ".enclosureItem", function (e) {
+            var rowName = $(this).html();
+            var rowPath = $(this).attr('rowpath');
+            downloadImage(fileBasePath + rowPath, rowName);
+        });
         layui.form.render();
     },
 

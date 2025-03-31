@@ -245,6 +245,15 @@ layui.config({
                 } else {
                     fileUrl = "";
                 }
+
+                var quTitle = quItemBody.find(".quCoTitleEdit").html();
+
+                // 题目不能为空（移除HTML标签后判断是否只有空白字符）
+                if (isNull(quTitle) || quTitle.replace(/<[^>]+>/g, "").trim() === "") {
+                    winui.window.msg('题目不能为空', {icon: 2, time: 2000});
+                    return false;
+                }
+
                 var params = {
                     id: quItemBody.find("input[name='quId']").val(),
                     hv: quItemBody.find("input[name='hv']").val(),
@@ -255,7 +264,7 @@ layui.config({
                     contactsAttr: quItemBody.find("input[name='contactsAttr']").val(),
                     contactsField: quItemBody.find("input[name='contactsField']").val(),
                     checkType: quItemBody.find("input[name='checkType']").val(),
-                    quTitle: encodeURI(quItemBody.find(".quCoTitleEdit").html()),
+                    quTitle: encodeURI(quTitle),
                     fraction: $("#fraction").val(),
                     schoolId: $("#schoolId").val(),
                     majorId: $("#majorId").val(),

@@ -1,5 +1,5 @@
 layui.config({
-	base: basePath, 
+	base: basePath,
 	version: skyeyeVersion
 }).extend({
     window: 'js/winui.window',
@@ -10,12 +10,19 @@ layui.config({
 	    var $ = layui.$,
 		    form = layui.form,
 		    laydate = layui.laydate;
-	    
+
+		var surveyOriginalData = {};
+
 	    showGrid({
 		 	id: "showForm",
-		 	url: sysMainMation.surveyBasePath + "dwsurveydirectory004",
-		 	params: {rowId: parent.parent.rowId},
+		 	url: sysMainMation.surveyBasePath + "queryDirectoryById",
+		 	params: {
+				id: parent.parent.rowId,
+			},
 		 	pagination: false,
+			callback: function (json) {
+				json.total = 1;
+			},
 		 	template: getFileContent('tpl/dwsurveydesign/designSurveyOpTemplates.tpl'),
 		 	ajaxSendLoadBefore: function(hdb) {
 		 		hdb.registerHelper('compare1', function(v1, v2, options) {
@@ -41,19 +48,23 @@ layui.config({
 		 		});
 		 	},
 		 	ajaxSendAfter:function (json) {
-		 		
-		 		laydate.render({elem: '#endTime', format: 'yyyy-MM-dd HH:mm:ss', type: 'datetime', min: minDate(), theme: 'grid'});
-		 		
+				surveyOriginalData = json.bean || {};
+		 		laydate.render({elem: '#endTime',value: json.bean.endTime || '',  format: 'yyyy-MM-dd HH:mm:ss', type: 'datetime', min: minDate(), theme: 'grid'});
+
+				$("#ruleCode").prop("readonly", !json.bean.rule === '3');
+				$("#endNum").prop("readonly", json.bean.ynEndNum !== '1');
+				$("#endTime").prop("readonly", json.bean.ynEndTime !== '1');
+
 		 		if(json.bean.ynEndTime == '1'){
 		 			$("#endTimeHide").hide();
 		 		} else {
 		 			$("#endTimeHide").show();
 		 		}
-		 		
+
 		 		matchingLanguage();
 		 		form.render('checkbox');
 				form.render();
-				
+
 				form.on('checkbox(rule)', function (data) {
 					var check = data.elem.checked;
 			    	if(check){//选中
@@ -63,7 +74,7 @@ layui.config({
 			    		$("#ruleCode").attr("readonly", true);
 			    	}
 		        });
-				
+
 				form.on('checkbox(ynEndNum)', function (data) {
 					var check = data.elem.checked;
 			    	if(check){//选中
@@ -73,7 +84,7 @@ layui.config({
 			    		$("#endNum").attr("readonly", true);
 			    	}
 		        });
-				
+
 				form.on('checkbox(ynEndTime)', function (data) {
 					var check = data.elem.checked;
 			    	if(check){//选中
@@ -85,25 +96,33 @@ layui.config({
 			    		$("#endTime").attr("readonly", true);
 			    	}
 		        });
-				
+
 			    form.on('submit(formAddBean)', function (data) {
 			        if (winui.verifyForm(data.elem)) {
-			        	var params = {
-			        		rowId: parent.parent.rowId
-			        	};
-			        	
+                        var params = {
+                            id: parent.parent.rowId,
+                            effectiveTime:surveyOriginalData.effectiveTime,
+                            endType: surveyOriginalData.endType,
+                            surveyName:surveyOriginalData.surveyName,
+                            answerNum:surveyOriginalData.answerNum,
+                            whetherDelete:surveyOriginalData.whetherDelete,
+                            dirType:surveyOriginalData.dirType,
+                            surveyModel:surveyOriginalData.surveyModel
+                        };
+						params = $.extend({}, params, $("#surveyForm").serializeJson());
+
 			        	if($('input[name=effective]').get(0).checked){
 			        		params.effective = '4';
 			        	} else {
 			        		params.effective = '1';
 			        	}
-			        	
+
 			        	if($('input[name=effectiveIp]').get(0).checked){
 			        		params.effectiveIp = '1';
 			        	} else {
 			        		params.effectiveIp = '0';
 			        	}
-			        	
+
 			        	if($('input[name=rule]').get(0).checked){
 			        		params.rule = '3';
 			        		params.ruleCode = $("#ruleCode").val();
@@ -115,13 +134,13 @@ layui.config({
 			        		params.rule = '1';
 			        		params.ruleCode = '';
 			        	}
-			        	
+
 			        	if($('input[name=refresh]').get(0).checked){
 			        		params.refresh = '1';
 			        	} else {
 			        		params.refresh = '0';
 			        	}
-			        	
+
 			        	if($('input[name=ynEndNum]').get(0).checked){
 			        		params.ynEndNum = '1';
 			        		params.endNum = $("#endNum").val();
@@ -133,7 +152,7 @@ layui.config({
 			        		params.ynEndNum = '0';
 			        		params.endNum = '0';
 			        	}
-			        	
+
 			        	if($('input[name=ynEndTime]').get(0).checked){
 			        		params.ynEndTime = '1';
 			        		params.endTime = $("#endTime").val();
@@ -145,27 +164,28 @@ layui.config({
 			        		params.ynEndTime = '0';
 			        		params.endTime = '';
 			        	}
-			        	
-			        	AjaxPostUtil.request({url: sysMainMation.surveyBasePath + "dwsurveydirectory005", params: params, type: 'json', callback: function (json) {
-							parent.layer.close(index);
-							parent.refreshCode = '0';
+
+			        	AjaxPostUtil.request({url: sysMainMation.surveyBasePath + "writeDwDirectory", params: params, type: 'json', callback: function (json) {
+								parent.layer.close(index);
+								parent.parent.refreshTable(); // 添加父窗口刷新方法
+								parent.parent.rowId = null; // 清除缓存ID
 			 	   		}});
 			        }
 			        return false;
 			    });
 		 	}
 	    });
-	    
+
 	    // 设置最小可选的日期
 	    function minDate(){
 	        var now = new Date();
 	        return now.getFullYear()+"-" + (now.getMonth()+1) + "-" + now.getDate();
 	    }
-	    
+
 	    // 取消
 	    $("body").on("click", "#cancle", function() {
 	    	parent.layer.close(index);
 	    });
 	});
-	    
+
 });
