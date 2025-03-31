@@ -196,13 +196,5 @@ layui.config({
             }
         })
     });
-
-
-// 监听回车键发送消息
-// document.getElementById('messageInput').addEventListener('keypress', function (e) {
-//     if (e.key === 'Enter') {
-//         sendMessage();
-//     }
-// });
     exports('aiChat', {});
 });
