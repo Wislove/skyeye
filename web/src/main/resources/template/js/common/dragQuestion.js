@@ -2138,17 +2138,22 @@ function setSaveTag0() {
  * 删除选项
  */
 function deleteDwOption(){
-    if(curEditObj!=null){
+    if(curEditObj != null){
+        // 先保存当前的 quType，避免后续操作导致获取不到
         var quItemBody = $(curEditObj).parents(".surveyQuItemBody");
         var quType = quItemBody.find("input[name='quType']").val();
-        if(type == 1){
-            // 问卷
-			quType = layui.survey.convertQuType(quType);
-            layui.survey[quType]();
-        } else if (type == 2){
-            // 试卷 - 使用转换函数
-            quType = layui.exam.convertQuType(quType);
-            layui.exam[quType]();
+        
+        // 确保获取到 quType 后再进行处理
+        if(quType){
+            if(type == 1){
+                // 问卷
+                quType = layui.survey.convertQuType(quType);
+                layui.survey[quType]();
+            } else if (type == 2){
+                // 试卷
+                quType = layui.exam.convertQuType(quType);
+                layui.exam[quType]();
+            }
         }
     }
 }

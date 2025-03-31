@@ -222,58 +222,6 @@ layui.config({
                         }
                     }
                 });
-                // AjaxPostUtil.request({url:schoolBasePath + "schoolquestionbank006", params: {rowId: parent.rowId}, type: 'json', callback: function (json) {
-                // 	$("#schoolId").val(json.bean.schoolId);
-                // 	showGrid({
-                // 		id: "gradeId",
-                // 		url: schoolBasePath + "queryMajorList",
-                // 		params: {schoolId: $("#schoolId").val()},
-                // 		pagination: false,
-                // 		template: getFileContent('tpl/template/select-option.tpl'),
-                // 		ajaxSendLoadBefore: function(hdb) {},
-                // 		ajaxSendAfter:function(data) {
-                // 			$("#gradeId").val(json.bean.gradeId);
-                // 			showGrid({
-                // 				id: "subjectId",
-                // 				url: schoolBasePath + "schoolsubjectmation007",
-                // 				params: {gradeId: $("#gradeId").val()},
-                // 				pagination: false,
-                // 				template: getFileContent('tpl/template/select-option.tpl'),
-                // 				ajaxSendLoadBefore: function(hdb) {},
-                // 				ajaxSendAfter:function(data) {
-                // 					$("#subjectId").val(json.bean.subjectId);
-                // 					form.render();
-                // 				}
-                // 			});
-                // 		}
-                // 	});
-                // 	$("input:radio[name=type][value=" + json.bean.type + "]").attr("checked", true);
-                // 	$("#fraction").val(json.bean.fraction);
-                // 	// 知识点赋值
-                // 	schoolKnowledgeMationList = [].concat(json.bean.knowledgeList);
-                // 	var str = "";
-                // 	$.each(schoolKnowledgeMationList, function(i, item) {
-                // 		str += '<br><span class="layui-badge layui-bg-blue" style="height: 25px !important; line-height: 25px !important; margin: 5px 0px;">' + item.title + '</span>';
-                // 	});
-                // 	$("#schoolKnowledgeChoose").parent().html('<button type="button" class="layui-btn layui-btn-primary layui-btn-xs" id="schoolKnowledgeChoose">知识点选择</button>' + str);
-                //
-                // 	// 题目信息赋值
-                // 	$(".surveyQuItemBody").html(getDataUseHandlebars($("#template").html(), json));
-                //
-                // 	// 设置tab
-                // 	tabIndex = json.bean.fileType;
-                // 	fileUrl = json.bean.fileUrl;
-                // 	$('.layui-tab-title li').eq(tabIndex).addClass('layui-this').siblings().removeClass('layui-this');
-                // 	$('.layui-tab-item').eq(tabIndex).addClass('layui-show').siblings().removeClass('layui-show');
-                //
-                // 	// 设置是否允许拍照/上传图片选中
-                // 	$("input:radio[name=whetherUpload][value=" + json.bean.whetherUpload + "]").attr("checked", true);
-                //
-                // 	form.render();
-                //
-                // 	// 加载上传和切换监听事件
-                // 	pageLoadAfter();
-                // }});
             } else {
                 // 加载院系
                 initMajor();
@@ -302,6 +250,14 @@ layui.config({
                 } else {
                     fileUrl = "";
                 }
+                var quTitle = quItemBody.find(".quCoTitleEdit").html();
+
+                // 题目不能为空（移除HTML标签后判断是否只有空白字符）
+                if (isNull(quTitle) || quTitle.replace(/<[^>]+>/g, "").trim() === "") {
+                    winui.window.msg('题目不能为空', {icon: 2, time: 2000});
+                    return false;
+                }
+
                 var params = {
                     id: quItemBody.find("input[name='quId']").val(),
                     hv: quItemBody.find("input[name='hv']").val(),
@@ -309,14 +265,12 @@ layui.config({
                     cellCount: quItemBody.find("input[name='cellCount']").val(),
                     contactsAttr: quItemBody.find("input[name='contactsAttr']").val(),
                     contactsField: quItemBody.find("input[name='contactsField']").val(),
-                    quTitle: encodeURI(quItemBody.find(".quCoTitleEdit").html()),
+                    quTitle: encodeURI(quTitle),
                     fraction: $("#fraction").val(),
                     schoolId: $("#schoolId").val(),
                     facultyId: $("#facultyId").val(),
                     majorId: $("#majorId").val(),
                     visibility: 1, //是否显示题，1显示，
-                    // checkType: 0,
-                    // gradeId: $("#gradeId").val(),
                     subjectId: $("#subjectId").val(),
                     type: $("input[name='type']:checked").val(),
                     schoolKnowledgeMationList: JSON.stringify(schoolKnowledgeMationList),

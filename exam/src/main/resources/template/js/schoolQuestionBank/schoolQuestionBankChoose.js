@@ -178,7 +178,6 @@ layui.config({
 		        { field: 'schoolName', width: 100, title: '学校', templet: function (d) {
 						return d.schoolMation.name;
 					}},
-	            // { field: 'gradeName', width: 80, align: 'center', title: '年级'},
 				{ field: 'facultyName', width: 80, align: 'center', title: '院系', templet: function (d) {
 						return d.facultyMation.name;
 					}},
@@ -195,7 +194,7 @@ layui.config({
 	    		//设置选中
 	    		tableCheckBoxUtil.checkedDefault({
 					gridId: 'messageTable',
-					fieldName: 'quInBankId'
+					fieldName: 'id'
 				});
 		    }
 		});
@@ -230,7 +229,6 @@ layui.config({
 			winui.window.msg("请选择试题", {icon: 2, time: 2000});
 			return false;
 		}
-		console.log(99,selectedData,selectedData.length)
 		AjaxPostUtil.request({url:schoolBasePath + "selectQuestionById", params: {ids: selectedData.toString()}, type: 'json', callback: function (json) {
 			parent.questionMationList = [].concat(json.rows);
 			parent.layer.close(index);
@@ -258,7 +256,6 @@ layui.config({
     function refreshTable(){
     	table.reloadData("messageTable", {page: {curr: 1}, where: getTableParams()});
     }
-	console.log($("#isPublic").val(),3423)
 	function getTableParams() {
 		return {
 			holderKey: $("#schoolId").val(),
