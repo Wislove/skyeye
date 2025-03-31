@@ -158,9 +158,10 @@ layui.config({
 			// 打开选择页面
 			systemCommonUtil.openSysUserStaffChoosePage(function (userReturnList) {
 				if (userReturnList && userReturnList.length > 0) {
+					console.log("userReturnList", userReturnList);
 					// 构建显示字符串
 					var approverNames = userReturnList.map(function(item) {
-						return item.userName + (item.userSex === 1 ? '(男)' : '(女)');
+						return item.name;
 					});
 					$("#approver").val(approverNames.join("，"));
 
@@ -272,7 +273,7 @@ layui.config({
 										if(json.bean.readerMationList && json.bean.readerMationList.length > 0) {
 											systemCommonUtil.userReturnList = json.bean.readerMationList;
 											var approverNames = json.bean.readerMationList.map(function(item) {
-												return item.userName + (item.userSex === 1 ? '(男)' : '(女)');
+												return item.name;
 											});
 											$("#approver").val(approverNames.join("，"));
 											readerList = json.bean.readerMationList.map(function(item) {
