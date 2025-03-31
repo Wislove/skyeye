@@ -291,6 +291,13 @@ var dsFormUtil = {
             var url = $(this).attr("src");
             systemCommonUtil.showPicImg(url);
         });
+
+        // 下载
+        $("body").on("click", ".enclosureItem", function (e) {
+            var rowName = $(this).html();
+            var rowPath = $(this).attr('rowpath');
+            downloadImage(fileBasePath + rowPath, rowName);
+        });
         layui.form.render();
     },
 
