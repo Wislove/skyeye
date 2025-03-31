@@ -286,6 +286,11 @@ var dsFormUtil = {
                 dsFormUtil.loadComponentValueDetails(showBoxId, content, null, data);
             }
         });
+        // 图片点击放大
+        $("body").on("click", ".photo-img", function() {
+            var url = $(this).attr("src");
+            systemCommonUtil.showPicImg(url);
+        });
         layui.form.render();
     },
 

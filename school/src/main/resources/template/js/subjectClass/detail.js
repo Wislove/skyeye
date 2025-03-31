@@ -27,9 +27,8 @@ layui.config({
             method: 'GET',
             template: $("#beanTemplate").html(),
             ajaxSendLoadBefore: function (hdb, json) {
-                var enabledValue = json.bean.enabled;
-                var enumName = enabledValue === 1 ? '是' : enabledValue === 2 ? '否' : '未知';
-                json.bean.enabledName = enumName;
+                json.bean.enabledName = skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("commonEnable", 'id', json.bean.enabled, 'name');
+                json.bean.quitName = skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("whetherEnum", 'id', json.bean.quit, 'name');
             },
             ajaxSendAfter: function (json) {
                 matchingLanguage();
