@@ -704,7 +704,6 @@ li.knowledgeQuLogic .dwQuIcon .quKnowledgeInfo{
 .surveyQuItemContent .quCoItem ul li label{
     vertical-align: middle;
     cursor: text;
-    line-height: 35px;
     display: inline-block;
     max-width: 600px;
     table-layout:fixed;
