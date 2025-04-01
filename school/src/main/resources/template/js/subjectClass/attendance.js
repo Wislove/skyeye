@@ -47,7 +47,22 @@ layui.config({
                         return '<img src="' + systemCommonUtil.getFilePath(d.qrCodeUrl) + '" class="photo-img" lay-event="qrCode" style="width: 100px">';
                     }
                 }},
-            { field: 'codeNumber', title: '数字码', align: 'left', width: 150},
+            {
+                field: 'codeNumber',
+                title: '数字码',
+                align: 'left',
+                width: 150,
+                templet: function(d) {
+                    // 判断 type 是否为 2
+                    if (d.type === 2) {
+                        // 如果 type 为 2，返回 codeNumber 的值
+                        return d.codeNumber || ''; // 确保即使 codeNumber 为空，也不会报错
+                    } else {
+                        // 否则返回空字符串或占位符
+                        return '';
+                    }
+                }
+            },
             { title: systemLanguage["com.skyeye.operation"][languageType], fixed: 'right', align: 'center', width: 257, toolbar: '#tableBar' }
         ]],
         done: function(json) {
