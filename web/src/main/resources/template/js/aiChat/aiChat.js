@@ -27,7 +27,6 @@ layui.config({
             userId: data.bean.id,
             onMessage: function (data) {
                 let json = JSON.parse(data);
-                console.log(json)
                 if (!json.end) {
                     onMsgStr += json.message;
                     if (json.orderBy == 0) {
@@ -63,7 +62,7 @@ layui.config({
             holderId: apiKeyId,
         }
         AjaxPostUtil.request({
-            url: sysMainMation.aiBasePath + "queryPageMessageList",
+            url: sysMainMation.admBasePath + "queryPageMessageList",
             params: params,
             type: 'json',
             method: 'POST',
@@ -149,7 +148,7 @@ layui.config({
             $('.chat-box').scrollTop($('.chat-box').prop('scrollHeight'));
             // 发送请求
             AjaxPostUtil.request({
-                url: sysMainMation.aiBasePath + "sendChatMessage",
+                url: sysMainMation.admBasePath + "sendChatMessage",
                 params: params,
                 type: 'json',
                 method: 'POST',
@@ -186,7 +185,7 @@ layui.config({
             apiKeyId: apiKeyId,
         }
         AjaxPostUtil.request({
-            url: sysMainMation.aiBasePath + "deleteAllByApiKeyId",
+            url: sysMainMation.admBasePath + "deleteAllByApiKeyId",
             params: params,
             type: 'json',
             method: 'POST',
