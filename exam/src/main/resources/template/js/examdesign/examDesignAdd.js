@@ -191,7 +191,6 @@ layui.config({
 						
 						// 设置单选按钮状态
 						$("input[name='viewAnswer'][value='" + json.bean.viewAnswer + "']").prop("checked", true);
-						$("input[name='surveyModel'][value='" + json.bean.surveyModel + "']").prop("checked", true);
 						
 						// 加载院系、专业、科目和班级的级联数据
 						showGrid({
@@ -326,7 +325,7 @@ layui.config({
 					majorId: $("#majorId").val(),
 					whetherDelete: 1,
         			viewAnswer: $("input[name='viewAnswer']:checked").val(),
-					surveyModel: $("input[name='surveyModel']:checked").val(),
+					surveyModel: 2,
 					surveyState: 0,
 					readerList: readerList
 	        	};

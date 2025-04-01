@@ -256,12 +256,6 @@
             {{schoolMation.name}}
         </div>
     </div>
-    <!--	        <div class="layui-form-item layui-col-xs6">-->
-    <!--	            <label class="layui-form-label">考试年级：</label>-->
-    <!--	            <div class="layui-input-block ver-center">-->
-    <!--                	{{gradeName}}-->
-    <!--                </div>-->
-    <!--	        </div>-->
     <div class="layui-form-item layui-col-xs6">
         <label class="layui-form-label">所属院系：</label>
         <div class="layui-input-block ver-center">
@@ -274,12 +268,6 @@
             {{majorMation.name}}
         </div>
     </div>
-    <!-- <div class="layui-form-item layui-col-xs6">
-        <label class="layui-form-label">第几届：</label>
-        <div class="layui-input-block ver-center">
-            {{classesMation.year}}
-        </div>
-    </div> -->
     <div class="layui-form-item layui-col-xs6">
         <label class="layui-form-label">考试科目：</label>
         <div class="layui-input-block ver-center">
@@ -300,9 +288,16 @@
     </div>
     <div class="layui-form-item layui-col-xs12">
         <label class="layui-form-label">考试结果：</label>
+        {{#compare viewAnswer 1}}
         <div class="layui-input-block ver-center">
-            {{viewAnswer}}
+            公开
         </div>
+        {{/compare}}
+        {{#compare viewAnswer 0}}
+        <div class="layui-input-block ver-center">
+            不公开
+        </div>
+        {{/compare}}
     </div>
     <div class="layui-form-item layui-col-xs12">
         <label class="layui-form-label">其他阅卷人：</label>
