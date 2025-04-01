@@ -1,7 +1,7 @@
 {{#bean}}
 	<div id="dw_body_left">
 		<div class="dw_body_title" style="text-align: center;">设计目录</div>
-		<div id="dwBodyLeftContent">
+		<div id="dwBodyLeftContent" style="max-height: calc(100vh - 250px); overflow-y: auto;">
 			{{#each questionLeftList}}
 				{{#if quType}}
 				{{#compareShowLeft quType}}
