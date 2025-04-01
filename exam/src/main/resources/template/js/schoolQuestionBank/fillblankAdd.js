@@ -61,6 +61,7 @@ layui.config({
                 $("#facultyId").html("");
                 form.render('select');
             } else {
+				facultyId = data.value;
                 // 加载专业
                 initMajor();
             }
@@ -220,8 +221,8 @@ layui.config({
                     }
                 });
             } else {
-                // 加载专业
-                initMajor();
+            	// 加载院系
+				initFaculty();
                 // 题目信息赋值
                 $(".surveyQuItemBody").html($("#noDataTemplate").html());
                 // 加载上传和切换监听事件
