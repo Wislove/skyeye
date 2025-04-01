@@ -34,7 +34,7 @@ layui.config({
                 $("#schoolId").html("");
                 form.render('select');
             } else {
-                // 加载年级
+                // 加载院系
                 initFaculty();
             }
         });
@@ -59,9 +59,11 @@ layui.config({
         // 院系监听事件
         form.on('select(facultyId)', function (data) {
             if (isNull(data.value) || data.value === '请选择') {
-                $("#facultyId").html("");
+                $("#majorId").html("");
+                $("#subjectId").html("");
                 form.render('select');
             } else {
+				facultyId = data.value;
                 // 加载专业
                 initMajor();
             }
@@ -91,37 +93,6 @@ layui.config({
                 form.render('select');
             } else {
                 majorId = data.value;  // 设置当前选中的专业ID
-                initSubject();
-            }
-        });
-
-        // 初始化年级
-        function initGrade() {
-            showGrid({
-                id: "classId",
-                url: schoolBasePath + "queryClassListByMajorId",
-                params: {
-                    schoolId: $("#schoolId").val(),
-                    majorId: $("#majorId").val()
-                },
-                method: 'GET',
-                pagination: false,
-                template: getFileContent('tpl/template/select-option.tpl'),
-                ajaxSendLoadBefore: function (hdb) {
-                },
-                ajaxSendAfter: function (json) {
-                    form.render('select');
-                }
-            });
-        }
-
-        // 年级监听事件
-        form.on('select(classId)', function (data) {
-            if (isNull(data.value) || data.value === '请选择') {
-                $("#classId").html("");
-                form.render('select');
-            } else {
-                // 加载科目
                 initSubject();
             }
         });
@@ -298,8 +269,8 @@ layui.config({
                     }
                 });
             } else {
-                // 加载年级
-                initGrade();
+            	// 加载院系
+				initFaculty();
                 // 题目信息赋值
                 $(".surveyQuItemBody").html($("#noDataTemplate").html());
                 // 加载上传和切换监听事件
@@ -323,12 +294,21 @@ layui.config({
                 } else {
                     fileUrl = "";
                 }
+
+                var quTitle = quItemBody.find(".quCoTitleEdit").html();
+
+                // 题目不能为空（移除HTML标签后判断是否只有空白字符）
+                if (isNull(quTitle) || quTitle.replace(/<[^>]+>/g, "").trim() === "") {
+                    winui.window.msg('题目不能为空', {icon: 2, time: 2000});
+                    return false;
+                }
+
                 var params = {
                     id: quItemBody.find("input[name='quId']").val(),
                     hv: quItemBody.find("input[name='hv']").val(),
                     randOrder: quItemBody.find("input[name='randOrder']").val(),
                     cellCount: quItemBody.find("input[name='cellCount']").val(),
-                    quTitle: encodeURI(quItemBody.find(".quCoTitleEdit").html()),
+                    quTitle: encodeURI(quTitle),
                     fraction: $("#fraction").val(),
                     schoolId: $("#schoolId").val(),
                     majorId: $("#majorId").val(),
@@ -345,6 +325,7 @@ layui.config({
                     fileType: tabIndex,
                     whetherUpload: data.field.whetherUpload
                 };
+
                 // 处理知识点ID，将知识点ID数组转换为逗号分隔的字符串
                 if (schoolKnowledgeMationList && schoolKnowledgeMationList.length > 0) {
                     var knowledgeIds = [];

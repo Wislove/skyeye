@@ -17,8 +17,8 @@ layui.config({
 	    
 		showGrid({
 		 	id: "dwBodyUser",
-		 	url: sysMainMation.surveyBasePath + "dwsurveydirectory026",//分析报告
-		 	params: {rowId: parent.rowId},
+		 	url: sysMainMation.surveyBasePath + "queryDwurveyMationById",//分析报告
+		 	params: {id: parent.rowId},
 		 	pagination: false,
 		 	template: getFileContent('tpl/dwsurveydesign/surveyReport.tpl'),
 		 	ajaxSendLoadBefore: function(hdb) {

@@ -313,7 +313,7 @@ layui.config({
             url: "../../tpl/examdesign/examDesignAdd.html",
             title: "新增试卷",
             pageId: "examDesignAdd",
-            area: ['70vw', '60vh'],
+            area: ['90vw', '90vh'],
             beforeOpen: function () {
                 // 确保打开窗口前rowId为空
                 rowId = "";

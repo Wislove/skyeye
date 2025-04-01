@@ -343,6 +343,8 @@ layui.config({
             pageId: "examDesignEdit",
             area: ['90vw', '90vh'],
             callBack: function (refreshCode) {
+                winui.window.msg(systemLanguage["com.skyeye.successfulOperation"][languageType], {icon: 1, time: 2000});
+                loadTable();
             }
         });
     }
@@ -354,11 +356,14 @@ layui.config({
 
     //新增
     $("body").on("click", "#addBean", function () {
+                // 清空全局变量rowId
+                rowId = "";
+                parent.rowId = "";  // 同时清空parent.rowId
         _openNewWindows({
             url: "../../tpl/examdesign/examDesignAdd.html",
             title: "新增试卷",
             pageId: "examDesignAdd",
-            area: ['70vw', '60vh'],
+            area: ['90vw', '90vh'],
             callBack: function (refreshCode) {
                 winui.window.msg(systemLanguage["com.skyeye.successfulOperation"][languageType], {icon: 1, time: 2000});
                 loadTable();

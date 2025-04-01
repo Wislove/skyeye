@@ -160,7 +160,7 @@ layui.config({
 				if (userReturnList && userReturnList.length > 0) {
 					// 构建显示字符串
 					var approverNames = userReturnList.map(function(item) {
-						return item.userName + (item.userSex === 1 ? '(男)' : '(女)');
+						return item.name;
 					});
 					$("#approver").val(approverNames.join("，"));
 
@@ -190,7 +190,6 @@ layui.config({
 						
 						// 设置单选按钮状态
 						$("input[name='viewAnswer'][value='" + json.bean.viewAnswer + "']").prop("checked", true);
-						$("input[name='surveyModel'][value='" + json.bean.surveyModel + "']").prop("checked", true);
 						
 						// 加载院系、专业、科目和班级的级联数据
 						showGrid({
@@ -272,7 +271,7 @@ layui.config({
 										if(json.bean.readerMationList && json.bean.readerMationList.length > 0) {
 											systemCommonUtil.userReturnList = json.bean.readerMationList;
 											var approverNames = json.bean.readerMationList.map(function(item) {
-												return item.userName + (item.userSex === 1 ? '(男)' : '(女)');
+												return item.name;
 											});
 											$("#approver").val(approverNames.join("，"));
 											readerList = json.bean.readerMationList.map(function(item) {
@@ -285,6 +284,9 @@ layui.config({
 								});
 							}
 						});
+
+						// 保存题目信息
+						window.questionMation = json.rows;
 					}
 				});
 			} else {
@@ -315,7 +317,7 @@ layui.config({
 	            }
 
 	        	var params = {
-                    id: parent.rowId || "", // 添加id参数，编辑时使用parent.rowId，新增时为空
+                    id: parent.rowId || "",
         			surveyName: $("#surveyName").val(),
         			schoolId: $("#schoolId").val(),
         			semesterId: $("#semesterId").val(),
@@ -325,14 +327,25 @@ layui.config({
 					majorId: $("#majorId").val(),
 					whetherDelete: 1,
         			viewAnswer: $("input[name='viewAnswer']:checked").val(),
-					surveyModel: $("input[name='surveyModel']:checked").val(),
+					surveyModel: 2,
 					surveyState: 0,
 					readerList: readerList
 	        	};
-	        	AjaxPostUtil.request({url:schoolBasePath + "writeExamDirectory", params: params, type: 'json', callback: function (json) {
-					parent.layer.close(index);
-					parent.refreshCode = '0';
-	 	   		}});
+
+	        	// 如果是编辑模式，添加题目信息
+	        	if (window.questionMation) {
+	        		params.questionMation = JSON.stringify(window.questionMation);
+	        	}
+	        	
+	        	AjaxPostUtil.request({
+	        		url: schoolBasePath + "writeExamDirectory", 
+	        		params: params, 
+	        		type: 'json', 
+	        		callback: function (json) {
+	        			parent.layer.close(index);
+	        			parent.refreshCode = '0';
+	        		}
+	        	});
 	        }
 	        return false;
 	    });

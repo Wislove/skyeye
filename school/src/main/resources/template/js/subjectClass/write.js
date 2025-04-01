@@ -20,10 +20,9 @@ layui.config({
 
             skyeyeClassEnumUtil.showEnumDataListByClassName("commonEnable", 'radio', "enabled", '', form);
 
-            skyeyeClassEnumUtil.showEnumDataListByClassName("commonEnable", 'radio', "quit", '', form);
+            skyeyeClassEnumUtil.showEnumDataListByClassName("whetherEnum", 'radio', "quit", '', form);
 
-
-            // //加载学期
+            // 加载学期
             initSemesterId();
         });
 
@@ -139,9 +138,9 @@ layui.config({
                     objectKey :objectKey
                 };
                 AjaxPostUtil.request({url: schoolBasePath + "writeSubjectClasses", params: params, type: 'json', method: "POST", callback: function (json) {
-                        parent.layer.close(index);
-                        parent.refreshCode = '0';
-                    }});
+                    parent.layer.close(index);
+                    parent.refreshCode = '0';
+                }});
             }
             return false;
         });

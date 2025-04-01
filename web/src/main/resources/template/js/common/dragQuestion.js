@@ -180,25 +180,14 @@ layui.define(["jquery", "form", "element"], function(exports) {
 		$("body").on("click", ".questionUp", function() {
 			var nextQuBody = $(this).parents(".li_surveyQuItemBody");
 			var prevQuBody = nextQuBody.prev();
-			if(prevQuBody[0]){
-				// 获取上一项的html
-				var prevQuBodyHtml = prevQuBody.html();
+			if (prevQuBody[0]) {
 				// 在当前项后面追加
-				nextQuBody.after('<li class="li_surveyQuItemBody">' + prevQuBodyHtml + '</li>');
-				var newNextObj = nextQuBody.next();
-				newNextObj.hide();
-				newNextObj.slideDown("slow");
-				prevQuBody.slideUp("slow", function() {
-					// 移除上一项
-					prevQuBody.remove();
-					// 重置序号
-					resetQuItem();
-					// 重置左侧设计目录序号
-					resetQuLeftItem();
-					bindQuHoverItem();
-				});
-				nextQuBody.find("input[name='saveTag']").val(0);
-				newNextObj.find("input[name='saveTag']").val(0);
+				nextQuBody.after(prevQuBody);
+				// 重置序号
+				resetQuItem();
+				// 重置左侧设计目录序号
+				resetQuLeftItem();
+				bindQuHoverItem();
 				form.render();
 			} else {
 				winui.window.msg("已经是第一个了！", {icon: 2,time: 1000});
@@ -209,22 +198,13 @@ layui.define(["jquery", "form", "element"], function(exports) {
 		$("body").on("click", ".questionDown", function() {
 			var prevQuBody = $(this).parents(".li_surveyQuItemBody");
 			var nextQuBody = prevQuBody.next();
-			if(nextQuBody[0]){
-				var nextQuBodyHtml = nextQuBody.html();
-				prevQuBody.before("<li class='li_surveyQuItemBody' >" + nextQuBodyHtml + "</li>");
-				var newPrevObj = prevQuBody.prev();
-				newPrevObj.hide();
-				newPrevObj.slideDown("slow");
-				nextQuBody.slideUp("slow", function() {
-					nextQuBody.remove();
-					// 重置序号
-					resetQuItem();
-					// 重置左侧设计目录序号
-					resetQuLeftItem();
-					bindQuHoverItem();
-				});
-				prevQuBody.find("input[name='saveTag']").val(0);
-				newPrevObj.find("input[name='saveTag']").val(0);
+			if (nextQuBody[0]) {
+				prevQuBody.before(nextQuBody);
+				// 重置序号
+				resetQuItem();
+				// 重置左侧设计目录序号
+				resetQuLeftItem();
+				bindQuHoverItem();
 				form.render();
 			} else {
 				winui.window.msg("已经是最后一个了！", {icon: 2,time: 1000});
@@ -1264,6 +1244,21 @@ function editAble(editAbleObj){
 	} else if (thClass.indexOf("dwSvyNoteEdit") >= 0){
 		//问卷欢迎语
 		$("#dwCommonEditRoot").addClass("svyNoteEdit");
+		// 添加欢迎语长度限制
+		$("#dwComEditContent").on("input", function() {
+			if(this.innerText.length > 100) {
+				this.innerText = this.innerText.substring(0, 100);
+				// 将光标移到末尾
+				var range = document.createRange();
+				var sel = window.getSelection();
+				range.selectNodeContents(this);
+				range.collapse(false);
+				sel.removeAllRanges();
+				sel.addRange(range);
+				
+				winui.window.msg('试卷欢迎语最多输入100个字符', {icon: 2, time: 2000});
+			}
+		});
 	} else if (thClass.indexOf("dwSvyName") >= 0){
 		$("#dwCommonEditRoot").addClass("svyName");
 	}
@@ -1334,126 +1329,148 @@ function showUIDialog(thDialogObj) {
  * @param {} thDialogObj
  */
 function showDialog(thDialogObj){
-	var thObjClass = thDialogObj.attr("class");
-	curEditCallback();
-	setShowDialogOffset(thDialogObj);
-	var quItemBody = $(thDialogObj).parents(".surveyQuItemBody");
-	$("#dwCommonDialog .dwQuDialogCon").hide();
-	if(thObjClass.indexOf("addMoreOption") >= 0){
-		$("#dwCommonDialog .dwQuAddMore").show();
-	} else if (thObjClass.indexOf("dwQuSet") >= 0){
-		$("#dwCommonDialog .dwQuSetCon").show();
-		var quType = quItemBody.find("input[name='quType']").val();
-		var isRequired = quItemBody.find("input[name='isRequired']").val();
-		var hv = quItemBody.find("input[name='hv']").val();
-		var randOrder = quItemBody.find("input[name='randOrder']").val();
-		var cellCount = quItemBody.find("input[name='cellCount']").val();
-		var paramInt01 = quItemBody.find("input[name='paramInt01']");
-		var paramInt02 = quItemBody.find("input[name='paramInt02']");
-		var contactsAttr = quItemBody.find("input[name='contactsAttr']").val();
-		var contactsField = quItemBody.find("input[name='contactsField']").val();
-		$("#dwCommonDialog input[name='setRandOrder']").prop("checked", false);
-		$("#dwCommonDialog select[name='setHv']").val(2);
-		$("#dwCommonDialog input[name='setAutoContacts']").prop("checked", false);
-		$("#dwCommonDialog .contactsFieldLi").hide();
-		$("#dwCommonDialog .contactsAttrLi").hide();
-		$("#dwCommonDialog .optionAutoOrder").hide();
-		$("#dwCommonDialog .optionRangeHv").hide();
-		$("#dwCommonDialog .scoreMinMax").hide();
-		$("#dwCommonDialog .minMaxLi").hide();
-		// 问卷才有这个判断
-		if (!isNull(isRequired)){
-			$("#dwCommonDialog input[name='setIsRequired']").prop("checked", false);
-			if(isRequired == 1){
-				$("#dwCommonDialog input[name='setIsRequired']").prop("checked", true);
-			}
-		}
-		if(randOrder == 1){
-			$("#dwCommonDialog input[name='setRandOrder']").prop("checked", true);
-		}
-		if(hv == 3){
-			$("#dwCommonDialog .option_range_3").show();
-		} else {
-			$("#dwCommonDialog .option_range_3").hide();
-		}
-		$("#dwCommonDialog select[name='setHv']").val(hv);
-		$("#dwCommonDialog input[name='setCellCount']").val(cellCount);
+    var thObjClass = thDialogObj.attr("class");
+    curEditCallback();
+    setShowDialogOffset(thDialogObj);
+    var quItemBody = $(thDialogObj).parents(".surveyQuItemBody");
+    $("#dwCommonDialog .dwQuDialogCon").hide();
+    if(thObjClass.indexOf("addMoreOption") >= 0){
+        $("#dwCommonDialog .dwQuAddMore").show();
+        
+        // 为批量添加文本框添加输入事件监听
+        $("#dwQuMoreTextarea").off("input").on("input", function() {
+            var lines = $(this).val().split("\n");
+            var newLines = [];
+            
+            // 检查每一行
+            for(var i = 0; i < lines.length; i++) {
+                if(lines[i].length > 50) {
+                    // 如果超过50个字符，截断并提示
+                    newLines.push(lines[i].substring(0, 50));
+                    winui.window.msg('每个选项最多输入50个字符', {icon: 2, time: 2000});
+                } else {
+                    newLines.push(lines[i]);
+                }
+            }
+            
+            // 更新文本框内容
+            if($(this).val() !== newLines.join("\n")) {
+                $(this).val(newLines.join("\n"));
+            }
+        });
+    } else if (thObjClass.indexOf("dwQuSet") >= 0){
+        $("#dwCommonDialog .dwQuSetCon").show();
+        var quType = quItemBody.find("input[name='quType']").val();
+        var isRequired = quItemBody.find("input[name='isRequired']").val();
+        var hv = quItemBody.find("input[name='hv']").val();
+        var randOrder = quItemBody.find("input[name='randOrder']").val();
+        var cellCount = quItemBody.find("input[name='cellCount']").val();
+        var paramInt01 = quItemBody.find("input[name='paramInt01']");
+        var paramInt02 = quItemBody.find("input[name='paramInt02']");
+        var contactsAttr = quItemBody.find("input[name='contactsAttr']").val();
+        var contactsField = quItemBody.find("input[name='contactsField']").val();
+        $("#dwCommonDialog input[name='setRandOrder']").prop("checked", false);
+        $("#dwCommonDialog select[name='setHv']").val(2);
+        $("#dwCommonDialog input[name='setAutoContacts']").prop("checked", false);
+        $("#dwCommonDialog .contactsFieldLi").hide();
+        $("#dwCommonDialog .contactsAttrLi").hide();
+        $("#dwCommonDialog .optionAutoOrder").hide();
+        $("#dwCommonDialog .optionRangeHv").hide();
+        $("#dwCommonDialog .scoreMinMax").hide();
+        $("#dwCommonDialog .minMaxLi").hide();
+        // 问卷才有这个判断
+        if (!isNull(isRequired)){
+            $("#dwCommonDialog input[name='setIsRequired']").prop("checked", false);
+            if(isRequired == 1){
+                $("#dwCommonDialog input[name='setIsRequired']").prop("checked", true);
+            }
+        }
+        if(randOrder == 1){
+            $("#dwCommonDialog input[name='setRandOrder']").prop("checked", true);
+        }
+        if(hv == 3){
+            $("#dwCommonDialog .option_range_3").show();
+        } else {
+            $("#dwCommonDialog .option_range_3").hide();
+        }
+        $("#dwCommonDialog select[name='setHv']").val(hv);
+        $("#dwCommonDialog input[name='setCellCount']").val(cellCount);
 
-		// 单选，多选 才启用选项随机排列
-		if(quType === '1' || quType === '2'){
-			$("#dwCommonDialog .optionAutoOrder").show();
-			$("#dwCommonDialog .optionRangeHv").show();
-		} else if (quType === '9'){
-			$("#dwCommonDialog .optionAutoOrder").show();
-		} else if (quType === '8'){
-			$("#dwCommonDialog .optionAutoOrder").show();
-			$("#dwCommonDialog .scoreMinMax").show();
-			if(paramInt02[0]){
-				$("#dwCommonDialog .scoreMinMax .maxScore").val(paramInt02.val());
-			}
-		} else if (quType === '4'){
-			$("#dwCommonDialog .optionAutoOrder").show();
-			$("#dwCommonDialog .minMaxLi").show();
-			$("#dwCommonDialog .minMaxLi .minSpan .lgleftLabel").text("最少回答");
-			$("#dwCommonDialog .minMaxLi .maxSpan").hide();
-			$("#dwCommonDialog .minMaxLi .lgRightLabel").text("项");
-			if(paramInt01[0]){
-				$("#dwCommonDialog .minMaxLi .minNum").val(paramInt01.val());				
-			}
-		}
+        // 单选，多选 才启用选项随机排列
+        if(quType === '1' || quType === '2'){
+            $("#dwCommonDialog .optionAutoOrder").show();
+            $("#dwCommonDialog .optionRangeHv").show();
+        } else if (quType === '9'){
+            $("#dwCommonDialog .optionAutoOrder").show();
+        } else if (quType === '8'){
+            $("#dwCommonDialog .optionAutoOrder").show();
+            $("#dwCommonDialog .scoreMinMax").show();
+            if(paramInt02[0]){
+                $("#dwCommonDialog .scoreMinMax .maxScore").val(paramInt02.val());
+            }
+        } else if (quType === '4'){
+            $("#dwCommonDialog .optionAutoOrder").show();
+            $("#dwCommonDialog .minMaxLi").show();
+            $("#dwCommonDialog .minMaxLi .minSpan .lgleftLabel").text("最少回答");
+            $("#dwCommonDialog .minMaxLi .maxSpan").hide();
+            $("#dwCommonDialog .minMaxLi .lgRightLabel").text("项");
+            if(paramInt01[0]){
+                $("#dwCommonDialog .minMaxLi .minNum").val(paramInt01.val());				
+            }
+        }
 
-		// 单选，多选，填空题情况下才启用关联到联系设置项
-		if((quType == '1' || quType == '2' || quType == '3')){
-			$("#dwCommonDialog .contactsAttrLi").show();
-			if( contactsAttr == 1){
-				$("#dwCommonDialog input[name='setAutoContacts']").prop("checked", true);
-				$("#dwCommonDialog .contactsFieldLi").show();
-				$("#dwCommonDialog select[name='setContactsField']").val(contactsField);
-			}
-		}
-	} else if (thObjClass.indexOf("dwQuLogic") >= 0){
-		$("#dwCommonDialog .dwQuDialogLoad").show();
-	} else if (thObjClass.indexOf("dwFbMenuBtn") >= 0){
-		$("#dwCommonDialog .dwQuFillDataTypeOption").show();
-		var checkType_val = quItemBody.find("input[name='checkType']").val();
-		if(checkType_val == ""){
-			checkType_val = "NO";
-		}
-		var checkType = $("#dwCommonDialog select[name='quFill_checkType']");
-		checkType.val(checkType_val);
-	} else if (thObjClass.indexOf("quCoOptionEdit") >= 0){
-		$("#dwCommonDialog .dwQuRadioCheckboxOption").show();
-		// 设置回显值 isNote checkType
-		var quOption_isNote = $("#dwCommonDialog input[name='quOption_isNote']");
-		var quOption_checkType = $("#dwCommonDialog select[name='quOption_checkType']");
-		var quOption_isRequiredFill = $("#dwCommonDialog input[name='quOption_isRequiredFill']");
-		
-		var quOptionParent = $(thDialogObj).parent();
-		var isNote_val = quOptionParent.find("input[name='isNote']").val();
-		var checkType_val = quOptionParent.find("input[name='checkType']").val();
-		var isRequiredFill_val = quOptionParent.find("input[name='isRequiredFill']").val();
-		
-		if(isNote_val == "1"){
-			quOption_isNote.prop("checked", true);
-			$(".quOptionFillContentLi,.quOptionFillRequiredLi").show();
-		} else {
-			quOption_isNote.prop("checked", false);
-			$(".quOptionFillContentLi,.quOptionFillRequiredLi").hide();
-		}
-		if(checkType_val == ""){
-			checkType_val = "NO";
-		}
-		quOption_checkType.val(checkType_val);
-		if(isRequiredFill_val == "1"){
-			quOption_isRequiredFill.prop("checked",true);
-		} else {
-			quOption_isRequiredFill.prop("checked",false);
-		}
-	} else {
-		// 暂时加的
-		$("#dwCommonDialog .dwQuAddMore").show();
-	}
-	dwDialogObj = thDialogObj;
+        // 单选，多选，填空题情况下才启用关联到联系设置项
+        if((quType == '1' || quType == '2' || quType == '3')){
+            $("#dwCommonDialog .contactsAttrLi").show();
+            if( contactsAttr == 1){
+                $("#dwCommonDialog input[name='setAutoContacts']").prop("checked", true);
+                $("#dwCommonDialog .contactsFieldLi").show();
+                $("#dwCommonDialog select[name='setContactsField']").val(contactsField);
+            }
+        }
+    } else if (thObjClass.indexOf("dwQuLogic") >= 0){
+        $("#dwCommonDialog .dwQuDialogLoad").show();
+    } else if (thObjClass.indexOf("dwFbMenuBtn") >= 0){
+        $("#dwCommonDialog .dwQuFillDataTypeOption").show();
+        var checkType_val = quItemBody.find("input[name='checkType']").val();
+        if(checkType_val == ""){
+            checkType_val = "NO";
+        }
+        var checkType = $("#dwCommonDialog select[name='quFill_checkType']");
+        checkType.val(checkType_val);
+    } else if (thObjClass.indexOf("quCoOptionEdit") >= 0){
+        $("#dwCommonDialog .dwQuRadioCheckboxOption").show();
+        // 设置回显值 isNote checkType
+        var quOption_isNote = $("#dwCommonDialog input[name='quOption_isNote']");
+        var quOption_checkType = $("#dwCommonDialog select[name='quOption_checkType']");
+        var quOption_isRequiredFill = $("#dwCommonDialog input[name='quOption_isRequiredFill']");
+        
+        var quOptionParent = $(thDialogObj).parent();
+        var isNote_val = quOptionParent.find("input[name='isNote']").val();
+        var checkType_val = quOptionParent.find("input[name='checkType']").val();
+        var isRequiredFill_val = quOptionParent.find("input[name='isRequiredFill']").val();
+        
+        if(isNote_val == "1"){
+            quOption_isNote.prop("checked", true);
+            $(".quOptionFillContentLi,.quOptionFillRequiredLi").show();
+        } else {
+            quOption_isNote.prop("checked", false);
+            $(".quOptionFillContentLi,.quOptionFillRequiredLi").hide();
+        }
+        if(checkType_val == ""){
+            checkType_val = "NO";
+        }
+        quOption_checkType.val(checkType_val);
+        if(isRequiredFill_val == "1"){
+            quOption_isRequiredFill.prop("checked",true);
+        } else {
+            quOption_isRequiredFill.prop("checked",false);
+        }
+    } else {
+        // 暂时加的
+        $("#dwCommonDialog .dwQuAddMore").show();
+    }
+    dwDialogObj = thDialogObj;
 }
 
 function getNameCheckIn(quItemBody){
@@ -2158,17 +2175,22 @@ function setSaveTag0() {
  * 删除选项
  */
 function deleteDwOption(){
-    if(curEditObj!=null){
+    if(curEditObj != null){
+        // 先保存当前的 quType，避免后续操作导致获取不到
         var quItemBody = $(curEditObj).parents(".surveyQuItemBody");
         var quType = quItemBody.find("input[name='quType']").val();
-        if(type == 1){
-            // 问卷
-			quType = layui.survey.convertQuType(quType);
-            layui.survey[quType]();
-        } else if (type == 2){
-            // 试卷 - 使用转换函数
-            quType = layui.exam.convertQuType(quType);
-            layui.exam[quType]();
+        
+        // 确保获取到 quType 后再进行处理
+        if(quType){
+            if(type == 1){
+                // 问卷
+                quType = layui.survey.convertQuType(quType);
+                layui.survey[quType]();
+            } else if (type == 2){
+                // 试卷
+                quType = layui.exam.convertQuType(quType);
+                layui.exam[quType]();
+            }
         }
     }
 }
