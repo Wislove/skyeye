@@ -1338,10 +1338,10 @@
             // 更新分页按钮的函数
             function updatePaginationButtons() {
                 var pageContainers = $(".surveyQuItemContent:has(.nextPage_a)");
-                
-                pageContainers.each(function() {
+
+                pageContainers.each(function () {
                     var prevBtn = $(this).find(".prevPage_a");
-                    
+
                     if (nowPageNum > 1) {
                         if (prevBtn.length === 0) {
                             $(this).append('<a href="#" class="sbtn24 sbtn24_1 prevPage_a">上一页</a>');

@@ -1215,7 +1215,7 @@ function editAble(editAbleObj){
 		// 添加题目长度限制
 		$("#dwComEditContent").on("input", function() {
 			if(this.innerText.length > 400) {
-				this.innerText = this.innerText.substring(0, 4);
+				this.innerText = this.innerText.substring(0, 400);
 				// 将光标移到末尾
 				var range = document.createRange();
 				var sel = window.getSelection();
@@ -1223,12 +1223,14 @@ function editAble(editAbleObj){
 				range.collapse(false);
 				sel.removeAllRanges();
 				sel.addRange(range);
+				winui.window.msg('题目最多输入400个字符', {icon: 2, time: 2000});
 			}
 		});
 	} else if (thClass.indexOf("quCoOptionEdit") > 0){
 		//题目选项
 		$("#dwCommonEditRoot").addClass("quOptionEdit");
 		// 添加选项长度限制
+
 		$("#dwComEditContent").on("input", function() {
 			if(this.innerText.length > 50) {
 				this.innerText = this.innerText.substring(0, 50);
@@ -1239,6 +1241,7 @@ function editAble(editAbleObj){
 				range.collapse(false);
 				sel.removeAllRanges();
 				sel.addRange(range);
+				winui.window.msg('选项最多输入50个字符', {icon: 2, time: 2000});
 			}
 		});
 	} else if (thClass.indexOf("dwSvyNoteEdit") >= 0){
@@ -1261,6 +1264,21 @@ function editAble(editAbleObj){
 		});
 	} else if (thClass.indexOf("dwSvyName") >= 0){
 		$("#dwCommonEditRoot").addClass("svyName");
+				// 添加试卷标题长度限制
+				$("#dwComEditContent").on("input", function() {
+					if(this.innerText.length > 20) {
+						this.innerText = this.innerText.substring(0, 20);
+						// 将光标移到末尾
+						var range = document.createRange();
+						var sel = window.getSelection();
+						range.selectNodeContents(this);
+						range.collapse(false);
+						sel.removeAllRanges();
+						sel.addRange(range);
+						
+						winui.window.msg('试卷标题最多输入20个字符', {icon: 2, time: 2000});
+					}
+				});
 	}
 	$("#dwCommonEditRoot").show();
 	$("#dwCommonEditRoot").offset({top:editOffset.top,left:editOffset.left});
