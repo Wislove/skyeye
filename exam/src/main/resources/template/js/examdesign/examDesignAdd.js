@@ -158,7 +158,6 @@ layui.config({
 			// 打开选择页面
 			systemCommonUtil.openSysUserStaffChoosePage(function (userReturnList) {
 				if (userReturnList && userReturnList.length > 0) {
-					console.log("userReturnList", userReturnList);
 					// 构建显示字符串
 					var approverNames = userReturnList.map(function(item) {
 						return item.name;
@@ -285,6 +284,9 @@ layui.config({
 								});
 							}
 						});
+
+						// 保存题目信息
+						window.questionMation = json.rows;
 					}
 				});
 			} else {
@@ -315,7 +317,7 @@ layui.config({
 	            }
 
 	        	var params = {
-                    id: parent.rowId || "", // 添加id参数，编辑时使用parent.rowId，新增时为空
+                    id: parent.rowId || "",
         			surveyName: $("#surveyName").val(),
         			schoolId: $("#schoolId").val(),
         			semesterId: $("#semesterId").val(),
@@ -329,10 +331,21 @@ layui.config({
 					surveyState: 0,
 					readerList: readerList
 	        	};
-	        	AjaxPostUtil.request({url:schoolBasePath + "writeExamDirectory", params: params, type: 'json', callback: function (json) {
-					parent.layer.close(index);
-					parent.refreshCode = '0';
-	 	   		}});
+
+	        	// 如果是编辑模式，添加题目信息
+	        	if (window.questionMation) {
+	        		params.questionMation = JSON.stringify(window.questionMation);
+	        	}
+	        	
+	        	AjaxPostUtil.request({
+	        		url: schoolBasePath + "writeExamDirectory", 
+	        		params: params, 
+	        		type: 'json', 
+	        		callback: function (json) {
+	        			parent.layer.close(index);
+	        			parent.refreshCode = '0';
+	        		}
+	        	});
 	        }
 	        return false;
 	    });

@@ -769,6 +769,14 @@ layui.config({
             var tabIndex = quItemBody.find(".layui-tab").find(".layui-tab-title").find(".layui-this").index();
             var checkNameIn = getNameCheckIn(quItemBody);
             var whetherUpload = quItemBody.find("input[name='whetherUpload" + checkNameIn + "']:checked").val() || '2'; // 默认值为2
+            
+            // 获取题目标题
+            var quTitle = '';
+            if (quItemBody.find("input[name='quType']").val() == '16') {  // 如果是分页题目
+                quTitle = '分页标记';  // 设置默认标题
+            } else {
+                quTitle = quItemBody.find(".quCoTitleEdit").html() || '';  // 如果其他题目没有标题，至少设置为空字符串
+            }
 
             if (tabIndex != 0 && tabIndex >= 0) {
                 fileUrl = quItemBody.find(".layui-tab-content").find(".layui-show").find(".upload").find("input[type='hidden'][name='upload']").attr("oldurl");
@@ -787,7 +795,7 @@ layui.config({
                 hv: quItemBody.find("input[name='hv']").val(),
                 randOrder: quItemBody.find("input[name='randOrder']").val(),
                 cellCount: quItemBody.find("input[name='cellCount']").val(),
-                quTitle: JSON.stringify(quItemBody.find(".quCoTitleEdit").html()).slice(1, -1),
+                quTitle: JSON.stringify(quTitle).slice(1, -1),
                 quType: quItemBody.find("input[name='quType']").val(),
                 fraction: isNull(quItemBody.find("input[name='fraction']").val()) ? 0 : quItemBody.find("input[name='fraction']").val(),
                 knowledgeIds: quItemBody.find(".knowledgeQuLogic").attr("knowledgeIds") || "",
@@ -1136,7 +1144,7 @@ layui.config({
         }
 
         /** 保存分页标记 **/
-        function savePagetag(quItemBody, callback) {
+        function savePagetag(quItemBody, isEdit) {
             var data = {};
             $.extend(data, getCommonParams(quItemBody));
             return data;
