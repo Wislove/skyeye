@@ -854,6 +854,14 @@
                         }
                     });
 
+                    // 在Handlebars helper注册部分添加
+                    hdb.registerHelper('eq', function (v1, v2, options) {
+                        if (v1 == v2) {
+                            return options.fn(this);
+                        }
+                        return options.inverse(this);
+                    });
+
                     hdb.registerHelper("showIndex", function (v1, options) {
                         return parseInt(v1) + 1;
                     });
@@ -904,7 +912,11 @@
                                 return new Handlebars.SafeString(getDataUseHandlebars($("#chenCheckboxTemplate").html(), json.rows[i]));
                                 break;
                             case 16://16分页pagetag
-                                return new Handlebars.SafeString(getDataUseHandlebars($("#pagetagTemplate").html(), json.rows[i]));
+                                return new Handlebars.SafeString(getDataUseHandlebars($("#pagetagTemplate").html(), {
+                                    ...json.rows[i],
+                                    nowPageNum: nowPageNum,
+                                    pageNo: pageNum
+                                }));
                                 break;
                             case 17://17段落paragraph
                                 return new Handlebars.SafeString(getDataUseHandlebars($("#paragraphTemplate").html(), json.rows[i]));
@@ -960,7 +972,7 @@
                     });
 
                     hdb.registerHelper('compare7', function (v1, options) {
-                        if (nowPageNum == '1') {
+                        if (nowPageNum == 1) {
                             return options.inverse(this);
                         } else {
                             return options.fn(this);
@@ -1305,6 +1317,7 @@
             $("body").on("click", ".nextPage_a", function (e) {
                 var thParent = $(this).parent();
                 nowPageNum = nowPageNum + 1;
+                updatePaginationButtons();
                 $(".li_surveyQuItemBody").hide();
                 $(".surveyQu_" + nowPageNum).fadeIn("slow");
                 $("html,body").animate({
@@ -1315,11 +1328,29 @@
             $("body").on("click", ".prevPage_a", function (e) {
                 var thParent = $(this).parent();
                 nowPageNum = nowPageNum - 1;
+                updatePaginationButtons();
                 $(".li_surveyQuItemBody").hide();
                 $(".surveyQu_" + nowPageNum).fadeIn("slow");
                 $(window).scrollTop(10);
                 return false;
             });
+
+            // 更新分页按钮的函数
+            function updatePaginationButtons() {
+                var pageContainers = $(".surveyQuItemContent:has(.nextPage_a)");
+                
+                pageContainers.each(function() {
+                    var prevBtn = $(this).find(".prevPage_a");
+                    
+                    if (nowPageNum > 1) {
+                        if (prevBtn.length === 0) {
+                            $(this).append('<a href="#" class="sbtn24 sbtn24_1 prevPage_a">上一页</a>');
+                        }
+                    } else {
+                        prevBtn.remove();
+                    }
+                });
+            }
 
             function loadModel() {
                 /******************************处理题目逻辑设置 **************************************/
