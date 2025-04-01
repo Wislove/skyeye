@@ -23,15 +23,13 @@ layui.config({
     var s = '知识点选择上限为' + MAX_SELECTED_POINTS + '个';
     $("#showInfo").html(s);
     
-    // 从父窗口获取已选择的知识点
-    var selectedKnowledgePoints = [];
-    if (parent.knowledgeReturnList && parent.knowledgeReturnList.length > 0) {
-        selectedKnowledgePoints = parent.knowledgeReturnList;
-    }
+    // 在打开知识点选择页面时，清空父窗口的历史选择记录
+    parent.knowledgeReturnList = [];
+    parent.selectedKnowledgeIds = '';
     
     // 初始化选中的知识点ID数组
     var ids = [];
-    $.each(selectedKnowledgePoints, function(i, item) {
+    $.each(parent.knowledgeReturnList, function(i, item) {
         ids.push(item.id);
     });
     
@@ -86,49 +84,22 @@ layui.config({
         }
     });
 
-    // 确认选择按钮点击事件
+    // 修改确认选择按钮点击事件
     $("body").on("click", "#confirmSelection", function() {
-        // 获取选中的知识点IDs
-        var selectedIds = tableCheckBoxUtil.getValue({
-            gridId: 'knowledgeTable'
-        });
+        // 只获取当前页面新选择的知识点
+        var currentSelectedData = table.checkStatus('knowledgeTable').data;
+        var selectedIds = currentSelectedData.map(item => item.id);
         
-        // 获取选中的知识点数据
-        var selectedData = tableCheckBoxUtil.getValueList({
-            gridId: 'knowledgeTable'
-        });
-        
-        // 检查是否有选中的知识点
-        if (!selectedIds || selectedIds.length === 0) {
-            winui.window.msg("请至少选择一个知识点", {icon: 2, time: 2000});
-            return false;
-        }
-        
-        // 检查是否超过最大选择数量
-        if (selectedIds.length > MAX_SELECTED_POINTS) {
+        // 检查数量限制
+        if (currentSelectedData.length > MAX_SELECTED_POINTS) {
             winui.window.msg("最多只能选择" + MAX_SELECTED_POINTS + "个知识点", {icon: 2, time: 2000});
             return false;
         }
         
-        // 确保每个选中的知识点都有name属性
-        var formattedData = [];
-        $.each(selectedData, function(i, item) {
-            formattedData.push({
-                id: item.id,
-                name: item.name || item.title || "未命名知识点"
-            });
-        });
-        
-        // 将选中的知识点传回父窗口
-        parent.knowledgeReturnList = formattedData;
-        
-        // 添加这一行代码 - 将知识点ID字符串直接添加到父窗口的全局变量中
+        // 更新父窗口数据，只包含当前新选择的
+        parent.knowledgeReturnList = currentSelectedData;
         parent.selectedKnowledgeIds = selectedIds.join(",");
-        
-        // 设置回调标志
         parent.refreshCode = '0';
-        
-        // 关闭弹窗
         parent.layer.close(index);
     });
     
