@@ -162,61 +162,113 @@
 		</div>
 		
 		<!-- 1单选题radio -->
+<!--		<script type="text/x-handlebars-template" id="radioTemplate">-->
+<!--			<div class="surveyQuItem">-->
+<!--				<div class="surveyQuItemContent">-->
+<!--					<div class="quCoTitle">-->
+<!--						<div class="quCoNum">{{showQuestionIndex quType}}、</div>-->
+<!--						<div class="quCoTitleEdit" >{{quTitle}}</div>-->
+<!--					</div>-->
+<!--					<div class="quCoItem">-->
+<!--					{{#if hv}}-->
+<!--						{{#compare1 hv '3'}}-->
+<!--							<table class='tableQuColItem'>-->
+<!--								{{#each radioTd}}-->
+<!--									<tr>-->
+<!--										{{#cellCount001 cellCount}}{{/cellCount001}}-->
+<!--									</tr>-->
+<!--								{{/each}}-->
+<!--								<tr>-->
+<!--							</table>-->
+<!--						{{else}}-->
+<!--						{{#if hv}}-->
+<!--						{{#compare1 hv '1'}}-->
+<!--							<ul class="transverse">-->
+<!--								{{#each radioTd}}-->
+<!--									<li class="quCoItemUlLi">-->
+<!--										<div class="dwQuOptionItemContent">-->
+<!--											<label class="dwRedioStyle dwQuInputLabel" ></label>-->
+<!--											<input type="radio" name="qu_{{quType}}_{{quId}}" value="{{id}}" >-->
+<!--											<label class="quCoOptionEdit quCoOptionPadding">{{optionName}}</label>-->
+<!--											<input type='text' class='inputSytle_1' style="width:200px;padding:5px;{{#compare2 isNote 0}}{{/compare2}}" name="text_qu_{{quType}}_{{quId}}_{{id}}" />-->
+<!--										</div>-->
+<!--									</li>-->
+<!--								{{/each}}-->
+<!--							</ul>-->
+<!--						{{else}}-->
+<!--							<ul>-->
+<!--								{{#each radioTd}}-->
+<!--									<li class="quCoItemUlLi">-->
+<!--										<div class="dwQuOptionItemContent">-->
+<!--											<label class="dwRedioStyle dwQuInputLabel" ></label>-->
+<!--											<input type="radio" name="qu_{{quType}}_{{quId}}" value="{{id}}" >-->
+<!--											<label class="quCoOptionEdit quCoOptionPadding">{{optionName}}</label>-->
+<!--											<input type='text' class='inputSytle_1' style="width:200px;padding:5px;{{#compare2 isNote 0}}{{/compare2}}" name="text_qu_{{quType}}_{{quId}}_{{id}}" />-->
+<!--										</div>-->
+<!--									</li>-->
+<!--								{{/each}}-->
+<!--							</ul>-->
+<!--						{{/compare1}}-->
+<!--						{{/if}}-->
+<!--					{{/compare1}}-->
+<!--					{{/if}}-->
+<!--					</div>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--		</script>-->
+
 		<script type="text/x-handlebars-template" id="radioTemplate">
 			<div class="surveyQuItem">
 				<div class="surveyQuItemContent">
 					<div class="quCoTitle">
 						<div class="quCoNum">{{showQuestionIndex quType}}、</div>
-						<div class="quCoTitleEdit" >{{quTitle}}</div>
+						<div class="quCoTitleEdit">{{quTitle}}</div>
 					</div>
 					<div class="quCoItem">
-					{{#if hv}}
+						{{#if hv}}
 						{{#compare1 hv '3'}}
-							<table class='tableQuColItem'>
-								{{#each radioTd}}
-									<tr>
-										{{#cellCount001 cellCount}}{{/cellCount001}}
-									</tr>
-								{{/each}}
-								<tr>
-							</table>
+						<table class='tableQuColItem'>
+							{{#each radioTd}}
+							<tr>
+								{{#cellCount001 cellCount}}{{/cellCount001}}
+							</tr>
+							{{/each}}
+							<tr>
+						</table>
 						{{else}}
 						{{#if hv}}
 						{{#compare1 hv '1'}}
-							<ul class="transverse">
-								{{#each radioTd}}
-									<li class="quCoItemUlLi">
-										<div class="dwQuOptionItemContent">
-											<label class="dwRedioStyle dwQuInputLabel" ></label>
-											<input type="radio" name="qu_{{quType}}_{{quId}}" value="{{id}}" >
-											<label class="quCoOptionEdit quCoOptionPadding">{{optionName}}</label>
-											<input type='text' class='inputSytle_1' style="width:200px;padding:5px;{{#compare2 isNote 0}}{{/compare2}}" name="text_qu_{{quType}}_{{quId}}_{{id}}" />
-										</div>
-									</li>
-								{{/each}}
-							</ul>
+						<ul class="transverse">
+							{{#each radioTd}}
+							<li class="quCoItemUlLi">
+								<div class="dwQuOptionItemContent">
+									<input type="radio" name="qu_{{quType}}_{{quId}}" value="{{id}}" id="radio_{{quType}}_{{quId}}_{{id}}" class="custom-radio" style="display: inline;">
+									<label for="radio_{{quType}}_{{quId}}_{{id}}" class="quCoOptionEdit quCoOptionPadding">{{optionName}}</label>
+									<input type='text' class='inputSytle_1' style="width:200px;padding:5px;{{#compare2 isNote 0}}{{/compare2}}" name="text_qu_{{quType}}_{{quId}}_{{id}}" />
+								</div>
+							</li>
+							{{/each}}
+						</ul>
 						{{else}}
-							<ul>
-								{{#each radioTd}}
-									<li class="quCoItemUlLi">
-										<div class="dwQuOptionItemContent">
-											<label class="dwRedioStyle dwQuInputLabel" ></label>
-											<input type="radio" name="qu_{{quType}}_{{quId}}" value="{{id}}" >
-											<label class="quCoOptionEdit quCoOptionPadding">{{optionName}}</label>
-											<input type='text' class='inputSytle_1' style="width:200px;padding:5px;{{#compare2 isNote 0}}{{/compare2}}" name="text_qu_{{quType}}_{{quId}}_{{id}}" />
-										</div>
-									</li>
-								{{/each}}
-							</ul>
+						<ul>
+							{{#each radioTd}}
+							<li class="quCoItemUlLi">
+								<div class="dwQuOptionItemContent">
+									<input type="radio" name="qu_{{quType}}_{{quId}}" value="{{id}}" id="radio_{{quType}}_{{quId}}_{{id}}"class="custom-radio" style="display: inline;">
+									<label for="radio_{{quType}}_{{quId}}_{{id}}" class="quCoOptionEdit quCoOptionPadding">{{optionName}}</label>
+									<input type='text' class='inputSytle_1' style="width:200px;padding:5px;{{#compare2 isNote 0}}{{/compare2}}" name="text_qu_{{quType}}_{{quId}}_{{id}}" />
+								</div>
+							</li>
+							{{/each}}
+						</ul>
 						{{/compare1}}
 						{{/if}}
-					{{/compare1}}
-					{{/if}}
+						{{/compare1}}
+						{{/if}}
 					</div>
 				</div>
 			</div>
 		</script>
-		
 		<!-- 2多选题checkbox -->
 		<script type="text/x-handlebars-template" id="checkBoxTemplate">
 			<div class="surveyQuItem">
@@ -243,7 +295,7 @@
 												<li class="quCoItemUlLi">
 													<div class="dwQuOptionItemContent">
 														<label class="dwCheckboxStyle dwQuInputLabel" ></label>
-														<input type="checkbox" name="tag_qu_{{quType}}_{{quId}}_{{id}}" value="{{id}}" >
+														<input type="checkbox" name="tag_qu_{{quType}}_{{quId}}_{{id}}" value="{{id}}" class="custom-radio">
 														<label class="quCoOptionEdit quCoOptionPadding">{{optionName}}</label>
 														<input type='text' class='inputSytle_1' style="width:200px;padding:5px;{{#compare2 isNote 0}}{{/compare2}}" name="text_tag_qu_{{quType}}_{{quId}}_{{id}}" />
 													</div>
@@ -256,7 +308,7 @@
 												<li class="quCoItemUlLi">
 													<div class="dwQuOptionItemContent">
 														<label class="dwCheckboxStyle dwQuInputLabel" ></label>
-														<input type="checkbox" name="tag_qu_{{quType}}_{{quId}}_{{id}}" value="{{id}}" >
+														<input type="checkbox" name="tag_qu_{{quType}}_{{quId}}_{{id}}" value="{{id}}" class="custom-radio">
 														<label class="quCoOptionEdit quCoOptionPadding">{{optionName}}</label>
 														<input type='text' class='inputSytle_1' style="width:200px;padding:5px;{{#compare2 isNote 0}}{{/compare2}}" name="text_tag_qu_{{quType}}_{{quId}}_{{id}}" />
 													</div>
@@ -368,29 +420,63 @@
 		</script>
 		
 		<!-- 4多项填空题multi-fillblank -->
+<!--		<script type="text/x-handlebars-template" id="multiFillblankTemplate">-->
+<!--			<div class="surveyQuItem">-->
+<!--				<div class="surveyQuItemContent">-->
+<!--					<div class="quCoTitle">-->
+<!--						<div class="quCoNum">{{showQuestionIndex quType}}、</div>-->
+<!--						<div class="quCoTitleEdit">{{quTitle}}</div>-->
+<!--					</div>-->
+<!--					<div class="quCoItem">-->
+<!--						<table class="mFillblankTable" cellpadding="0" cellspacing="0">-->
+<!--							{{#each multifillblankTd}}-->
+<!--								<tr class="mFillblankTableTr">-->
+<!--									<td align="right" class="mFillblankTableEditTd">-->
+<!--										<label class="quCoOptionEdit">{{optionName}}</label>-->
+<!--										<input class="dwMFillblankOptionId" type="hidden" value="{{id}}" disabled="disabled">-->
+<!--										<input type="hidden" name="answerTag" value="0">-->
+<!--									</td>-->
+<!--									<td>-->
+<!--										<input name="text_qu_{{quType}}_{{quId}}_{{id}}" type="text" style="width:200px;padding:5px;" class="inputSytle_1 dwMFillblankInput">-->
+<!--									</td>-->
+<!--								</tr>-->
+<!--							{{/each}}-->
+<!--						</table>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--		</script>-->
+
+		<!-- 4多项填空题multi-fillblank -->
 		<script type="text/x-handlebars-template" id="multiFillblankTemplate">
 			<div class="surveyQuItem">
 				<div class="surveyQuItemContent">
 					<div class="quCoTitle">
 						<div class="quCoNum">{{showQuestionIndex quType}}、</div>
-						<div class="quCoTitleEdit" >{{quTitle}}</div>
+						<div class="quCoTitleEdit">{{quTitle}}</div>
 					</div>
 					<div class="quCoItem">
 						<table class="mFillblankTable" cellpadding="0" cellspacing="0">
 							{{#each multifillblankTd}}
-								<tr class="mFillblankTableTr">
-									<td align="right" class="mFillblankTableEditTd"><label class="quCoOptionEdit">{{optionName}}</label>
-										<input class="dwMFillblankOptionId" type="hidden" value="{{id}}" disabled="disabled">
-										<input type="hidden" name="answerTag" value="0">
-									</td>
-									<td><input name="text_qu_{{quType}}_{{quId}}_{{id}}" type="text" style="width:200px;padding:5px;" class="inputSytle_1 dwMFillblankInput"></td>
-								</tr>
+							<tr class="mFillblankTableTr">
+								<td align="right" class="mFillblankTableEditTd">
+									<label class="quCoOptionEdit">{{optionName}}</label>
+									<input class="dwMFillblankOptionId" type="hidden" value="{{id}}" disabled="disabled">
+								</td>
+								<td>
+									<input name="text_qu_{{quType}}_{{quId}}_{{id}}" type="text"
+										   style="width:200px;padding:5px;" class="inputSytle_1 dwMFillblankInput">
+								</td>
+							</tr>
 							{{/each}}
 						</table>
+						<!-- 将answerTag移动到题目容器 -->
+						<input type="hidden" class="answerTag" name="answerTag" value="0">
 					</div>
 				</div>
 			</div>
 		</script>
+
 		
 		<!-- 11矩阵单选题chen-radio -->
 		<script type="text/x-handlebars-template" id="chenRadioTemplate">
@@ -606,10 +692,6 @@
 			var ruleCode = "";//密码
 			
 			var bgAnDate = "";//答卷开始时间
-
-			function getTotalQuestionCount() {
-				return $(".answerTag:enabled").length;
-			}
 
 			layui.config({
 				base: basePath,
@@ -1079,7 +1161,7 @@
 							var logicId = loginItem.find(".logicId").val();
 							var logicType = loginItem.find(".logicType").val();
 							if(logicType === "2") {
-								//逻辑类型为“显示”2  则初始化为隐藏
+								//逻辑类型为"显示"2  则初始化为隐藏
 								var hidQuItemBody = $(".quId[value='" + skQuId + "']").parents(".li_surveyQuItemBody");
 								hidQuItemBody.hide();
 								hidQuItemBody.addClass("hidFor" + logicId);
@@ -1589,7 +1671,7 @@
 													});
 												}
 											} else {
-												//逻辑类型为“显示” quType=2
+												//逻辑类型为"显示" quType=2
 												if(logicStatus) {
 													//逻辑选项被选中状态，激活状态  显示题
 													var hidQuItemBodys = $(".hidFor" + logicId);
@@ -1651,7 +1733,7 @@
 										}
 									} else {
 										//显示
-										//逻辑类型为“显示” quType=1
+										//逻辑类型为"显示" quType=1
 										if(thVal != "") {
 											//逻辑选项被选中状态，激活状态  显示题
 											var hidQuItemBodys = $(".hidFor" + logicId);
@@ -1770,8 +1852,10 @@
 							}
 						} else if (quType === "MULTIFILLBLANK") {
 							var mFillblankTableTr = thObj.parents(".mFillblankTableTr");
+							console.log("当前填空框的值：", thObj.val()); // 调试代码，查看输入框的值
 							if (thObj.val() != "") {
 								mFillblankTableTr.find(".answerTag").val(1);
+								console.log("设置 answerTag 为 1");
 							} else {
 								mFillblankTableTr.find(".answerTag").val(0);
 							}
@@ -1809,8 +1893,9 @@
 						var newValue = parseInt(answerQuSize / totalQuSize * 100);
 						$("#resultProgressRoot .progress-label").text("完成度：" + newValue + "%");
 						$("#resultProgress").progressbar("option", "value", newValue);
+						console.log("answerTag1",answerTag1);
+						console.log("总题数：", totalQuSize, "已答题数：", answerQuSize, "完成度：", newValue);
 					}
-
 				});
 			});
 		</script>
