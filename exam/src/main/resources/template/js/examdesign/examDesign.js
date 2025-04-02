@@ -769,6 +769,14 @@ layui.config({
             var tabIndex = quItemBody.find(".layui-tab").find(".layui-tab-title").find(".layui-this").index();
             var checkNameIn = getNameCheckIn(quItemBody);
             var whetherUpload = quItemBody.find("input[name='whetherUpload" + checkNameIn + "']:checked").val() || '2'; // 默认值为2
+            
+            // 获取题目标题
+            var quTitle = '';
+            if (quItemBody.find("input[name='quType']").val() == '16') {  // 如果是分页题目
+                quTitle = '分页标记';  // 设置默认标题
+            } else {
+                quTitle = quItemBody.find(".quCoTitleEdit").html() || '';  // 如果其他题目没有标题，至少设置为空字符串
+            }
 
             if (tabIndex != 0 && tabIndex >= 0) {
                 fileUrl = quItemBody.find(".layui-tab-content").find(".layui-show").find(".upload").find("input[type='hidden'][name='upload']").attr("oldurl");
@@ -787,7 +795,7 @@ layui.config({
                 hv: quItemBody.find("input[name='hv']").val(),
                 randOrder: quItemBody.find("input[name='randOrder']").val(),
                 cellCount: quItemBody.find("input[name='cellCount']").val(),
-                quTitle: encodeURI(quItemBody.find(".quCoTitleEdit").html()),
+                quTitle: JSON.stringify(quTitle).slice(1, -1),
                 quType: quItemBody.find("input[name='quType']").val(),
                 fraction: isNull(quItemBody.find("input[name='fraction']").val()) ? 0 : quItemBody.find("input[name='fraction']").val(),
                 knowledgeIds: quItemBody.find(".knowledgeQuLogic").attr("knowledgeIds") || "",
@@ -1077,8 +1085,6 @@ layui.config({
 
         /** 保存排序题 **/
         function saveOrderqu(quItemBody, isEdit) {
-            // var saveTag = quItemBody.find("input[name='saveTag']").val();
-            // if (saveTag == 0) {
             var data = {};
             $.extend(data, getCommonParams(quItemBody));
             //评分题选项td
@@ -1138,7 +1144,7 @@ layui.config({
         }
 
         /** 保存分页标记 **/
-        function savePagetag(quItemBody, callback) {
+        function savePagetag(quItemBody, isEdit) {
             var data = {};
             $.extend(data, getCommonParams(quItemBody));
             return data;
@@ -1216,10 +1222,39 @@ layui.config({
                 quType: quItemBody.find("input[name='quType']").val()
             };
             $.extend(data, getCommonParams(quItemBody));
+            
             // 矩阵列选项td
             var quColumnOptions = quItemBody.find(".quCoItem table.quCoChenTable tr td.quChenColumnTd");
+            // 矩阵行选项td
+            var quRowOptions = quItemBody.find(".quCoItem table.quCoChenTable tr td.quChenRowTd");
+            
+            // 检查列选项名称是否为空
+            var hasEmptyOption = false;
+            quColumnOptions.each(function() {
+                var optionName = $(this).find("label.quCoOptionEdit").html().trim();
+                if(isNull(optionName)) {
+                    hasEmptyOption = true;
+                    return false;
+                }
+            });
+            
+            // 检查行选项名称是否为空
+            quRowOptions.each(function() {
+                var optionName = $(this).find("label.quCoOptionEdit").html().trim();
+                if(isNull(optionName)) {
+                    hasEmptyOption = true;
+                    return false;
+                }
+            });
+            
+            if(hasEmptyOption) {
+                winui.window.msg("选项名称不能为空", {icon: 2, time: 2000});
+                throw new Error("选项名称不能为空");
+            }
+            
+            // 继续原有的保存逻辑...
             var columnTd = [];
-            $.each(quColumnOptions, function (i) {
+            $.each(quColumnOptions, function(i) {
                 var quItemSaveTag = $(this).find(".quItemInputCase input[name='quItemSaveTag']").val();
                 if (quItemSaveTag == 0) {
                     var s = {
@@ -1238,9 +1273,8 @@ layui.config({
             });
             data.columnTd = JSON.stringify(columnTd);
             // 矩阵行选项td
-            var quColumnOptions = quItemBody.find(".quCoItem table.quCoChenTable tr td.quChenRowTd");
             var rowTd = [];
-            $.each(quColumnOptions, function (i) {
+            $.each(quRowOptions, function (i) {
                 var quItemSaveTag = $(this).find(".quItemInputCase input[name='quItemSaveTag']").val();
                 if (quItemSaveTag == 0) {
                     var s = {

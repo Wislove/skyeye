@@ -18,28 +18,36 @@ layui.config({
         skyeyeClassEnumUtil.showEnumDataListByClassName("promotionMaterialScope", 'radio', "productScope", '', form);
         skyeyeClassEnumUtil.showEnumDataListByClassName("couponValidityType", 'radio', "validityType", '', form);
         skyeyeClassEnumUtil.showEnumDataListByClassName("promotionDiscountType", 'radio', "discountType", '', form);
-        AjaxPostUtil.request({url: sysMainMation.erpBasePath + "queryAllShopMaterialListForChoose", params: {}, type: 'json', method: 'GET', callback: function (json) {
-            dataShowType.showData(json, 'verificationSelect', 'couponMaterialList', '', form);
-        }, async: false});
-        AjaxPostUtil.request({url: sysMainMation.shopBasePath + "queryStoreListByParams", params: {}, type: 'json', method: 'GET', callback: function (json) {
-            dataShowType.showData(json, 'verificationSelect', 'storeIdList', '', form);
-        }, async: false});
+        AjaxPostUtil.request({
+            url: sysMainMation.erpBasePath + "queryAllShopMaterialListForChoose", params: {}, type: 'json', method: 'GET', callback: function (json) {
+                dataShowType.showData(json, 'verificationSelect', 'couponMaterialList', '', form);
+            }, async: false
+        });
+        AjaxPostUtil.request({
+            url: sysMainMation.shopBasePath + "queryStoreListByParams", params: {}, type: 'json', method: 'GET', callback: function (json) {
+                dataShowType.showData(json, 'verificationSelect', 'storeIdList', '', form);
+            }, async: false
+        });
         loadCouponList('');
     } else {
-        AjaxPostUtil.request({url: sysMainMation.shopBasePath + "queryCouponById", params: {id: id}, type: 'json', method: 'POST', callback: function (json) {
-            let data = json.bean;
-            resetDataOrTemplate(data);
-            loadCouponList(data.templateId);
-            AjaxPostUtil.request({url: sysMainMation.shopBasePath + "queryStoreListByParams", params: {}, type: 'json', method: 'GET', callback: function (res) {
-                let storeIdList = [];
-                if (!isNull(data.storeList)) {
-                    for (let i = 0; i < data.storeList.length; i++) {
-                        storeIdList.push(data.storeList[i].storeId);
+        AjaxPostUtil.request({
+            url: sysMainMation.shopBasePath + "queryCouponById", params: { id: id }, type: 'json', method: 'POST', callback: function (json) {
+                let data = json.bean;
+                resetDataOrTemplate(data);
+                loadCouponList(data.templateId);
+                AjaxPostUtil.request({
+                    url: sysMainMation.shopBasePath + "queryStoreListByParams", params: {}, type: 'json', method: 'GET', callback: function (res) {
+                        let storeIdList = [];
+                        if (!isNull(data.storeList)) {
+                            for (let i = 0; i < data.storeList.length; i++) {
+                                storeIdList.push(data.storeList[i].storeId);
+                            }
+                        }
+                        dataShowType.showData(res, 'verificationSelect', 'storeIdList', storeIdList, form);
                     }
-                }
-                    dataShowType.showData(res, 'verificationSelect', 'storeIdList', storeIdList, form);
-            }});
-        }});
+                });
+            }
+        });
     }
     initDataEvent();
 
@@ -84,14 +92,17 @@ layui.config({
         } else if (data.productScope == 2) {
             $("#couponMaterialListBox").show();
         }
-        AjaxPostUtil.request({url: sysMainMation.erpBasePath + "queryAllShopMaterialListForChoose", params: {}, type: 'json', method: 'GET', callback: function (json) {
-            let materialIdList = [];
-            for (let i = 0; i < data.couponMaterialList.length; i++) {
-                materialIdList.push(data.couponMaterialList[i].materialId);
-            }
-            dataShowType.showData(json, 'verificationSelect', 'couponMaterialList', materialIdList.toString(), form);
-        }, async: false});
-        AjaxPostUtil.request({url: sysMainMation.shopBasePath + "queryStoreListByParams", params: {}, type: 'json', method: 'GET', callback: function (res) {
+        AjaxPostUtil.request({
+            url: sysMainMation.erpBasePath + "queryAllShopMaterialListForChoose", params: {}, type: 'json', method: 'GET', callback: function (json) {
+                let materialIdList = [];
+                for (let i = 0; i < data.couponMaterialList.length; i++) {
+                    materialIdList.push(data.couponMaterialList[i].materialId);
+                }
+                dataShowType.showData(json, 'verificationSelect', 'couponMaterialList', materialIdList.toString(), form);
+            }, async: false
+        });
+        AjaxPostUtil.request({
+            url: sysMainMation.shopBasePath + "queryStoreListByParams", params: {}, type: 'json', method: 'GET', callback: function (res) {
                 let storeIdList = [];
                 if (!isNull(data.storeList)) {
                     for (let i = 0; i < data.storeList.length; i++) {
@@ -99,7 +110,8 @@ layui.config({
                     }
                 }
                 dataShowType.showData(res, 'verificationSelect', 'storeIdList', storeIdList, form);
-            }, async: false});
+            }, async: false
+        });
     }
 
 
@@ -156,12 +168,14 @@ layui.config({
         let val = data.value;
         $("#showForm").html($("#formTemplate").html());
         if (!isNull(val)) {
-            AjaxPostUtil.request({url: sysMainMation.shopBasePath + "queryCouponById", params: {id: val}, type: 'json', method: 'POST', callback: function (json) {
-                let data = json.bean;
-                resetDataOrTemplate(data);
-                loadCouponList(val);
-                matchingLanguage();
-            }});
+            AjaxPostUtil.request({
+                url: sysMainMation.shopBasePath + "queryCouponById", params: { id: val }, type: 'json', method: 'POST', callback: function (json) {
+                    let data = json.bean;
+                    resetDataOrTemplate(data);
+                    loadCouponList(val);
+                    matchingLanguage();
+                }
+            });
         } else {
             resetDataOrTemplate({
                 validityType: 1,
@@ -179,9 +193,11 @@ layui.config({
 
     function loadCouponList(val) {
         // 获取已启用的优惠券模板
-        AjaxPostUtil.request({url: sysMainMation.shopBasePath + "queryCouponListByState", params: {type: 0}, type: 'json', method: 'POST', callback: function (json) {
-            dataShowType.showData(json, 'select', 'templateId', val, form);
-        }, async: false});
+        AjaxPostUtil.request({
+            url: sysMainMation.shopBasePath + "queryCouponListByState", params: { type: 0 }, type: 'json', method: 'POST', callback: function (json) {
+                dataShowType.showData(json, 'select', 'templateId', val, form);
+            }, async: false
+        });
     }
 
     // 适用产品范围
@@ -223,7 +239,7 @@ layui.config({
                 storeList.push(couponStoreIdList[i]);
             }
             var params = {
-                id: isNull(id)? '' : id,
+                id: isNull(id) ? '' : id,
                 templateId: $("#templateId").val(),
                 name: $("#name").val(),
                 enabled: dataShowType.getData('enabled'),
@@ -246,16 +262,18 @@ layui.config({
                 storeList: JSON.stringify(storeList),
                 remark: $("#remark").val(),
             };
-            AjaxPostUtil.request({url: sysMainMation.shopBasePath + "writeCoupon", params: params, type: 'json', method: 'POST', callback: function (json) {
-                parent.layer.close(index);
-                parent.refreshCode = '0';
-            }});
+            AjaxPostUtil.request({
+                url: sysMainMation.shopBasePath + "writeCoupon", params: params, type: 'json', method: 'POST', callback: function (json) {
+                    parent.layer.close(index);
+                    parent.refreshCode = '0';
+                }
+            });
         }
         return false;
     });
 
     // 取消
-    $("body").on("click", "#cancle", function() {
+    $("body").on("click", "#cancle", function () {
         parent.layer.close(index);
     });
 

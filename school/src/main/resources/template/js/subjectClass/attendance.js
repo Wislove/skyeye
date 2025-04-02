@@ -38,9 +38,31 @@ layui.config({
             }},
             { field: 'maintainTime', title: '持续时间', align: 'left', width: 150},
             { field: 'qrCodeUrl', title: '签到码', align: 'left', width: 150, templet: function (d) {
-                return '<img src="' + systemCommonUtil.getFilePath(d.qrCodeUrl) + '" class="photo-img" lay-event="qrCode" style="width: 100px">';
-            }},
-            { field: 'codeNumber', title: '数字码', align: 'left', width: 150},
+                    // 判断 qrCodeUrl 是否为空或未定义
+                    if (!d.qrCodeUrl) {
+                        // 如果为空，则返回一个占位符或空字符串
+                        return '<div style="width: 100px; height: 100px; border: 1px solid #ddd; display: flex; align-items: center; justify-content: center;">无签到码</div>';
+                    } else {
+                        // 如果不为空，则拼接图片路径并返回 img 标签
+                        return '<img src="' + systemCommonUtil.getFilePath(d.qrCodeUrl) + '" class="photo-img" lay-event="qrCode" style="width: 100px">';
+                    }
+                }},
+            {
+                field: 'codeNumber',
+                title: '数字码',
+                align: 'left',
+                width: 150,
+                templet: function(d) {
+                    // 判断 type 是否为 2
+                    if (d.type === 2) {
+                        // 如果 type 为 2，返回 codeNumber 的值
+                        return d.codeNumber || ''; // 确保即使 codeNumber 为空，也不会报错
+                    } else {
+                        // 否则返回空字符串或占位符
+                        return '';
+                    }
+                }
+            },
             { title: systemLanguage["com.skyeye.operation"][languageType], fixed: 'right', align: 'center', width: 257, toolbar: '#tableBar' }
         ]],
         done: function(json) {
