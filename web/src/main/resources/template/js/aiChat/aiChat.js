@@ -3,21 +3,40 @@ layui.config({
     version: skyeyeVersion
 }).extend({
     window: 'js/winui.window'
-}).define(['window', 'jquery', 'winui'], function (exports) {
+}).define(['window', 'jquery', 'winui', 'form'], function (exports) {
     winui.renderColor();
-    var $ = layui.$;
+    var $ = layui.$,
+        form = layui.form;
     let beanMessageTemplate = $("#beanMessageTemplate").html();
+    let tabTitle = $("#tabTitle").html();
     let listMessageTemplate = $("#listMessageTemplate").html();
     let userMation = {};
     let listIndex = 0;
     let page = 1;
     let loadData = true;
-    let apiKeyId = '555438cb1e3b4e328759680fdfa8d92f';//默认接口，讯飞星火
+    let apiKeyId = '';
 
     let onMsgStr = '';
+
+    let aiChatObject = [];
     systemCommonUtil.getSysCurrentLoginUserMation(function (data) {
         userMation = data.bean;
-        loadChatHistory();
+
+        AjaxPostUtil.request({
+            url: sysMainMation.admBasePath + "queryAiApiKeyList",
+            params: {},
+            type: 'json',
+            method: 'POST',
+            callback: function (json) {
+                $("#navbar").html(getDataUseHandlebars(tabTitle, json));
+                aiChatObject = json.rows || [];
+                if (json.rows.length > 0) {
+                    apiKeyId = json.rows[0].id;
+                    $("#navbar").find("li:eq(0)").addClass("layui-this");
+                    loadChatHistory();
+                }
+                form.render();
+            }, async: false});
 
         // 返回的消息
         webSocketUtil.init({
@@ -113,12 +132,13 @@ layui.config({
     // 遍历历史聊天记录
     function resetList(list) {
         let newList = [];
+        const aiChat = aiChatObject.find(item => item.id === apiKeyId);
         $.each(list, function (ii, item) {
             listIndex++;
             newList.push({
                 aiId: "aiContentId" + listIndex,
                 content: item.content,
-                avatar: '../../assets/images/aichat/AIhead.png',
+                avatar: fileBasePath + aiChat.roleMation?.logo,
                 orderBy: listIndex
             });
             listIndex++;
@@ -140,12 +160,6 @@ layui.config({
                 avatar: fileBasePath + userMation.userPhoto,
                 apiKeyId: apiKeyId,
             }
-            var message = getDataUseHandlebars(beanMessageTemplate, params);
-            $('.chat-box').append(message);
-            // 清空输入框
-            $('textarea').val('');
-            // 滚动到底部
-            $('.chat-box').scrollTop($('.chat-box').prop('scrollHeight'));
             // 发送请求
             AjaxPostUtil.request({
                 url: sysMainMation.admBasePath + "sendChatMessage",
@@ -153,6 +167,13 @@ layui.config({
                 type: 'json',
                 method: 'POST',
                 callback: function (json) {
+                    var message = getDataUseHandlebars(beanMessageTemplate, params);
+                    $('.chat-box').append(message);
+                    // 清空输入框
+                    $('textarea').val('');
+                    // 滚动到底部
+                    $('.chat-box').scrollTop($('.chat-box').prop('scrollHeight'));
+
                     listIndex++;
                     // 清空输入框
                     $('textarea').val('');
@@ -164,17 +185,9 @@ layui.config({
     });
 
     $("body").on("click", ".layui-nav-item", function (e) {
-        var index = $(".layui-nav-item").index(this);
-        if (index == 0) {
-            //讯飞
-            apiKeyId = '555438cb1e3b4e328759680fdfa8d92f';
-        } else if (index == 1) {
-            //文心
-            apiKeyId = '6a13b4ac47bb487c95609c8770c5955b';
-        } else if (index == 2) {
-            //通义
-            apiKeyId = '2227ff7247ee47edaa2f5a3910b907bf';
-        }
+        $(".layui-nav-item").removeClass("layui-this");
+        $(this).addClass("layui-this");
+        apiKeyId = $(this).attr("dataId");
         $('#chat-box').empty();
         loadChatHistory();
     });
