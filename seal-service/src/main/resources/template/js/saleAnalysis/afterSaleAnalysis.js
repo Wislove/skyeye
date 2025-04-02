@@ -20,8 +20,6 @@ layui.config({
         value: getThirdDayToDate() + ' - ' + getYMDFormatDate()
     });
 
-    sysMainMation.sealServiceBasePath = 'http://localhost:8108/'
-
     // 初始化工人效率表格
     var workerTable = table.render({
         id: 'workerTable',
