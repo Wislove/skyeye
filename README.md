@@ -21,9 +21,7 @@
 
 ③ 具备低代码、功能全面、快速便捷开发、无需重复的CRUD等优点，短时间内可完成一款系统的开发。
 
-④ 为什么使用`Skyeye云`，请参考：https://mp.weixin.qq.com/s/l5xPR8tVMFzQlfaQZ2xEpw
-
-⑤ [国产开源项目对比--以及Skyeye云功能点](https://docs.qq.com/sheet/DYUtPdWhTbVBITlpL?tab=000001)。
+④ [国产开源项目对比--以及Skyeye云功能点](https://docs.qq.com/sheet/DYUtPdWhTbVBITlpL?tab=000001)。
 
 ![输入图片说明](images/mindMap/compare.png)
 
