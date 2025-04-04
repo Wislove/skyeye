@@ -125,13 +125,15 @@ layui.config({
 	        	{ field: 'studentName', rowspan: '2', width: 80, title: '姓名',templet:function (d) {
 						return d.stuMation?.realName}},
 	        	{ field: 'studentNo', rowspan: '2', width: 140, align: 'center', title: '学号',templet:function (d) {
-						return d.stuMation?.studentNumber}},
+						return d.studentNumber}},
 	            { field: 'schoolName', rowspan: '2', width: 150, title: '学校',templet:function (d) {
-						return d.schoolMation?.name}},
+						return d.surveyMation?.schoolMation?.name}},
 				{ field: 'facultyName', rowspan: '2', width: 80, align: 'center', title: '院系',templet:function (d) {
-						return d.facultyMation?.name}},
+						return d.surveyMation?.facultyMation?.name}},
 				{ field: 'majorName', rowspan: '2', width: 80, align: 'center', title: '专业',templet:function (d) {
-						return d.majorMation?.name}},
+						return d.surveyMation?.majorMation?.name}},
+				{ field: 'subjectName', rowspan: '2', width: 80, align: 'center', title: '科目',templet:function (d) {
+						return d.surveyMation?.subjectMation?.name}},
 	            { field: 'surveyName', rowspan: '2', width: 200, title: '试卷名称', templet: function (d) {
 			        return '<a lay-event="details" class="notice-title-click">' + d.surveyMation?.surveyName + '</a>';
 			    }},
