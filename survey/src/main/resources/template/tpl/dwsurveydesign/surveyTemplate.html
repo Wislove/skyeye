@@ -420,34 +420,6 @@
 		</script>
 		
 		<!-- 4多项填空题multi-fillblank -->
-<!--		<script type="text/x-handlebars-template" id="multiFillblankTemplate">-->
-<!--			<div class="surveyQuItem">-->
-<!--				<div class="surveyQuItemContent">-->
-<!--					<div class="quCoTitle">-->
-<!--						<div class="quCoNum">{{showQuestionIndex quType}}、</div>-->
-<!--						<div class="quCoTitleEdit">{{quTitle}}</div>-->
-<!--					</div>-->
-<!--					<div class="quCoItem">-->
-<!--						<table class="mFillblankTable" cellpadding="0" cellspacing="0">-->
-<!--							{{#each multifillblankTd}}-->
-<!--								<tr class="mFillblankTableTr">-->
-<!--									<td align="right" class="mFillblankTableEditTd">-->
-<!--										<label class="quCoOptionEdit">{{optionName}}</label>-->
-<!--										<input class="dwMFillblankOptionId" type="hidden" value="{{id}}" disabled="disabled">-->
-<!--										<input type="hidden" name="answerTag" value="0">-->
-<!--									</td>-->
-<!--									<td>-->
-<!--										<input name="text_qu_{{quType}}_{{quId}}_{{id}}" type="text" style="width:200px;padding:5px;" class="inputSytle_1 dwMFillblankInput">-->
-<!--									</td>-->
-<!--								</tr>-->
-<!--							{{/each}}-->
-<!--						</table>-->
-<!--					</div>-->
-<!--				</div>-->
-<!--			</div>-->
-<!--		</script>-->
-
-		<!-- 4多项填空题multi-fillblank -->
 		<script type="text/x-handlebars-template" id="multiFillblankTemplate">
 			<div class="surveyQuItem">
 				<div class="surveyQuItemContent">
@@ -458,24 +430,52 @@
 					<div class="quCoItem">
 						<table class="mFillblankTable" cellpadding="0" cellspacing="0">
 							{{#each multifillblankTd}}
-							<tr class="mFillblankTableTr">
-								<td align="right" class="mFillblankTableEditTd">
-									<label class="quCoOptionEdit">{{optionName}}</label>
-									<input class="dwMFillblankOptionId" type="hidden" value="{{id}}" disabled="disabled">
-								</td>
-								<td>
-									<input name="text_qu_{{quType}}_{{quId}}_{{id}}" type="text"
-										   style="width:200px;padding:5px;" class="inputSytle_1 dwMFillblankInput">
-								</td>
-							</tr>
+								<tr class="mFillblankTableTr">
+									<td align="right" class="mFillblankTableEditTd">
+										<label class="quCoOptionEdit">{{optionName}}</label>
+										<input class="dwMFillblankOptionId" type="hidden" value="{{id}}" disabled="disabled">
+										<input type="hidden" name="answerTag" value="0">
+									</td>
+									<td>
+										<input name="text_qu_{{quType}}_{{quId}}_{{id}}" type="text" style="width:200px;padding:5px;" class="inputSytle_1 dwMFillblankInput">
+									</td>
+								</tr>
 							{{/each}}
 						</table>
-						<!-- 将answerTag移动到题目容器 -->
-						<input type="hidden" class="answerTag" name="answerTag" value="0">
 					</div>
 				</div>
 			</div>
 		</script>
+
+<!--		&lt;!&ndash; 4多项填空题multi-fillblank &ndash;&gt;-->
+<!--		<script type="text/x-handlebars-template" id="multiFillblankTemplate">-->
+<!--			<div class="surveyQuItem">-->
+<!--				<div class="surveyQuItemContent">-->
+<!--					<div class="quCoTitle">-->
+<!--						<div class="quCoNum">{{showQuestionIndex quType}}、</div>-->
+<!--						<div class="quCoTitleEdit">{{quTitle}}</div>-->
+<!--					</div>-->
+<!--					<div class="quCoItem">-->
+<!--						<table class="mFillblankTable" cellpadding="0" cellspacing="0">-->
+<!--							{{#each multifillblankTd}}-->
+<!--							<tr class="mFillblankTableTr">-->
+<!--								<td align="right" class="mFillblankTableEditTd">-->
+<!--									<label class="quCoOptionEdit">{{optionName}}</label>-->
+<!--									<input class="dwMFillblankOptionId" type="hidden" value="{{id}}" disabled="disabled">-->
+<!--								</td>-->
+<!--								<td>-->
+<!--									<input name="text_qu_{{quType}}_{{quId}}_{{id}}" type="text"-->
+<!--										   style="width:200px;padding:5px;" class="inputSytle_1 dwMFillblankInput">-->
+<!--								</td>-->
+<!--							</tr>-->
+<!--							{{/each}}-->
+<!--						</table>-->
+<!--						&lt;!&ndash; 将answerTag移动到题目容器 &ndash;&gt;-->
+<!--						<input type="hidden" class="answerTag" name="answerTag" value="0">-->
+<!--					</div>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--		</script>-->
 
 		
 		<!-- 11矩阵单选题chen-radio -->
@@ -506,7 +506,7 @@
 												<div class="dwQuOptionItemContent">
 													<label class="dwRedioStyle dwQuInputLabel" ></label>
 													<input type="hidden" class="dwChenInputTemp" disabled="disabled" value="{{../id}}:{{id}}">
-													<input name="item_qu_{{quType}}_{{quId}}_{{../id}}" value="{{id}}" type="radio"> 
+													<input name="item_qu_{{quType}}_{{quId}}_{{../id}}" value="{{id}}" type="radio">
 												</div>
 											</td>
 										{{/each}}
@@ -519,7 +519,7 @@
 				</div>
 			</div>
 		</script>
-		
+
 		<!-- 13矩阵多选题chen-checkbox -->
 		<script type="text/x-handlebars-template" id="chenCheckboxTemplate">
 			<div class="surveyQuItem">
@@ -1850,16 +1850,23 @@
 							} else {
 								quScoreOptionTr.find(".answerTag").val(0);
 							}
-						} else if (quType === "MULTIFILLBLANK") {
+						}
+
+						else if (quType === "MULTIFILLBLANK") {
 							var mFillblankTableTr = thObj.parents(".mFillblankTableTr");
 							console.log("当前填空框的值：", thObj.val()); // 调试代码，查看输入框的值
 							if (thObj.val() != "") {
 								mFillblankTableTr.find(".answerTag").val(1);
+								console.log("当前answerTag的值：", mFillblankTableTr.find(".answerTag").val());
 								console.log("设置 answerTag 为 1");
 							} else {
 								mFillblankTableTr.find(".answerTag").val(0);
 							}
-						} else if (quType === "CHENRADIO") {
+						}
+
+
+
+						else if (quType === "CHENRADIO") {
 							var dwQuCoChenRowTr = thObj.parents(".dwQuCoChenRowTr");
 							dwQuCoChenRowTr.find(".answerTag").val(1);
 						} else if (quType === "CHENCHECKBOX") {
@@ -1886,6 +1893,19 @@
 							}
 						}
 
+
+						// 打印所有 enabled 的 answerTag 元素
+						var allAnswerTags = $(".answerTag:enabled");
+						console.log("所有 enabled 的 answerTag 元素：", allAnswerTags);
+						console.log("所有 enabled 的 answerTag 元素数量：", allAnswerTags.length);
+
+						// 打印 value 为 1 的 enabled 的 answerTag 元素
+						var answeredAnswerTags = $(".answerTag[value='1']:enabled");
+						console.log("value 为 1 的 enabled 的 answerTag 元素：", answeredAnswerTags);
+						console.log("value 为 1 的 enabled 的 answerTag 元素数量：", answeredAnswerTags.length);
+
+
+
 						// 计算答题进度
 						var totalQuSize = $(".answerTag:enabled").size();
 						var answerTag1 = $(".answerTag[value='1']:enabled");
@@ -1893,8 +1913,14 @@
 						var newValue = parseInt(answerQuSize / totalQuSize * 100);
 						$("#resultProgressRoot .progress-label").text("完成度：" + newValue + "%");
 						$("#resultProgress").progressbar("option", "value", newValue);
-						console.log("answerTag1",answerTag1);
-						console.log("总题数：", totalQuSize, "已答题数：", answerQuSize, "完成度：", newValue);
+
+						// console.log("符合条件的 answerTag 数量：", answerTag1.length);
+						// console.log("总题数：", $(".answerTag:enabled").length);
+						// console.log("已答题数：", answerTag1.length);
+						console.log("符合条件的 answerTag 数量：", answerQuSize);
+						console.log("总题数：", totalQuSize);
+						console.log("已答题数：", answerQuSize);
+
 					}
 				});
 			});
