@@ -308,7 +308,7 @@
 												<li class="quCoItemUlLi">
 													<div class="dwQuOptionItemContent">
 														<label class="dwCheckboxStyle dwQuInputLabel" ></label>
-														<input type="checkbox" name="tag_qu_{{quType}}_{{quId}}_{{id}}" value="{{id}}" class="custom-radio">
+														<input type="checkbox" name="tag_qu_{{quType}}_{{quId}}" value="{{id}}" class="custom-radio">
 														<label class="quCoOptionEdit quCoOptionPadding">{{optionName}}</label>
 														<input type='text' class='inputSytle_1' style="width:200px;padding:5px;{{#compare2 isNote 0}}{{/compare2}}" name="text_tag_qu_{{quType}}_{{quId}}_{{id}}" />
 													</div>
@@ -1855,12 +1855,33 @@
 						else if (quType === "MULTIFILLBLANK") {
 							var mFillblankTableTr = thObj.parents(".mFillblankTableTr");
 							console.log("当前填空框的值：", thObj.val()); // 调试代码，查看输入框的值
+							
+							// 修改：向上查找到 li_surveyQuItemBody，确保能找到 answerTag
+							var quItemBody = thObj.parents(".li_surveyQuItemBody");
+							console.log("quItemBody 是否存在：", quItemBody.length > 0);
+							console.log("answerTag 是否存在：", quItemBody.find(".answerTag").length > 0);
+							
 							if (thObj.val() != "") {
-								mFillblankTableTr.find(".answerTag").val(1);
-								console.log("当前answerTag的值：", mFillblankTableTr.find(".answerTag").val());
-								console.log("设置 answerTag 为 1");
+								// 使用 quItemBody 而非 mFillblankTableTr 来设置 answerTag
+								quItemBody.find(".answerTag").val(1);
+								console.log("设置后 answerTag 的值：", quItemBody.find(".answerTag").val());
 							} else {
-								mFillblankTableTr.find(".answerTag").val(0);
+								// 检查同一题目中是否还有其他已填写的填空项
+								var otherInputs = quItemBody.find(".dwMFillblankInput").not(thObj);
+								var allEmpty = true;
+								
+								otherInputs.each(function() {
+									if ($(this).val() != "") {
+										allEmpty = false;
+										return false; // 跳出循环
+									}
+								});
+								
+								if (allEmpty) {
+									quItemBody.find(".answerTag").val(0);
+								} else {
+									quItemBody.find(".answerTag").val(1);
+								}
 							}
 						}
 
@@ -1906,10 +1927,18 @@
 
 
 
-						// 计算答题进度
-						var totalQuSize = $(".answerTag:enabled").size();
+						// 计算答题进度 - 修改为使用题目容器计数
+						var totalQuSize = $(".li_surveyQuItemBody").size() - 1; // 使用题目容器统计总题数
 						var answerTag1 = $(".answerTag[value='1']:enabled");
-						var answerQuSize = answerTag1.size();
+
+						// 统计已回答的题目数
+						var answerQuSize = 0;
+						$(".li_surveyQuItemBody").each(function() {
+						    if ($(this).find(".answerTag[value='1']:enabled").length > 0) {
+						        answerQuSize++;
+						    }
+						});
+
 						var newValue = parseInt(answerQuSize / totalQuSize * 100);
 						$("#resultProgressRoot .progress-label").text("完成度：" + newValue + "%");
 						$("#resultProgress").progressbar("option", "value", newValue);
