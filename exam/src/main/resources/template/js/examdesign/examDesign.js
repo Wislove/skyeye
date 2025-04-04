@@ -499,7 +499,6 @@ layui.config({
                 });
             }
             knowledgeReturnList = [].concat(schoolKnowledgeMationList);
-
             _openNewWindows({
                 url: "../../tpl/schoolKnowledgePoints/schoolKnowledgePointsChoose.html",
                 title: "知识点选择",
