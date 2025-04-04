@@ -468,8 +468,8 @@ layui.define(["jquery", "form", "element"], function (exports) {
                     $("#dwCommonEditRoot").offset({top: editOffset.top, left: editOffset.left});
                     bindQuHoverItem();
                     $(curEditObj).click();
-                    $(prevLi).find("input[name='quItemSaveTag']").val(0);
-                    $(prevLi).prev().find("input[name='quItemSaveTag']").val(0);
+                    $(prevTd).find("input[name='quItemSaveTag']").val(0);
+                    $(prevTd).next().find("input[name='quItemSaveTag']").val(0);
                     var quItemBody = $(curEditObj).parents(".surveyQuItemBody");
                     quItemBody.find("input[name='saveTag']").val(0);
                 } else {
@@ -1252,6 +1252,27 @@ function editAble(editAbleObj) {
                 sel.removeAllRanges();
                 sel.addRange(range);
                 winui.window.msg('选项最多输入50个字符', {icon: 2, time: 2000});
+            }
+        });
+        
+        // 使用一个标志变量防止重复触发
+        var isValidating = false;
+        
+        // 当用户完成编辑时检查最小长度
+        $("#dwComEditContent").on("blur", function () {
+            // 如果已经在验证过程中，不再执行
+            if (isValidating) return;
+            
+            if (this.innerText.trim().length < 1) {
+                isValidating = true;
+                winui.window.msg('选项不能为空', {icon: 2, time: 2000});
+                
+                // 将焦点返回到编辑框
+                var that = this;
+                setTimeout(function() {
+                    $(that).focus();
+                    isValidating = false;
+                }, 100);
             }
         });
     } else if (thClass.indexOf("dwSvyNoteEdit") >= 0) {
