@@ -113,7 +113,7 @@ layui.config({
 	        id: 'messageTable',
 	        elem: '#messageTable',
 	        method: 'post',
-			url: schoolBasePath + 'queryFilterToBeReviewedSurveys',//接口文档在 试卷回答信息表管理
+			url: schoolBasePath + 'queryFilterApprovedSurveys',//接口文档在 试卷回答信息表管理
 	        // url: schoolBasePath + 'myschooltask002',
 	        where: getTableParams(),
 	        even: false,
@@ -122,8 +122,9 @@ layui.config({
 	    	limit: getLimit(),
 	        cols: [[
 	        	{ title: systemLanguage["com.skyeye.serialNumber"][languageType], rowspan: '2', type: 'numbers' },
-	        	{ field: 'studentName', rowspan: '2', width: 80, title: '姓名',templet:function (d) {
-						return d.stuMation?.realName}},
+				{ field: 'surveyName', rowspan: '2', width: 200, title: '试卷名称', templet: function (d) {
+						return '<a lay-event="details" class="notice-title-click">' + d.surveyMation?.surveyName + '</a>';
+					}},
 	        	{ field: 'studentNo', rowspan: '2', width: 140, align: 'center', title: '学号',templet:function (d) {
 						return d.studentNumber}},
 	            { field: 'schoolName', rowspan: '2', width: 150, title: '学校',templet:function (d) {
@@ -134,9 +135,7 @@ layui.config({
 						return d.surveyMation?.majorMation?.name}},
 				{ field: 'subjectName', rowspan: '2', width: 80, align: 'center', title: '科目',templet:function (d) {
 						return d.surveyMation?.subjectMation?.name}},
-	            { field: 'surveyName', rowspan: '2', width: 200, title: '试卷名称', templet: function (d) {
-			        return '<a lay-event="details" class="notice-title-click">' + d.surveyMation?.surveyName + '</a>';
-			    }},
+
             	{ title: '答题信息', align: 'center', colspan: '3'},
 		        { title: systemLanguage["com.skyeye.operation"][languageType], fixed: 'right', rowspan: '2', align: 'center', width: 100, toolbar: '#tableBar'}
 	        ],[
@@ -195,26 +194,25 @@ layui.config({
 		}
 		return false;
 	});
-	
-	// 刷新数据
-    $("body").on("click", "#reloadTable", function() {
-    	loadTable();
-    });
-    
+
+	// 刷新按钮点击事件
+	$("body").on("click", "#reloadTable", function() {
+		loadTable();
+	});
+
     function loadTable() {
-    	table.reloadData("messageTable", {where: getTableParams()});
+		table.reload('messageTable', { // 使用表格的 ID 进行刷新
+			where: getTableParams(),
+			page: {curr: 1} // 刷新时从第一页开始
+		});
     }
 
-    function getTableParams() {
-    	return {
-			holderKey: $("#schoolId").val(),
-			holderId:$("#facultyId").val(),
-			objectKey: $("#majorId").val(),//专业
-			type: $("#studentName").val(),//学生
-			// studentNo: $("#studentNo").val(),//学号 刘庆余
-			keyword: $("#surveyName").val(),//试卷名
-    	};
-    }
+	function getTableParams() {
+		return {
+			keyword: $("#surveyName").val(),
+			state: 1 // 确保传递 state 参数
+		};
+	}
     
     exports('myWaitMarkingList', {});
 });

@@ -23,26 +23,6 @@ layui.config({
 		initTable();
 		initFaculty();
 	});
-	// form.on('select(schoolId)', function(data) {
-	// 	//加载年级
- 	// 	initGradeId();
-	// });
-	//
-	// //所属年级
-    // function initGradeId(){
-	//     showGrid({
-    // 	 	id: "gradeId",
-    // 	 	url: schoolBasePath + "grademation006",
-    // 	 	params: {schoolId: $("#schoolId").val()},
-    // 	 	pagination: false,
-    // 	 	template: getFileContent('tpl/template/select-option.tpl'),
-    // 	 	ajaxSendLoadBefore: function(hdb) {
-    // 	 	},
-    // 	 	ajaxSendAfter:function (json) {
-    // 	 		form.render('select');
-    // 	 	}
-    //     });
-    // }
 	// 学校监听事件
 	form.on('select(schoolId)', function(data) {
 		if(isNull(data.value) || data.value === '请选择'){
@@ -221,7 +201,8 @@ layui.config({
 			type: $("#studentName").val(),//学生
 			// studentNo: $("#studentNo").val(),//学号 刘庆余
 			keyword: $("#surveyName").val(),//试卷名
-    	};
+			state: 2 // 添加state参数，值为1
+		};
     }
     
     exports('myEndMarkingList', {});
