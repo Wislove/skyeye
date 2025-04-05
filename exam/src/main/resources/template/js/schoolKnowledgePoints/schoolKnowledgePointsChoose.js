@@ -27,17 +27,14 @@ layui.config({
     parent.knowledgeReturnList = [];
     parent.selectedKnowledgeIds = '';
     
-    // 初始化选中的知识点ID数组
-    var ids = [];
-    $.each(parent.knowledgeReturnList, function(i, item) {
-        ids.push(item.id);
-    });
+    // 添加全局变量，用于保存所有分页中选中的知识点
+    var allSelectedPoints = [];
     
-    // 初始化tableCheckBoxUtil
-    tableCheckBoxUtil.setIds({
-        gridId: 'knowledgeTable',
-        fieldName: 'id',
-        ids: ids
+    // 初始化时从父窗口获取已选知识点
+    $(function() {
+        if(parent.knowledgeReturnList && parent.knowledgeReturnList.length > 0) {
+            allSelectedPoints = JSON.parse(JSON.stringify(parent.knowledgeReturnList));
+        }
     });
     
     // 渲染表格
@@ -81,24 +78,72 @@ layui.config({
                 fieldName: 'id'
             });
             
+            // 监听复选框选中事件，将选中的数据保存到全局变量
+            table.on('checkbox(knowledgeTable)', function(obj) {
+                if(obj.type === 'all') { // 如果是全选/全不选
+                    var checkStatus = table.checkStatus('knowledgeTable');
+                    if(obj.checked) { // 全选
+                        // 将当前页所有数据添加到全局变量
+                        checkStatus.data.forEach(function(item) {
+                            // 检查是否已存在
+                            var exists = allSelectedPoints.some(function(selected) {
+                                return selected.id === item.id;
+                            });
+                            if(!exists) {
+                                allSelectedPoints.push(item);
+                            }
+                        });
+                    } else { // 全不选
+                        // 从全局变量中移除当前页所有数据
+                        checkStatus.data.forEach(function(item) {
+                            allSelectedPoints = allSelectedPoints.filter(function(selected) {
+                                return selected.id !== item.id;
+                            });
+                        });
+                    }
+                } else { // 单个复选框
+                    if(obj.checked) { // 选中
+                        // 检查是否已存在
+                        var exists = allSelectedPoints.some(function(selected) {
+                            return selected.id === obj.data.id;
+                        });
+                        if(!exists) {
+                            allSelectedPoints.push(obj.data);
+                        }
+                    } else { // 取消选中
+                        allSelectedPoints = allSelectedPoints.filter(function(selected) {
+                            return selected.id !== obj.data.id;
+                        });
+                    }
+                }
+            });
         }
     });
 
     // 修改确认选择按钮点击事件
     $("body").on("click", "#confirmSelection", function() {
-        // 只获取当前页面新选择的知识点
+        // 获取当前页选中的数据，与全局变量合并
         var currentSelectedData = table.checkStatus('knowledgeTable').data;
-        var selectedIds = currentSelectedData.map(item => item.id);
+        
+        // 将当前页选中的数据添加到全局变量（避免遗漏最后一页的选择）
+        currentSelectedData.forEach(function(item) {
+            var exists = allSelectedPoints.some(function(selected) {
+                return selected.id === item.id;
+            });
+            if(!exists) {
+                allSelectedPoints.push(item);
+            }
+        });
         
         // 检查数量限制
-        if (currentSelectedData.length > MAX_SELECTED_POINTS) {
+        if(allSelectedPoints.length > MAX_SELECTED_POINTS) {
             winui.window.msg("最多只能选择" + MAX_SELECTED_POINTS + "个知识点", {icon: 2, time: 2000});
             return false;
         }
         
-        // 更新父窗口数据，只包含当前新选择的
-        parent.knowledgeReturnList = currentSelectedData;
-        parent.selectedKnowledgeIds = selectedIds.join(",");
+        // 更新父窗口数据，包含所有页面选中的知识点
+        parent.knowledgeReturnList = allSelectedPoints;
+        parent.selectedKnowledgeIds = allSelectedPoints.map(item => item.id).join(",");
         parent.refreshCode = '0';
         parent.layer.close(index);
     });
