@@ -1,18 +1,17 @@
-
 var rowId = "";
 
 layui.config({
-	base: basePath, 
+	base: basePath,
 	version: skyeyeVersion
 }).extend({
-    window: 'js/winui.window'
+	window: 'js/winui.window'
 }).define(['window', 'table', 'jquery', 'winui', 'form', 'laydate'], function (exports) {
 	winui.renderColor();
 	var $ = layui.$,
 		form = layui.form,
 		table = layui.table,
 		laydate = layui.laydate;
-	
+
 	laydate.render({elem: '#year', type: 'year', max: 'date'});
 
 	// 获取当前登陆用户所属的学校列表
@@ -110,24 +109,24 @@ layui.config({
 
 	function initTable(){
 		table.render({
-	        id: 'messageTable',
-	        elem: '#messageTable',
-	        method: 'post',
+			id: 'messageTable',
+			elem: '#messageTable',
+			method: 'post',
 			url: schoolBasePath + 'queryFilterApprovedSurveys',//接口文档在 试卷回答信息表管理
-	        // url: schoolBasePath + 'myschooltask002',
-	        where: getTableParams(),
-	        even: false,
-		    page: true,
-		    limits: getLimits(),
-	    	limit: getLimit(),
-	        cols: [[
-	        	{ title: systemLanguage["com.skyeye.serialNumber"][languageType], rowspan: '2', type: 'numbers' },
+			// url: schoolBasePath + 'myschooltask002',
+			where: getTableParams(),
+			even: false,
+			page: true,
+			limits: getLimits(),
+			limit: getLimit(),
+			cols: [[
+				{ title: systemLanguage["com.skyeye.serialNumber"][languageType], rowspan: '2', type: 'numbers' },
 				{ field: 'surveyName', rowspan: '2', width: 200, title: '试卷名称', templet: function (d) {
 						return '<a lay-event="details" class="notice-title-click">' + d.surveyMation?.surveyName + '</a>';
 					}},
-	        	{ field: 'studentNo', rowspan: '2', width: 140, align: 'center', title: '学号',templet:function (d) {
+				{ field: 'studentNo', rowspan: '2', width: 140, align: 'center', title: '学号',templet:function (d) {
 						return d.studentNumber}},
-	            { field: 'schoolName', rowspan: '2', width: 150, title: '学校',templet:function (d) {
+				{ field: 'schoolName', rowspan: '2', width: 150, title: '学校',templet:function (d) {
 						return d.surveyMation?.schoolMation?.name}},
 				{ field: 'facultyName', rowspan: '2', width: 80, align: 'center', title: '院系',templet:function (d) {
 						return d.surveyMation?.facultyMation?.name}},
@@ -136,56 +135,53 @@ layui.config({
 				{ field: 'subjectName', rowspan: '2', width: 80, align: 'center', title: '科目',templet:function (d) {
 						return d.surveyMation?.subjectMation?.name}},
 
-            	{ title: '答题信息', align: 'center', colspan: '3'},
-		        { title: systemLanguage["com.skyeye.operation"][languageType], fixed: 'right', rowspan: '2', align: 'center', width: 100, toolbar: '#tableBar'}
-	        ],[
-		    	{ field: 'bgAnDate', title: '开始时间', align: 'center', width: 120},
-		        { field: 'endAnDate', title: '结束时间', align: 'center', width: 120},
-		        { field: 'totalTime', title: '耗时(分钟)', align: 'center', width: 100}
-		       ]
-		    ],
-		    done: function(json) {
-		    	matchingLanguage();
-		    }
-	    });
-	    
-	    table.on('tool(messageTable)', function (obj) {
-	        var data = obj.data;
-	        var layEvent = obj.event;
-	        if (layEvent === 'examMarkingDetail') { //阅卷
-	        	examMarkingDetail(data);
-	        } else if (layEvent === 'details') { //详情
-	        	details(data);
-	        }
-	    });
-		
-	    form.render();
+				{ title: '答题信息', align: 'center', colspan: '3'},
+				{ title: systemLanguage["com.skyeye.operation"][languageType], fixed: 'right', rowspan: '2', align: 'center', width: 100, toolbar: '#tableBar'}
+			],],
+			done: function(json) {
+				matchingLanguage();
+			}
+		});
+
+		table.on('tool(messageTable)', function (obj) {
+			var data = obj.data;
+			var layEvent = obj.event;
+			if (layEvent === 'examMarkingDetail') { // 阅卷
+				examMarkingDetail(data);
+			} else if (layEvent === 'details') { // 详情
+				details(data);
+			}
+		});
+
+		form.render();
 	}
-	
+
 	// 阅卷
 	function examMarkingDetail(data) {
 		rowId = data.answerId;
 		_openNewWindows({
-			url: "../../tpl/examMarkingDetail/examMarkingDetail.html", 
-			title: "阅卷",
-			pageId: "examMarkingDetail",
-			area: ['100vw', '100vh'],
+			url: "../../tpl/myschooltask/waitingMarkingStudentsList.html?id=" + data.id, // 修改为新的页面路径
+			title: "批阅",
+			pageId: "waitingMarkingStudentsList",
+			area: ['90vw', '90vh'],
 			callBack: function (refreshCode) {
 				winui.window.msg(systemLanguage["com.skyeye.successfulOperation"][languageType], {icon: 1, time: 2000});
 				loadTable();
-			}});
+			}
+		});
 	}
-	
-    // 详情
+
+	// 详情
 	function details(data) {
 		rowId = data.id;
 		_openNewWindows({
-			url: "../../tpl/examDetail/examPCDetail.html", 
+			url: "../../tpl/examDetail/examPCDetail.html",
 			title: "试卷信息",
 			pageId: "examPCDetail",
 			area: ['90vw', '90vh'],
 			callBack: function (refreshCode) {
-			}});
+			}
+		});
 	}
 
 	form.on('submit(formSearch)', function (data) {
@@ -200,12 +196,12 @@ layui.config({
 		loadTable();
 	});
 
-    function loadTable() {
+	function loadTable() {
 		table.reload('messageTable', { // 使用表格的 ID 进行刷新
 			where: getTableParams(),
 			page: {curr: 1} // 刷新时从第一页开始
 		});
-    }
+	}
 
 	function getTableParams() {
 		return {
@@ -213,6 +209,6 @@ layui.config({
 			state: 1 // 确保传递 state 参数
 		};
 	}
-    
-    exports('myWaitMarkingList', {});
+
+	exports('myWaitMarkingList', {});
 });

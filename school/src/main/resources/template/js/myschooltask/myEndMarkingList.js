@@ -117,44 +117,48 @@ layui.config({
 		    page: true,
 		    limits: getLimits(),
 	    	limit: getLimit(),
-	        cols: [[
-	        	{ title: systemLanguage["com.skyeye.serialNumber"][languageType], rowspan: '2', type: 'numbers' },
-	        	{ field: 'studentName', rowspan: '2', width: 80, title: '姓名',templet:function (d) {
-						return d.stuMation?.realName}},
-	        	{ field: 'studentNo', rowspan: '2', width: 140, align: 'center', title: '学号',templet:function (d) {
-						return d.stuMation?.studentNumber}},
-	            { field: 'schoolName', rowspan: '2', width: 150, title: '学校',templet:function (d) {
-						return d.schoolMation?.name}},
-				{ field: 'facultyName', rowspan: '2', width: 80, align: 'center', title: '院系',templet:function (d) {
-						return d.facultyMation?.name}},
-				{ field: 'majorName', rowspan: '2', width: 80, align: 'center', title: '专业',templet:function (d) {
-						return d.majorMation?.name}},
-	            { field: 'surveyName', rowspan: '2', width: 200, title: '试卷名称', templet: function (d) {
-			        return '<a lay-event="details" class="notice-title-click">' + d.surveyMation?.surveyName + '</a>';
-			    }},
-            	{ title: '阅卷信息', align: 'center', colspan: '3'},
-            	{ title: '答题信息', align: 'center', colspan: '3'}
-	        ],[
-		    	{ field: 'markStartTime', title: '开始时间', align: 'center', width: 120},
-		        { field: 'markEndTime', title: '结束时间', align: 'center', width: 120},
-		        { field: 'markFraction', title: '最后得分', align: 'center', width: 100},
-		        { field: 'bgAnDate', title: '开始时间', align: 'center', width: 120},
-		        { field: 'endAnDate', title: '结束时间', align: 'center', width: 120},
-		        { field: 'totalTime', title: '耗时(分钟)', align: 'center', width: 100}
-	        ]
-		    ],
+			cols: [[
+				{ title: systemLanguage["com.skyeye.serialNumber"][languageType], rowspan: '2', type: 'numbers' },
+				{ field: 'studentName', rowspan: '2', width: 80, title: '姓名', templet: function (d) {
+						return d.stuMation?.realName
+					}},
+				{ field: 'studentNo', rowspan: '2', width: 140, align: 'center', title: '学号', templet: function (d) {
+						return d.stuMation?.studentNumber
+					}},
+				{ field: 'schoolName', rowspan: '2', width: 150, title: '学校', templet: function (d) {
+						return d.schoolMation?.name
+					}},
+				{ field: 'facultyName', rowspan: '2', width: 80, align: 'center', title: '院系', templet: function (d) {
+						return d.facultyMation?.name
+					}},
+				{ field: 'majorName', rowspan: '2', width: 80, align: 'center', title: '专业', templet: function (d) {
+						return d.majorMation?.name
+					}},
+				{ field: 'surveyName', rowspan: '2', width: 200, title: '试卷名称', templet: function (d) {
+						return '<a lay-event="details" class="notice-title-click">' + d.surveyMation?.surveyName + '</a>';
+					}},
+				{ title: '阅卷信息', align: 'center', colspan: '3' },
+				{ title: '答题信息', align: 'center', colspan: '3' }
+			], [
+				{ field: 'markStartTime', title: '开始时间', align: 'center', width: 120 },
+				{ field: 'markEndTime', title: '结束时间', align: 'center', width: 120 },
+				{ field: 'markFraction', title: '最后得分', align: 'center', width: 100 },
+				{ field: 'bgAnDate', title: '开始时间', align: 'center', width: 120 },
+				{ field: 'endAnDate', title: '结束时间', align: 'center', width: 120 },
+				{ field: 'totalTime', title: '耗时(分钟)', align: 'center', width: 100 }
+			]],
 		    done: function(json) {
 		    	matchingLanguage();
 		    }
 	    });
-	    
-	    table.on('tool(messageTable)', function (obj) {
-	        var data = obj.data;
-	        var layEvent = obj.event;
-	        if (layEvent === 'details') { //详情
-	        	details(data);
-	        }
-	    });
+
+		table.on('tool(messageTable)', function (obj) {
+			var data = obj.data;
+			var layEvent = obj.event;
+			if (layEvent === 'details') { //详情
+				details(data);
+			}
+		});
 		
 	    form.render();
 	}
@@ -184,22 +188,17 @@ layui.config({
     $("body").on("click", "#reloadTable", function() {
     	loadTable();
     });
-    
-    function loadTable() {
-    	table.reloadData("messageTable", {where: getTableParams()});
-    }
-    
-    function refreshTable(){
-    	table.reloadData("messageTable", {page: {curr: 1}, where: getTableParams()});
-    }
+
+	function loadTable() {
+		table.reloadData("messageTable", {where: getTableParams()});
+	}
+
+	function refreshTable() {
+		table.reloadData("messageTable", {page: {curr: 1}, where: getTableParams()});
+	}
     
     function getTableParams() {
     	return {
-			holderKey: $("#schoolId").val(),
-			holderId:$("#facultyId").val(),
-			objectKey: $("#majorId").val(),//专业
-			type: $("#studentName").val(),//学生
-			// studentNo: $("#studentNo").val(),//学号 刘庆余
 			keyword: $("#surveyName").val(),//试卷名
 			state: 2 // 添加state参数，值为1
 		};
