@@ -11,6 +11,13 @@ layui.config({
         table = layui.table,
         laydate = layui.laydate;
 
+    surveyId = GetUrlParam("surveyId");
+
+    if (isNull(surveyId)) {
+        winui.window.msg("请传入适用对象信息", {icon: 2, time: 2000});
+        return false;
+    }
+
     laydate.render({elem: '#year', type: 'year', max: 'date'});
 
     initTable();

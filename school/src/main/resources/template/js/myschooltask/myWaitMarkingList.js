@@ -134,8 +134,6 @@ layui.config({
 						return d.surveyMation?.majorMation?.name}},
 				{ field: 'subjectName', rowspan: '2', width: 80, align: 'center', title: '科目',templet:function (d) {
 						return d.surveyMation?.subjectMation?.name}},
-
-				{ title: '答题信息', align: 'center', colspan: '3'},
 				{ title: systemLanguage["com.skyeye.operation"][languageType], fixed: 'right', rowspan: '2', align: 'center', width: 100, toolbar: '#tableBar'}
 			],],
 			done: function(json) {

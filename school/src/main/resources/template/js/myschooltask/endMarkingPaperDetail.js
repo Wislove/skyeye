@@ -10,9 +10,9 @@ layui.config({
     var $ = layui.$,
         form = layui.form;
 
-    subjectClassesId = GetUrlParam("subjectClassesId");
+    surveyId = GetUrlParam("surveyId");
 
-    if (isNull(subjectClassesId)) {
+    if (isNull(surveyId)) {
         winui.window.msg("请传入适用对象信息", {icon: 2, time: 2000});
         return false;
     }
@@ -21,10 +21,10 @@ layui.config({
     function loadDetail() {
         showGrid({
             id: "showForm",
-            url: schoolBasePath + "querySubjectClassesById",
+            url: schoolBasePath + "querySurveyAnswerBySurveyId",
             params: {id: subjectClassesId},
             pagination: false,
-            method: 'GET',
+            method: 'post',
             template: $("#beanTemplate").html(),
             ajaxSendLoadBefore: function (hdb, json) {
                 json.bean.enabledName = skyeyeClassEnumUtil.getEnumDataNameByCodeAndKey("commonEnable", 'id', json.bean.enabled, 'name');
