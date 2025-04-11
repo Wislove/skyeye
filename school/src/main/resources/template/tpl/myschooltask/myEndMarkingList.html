@@ -52,9 +52,14 @@
             <button id="reloadTable" class="winui-toolbtn"><i class="fa fa-refresh" aria-hidden="true"></i><language showName="com.skyeye.refreshDataBtn"></language></button>
         </div>
     </div>
-    <div style="margin:auto 10px;">
-        <table id="messageTable" lay-filter="messageTable"></table>
-    </div>
+	<div style="margin:auto 10px;">
+		<table id="messageTable" lay-filter="messageTable"></table>
+		<script type="text/html" id="tableBar">
+			{{# if(auth('1588569697793')){ }}
+			<a class="layui-btn layui-btn-xs" lay-event="markingStudentList">查看</a>
+			{{# } }}
+		</script>
+	</div>
     <script src="../../assets/lib/layui/layui.js"></script>
     <script src="../../assets/lib/layui/custom.js"></script>
     <script type="text/javascript">

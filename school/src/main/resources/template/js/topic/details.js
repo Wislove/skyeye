@@ -31,13 +31,12 @@ layui.config({
         cols: [[
             { title: systemLanguage["com.skyeye.serialNumber"][languageType], type: 'numbers' },
             { field: 'content', title: '内容', align: 'left', width: 300},
-            { field: 'createName', title: systemLanguage["com.skyeye.createName"][languageType], align: 'left', width: 120 , templet: function(d) {
-                    return getNotUndefinedVal(d.createMation?.name);
-                }},
+            {field: 'createName', title: systemLanguage["com.skyeye.createName"][languageType], align: 'left', width: 120,
+                templet: function(d) {
+                    return getNotUndefinedVal(d.studentMation?.name || d.createName);
+                }
+            },
             { field: 'createTime', title: systemLanguage["com.skyeye.createTime"][languageType], align: 'center', width: 150 },
-            { field: 'lastUpdateName', title: systemLanguage["com.skyeye.lastUpdateName"][languageType], align: 'left', width: 120 , templet: function(d) {
-                    return getNotUndefinedVal(d.lastUpdateName);
-                }},
             { field: 'lastUpdateTime', title: systemLanguage["com.skyeye.lastUpdateTime"][languageType], align: 'center', width: 150 },
             { title: systemLanguage["com.skyeye.operation"][languageType], fixed: 'right', align: 'center', width: 257, toolbar: '#tableBar' }
         ]],
