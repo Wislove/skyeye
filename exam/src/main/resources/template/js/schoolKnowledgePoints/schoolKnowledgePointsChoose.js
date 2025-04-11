@@ -34,6 +34,18 @@ layui.config({
     $(function() {
         if(parent.knowledgeReturnList && parent.knowledgeReturnList.length > 0) {
             allSelectedPoints = JSON.parse(JSON.stringify(parent.knowledgeReturnList));
+            
+            // 初始化tableCheckBoxUtil的选中状态
+            var ids = [];
+            $.each(allSelectedPoints, function(i, item) {
+                ids.push(item.id);
+            });
+            
+            tableCheckBoxUtil.setIds({
+                gridId: 'knowledgeTable',
+                fieldName: 'id',
+                ids: ids
+            });
         }
     });
     
@@ -101,6 +113,16 @@ layui.config({
                             });
                         });
                     }
+                    
+                    // 同步tableCheckBoxUtil的选中状态
+                    var selectedIds = allSelectedPoints.map(function(item) {
+                        return item.id;
+                    });
+                    tableCheckBoxUtil.setIds({
+                        gridId: 'knowledgeTable',
+                        fieldName: 'id',
+                        ids: selectedIds
+                    });
                 } else { // 单个复选框
                     if(obj.checked) { // 选中
                         // 检查是否已存在
@@ -115,6 +137,16 @@ layui.config({
                             return selected.id !== obj.data.id;
                         });
                     }
+                    
+                    // 同步tableCheckBoxUtil的选中状态
+                    var selectedIds = allSelectedPoints.map(function(item) {
+                        return item.id;
+                    });
+                    tableCheckBoxUtil.setIds({
+                        gridId: 'knowledgeTable',
+                        fieldName: 'id',
+                        ids: selectedIds
+                    });
                 }
             });
         }
