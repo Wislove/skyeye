@@ -1266,13 +1266,8 @@ function editAble(editAbleObj) {
             if (this.innerText.trim().length < 1) {
                 isValidating = true;
                 winui.window.msg('选项不能为空', {icon: 2, time: 2000});
-                
-                // 将焦点返回到编辑框
-                var that = this;
-                setTimeout(function() {
-                    $(that).focus();
-                    isValidating = false;
-                }, 100);
+                this.innerText = "选项";
+                isValidating = false;
             }
         });
     } else if (thClass.indexOf("dwSvyNoteEdit") >= 0) {
