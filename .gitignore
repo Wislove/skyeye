@@ -10,6 +10,7 @@ class
 /bin
 classes
 /target/
+/node_modules/
 /.project/
 /logs/
 /.idea/

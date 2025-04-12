@@ -50,6 +50,7 @@ layui.config({
             }},
             { field: 'createTime', title: systemLanguage["com.skyeye.createTime"][languageType], align: 'center', width: 150 },
             { field: 'lastUpdateName', title: systemLanguage["com.skyeye.lastUpdateName"][languageType], align: 'left', width: 120 , templet: function(d) {
+
                     return getNotUndefinedVal(d.lastUpdateName);
                 }},
             { field: 'lastUpdateTime', title: systemLanguage["com.skyeye.lastUpdateTime"][languageType], align: 'center', width: 150 },

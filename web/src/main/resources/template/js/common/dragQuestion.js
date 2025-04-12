@@ -184,22 +184,11 @@ layui.define(["jquery", "form", "element"], function (exports) {
         $("body").on("click", ".questionUp", function () {
             var nextQuBody = $(this).parents(".li_surveyQuItemBody");
             var prevQuBody = nextQuBody.prev();
-            
             if (prevQuBody[0]) {
-                // 保存每个题目的分值
-                var nextFraction = nextQuBody.find("input[name='fraction']").val();
-                var prevFraction = prevQuBody.find("input[name='fraction']").val();
-                
-                // 执行移动
+                // 在当前项后面追加
                 nextQuBody.after(prevQuBody);
-                
                 // 重置序号
                 resetQuItem();
-                
-                // 恢复原始分值
-                nextQuBody.find("input[name='fraction']").val(nextFraction);
-                prevQuBody.find("input[name='fraction']").val(prevFraction);
-                
                 // 重置左侧设计目录序号
                 resetQuLeftItem();
                 bindQuHoverItem();
@@ -840,23 +829,6 @@ layui.define(["jquery", "form", "element"], function (exports) {
             $(this).parents(".surveyQuItemBody").find(".quItemInputCase input[name='quItemSaveTag']").val(0);
         });
 
-        // 左侧目录分值修改处理
-        $("body").on("change", "#dwBodyLeftContent .exam-fraction", function() {
-            var fraction = $(this).val();
-            var toid = $(this).attr("toid");
-            
-            if ((/^(\+|-)?\d+$/.test(fraction)) && parseInt(fraction) > 0) {
-                // 使用toid找到对应的题目并更新
-                var questionItem = $("#dwSurveyQuContent").find("input[name='quId'][value='" + toid + "']").closest(".surveyQuItemBody");
-                if (questionItem.length > 0) {
-                    questionItem.find("input[name='fraction']").val(fraction);
-                    questionItem.find("input[name='saveTag']").val("0");
-                }
-            } else {
-                notify("请输入正整数分数！", 800);
-            }
-        });
-
     })(jQuery);
     exports('dragQuestion', null);
 });
@@ -1014,10 +986,6 @@ function loadDrag() {
                     pageLoadUpLoadAfter(checkNameIn);
                 }
                 form.render();
-                
-                // 生成并设置唯一ID
-                var uniqueId = generateUniqueId();
-                ui.item.find("input[name='quId']").val(uniqueId);
             }
             var curItemBodyOffset = ui.item.offset();
             $("html,body").animate({
@@ -1109,23 +1077,42 @@ function resetQuLeftItem() {
     var indexNum = 1;
     var sa = "";
     
+    // Store question data for consistent mapping
+    var questionData = [];
+    
+    // First pass - collect all question data
     $.each(surveyQuItems, function (i) {
         var quType = $(this).find("input[name='quType']").val();
         if (quType != "PAGETAG" && quType != "PARAGRAPH" && quType != '16' && quType != '17') {
             var id = $(this).find("input[name='quId']").val();
             var title = $(this).find(".quCoTitle .quCoTitleEdit").html();
+            var fraction = $(this).find("input[name='fraction']").val();
             
-            if (type == 1) {
-                // 问卷
-                sa += '<h2 class=""><a href="#' + id + '" class="ellipsis" toid="' + id + '">' + (indexNum++) + '、' + title + '</a></h2>';
-            } else if (type == 2) {
-                // 学校试卷
-                var fraction = $(this).find("input[name='fraction']").val();
-                
-                // 直接使用当前题目的fraction，因为我们在移动时已经保持了它的正确性
-                sa += '<h2 class=""><a href="#' + id + '" class="ellipsis" toid="' + id + '">' + (indexNum++) + '、' + title + '</a>' +
-                    '（<input class="exam-fraction" value="' + fraction + '" toid="' + id + '"/>分）</h2>';
-            }
+            // Create a consistent position-based identifier for this question
+            var positionId = "q_" + indexNum;
+            
+            // Store the question's data
+            questionData.push({
+                element: $(this),
+                id: id || positionId, // Use quId if available, otherwise use position-based ID
+                title: title,
+                fraction: fraction,
+                index: indexNum++
+            });
+        }
+    });
+    
+    // Second pass - build the left menu HTML
+    $.each(questionData, function(i, question) {
+        if (type == 1) {
+            // 问卷
+            sa += '<h2 class=""><a href="#' + question.id + '" class="ellipsis" toid="' + question.id + '">' + 
+                  question.index + '、' + question.title + '</a></h2>';
+        } else if (type == 2) {
+            // 学校试卷
+            sa += '<h2 class=""><a href="#' + question.id + '" class="ellipsis" toid="' + question.id + '">' + 
+                  question.index + '、' + question.title + '</a>' +
+                  '（<input class="exam-fraction" value="' + question.fraction + '" toid="' + question.id + '"/>分）</h2>';
         }
     });
     
@@ -2278,11 +2265,6 @@ function deleteDwOption() {
             }
         }
     }
-}
-
-// 在题目创建时，生成并设置唯一ID
-function generateUniqueId() {
-    return 'q_' + new Date().getTime() + '_' + Math.floor(Math.random() * 10000);
 }
 
 
