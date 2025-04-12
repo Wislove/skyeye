@@ -1312,7 +1312,7 @@ var dataShowType = {
             value = checkTrueList;
         } else if (showType == 'radio') {
             // 单选框
-            value = $(`#${showBoxId} input:radio:checked`).val()
+            value = $(`#${showBoxId} input:radio:checked`).val() || ''
         } else if (showType == 'verificationSelect') {
             // 多选下拉框
             value = $(`#${showBoxId}`).attr('value')
@@ -1320,6 +1320,9 @@ var dataShowType = {
             // 单选框树/多选框树
             value = $(`#${showBoxId}`).attr('chooseId');
         } else if (showType == 'selectTree') {
+        }
+        if (value == 'undefined') {
+            value = '';
         }
         return value;
     }
