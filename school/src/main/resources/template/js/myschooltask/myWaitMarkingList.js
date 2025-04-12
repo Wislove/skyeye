@@ -204,6 +204,7 @@ layui.config({
 	function getTableParams() {
 		return {
 			keyword: $("#surveyName").val(),
+			holderId: $("#facultyId").val(),
 			state: 1 // 确保传递 state 参数
 		};
 	}
