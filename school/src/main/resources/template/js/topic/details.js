@@ -42,7 +42,7 @@ layui.config({
         ]],
         done: function(json) {
             matchingLanguage();
-            initTableSearchUtil.initAdvancedSearch(this, json.searchFilter, form, "请输入内容", function () {
+            initTableSearchUtil.initAdvancedSearch(this, json.searchFilter, form, "暂不支持搜索", function () {
                 table.reloadData("messageTable", {page: {curr: 1}, where: getTableParams()});
             });
         }
@@ -76,7 +76,7 @@ layui.config({
     }
 
     function getTableParams() {
-        return $.extend(true, {objectKey: objectKey, objectId: objectId,holderId: id}, initTableSearchUtil.getSearchValue("messageTable"));
+        return $.extend(true, {holderId: id}, initTableSearchUtil.getSearchValue("messageTable"));
     }
 
     exports('details', {});
