@@ -809,11 +809,17 @@ layui.config({
 
         /** 保存单选题 **/
         function saveRadio(quItemBody, isEdit) {
+            var quId = quItemBody.find("input[name='quId']").val();
+            var params = getCommonParams(quItemBody);
+            
+            // 添加 quId 到参数中
+            // params.quId = quId;
+            
             var data = {
                 contactsAttr: quItemBody.find("input[name='contactsAttr']").val(),
                 contactsField: quItemBody.find("input[name='contactsField']").val()
             };
-            $.extend(data, getCommonParams(quItemBody));
+            $.extend(data, params);
             var quItemOptions = null;
             if (data.hv == 3) {
                 //还有是table的情况需要处理
@@ -835,7 +841,8 @@ layui.config({
                         isNote: $(this).find(".quItemInputCase input[name='isNote']").val(),
                         checkType: $(this).find(".quItemInputCase input[name='checkType']").val(),
                         isRequiredFill: $(this).find(".quItemInputCase input[name='isRequiredFill']").val(),
-                        orderById: i
+                        orderById: i,
+                        quId: quId  // 添加题目ID到每个选项
                     };
                     // 如果是编辑，传入 optionId
                     if (isEdit) {
@@ -878,11 +885,17 @@ layui.config({
 
         /** 保存多选题 **/
         function saveCheckbox(quItemBody, isEdit) {
+            var quId = quItemBody.find("input[name='quId']").val();
+            var params = getCommonParams(quItemBody);
+            
+            // 添加 quId 到参数中
+            // params.quId = quId;
+            
             var data = {
                 contactsAttr: quItemBody.find("input[name='contactsAttr']").val(),
                 contactsField: quItemBody.find("input[name='contactsField']").val()
             };
-            $.extend(data, getCommonParams(quItemBody));
+            $.extend(data, params);
             var quItemOptions = null;
             if (data.hv == 3) {
                 //还有是table的情况需要处理
@@ -905,7 +918,8 @@ layui.config({
                         checkType: $(this).find(".quItemInputCase input[name='checkType']").val(),
                         isRequiredFill: $(this).find(".quItemInputCase input[name='isRequiredFill']").val(),
                         isDefaultAnswer: isDefaultAnswer,
-                        orderById: i
+                        orderById: i,
+                        quId: quId  // 添加题目ID到每个选项
                     };
                     // 如果是编辑，传入 optionId
                     if (isEdit) {
@@ -1015,6 +1029,12 @@ layui.config({
 
         /** 保存填空题 **/
         function saveFillblank(quItemBody, isEdit) {
+            var quId = quItemBody.find("input[name='quId']").val();
+            var params = getCommonParams(quItemBody);
+            
+            // 添加 quId 到参数中
+            params.quId = quId;
+            
             var data = {
                 answerInputWidth: quItemBody.find("input[name='answerInputWidth']").val(),
                 answerInputRow: quItemBody.find("input[name='answerInputRow']").val(),
@@ -1023,17 +1043,23 @@ layui.config({
                 checkType: quItemBody.find("input[name='checkType']").val(),
                 isDefaultAnswer: quItemBody.find("input[class='quFillblankAnswerInput']").val()
             };
-            $.extend(data, getCommonParams(quItemBody));
+            $.extend(data, params);
             return data;
         }
 
         /** 保存评分题 **/
         function saveScore(quItemBody, isEdit) {
+            var quId = quItemBody.find("input[name='quId']").val();
+            var params = getCommonParams(quItemBody);
+            
+            // 添加 quId 到参数中
+            // params.quId = quId;
+            
             var data = {
                 paramInt01: quItemBody.find("input[name='paramInt01']").val(),
                 paramInt02: quItemBody.find("input[name='paramInt02']").val()
             };
-            $.extend(data, getCommonParams(quItemBody));
+            $.extend(data, params);
             //评分题选项td
             var quItemOptions = quItemBody.find(".quCoItem table.quCoItemTable tr td.quOptionEditTd");
             var scoreTd = [];
@@ -1042,7 +1068,8 @@ layui.config({
                 if (quItemSaveTag == 0) {
                     var s = {
                         optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
-                        orderById: i
+                        orderById: i,
+                        quId: quId  // 添加题目ID到每个选项
                     };
                     // 如果是编辑，传入 optionId
                     if (isEdit) {
@@ -1084,8 +1111,14 @@ layui.config({
 
         /** 保存排序题 **/
         function saveOrderqu(quItemBody, isEdit) {
+            var quId = quItemBody.find("input[name='quId']").val();
+            var params = getCommonParams(quItemBody);
+            
+            // 添加 quId 到参数中
+            // params.quId = quId;
+            
             var data = {};
-            $.extend(data, getCommonParams(quItemBody));
+            $.extend(data, params);
             //评分题选项td
             var quItemOptions = quItemBody.find(".quCoItem .quOrderByLeft  li.quCoItemUlLi");
             var orderByTd = [];
@@ -1094,7 +1127,8 @@ layui.config({
                 if (quItemSaveTag == 0) {
                     var s = {
                         optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
-                        orderById: i
+                        orderById: i,
+                        quId: quId  // 添加题目ID到每个选项
                     };
                     // 如果是编辑，传入 optionId
                     if (isEdit) {
@@ -1106,7 +1140,6 @@ layui.config({
             });
             data.orderByTd = JSON.stringify(orderByTd);
             return data;
-
         }
 
         /**
@@ -1161,11 +1194,17 @@ layui.config({
 
         /** 新保存多项填空题 **/
         function saveMultiFillblank(quItemBody, isEdit) {
+            var quId = quItemBody.find("input[name='quId']").val();
+            var params = getCommonParams(quItemBody);
+            
+            // 添加 quId 到参数中
+            // params.quId = quId;
+            
             var data = {
                 paramInt01: quItemBody.find("input[name='paramInt01']").val(),
                 paramInt02: quItemBody.find("input[name='paramInt02']").val()
             };
-            $.extend(data, getCommonParams(quItemBody));
+            $.extend(data, params);
             // 评分题选项td
             var quItemOptions = quItemBody.find(".quCoItem table.mFillblankTable tr");
             var multifillblankTd = [];
@@ -1175,7 +1214,8 @@ layui.config({
                     var s = {
                         optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
                         isDefaultAnswer: $(this).find("input[class='multiFillBlank']").val(),
-                        orderById: i
+                        orderById: i,
+                        quId: quId  // 添加题目ID到每个选项
                     };
                     // 如果是编辑，传入 optionId
                     if (isEdit) {
@@ -1217,10 +1257,11 @@ layui.config({
 
         /** 保存矩阵题 **/
         function saveChen(quItemBody, isEdit) {
-            var data = {
-                quType: quItemBody.find("input[name='quType']").val()
-            };
-            $.extend(data, getCommonParams(quItemBody));
+            var quId = quItemBody.find("input[name='quId']").val();
+            var params = getCommonParams(quItemBody);
+            
+            // 添加 quId 到参数中
+            // params.quId = quId;
             
             // 矩阵列选项td
             var quColumnOptions = quItemBody.find(".quCoItem table.quCoChenTable tr td.quChenColumnTd");
@@ -1259,7 +1300,8 @@ layui.config({
                     var s = {
                         optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
                         visibility: 1,
-                        orderBy: i
+                        orderBy: i,
+                        quId: quId  // 添加题目ID到每个列选项
                     };
                     // 如果是编辑，传入 optionId
                     if (isEdit) {
@@ -1270,7 +1312,7 @@ layui.config({
                 // 更新 字母 title标记到选项上.
                 $(this).addClass("quColumnOption_" + i);
             });
-            data.columnTd = JSON.stringify(columnTd);
+            params.columnTd = JSON.stringify(columnTd);
             // 矩阵行选项td
             var rowTd = [];
             $.each(quRowOptions, function (i) {
@@ -1279,7 +1321,8 @@ layui.config({
                     var s = {
                         optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
                         visibility: 1,
-                        orderBy: i
+                        orderBy: i,
+                        quId: quId  // 添加题目ID到每个行选项
                     };
                     // 如果是编辑，传入 optionId
                     if (isEdit) {
@@ -1292,7 +1335,7 @@ layui.config({
             });
 
             // 答案
-            if (data.quType === "CHENCHECKBOX") {
+            if (params.quType === "CHENCHECKBOX") {
                 var answer = quItemBody.find(".quCoItem table.quCoChenTable tr input.chenCheckBoxInput");
                 var isDefaultAnswer = new Array();
                 var columuLength = quColumnOptions.length;
@@ -1312,8 +1355,8 @@ layui.config({
                     };
                     isDefaultAnswer.push(s);
                 });
-                data.isDefaultAnswer = JSON.stringify(isDefaultAnswer);
-            } else if (data.quType === "CHENRADIO") {
+                params.isDefaultAnswer = JSON.stringify(isDefaultAnswer);
+            } else if (params.quType === "CHENRADIO") {
                 var answer = quItemBody.find(".quCoItem table.quCoChenTable tr input.chenRadioInput");
                 var isDefaultAnswer = new Array();
                 var columuLength = quColumnOptions.length;
@@ -1333,8 +1376,8 @@ layui.config({
                     };
                     isDefaultAnswer.push(s);
                 });
-                data.isDefaultAnswer = JSON.stringify(isDefaultAnswer);
-            } else if (data.quType === "CHENSCORE") {
+                params.isDefaultAnswer = JSON.stringify(isDefaultAnswer);
+            } else if (params.quType === "CHENSCORE") {
                 var answer = quItemBody.find(".quCoItem table.quCoChenTable tr select.quChenScoreSelect");
                 var isDefaultAnswer = new Array();
                 var columuLength = quColumnOptions.length;
@@ -1354,8 +1397,8 @@ layui.config({
                     };
                     isDefaultAnswer.push(s);
                 });
-                data.isDefaultAnswer = JSON.stringify(isDefaultAnswer);
-            } else if (data.quType === "CHENFBK") {
+                params.isDefaultAnswer = JSON.stringify(isDefaultAnswer);
+            } else if (params.quType === "CHENFBK") {
                 var answer = quItemBody.find(".quCoItem table.quCoChenTable tr input.questionChenColumnValue");
                 var isDefaultAnswer = new Array();
                 var columuLength = quColumnOptions.length;
@@ -1375,11 +1418,11 @@ layui.config({
                     };
                     isDefaultAnswer.push(s);
                 });
-                data.isDefaultAnswer = JSON.stringify(isDefaultAnswer);
+                params.isDefaultAnswer = JSON.stringify(isDefaultAnswer);
             }
 
-            data.rowTd = JSON.stringify(rowTd);
-            return data;
+            params.rowTd = JSON.stringify(rowTd);
+            return params;
         }
 
         //分数变化事件
@@ -1395,9 +1438,28 @@ layui.config({
             var quId = _this.attr("toid");//问题id
             var value = _this.val();//内容
             if ((/^(\+|-)?\d+$/.test(value)) && value > 0) {
-                var questionCase = $("#dwSurveyQuContent").find("input[name='quId'][value='" + quId + "']").parent();
-                questionCase.find("input[name='fraction']").val(value);
-                questionCase.find("input[name='saveTag']").val("0");
+                var questionCase;
+                
+                // Check if this is a position-based ID (starts with q_)
+                if (quId && quId.startsWith("q_")) {
+                    // Get the question index from the position ID (q_1 -> 1)
+                    var questionIndex = parseInt(quId.substring(2)) - 1;
+                    // Find the question at that index position
+                    var questions = $("#dwSurveyQuContent .surveyQuItemBody").filter(function() {
+                        var quType = $(this).find("input[name='quType']").val();
+                        return quType != "PAGETAG" && quType != "PARAGRAPH" && quType != '16' && quType != '17';
+                    });
+                    questionCase = $(questions[questionIndex]).find("input[name='fraction']").parent();
+                } else {
+                    // Use the traditional quId lookup
+                    questionCase = $("#dwSurveyQuContent").find("input[name='quId'][value='" + quId + "']").parent();
+                }
+                
+                // Update the fraction value
+                if (questionCase && questionCase.length > 0) {
+                    questionCase.find("input[name='fraction']").val(value);
+                    questionCase.find("input[name='saveTag']").val("0");
+                }
             } else {
                 notify("请输入正整数分数！", 800);
             }
