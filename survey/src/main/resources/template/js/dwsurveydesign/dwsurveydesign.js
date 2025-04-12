@@ -454,7 +454,7 @@ layui.config({
 							isNote: $(this).find(".quItemInputCase input[name='isNote']").val(),
 							checkType: $(this).find(".quItemInputCase input[name='checkType']").val(),
 							isRequiredFill: $(this).find(".quItemInputCase input[name='isRequiredFill']").val(),
-							orderById: i
+							orderById: i,
 						};
 						if (callback) {
 							s.optionId = $(this).find(".quItemInputCase input[name='quItemId']").val();
@@ -1020,6 +1020,7 @@ layui.config({
 							optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
 							orderBy: i,
 							visibility: 1,
+							quId: quItemBody.find("input[name='quId']").val(),
 						};
 						columnTd.push(s);
 					}
@@ -1038,6 +1039,7 @@ layui.config({
 							optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
 							orderBy: i,
 							visibility: 1,
+							quId: quItemBody.find("input[name='quId']").val(),
 						};
 						// 如果是编辑，传入 optionId
 						if (callback) {

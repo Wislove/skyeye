@@ -21,11 +21,9 @@ layui.config({
 				id: parent.parent.rowId,
 			},
 		 	pagination: false,
-			callback: function (json) {
-				json.total = 1;
-			},
 		 	template: getFileContent('tpl/dwsurveydesign/designSurveyOpTemplates.tpl'),
-		 	ajaxSendLoadBefore: function(hdb) {
+		 	ajaxSendLoadBefore: function(hdb, json) {
+				json.total = 1;
 		 		hdb.registerHelper('compare1', function(v1, v2, options) {
 		 			if(v1 == v2){
 		 				return "checked";

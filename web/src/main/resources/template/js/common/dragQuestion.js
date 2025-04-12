@@ -67,7 +67,7 @@ layui.define(["jquery", "form", "element"], function (exports) {
             +getFileContent('tpl/common/dragQuestion/dragmodel/auxiliarymodel/paragraphQuModel.tpl');
             // 操作
             _operationmodel = getFileContent('tpl/common/dragQuestion/dragmodel/operationmodel/surveyAttrSetToolbar.tpl')
-                + getFileContent('tpl/common/dragQuestion/dragmodel/operationmodel/surveyStyleEditToolbar.tpl');
+                // + getFileContent('tpl/common/dragQuestion/dragmodel/operationmodel/surveyStyleEditToolbar.tpl');
             // 常用题型
             _commonlyusedmodel = getFileContent('tpl/common/dragQuestion/dragmodel/commonlyusedmodel/userNameQuModel.tpl')
                 + getFileContent('tpl/common/dragQuestion/dragmodel/commonlyusedmodel/phoneNoQuModel.tpl')
