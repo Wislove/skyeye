@@ -12,8 +12,9 @@ layui.config({
 		    laydate = layui.laydate;
 
 		var surveyOriginalData = {};
+		var dwQuestionMation = {};
 
-	    showGrid({
+		showGrid({
 		 	id: "showForm",
 		 	url: sysMainMation.surveyBasePath + "queryDirectoryById",
 		 	params: {
@@ -49,7 +50,9 @@ layui.config({
 		 	},
 		 	ajaxSendAfter:function (json) {
 				surveyOriginalData = json.bean || {};
-		 		laydate.render({elem: '#endTime',value: json.bean.endTime || '',  format: 'yyyy-MM-dd HH:mm:ss', type: 'datetime', min: minDate(), theme: 'grid'});
+				dwQuestionMation = json.rows || {};
+				console.log("dwQuestionMation",dwQuestionMation)
+				laydate.render({elem: '#endTime',value: json.bean.endTime || '',  format: 'yyyy-MM-dd HH:mm:ss', type: 'datetime', min: minDate(), theme: 'grid'});
 
 				$("#ruleCode").prop("readonly", !json.bean.rule === '3');
 				$("#endNum").prop("readonly", json.bean.ynEndNum !== '1');
@@ -99,7 +102,7 @@ layui.config({
 
 			    form.on('submit(formAddBean)', function (data) {
 			        if (winui.verifyForm(data.elem)) {
-                        var params = {
+						var params = {
                             id: parent.parent.rowId,
                             effectiveTime:surveyOriginalData.effectiveTime,
                             endType: surveyOriginalData.endType,
@@ -107,9 +110,10 @@ layui.config({
                             answerNum:surveyOriginalData.answerNum,
                             whetherDelete:surveyOriginalData.whetherDelete,
                             dirType:surveyOriginalData.dirType,
-                            surveyModel:surveyOriginalData.surveyModel
+                            surveyModel:surveyOriginalData.surveyModel,
+							dwQuestionMation: JSON.stringify(dwQuestionMation)
                         };
-						params = $.extend({}, params, $("#surveyForm").serializeJson());
+						// params = $.extend({}, params, $("#surveyForm").serializeJson());
 
 			        	if($('input[name=effective]').get(0).checked){
 			        		params.effective = '4';
@@ -167,10 +171,12 @@ layui.config({
 
 			        	AjaxPostUtil.request({url: sysMainMation.surveyBasePath + "writeDwDirectory", params: params, type: 'json', callback: function (json) {
 								parent.layer.close(index);
-								parent.parent.refreshTable(); // 添加父窗口刷新方法
-								parent.parent.rowId = null; // 清除缓存ID
+								parent.refreshCode = '0';
+
 			 	   		}});
-			        }
+			        } else {
+						console.log("[DEBUG] 表单验证失败"); // 如果未进入Ajax，可能是验证失败
+					}
 			        return false;
 			    });
 		 	}

@@ -145,7 +145,6 @@ layui.config({
 
 					//右侧设计目录显示
 					hdb.registerHelper('compareShowLeft', function (v1, options) {
-						console.log("fasdfaospf",v1)
 						if (v1 != '16' && v1 != '17') {
 							return options.fn(this);
 						} else {
@@ -237,7 +236,7 @@ layui.config({
 			"CHENCHECKBOX": deleteChenOption, // 删除矩阵题
 			"CHENFBK": deleteChenOption, // 删除矩阵题
 			"CHENSCORE": deleteChenOption, // 删除矩阵题
-			"SAVESUR": saveSur,// 保存题目信息
+			"SAVEQUS": saveQus,// 保存题目信息
 			// 添加类型转换函数
 			convertQuType: function (quType) {
 				// 数字到字符串的映射
@@ -360,7 +359,6 @@ layui.config({
 
 		//保存
 		$("body").on("click", "#saveBtn", function () {
-			console.log("b保存")
 			allSave();
 		});
 
@@ -369,12 +367,12 @@ layui.config({
 			dwCommonDialogHide();
 			resetQuItemHover(null);
 
-			// url: sysMainMation.surveyBasePath + "writeDwDirectory",
 			var surveyData = {
 				id: loadPageJson.bean.id || "",
 				belongId: parent.rowId,
 				dwQuestionMation: [],
-				surveyName: loadPageJson.bean.surveyName,
+				surveyName: $("#dwSurveyName").text(),
+				surveyNote: $("#dwSurveyNoteEdit").text(),
 				surveyModel: loadPageJson.bean.surveyModel,
 				dirType: loadPageJson.bean.dirType,
 				rule: loadPageJson.bean.rule,
@@ -383,8 +381,8 @@ layui.config({
 				endType: loadPageJson.bean.endType,
 				whetherDelete: loadPageJson.bean.whetherDelete || 1,
 			};
-			// 调用 saveSur方法收集所有题目的参数
-			saveSur(function (dwQuestionMation) {
+			// 调用 saveQus方法收集所有题目的参数
+			saveQus(function (dwQuestionMation) {
 				// 遍历题目，处理删除逻辑
 				dwQuestionMation = dwQuestionMation.map(question => {
 					if (question.deleteTag) {
@@ -396,7 +394,6 @@ layui.config({
 				surveyData.dwQuestionMation = dwQuestionMation; // 将题目参数添加到试卷数据中
 				surveyData.dwQuestionMation = JSON.stringify(surveyData.dwQuestionMation);
 				surveyData.whetherDelete = 1;
-				console.log("最终的 surveyData:", JSON.stringify(surveyData, null, 2));
 				saveSurvey(surveyData); // 调用统一接口保存试卷
 			});
 
@@ -408,6 +405,14 @@ layui.config({
 		function getCommonParams(quItemBody) {
 			var checkNameIn = getNameCheckIn(quItemBody);
 			var whetherUpload = quItemBody.find("input[name='whetherUpload" + checkNameIn + "']:checked").val() || '2';
+
+			// 获取题目标题
+			var quTitle = '';
+			if (quItemBody.find("input[name='quType']").val() == '16') {  // 如果是分页题目
+				quTitle = '分页标记';  // 设置默认标题
+			} else {
+				quTitle = quItemBody.find(".quCoTitleEdit").html() || '';  // 如果其他题目没有标题，至少设置为空字符串
+			}
 			return {
 				id: quItemBody.find("input[name='quId']").val(),
 				belongId: parent.rowId,
@@ -432,7 +437,7 @@ layui.config({
 				};
 				$.extend(data, getCommonParams(quItemBody));
 				var quItemOptions = null;
-				if (quItemBody.find("input[name='hv']").val() == 3) {
+				if (data.hv == 3 ) {
 					//还有是table的情况需要处理
 					quItemOptions = quItemBody.find(".quCoItem table.tableQuColItem tr td");
 				} else {
@@ -501,20 +506,20 @@ layui.config({
 		// });
 		//
 		// 获取问卷数据
-		function getQuestionData() {
-			var questions = [];
-			$("#dwSurveyQuContentAppUl .li_surveyQuItemBody").each(function() {
-				var $this = $(this);
-				var question = {
-					quId: $this.find("input[name='quId']").val(),
-					quType: $this.find("input[name='quType']").val(),
-					quTitle: $this.find(".quCoTitleEdit").html(),
-					orderById: $this.find("input[name='orderById']").val()
-				};
-				questions.push(question);
-			});
-			return questions;
-		}
+		// function getQuestionData() {
+		// 	var questions = [];
+		// 	$("#dwSurveyQuContentAppUl .li_surveyQuItemBody").each(function() {
+		// 		var $this = $(this);
+		// 		var question = {
+		// 			quId: $this.find("input[name='quId']").val(),
+		// 			quType: $this.find("input[name='quType']").val(),
+		// 			quTitle: $this.find(".quCoTitleEdit").html(),
+		// 			orderById: $this.find("input[name='orderById']").val()
+		// 		};
+		// 		questions.push(question);
+		// 	});
+		// 	return questions;
+		// }
 
 		function saveSurvey(surveyData) {
 			AjaxPostUtil.request({
@@ -539,7 +544,7 @@ layui.config({
 		 * 0=表示有变动，未保存
 		 * 1=表示已经保存同步
 		 */
-		function saveSur(callback) {
+		function saveQus(callback) {
 			var dwQuestionMation = [];
 
 			//定义题型映射
@@ -629,8 +634,6 @@ layui.config({
 				}
 
 				// 将转换后的 quType 添加到 questionData
-				// console.log(quType)
-				console.log("quTypeNum:",quTypeNum)
 				questionData.quType = quTypeNum;
 				// 将题目参数对象添加到 dwQuestionMation 数组
 				dwQuestionMation.push(questionData);
@@ -638,7 +641,6 @@ layui.config({
 
 			// 调用回调函数
 			if (typeof callback === "function") {
-				console.log("待保存题目列表:", dwQuestionMation); // 确认数据完整性
 				callback(dwQuestionMation);
 			}
 		}
@@ -653,8 +655,6 @@ layui.config({
 			var hv = quItemBody.find("input[name='hv']").val();
 			var optionParent = null;
 			if (hv == 3) {
-				console.log("hv:", hv)
-				console.log("fjisdluf9o")
 				optionParent = $(curEditObj).parents("td");
 				if (quItemBody.find(".quCoItem td").length <= 1) {
 					winui.window.msg('至少需要保留一个选项', {icon: 2, time: 2000});
@@ -668,7 +668,6 @@ layui.config({
 				}
 			}
 			var quOptionId = $(optionParent).find("input[name='quItemId']").val();
-			console.log("quOptionId",quOptionId)
 			if (quOptionId != "" && quOptionId != "0") {
 				$(optionParent).remove();
 			} else {
@@ -892,7 +891,8 @@ layui.config({
 						var s = {
 							optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
 							optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
-							orderById: i
+							orderById: i,
+							quId: quItemBody.find("input[name='quId']").val()
 						};
 						orderByTd.push(s);
 					}
@@ -1017,9 +1017,9 @@ layui.config({
 					if (quItemSaveTag == 0) {
 						var s = {
 							optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
-							//optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
+							optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
 							orderBy: i,
-							visibility: 1
+							visibility: 1,
 						};
 						columnTd.push(s);
 					}
@@ -1035,7 +1035,7 @@ layui.config({
 					if (quItemSaveTag == 0) {
 						var s = {
 							optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
-							//optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
+							optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
 							orderBy: i,
 							visibility: 1,
 						};
@@ -1050,7 +1050,6 @@ layui.config({
 				});
 				data.rowTd = JSON.stringify(rowTd);
 				return data;
-
 		}
 	});
 })
