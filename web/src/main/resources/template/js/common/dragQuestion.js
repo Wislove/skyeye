@@ -1076,22 +1076,46 @@ function resetQuLeftItem() {
     var surveyQuItems = $("#dwSurveyQuContent .surveyQuItemBody");
     var indexNum = 1;
     var sa = "";
+    
+    // Store question data for consistent mapping
+    var questionData = [];
+    
+    // First pass - collect all question data
     $.each(surveyQuItems, function (i) {
         var quType = $(this).find("input[name='quType']").val();
         if (quType != "PAGETAG" && quType != "PARAGRAPH" && quType != '16' && quType != '17') {
             var id = $(this).find("input[name='quId']").val();
             var title = $(this).find(".quCoTitle .quCoTitleEdit").html();
-            if (type == 1) {
-                // 问卷
-                sa += '<h2 class=""><a href="#' + id + '" class="ellipsis" toid="' + id + '">' + (indexNum++) + '、' + title + '</a></h2>';
-            } else if (type == 2) {
-                // 学校试卷
-                var fraction = $(this).find("input[name='fraction']").val();
-                sa += '<h2 class=""><a href="#' + id + '" class="ellipsis" toid="' + id + '">' + (indexNum++) + '、' + title + '</a>' +
-                    '（<input class="exam-fraction" value="' + fraction + '" toid="' + id + '"/>分）</h2>';
-            }
+            var fraction = $(this).find("input[name='fraction']").val();
+            
+            // Create a consistent position-based identifier for this question
+            var positionId = "q_" + indexNum;
+            
+            // Store the question's data
+            questionData.push({
+                element: $(this),
+                id: id || positionId, // Use quId if available, otherwise use position-based ID
+                title: title,
+                fraction: fraction,
+                index: indexNum++
+            });
         }
     });
+    
+    // Second pass - build the left menu HTML
+    $.each(questionData, function(i, question) {
+        if (type == 1) {
+            // 问卷
+            sa += '<h2 class=""><a href="#' + question.id + '" class="ellipsis" toid="' + question.id + '">' + 
+                  question.index + '、' + question.title + '</a></h2>';
+        } else if (type == 2) {
+            // 学校试卷
+            sa += '<h2 class=""><a href="#' + question.id + '" class="ellipsis" toid="' + question.id + '">' + 
+                  question.index + '、' + question.title + '</a>' +
+                  '（<input class="exam-fraction" value="' + question.fraction + '" toid="' + question.id + '"/>分）</h2>';
+        }
+    });
+    
     $("#dwBodyLeftContent").html(sa);
 }
 
