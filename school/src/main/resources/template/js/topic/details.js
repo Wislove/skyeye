@@ -27,7 +27,7 @@ layui.config({
         url: sysMainMation.schoolBasePath + 'queryTopicCommentList',
         where: getTableParams(),
         even: false,
-        page: false,
+        page: true,
         cols: [[
             { title: systemLanguage["com.skyeye.serialNumber"][languageType], type: 'numbers' },
             { field: 'content', title: '内容', align: 'left', width: 300},
@@ -42,7 +42,7 @@ layui.config({
         ]],
         done: function(json) {
             matchingLanguage();
-            initTableSearchUtil.initAdvancedSearch(this, json.searchFilter, form, "请输入名称", function () {
+            initTableSearchUtil.initAdvancedSearch(this, json.searchFilter, form, "请输入内容", function () {
                 table.reloadData("messageTable", {page: {curr: 1}, where: getTableParams()});
             });
         }
