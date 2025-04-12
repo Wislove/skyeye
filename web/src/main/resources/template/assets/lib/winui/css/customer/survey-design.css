@@ -1630,10 +1630,6 @@ table.quCoChenTable tr td label{
 
 /* 自定义单选框样式 */
 .custom-radio {
-    margin-right: 10px; /* 调整与文字的间距 */
-}
-
-.custom-radio {
     appearance: none; /* 去掉默认样式 */
     width: 20px;
     height: 20px;
