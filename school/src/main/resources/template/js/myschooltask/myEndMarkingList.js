@@ -117,44 +117,45 @@ layui.config({
 		    page: true,
 		    limits: getLimits(),
 	    	limit: getLimit(),
-	        cols: [[
-	        	{ title: systemLanguage["com.skyeye.serialNumber"][languageType], rowspan: '2', type: 'numbers' },
-	        	{ field: 'studentName', rowspan: '2', width: 80, title: '姓名',templet:function (d) {
-						return d.stuMation?.realName}},
-	        	{ field: 'studentNo', rowspan: '2', width: 140, align: 'center', title: '学号',templet:function (d) {
-						return d.stuMation?.studentNumber}},
-	            { field: 'schoolName', rowspan: '2', width: 150, title: '学校',templet:function (d) {
-						return d.schoolMation?.name}},
-				{ field: 'facultyName', rowspan: '2', width: 80, align: 'center', title: '院系',templet:function (d) {
-						return d.facultyMation?.name}},
-				{ field: 'majorName', rowspan: '2', width: 80, align: 'center', title: '专业',templet:function (d) {
-						return d.majorMation?.name}},
-	            { field: 'surveyName', rowspan: '2', width: 200, title: '试卷名称', templet: function (d) {
-			        return '<a lay-event="details" class="notice-title-click">' + d.surveyMation?.surveyName + '</a>';
-			    }},
-            	{ title: '阅卷信息', align: 'center', colspan: '3'},
-            	{ title: '答题信息', align: 'center', colspan: '3'}
-	        ],[
-		    	{ field: 'markStartTime', title: '开始时间', align: 'center', width: 120},
-		        { field: 'markEndTime', title: '结束时间', align: 'center', width: 120},
-		        { field: 'markFraction', title: '最后得分', align: 'center', width: 100},
-		        { field: 'bgAnDate', title: '开始时间', align: 'center', width: 120},
-		        { field: 'endAnDate', title: '结束时间', align: 'center', width: 120},
-		        { field: 'totalTime', title: '耗时(分钟)', align: 'center', width: 100}
-	        ]
-		    ],
+			cols: [[
+				{ title: systemLanguage["com.skyeye.serialNumber"][languageType], rowspan: '2', type: 'numbers' },
+				{ field: 'studentNo', rowspan: '2', width: 140, align: 'center', title: '学号', templet: function (d) {
+						return d.studentNumber
+					}},
+				{ field: 'schoolName', rowspan: '2', width: 150, title: '学校', templet: function (d) {
+						return d.surveyMation?.schoolMation?.name
+					}},
+				{ field: 'facultyName', rowspan: '2', width: 80, align: 'center', title: '院系', templet: function (d) {
+						return d.surveyMation?.facultyMation?.name
+					}},
+				{ field: 'majorName', rowspan: '2', width: 80, align: 'center', title: '专业', templet: function (d) {
+						return d.surveyMation?.majorMation?.name
+					}},
+				{ field: 'surveyName', rowspan: '2', width: 200, title: '试卷名称', templet: function (d) {
+						return  d.surveyMation?.surveyName
+					}},
+				{ field: 'markEndTime', rowspan: '2', width: 150, align: 'center', title: '批阅结束时间', templet: function (d) {
+						return d.markEndTime
+					}},
+				{ title: '答题信息', align: 'center', colspan: '3' },
+				{ title: systemLanguage["com.skyeye.operation"][languageType], fixed: 'right', rowspan: '2', align: 'center', width: 100, toolbar: '#tableBar'}
+			], [
+				{ field: 'bgAnDate', title: '开始时间', align: 'center', width: 120 },
+				{ field: 'endAnDate', title: '结束时间', align: 'center', width: 120 },
+				{ field: 'totalTime', title: '耗时(分钟)', align: 'center', width: 100 },
+			]],
 		    done: function(json) {
 		    	matchingLanguage();
 		    }
 	    });
-	    
-	    table.on('tool(messageTable)', function (obj) {
-	        var data = obj.data;
-	        var layEvent = obj.event;
-	        if (layEvent === 'details') { //详情
-	        	details(data);
-	        }
-	    });
+
+		table.on('tool(messageTable)', function (obj) {
+			var data = obj.data;
+			var layEvent = obj.event;
+			if (layEvent === 'markingStudentList') { //详情
+				markingStudentList(data);
+			}
+		});
 		
 	    form.render();
 	}
@@ -168,15 +169,17 @@ layui.config({
         return false;
     });
     
-    //详情
-	function details(data) {
+    //批阅的学生列表
+	function markingStudentList(data) {
 		rowId = data.id;
 		_openNewWindows({
-			url: "../../tpl/examDetail/examPCDetail.html", 
-			title: "试卷信息",
-			pageId: "examPCDetail",
+			url: "../../tpl/myschooltask/waitingMarkingStudentsList.html?id=" + data.surveyId, // 修改为新的页面路径
+			title: "查看已批阅学生",
+			pageId: "waitingMarkingStudentsList",
 			area: ['90vw', '90vh'],
 			callBack: function (refreshCode) {
+				winui.window.msg(systemLanguage["com.skyeye.successfulOperation"][languageType], {icon: 1, time: 2000});
+				loadTable();
 			}});
 	}
 	
@@ -184,22 +187,17 @@ layui.config({
     $("body").on("click", "#reloadTable", function() {
     	loadTable();
     });
-    
-    function loadTable() {
-    	table.reloadData("messageTable", {where: getTableParams()});
-    }
-    
-    function refreshTable(){
-    	table.reloadData("messageTable", {page: {curr: 1}, where: getTableParams()});
-    }
+
+	function loadTable() {
+		table.reloadData("messageTable", {where: getTableParams()});
+	}
+
+	function refreshTable() {
+		table.reloadData("messageTable", {page: {curr: 1}, where: getTableParams()});
+	}
     
     function getTableParams() {
     	return {
-			holderKey: $("#schoolId").val(),
-			holderId:$("#facultyId").val(),
-			objectKey: $("#majorId").val(),//专业
-			type: $("#studentName").val(),//学生
-			// studentNo: $("#studentNo").val(),//学号 刘庆余
 			keyword: $("#surveyName").val(),//试卷名
 			state: 2 // 添加state参数，值为1
 		};

@@ -27,7 +27,7 @@ layui.config({
         url: sysMainMation.schoolBasePath + 'queryTopicList',
         where: getTableParams(),
         even: false,
-        page: false,
+        page: true,
         cols: [[
             { title: systemLanguage["com.skyeye.serialNumber"][languageType], type: 'numbers' },
             { field: 'title', title: '标题', align: 'left', width: 300},

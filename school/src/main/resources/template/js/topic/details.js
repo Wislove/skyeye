@@ -27,23 +27,22 @@ layui.config({
         url: sysMainMation.schoolBasePath + 'queryTopicCommentList',
         where: getTableParams(),
         even: false,
-        page: false,
+        page: true,
         cols: [[
             { title: systemLanguage["com.skyeye.serialNumber"][languageType], type: 'numbers' },
             { field: 'content', title: '内容', align: 'left', width: 300},
-            { field: 'createName', title: systemLanguage["com.skyeye.createName"][languageType], align: 'left', width: 120 , templet: function(d) {
-                    return getNotUndefinedVal(d.createMation?.name);
-                }},
+            {field: 'createName', title: systemLanguage["com.skyeye.createName"][languageType], align: 'left', width: 120,
+                templet: function(d) {
+                    return getNotUndefinedVal(d.studentMation?.name || d.createName);
+                }
+            },
             { field: 'createTime', title: systemLanguage["com.skyeye.createTime"][languageType], align: 'center', width: 150 },
-            { field: 'lastUpdateName', title: systemLanguage["com.skyeye.lastUpdateName"][languageType], align: 'left', width: 120 , templet: function(d) {
-                    return getNotUndefinedVal(d.lastUpdateName);
-                }},
             { field: 'lastUpdateTime', title: systemLanguage["com.skyeye.lastUpdateTime"][languageType], align: 'center', width: 150 },
             { title: systemLanguage["com.skyeye.operation"][languageType], fixed: 'right', align: 'center', width: 257, toolbar: '#tableBar' }
         ]],
         done: function(json) {
             matchingLanguage();
-            initTableSearchUtil.initAdvancedSearch(this, json.searchFilter, form, "请输入名称", function () {
+            initTableSearchUtil.initAdvancedSearch(this, json.searchFilter, form, "暂不支持搜索", function () {
                 table.reloadData("messageTable", {page: {curr: 1}, where: getTableParams()});
             });
         }
@@ -77,7 +76,7 @@ layui.config({
     }
 
     function getTableParams() {
-        return $.extend(true, {objectKey: objectKey, objectId: objectId,holderId: id}, initTableSearchUtil.getSearchValue("messageTable"));
+        return $.extend(true, {holderId: id}, initTableSearchUtil.getSearchValue("messageTable"));
     }
 
     exports('details', {});
