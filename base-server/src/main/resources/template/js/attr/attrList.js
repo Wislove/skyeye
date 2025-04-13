@@ -70,7 +70,7 @@ layui.config({
 				return '否';
 			}},
 			{ field: 'remark', title: '备注', align: 'left', width: 150 },
-			{ title: systemLanguage["com.skyeye.operation"][languageType], fixed: 'right', align: 'center', width: 120, toolbar: '#tableBar' }
+			{ title: systemLanguage["com.skyeye.operation"][languageType], fixed: 'right', align: 'center', width: 240, toolbar: '#tableBar' }
 		]],
 	    done: function(json) {
 			soulTable.render(this);
@@ -81,14 +81,18 @@ layui.config({
 	table.on('tool(messageTable)', function (obj) {
 		var data = obj.data;
 		var layEvent = obj.event;
-		if (layEvent === 'edit') { // 编辑
-			edit(data);
+		if (layEvent === 'design') { // 配置
+			design(data);
 		} else if (layEvent === 'restore') { // 还原
 			restore(data);
+		} else if (layEvent === 'delete') { // 删除
+			del(data, obj);
+		} else if (layEvent === 'edit') { // 编辑
+			edit(data);
 		}
 	});
 
-	// 删除
+	// 还原
 	function restore(data) {
 		parent.layer.confirm('还原操作', {icon: 3, title: '确定还原该数据吗？'}, function (index) {
 			parent.layer.close(index);
@@ -104,10 +108,35 @@ layui.config({
 		});
 	}
 
-	// 编辑
-	function edit(data) {
+	// 配置
+	function design(data) {
 		parent._openNewWindows({
 			url: "../../tpl/attr/writeAttr.html?className=" + objectId + '&attrKey=' + data.attrKey + '&appId=' + appId,
+			title: '配置属性',
+			pageId: "designAttr",
+			area: ['90vw', '90vh'],
+			callBack: function (refreshCode) {
+				winui.window.msg(systemLanguage["com.skyeye.successfulOperation"][languageType], {icon: 1, time: 2000});
+				loadTable();
+			}
+		});
+	}
+
+	// 删除
+	function del(data, obj) {
+		layer.confirm(systemLanguage["com.skyeye.deleteOperationMsg"][languageType], {icon: 3, title: systemLanguage["com.skyeye.deleteOperation"][languageType]}, function (index) {
+			layer.close(index);
+			AjaxPostUtil.request({url: reqBasePath + "deleteAttrDefinitionById", params: {id: data.id}, type: 'json', method: 'DELETE', callback: function (json) {
+				winui.window.msg(systemLanguage["com.skyeye.deleteOperationSuccessMsg"][languageType], {icon: 1, time: 2000});
+				loadTable();
+			}});
+		});
+	}
+
+	// 配置
+	function edit(data) {
+		parent._openNewWindows({
+			url: "../../tpl/attr/write.html?className=" + objectId + '&id=' + data.id + '&appId=' + appId,
 			title: systemLanguage["com.skyeye.editPageTitle"][languageType],
 			pageId: "writeAttr",
 			area: ['90vw', '90vh'],
@@ -117,6 +146,19 @@ layui.config({
 			}
 		});
 	}
+
+	$("body").on("click", "#addBean", function() {
+		parent._openNewWindows({
+			url: "../../tpl/attr/write.html?className=" + objectId + '&id=&appId=' + appId,
+			title: systemLanguage["com.skyeye.addPageTitle"][languageType],
+			pageId: "writeAttr",
+			area: ['90vw', '90vh'],
+			callBack: function (refreshCode) {
+				winui.window.msg(systemLanguage["com.skyeye.successfulOperation"][languageType], {icon: 1, time: 2000});
+				loadTable();
+			}
+		});
+	});
 
 	form.render();
 	$("body").on("click", "#reloadTable", function() {
