@@ -417,13 +417,13 @@ layui.config({
 				id: quItemBody.find("input[name='quId']").val(),
 				belongId: parent.rowId,
 				tag: svTag,
-				quId: quItemBody.find("input[name='quId']").val(),
 				hv: quItemBody.find("input[name='hv']").val(),
 				randOrder: quItemBody.find("input[name='randOrder']").val(),
 				cellCount: quItemBody.find("input[name='cellCount']").val(),
 				isRequired: quItemBody.find("input[name='isRequired']").val(),
-				quTitle: encodeURI(quItemBody.find(".quCoTitleEdit").html()),
+				// quTitle: encodeURI(quItemBody.find(".quCoTitleEdit").html()),
 				quType: quItemBody.find("input[name='quType']").val(),
+				quTitle: JSON.stringify(quTitle).slice(1, -1),
 				orderById: quItemBody.find("input[name='orderById']").val(),
 				whetherUpload: whetherUpload,
 			};
@@ -437,7 +437,7 @@ layui.config({
 				};
 				$.extend(data, getCommonParams(quItemBody));
 				var quItemOptions = null;
-				if (data.hv == 3 ) {
+				if (quItemBody.find("input[name='hv']").val() == 3) {
 					//还有是table的情况需要处理
 					quItemOptions = quItemBody.find(".quCoItem table.tableQuColItem tr td");
 				} else {
@@ -446,7 +446,7 @@ layui.config({
 				var radioTd = [];
 				$.each(quItemOptions, function (i) {
 					var quItemSaveTag = $(this).find(".quItemInputCase input[name='quItemSaveTag']").val();
-					if (quItemSaveTag == 0) {
+					// if (quItemSaveTag == 0) {
 						var s = {
 							optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
 							// optionValue: encodeURI($(this).find("label.quCoOptionEdit").html()),
@@ -455,12 +455,13 @@ layui.config({
 							checkType: $(this).find(".quItemInputCase input[name='checkType']").val(),
 							isRequiredFill: $(this).find(".quItemInputCase input[name='isRequiredFill']").val(),
 							orderById: i,
+							quId: quItemBody.find("input[name='quId']").val()
 						};
 						if (callback) {
 							s.optionId = $(this).find(".quItemInputCase input[name='quItemId']").val();
 						}
 						radioTd.push(s);
-					}
+					// }
 					//更新 字母 title标记到选项上.
 					$(this).addClass("quOption_" + i);
 				});
@@ -694,21 +695,22 @@ layui.config({
 				var checkboxTd = [];
 				$.each(quItemOptions, function (i) {
 					var quItemSaveTag = $(this).find(".quItemInputCase input[name='quItemSaveTag']").val();
-					if (quItemSaveTag == 0) {
+					// if (quItemSaveTag == 0) {
 						var s = {
 							optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
 							optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
 							isNote: $(this).find(".quItemInputCase input[name='isNote']").val(),
 							checkType: $(this).find(".quItemInputCase input[name='checkType']").val(),
 							isRequiredFill: $(this).find(".quItemInputCase input[name='isRequiredFill']").val(),
-							orderById: i
+							orderById: i,
+							quId: quItemBody.find("input[name='quId']").val()
 						};
 						// 如果是编辑，传入 optionId
 						if (callback) {
 							s.optionId = $(this).find(".quItemInputCase input[name='quItemId']").val();
 						}
 						checkboxTd.push(s);
-					}
+					// }
 					//更新 字母 title标记到选项上.
 					$(this).addClass("quOption_" + i);
 				});
@@ -839,14 +841,15 @@ layui.config({
 				var scoreTd = [];
 				$.each(quItemOptions, function (i) {
 					var quItemSaveTag = $(this).find(".quItemInputCase input[name='quItemSaveTag']").val();
-					if (quItemSaveTag == 0) {
+					// if (quItemSaveTag == 0) {
 						var s = {
 							optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
 							optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
-							orderById: i
+							orderById: i,
+							quId: quItemBody.find("input[name='quId']").val()
 						};
 						scoreTd.push(s);
-					}
+					// }
 					//更新 字母 title标记到选项上.
 					$(this).addClass("quOption_" + i);
 				});
@@ -887,7 +890,7 @@ layui.config({
 				var orderByTd = [];
 				$.each(quItemOptions, function (i) {
 					var quItemSaveTag = $(this).find(".quItemInputCase input[name='quItemSaveTag']").val();
-					if (quItemSaveTag == 0) {
+					// if (quItemSaveTag == 0) {
 						var s = {
 							optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
 							optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
@@ -895,7 +898,7 @@ layui.config({
 							quId: quItemBody.find("input[name='quId']").val()
 						};
 						orderByTd.push(s);
-					}
+					// }
 					$(this).addClass("quOption_" + i);
 				});
 				data.orderByTd = JSON.stringify(orderByTd);
@@ -964,14 +967,15 @@ layui.config({
 				var multifillblankTd = [];
 				$.each(quItemOptions, function (i) {
 					var quItemSaveTag = $(this).find(".quItemInputCase input[name='quItemSaveTag']").val();
-					if (quItemSaveTag == 0) {
+					// if (quItemSaveTag == 0) {
 						var s = {
 							optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
 							optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
-							orderById: i
+							orderById: i,
+							quId: quItemBody.find("input[name='quId']").val()
 						};
 						multifillblankTd.push(s);
-					}
+					// }
 					//更新 字母 title标记到选项上.
 					$(this).addClass("quOption_" + i);
 				});

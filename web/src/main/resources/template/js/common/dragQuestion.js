@@ -1466,18 +1466,18 @@ function showDialog(thDialogObj) {
         $("#dwCommonDialog input[name='setCellCount']").val(cellCount);
 
         // 单选，多选 才启用选项随机排列
-        if (quType === '1' || quType === '2') {
+        if (quType === '1' || quType === '2'|| quType === "RADIO"||quType === "CHECKBOX") {
             $("#dwCommonDialog .optionAutoOrder").show();
             $("#dwCommonDialog .optionRangeHv").show();
-        } else if (quType === '9') {
+        } else if (quType === '9'||quType==="ORDERBY") {
             $("#dwCommonDialog .optionAutoOrder").show();
-        } else if (quType === '8') {
+        } else if (quType === '8'||quType==="SCORE") {
             $("#dwCommonDialog .optionAutoOrder").show();
             $("#dwCommonDialog .scoreMinMax").show();
             if (paramInt02[0]) {
                 $("#dwCommonDialog .scoreMinMax .maxScore").val(paramInt02.val());
             }
-        } else if (quType === '4') {
+        } else if (quType === '4'||quType==="MULTIFILLBLANK") {
             $("#dwCommonDialog .optionAutoOrder").show();
             $("#dwCommonDialog .minMaxLi").show();
             $("#dwCommonDialog .minMaxLi .minSpan .lgleftLabel").text("最少回答");
@@ -1489,7 +1489,7 @@ function showDialog(thDialogObj) {
         }
 
         // 单选，多选，填空题情况下才启用关联到联系设置项
-        if ((quType == '1' || quType == '2' || quType == '3')) {
+        if ((quType == '1' || quType == '2' || quType == '3'||quType === "RADIO"||quType === "CHECKBOX"||quType==="FILLBLANK")) {
             $("#dwCommonDialog .contactsAttrLi").show();
             if (contactsAttr == 1) {
                 $("#dwCommonDialog input[name='setAutoContacts']").prop("checked", true);

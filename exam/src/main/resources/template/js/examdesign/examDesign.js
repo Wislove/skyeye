@@ -845,9 +845,9 @@ layui.config({
                         quId: quId  // 添加题目ID到每个选项
                     };
                     // 如果是编辑，传入 optionId
-                    if (isEdit) {
-                        s.optionId = $(this).find(".quItemInputCase input[name='quItemId']").val();
-                    }
+                    // if (isEdit) {
+                    //     s.optionId = $(this).find(".quItemInputCase input[name='quItemId']").val();
+                    // }
                     radioTd.push(s);
                 }
                 //更新 字母 title标记到选项上.
