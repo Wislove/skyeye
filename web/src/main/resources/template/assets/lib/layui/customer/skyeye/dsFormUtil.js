@@ -410,7 +410,11 @@ var dsFormUtil = {
                     }
                 } else {
                     // 动态属性
-                    dynamicAttrValueMap[content.attrDefinition.attrKey] = value;
+                    if (dsFormComponent.valueMergType == 'extend') {
+                        dynamicAttrValueMap = $.extend(true, dynamicAttrValueMap, value);
+                    } else {
+                        dynamicAttrValueMap[content.attrDefinition.attrKey] = value;
+                    }
                 }
             }
         });
