@@ -392,6 +392,7 @@ var dsFormUtil = {
     // 保存数据
     saveData: function (formSubType, approvalId) {
         var params = {};
+        let dynamicAttrValueMap = {};
         $.each(dsFormUtil.pageMation.dsFormPageContents, function (i, content) {
             if (!isNull(content.attrDefinition) && !$.isEmptyObject(content.attrDefinition)
                 && (content.isEdit == 1 || (isNull(content.isEdit) && content.isEdit + '' != '0'))) {
@@ -400,10 +401,16 @@ var dsFormUtil = {
                 var getValueScript = getDataUseHandlebars('{{#this}}' + dsFormComponent.jsValue + '{{/this}}', content);
                 var value = "";
                 eval('value = ' + getValueScript);
-                if (dsFormComponent.valueMergType == 'extend') {
-                    params = $.extend(true, params, value);
+                if (content.attrDefinition.modelAttribute == 1) {
+                    // 模型属性
+                    if (dsFormComponent.valueMergType == 'extend') {
+                        params = $.extend(true, params, value);
+                    } else {
+                        params[content.attrDefinition.attrKey] = value;
+                    }
                 } else {
-                    params[content.attrDefinition.attrKey] = value;
+                    // 动态属性
+                    dynamicAttrValueMap[content.attrDefinition.attrKey] = value;
                 }
             }
         });
@@ -428,6 +435,10 @@ var dsFormUtil = {
 
         if (typeof (dsFormUtil.options.savePreParams) == "function") {
             dsFormUtil.options.savePreParams(params);
+        }
+
+        if (dynamicAttrValueMap != null && !$.isEmptyObject(dynamicAttrValueMap)) {
+            params.dynamicAttrValueMap = JSON.stringify(dynamicAttrValueMap);
         }
 
         if (dsFormUtil.options.saveData != null && typeof (dsFormUtil.options.saveData) == "function") {
@@ -882,6 +893,22 @@ var dsFormUtil = {
                 inputParams.callback();
             }
         }});
+    },
+
+    // 合入动态属性信息
+    mergeDynamicAttr: function (pageMation, data) {
+        const dynamicAttrValueMap = data.dynamicAttrValueMap || {};
+        if ($.isEmptyObject(dynamicAttrValueMap)) {
+            return;
+        }
+        $.each(pageMation.dsFormPageContents, function (i, content) {
+            if (!isNull(content.attrDefinition) && !$.isEmptyObject(content.attrDefinition)) {
+                if (content.attrDefinition.modelAttribute == 0) {
+                    // 动态属性
+                    data[content.attrDefinition.attrKey] = dynamicAttrValueMap[content.attrDefinition.attrKey];
+                }
+            }
+        });
     }
 
 };
