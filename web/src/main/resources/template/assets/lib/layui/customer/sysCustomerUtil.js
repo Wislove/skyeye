@@ -638,6 +638,7 @@ var activitiUtil = {
                                 objectId = data.objectId;
                                 objectKey = data.objectKey;
                             }
+                            dsFormUtil.mergeDynamicAttr(pageMation, data);
                             dsFormUtil.initDetailsPage('showForm', pageMation, data);
                         });
                     } else if (showType == 'edit') {
@@ -646,6 +647,7 @@ var activitiUtil = {
                                 objectId = data.objectId;
                                 objectKey = data.objectKey;
                             }
+                            dsFormUtil.mergeDynamicAttr(pageMation, data);
                             dsFormUtil.initEditPage('showForm', pageMation, data);
                         });
                     }

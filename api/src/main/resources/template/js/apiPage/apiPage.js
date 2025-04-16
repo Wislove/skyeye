@@ -228,10 +228,11 @@ layui.config({
 					$("#advancedSearch").show();
 					if (!isNull(json.bean.searchParamsId)) {
 						searchParamsId = json.bean.searchParamsId;
+						const val = JSON.stringify(JSON.parse(json.bean.searchParams, null, 4))
 						if (isNull(jsonEditor)) {
-							$("#jsonContent").val(JSON.stringify(json.bean.searchParams, null, 4));
+							$("#jsonContent").val(val);
 						} else {
-							jsonEditor.setValue(JSON.stringify(json.bean.searchParams, null, 4));
+							jsonEditor.setValue(val);
 						}
 					} else {
 						searchParamsId = "";

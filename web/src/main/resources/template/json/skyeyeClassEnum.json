@@ -1,5 +1,13 @@
 {
     "commonEnable": {"name": "启用/禁用", "className": "skyeye-pro#com.skyeye.common.enumeration.EnableEnum"},
+    "searchParamsConfigDataType": {
+        "name": "搜索条件配置数据类型",
+        "className": "skyeye-pro#com.skyeye.common.enumeration.SearchParamsConfigDataType"
+    },
+    "searchOperator": {
+        "name": "搜索条件配置操作符",
+        "className": "skyeye-pro#com.skyeye.common.enumeration.SearchOperator"
+    },
     "attrDefinitionAttrType": {"name": "服务类属性字段类型", "className": "skyeye-pro#com.skyeye.attr.classenum.AttrDefinitionAttrType"},
     "commonIsDefault": {"name": "是否默认", "className": "skyeye-pro#com.skyeye.common.enumeration.IsDefaultEnum"},
     "sexEnum": {"name": "性别", "className": "skyeye-pro#com.skyeye.common.enumeration.SexEnum"},

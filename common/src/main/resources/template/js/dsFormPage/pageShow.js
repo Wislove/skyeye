@@ -104,11 +104,13 @@ layui.config({
             // 编辑布局
             initSavePre();
             dsFormUtil.getBusinessData(businessId, serviceClassName, pageMation, function (data) {
+                dsFormUtil.mergeDynamicAttr(pageMation, data);
                 dsFormUtil.initEditPage('content', pageMation, data);
             });
         }  else if (pageMation.type == 'details') {
             // 详情布局
             dsFormUtil.getBusinessData(businessId, serviceClassName, pageMation, function (data) {
+                dsFormUtil.mergeDynamicAttr(pageMation, data);
                 dsFormUtil.initDetailsPage('content', pageMation, data);
             });
         } else if (pageMation.type == 'simpleTable') {
