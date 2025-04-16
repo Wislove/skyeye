@@ -445,8 +445,6 @@ layui.config({
 				}
 				var radioTd = [];
 				$.each(quItemOptions, function (i) {
-					var quItemSaveTag = $(this).find(".quItemInputCase input[name='quItemSaveTag']").val();
-					// if (quItemSaveTag == 0) {
 						var s = {
 							optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
 							// optionValue: encodeURI($(this).find("label.quCoOptionEdit").html()),
@@ -461,7 +459,6 @@ layui.config({
 							s.optionId = $(this).find(".quItemInputCase input[name='quItemId']").val();
 						}
 						radioTd.push(s);
-					// }
 					//更新 字母 title标记到选项上.
 					$(this).addClass("quOption_" + i);
 				});
@@ -695,7 +692,6 @@ layui.config({
 				var checkboxTd = [];
 				$.each(quItemOptions, function (i) {
 					var quItemSaveTag = $(this).find(".quItemInputCase input[name='quItemSaveTag']").val();
-					// if (quItemSaveTag == 0) {
 						var s = {
 							optionName: encodeURI($(this).find("label.quCoOptionEdit").html()),
 							optionId: $(this).find(".quItemInputCase input[name='quItemId']").val(),
@@ -710,7 +706,6 @@ layui.config({
 							s.optionId = $(this).find(".quItemInputCase input[name='quItemId']").val();
 						}
 						checkboxTd.push(s);
-					// }
 					//更新 字母 title标记到选项上.
 					$(this).addClass("quOption_" + i);
 				});

@@ -658,7 +658,7 @@ layui.define(["jquery", "form", "element"], function (exports) {
                             quLogicItem.find("input[name='logicType']").val(logicType);
                         }
                         //如果是评分题
-                        if (quType === "SCORE") {
+                        if (quType === "SCORE"||quType==="8") {
                             var logicScoreGtLt = $(this).find(".logicScoreGtLt").val();
                             var logicScoreNum = $(this).find(".logicScoreNum").val();
                             quLogicItem.find("input[name='geLe']").val(logicScoreGtLt);
@@ -680,7 +680,7 @@ layui.define(["jquery", "form", "element"], function (exports) {
                         quLogicItem.find("input[name='logicType']").val(logicType);
                         quItemBody.find("input[name='saveTag']").val("0");
                         //如果是评分题
-                        if (quType === "SCORE") {
+                        if (quType === "SCORE"||quType==="8") {
                             var logicScoreGtLt = $(this).find(".logicScoreGtLt").val();
                             var logicScoreNum = $(this).find(".logicScoreNum").val();
                             quLogicItem.find("input[name='geLe']").val(logicScoreGtLt);
