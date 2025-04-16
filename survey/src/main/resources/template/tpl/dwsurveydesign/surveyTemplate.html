@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 	<head>
 		<meta charset="utf-8" />
 		<title></title>
@@ -427,99 +426,99 @@
 
 
 		<!-- 11矩阵单选题chen-radio -->
-<!--		<script type="text/x-handlebars-template" id="chenRadioTemplate">-->
-<!--			<div class="surveyQuItem">-->
-<!--				<div class="surveyQuItemContent">-->
-<!--					<div class="quCoTitle">-->
-<!--						<div class="quCoNum">{{showQuestionIndex quType}}、</div>-->
-<!--						<div class="quCoTitleEdit">{{quTitle}}</div>-->
-<!--					</div>-->
-<!--					<div class="quCoItem">-->
-<!--						<div class="quCoItemLeftChenTableDiv">-->
-<!--							<table class="quCoChenTable" >-->
-<!--								<tr><td></td>-->
-<!--									{{#each columnTd}}-->
-<!--										<td class="quChenColumnTd">-->
-<!--											<label class="quCoOptionEdit">{{optionName}}</label>-->
-<!--										</td>-->
-<!--									{{/each}}-->
-<!--								</tr>-->
-<!--								{{#each rowTd}}-->
-<!--									<tr class="dwQuCoChenRowTr">-->
-<!--										<td class="quChenRowTd"><label class="quCoOptionEdit">{{optionName}}</label>-->
-<!--											<input type="hidden" class="answerTag" value="0" >-->
-<!--										</td>-->
-<!--										{{#each ../columnTd}}-->
-<!--											<td>-->
-<!--												<div class="dwQuOptionItemContent">-->
-<!--													<label class="dwRedioStyle dwQuInputLabel" ></label>-->
-<!--													<input type="hidden" class="dwChenInputTemp" disabled="disabled" value="{{../id}}:{{id}}">-->
-<!--													<input name="item_qu_{{quType}}_{{quId}}_{{../id}}" value="{{id}}" type="radio" class="chen-radio-btn">-->
-<!--												</div>-->
-<!--											</td>-->
-<!--										{{/each}}-->
-<!--									</tr>-->
-<!--								{{/each}}-->
-<!--							</table>-->
-<!--						</div>-->
-<!--					</div>-->
-<!--					<div style="clear: both;"></div>-->
-<!--				</div>-->
-<!--			</div>-->
-<!--		</script>-->
+		<script type="text/x-handlebars-template" id="chenRadioTemplate">
+			<div class="surveyQuItem">
+				<div class="surveyQuItemContent">
+					<div class="quCoTitle">
+						<div class="quCoNum">{{showQuestionIndex quType}}、</div>
+						<div class="quCoTitleEdit">{{quTitle}}</div>
+					</div>
+					<div class="quCoItem">
+						<div class="quCoItemLeftChenTableDiv">
+							<table class="quCoChenTable" >
+								<tr><td></td>
+									{{#each columnTd}}
+										<td class="quChenColumnTd">
+											<label class="quCoOptionEdit">{{optionName}}</label>
+										</td>
+									{{/each}}
+								</tr>
+								{{#each rowTd}}
+									<tr class="dwQuCoChenRowTr">
+										<td class="quChenRowTd"><label class="quCoOptionEdit">{{optionName}}</label>
+											<input type="hidden" class="answerTag" value="0" >
+										</td>
+										{{#each ../columnTd}}
+											<td>
+												<div class="dwQuOptionItemContent">
+													<label class="dwRedioStyle dwQuInputLabel" ></label>
+													<input type="hidden" class="dwChenInputTemp" disabled="disabled" value="{{../id}}:{{id}}">
+													<input name="item_qu_{{quType}}_{{quId}}_{{../id}}" value="{{id}}" type="radio">
+												</div>
+											</td>
+										{{/each}}
+									</tr>
+								{{/each}}
+							</table>
+						</div>
+					</div>
+					<div style="clear: both;"></div>
+				</div>
+			</div>
+		</script>
 
 
 
 		<!-- 11矩阵单选题chen-radio -->
-		<script type="text/x-handlebars-template" id="chenRadioTemplate">
-			<div class="surveyQuItem">
+<!--		<script type="text/x-handlebars-template" id="chenRadioTemplate">-->
+<!--			<div class="surveyQuItem">-->
 
-				<div class="surveyQuItemContent">
-					<div class="quCoTitle" id="{{id}}">
-						<div class="quCoNum">{{showQuestionIndex quType}}、</div>
-						<div class="editAble quCoTitleEdit">{{quTitle}}</div>
-						<input type="hidden" name="quTitleSaveTag" value="1">
-					</div>
+<!--				<div class="surveyQuItemContent">-->
+<!--					<div class="quCoTitle" id="{{id}}">-->
+<!--						<div class="quCoNum">{{showQuestionIndex quType}}、</div>-->
+<!--						<div class="editAble quCoTitleEdit">{{quTitle}}</div>-->
+<!--						<input type="hidden" name="quTitleSaveTag" value="1">-->
+<!--					</div>-->
 
-					<div class="quCoItem">
-						<div class="quCoItemLeftChenTableDiv">
-							<table class="quCoChenTable">
-								<tr>
-									<td></td>
-									{{#each columnTd}}
-									<td class="quChenColumnTd">
-										<label class="editAble quCoOptionEdit">{{optionName}}</label>
-										<div class="quItemInputCase">
-											<input type="hidden" name="quItemId" value="{{id}}">
-											<input type="hidden" name="quItemSaveTag" value="{{quItemSaveTag}}">
-										</div>
-									</td>
-									{{/each}}
-								</tr>
-								{{#each rowTd}}
-								<tr class="quChenRowTr" checkNameInTr="{{id}}">
-									<td class="quChenRowTd">
-										<label class="editAble quCoOptionEdit">{{optionName}}</label>
-										<div class="quItemInputCase">
-											<input type="hidden" name="quItemId" value="{{id}}">
-											<input type="hidden" name="quItemSaveTag" value="{{quItemSaveTag}}">
-										</div>
-									</td>
-									{{#each ../columnTd}}
-									<td><input type="radio" class="chenRadioInput" name="row_{{../id}}"></td>
-									{{/each}}
-								</tr>
-								{{/each}}
-							</table>
-						</div>
+<!--					<div class="quCoItem">-->
+<!--						<div class="quCoItemLeftChenTableDiv">-->
+<!--							<table class="quCoChenTable">-->
+<!--								<tr>-->
+<!--									<td></td>-->
+<!--									{{#each columnTd}}-->
+<!--									<td class="quChenColumnTd">-->
+<!--										<label class="editAble quCoOptionEdit">{{optionName}}</label>-->
+<!--										<div class="quItemInputCase">-->
+<!--											<input type="hidden" name="quItemId" value="{{id}}">-->
+<!--											<input type="hidden" name="quItemSaveTag" value="{{quItemSaveTag}}">-->
+<!--										</div>-->
+<!--									</td>-->
+<!--									{{/each}}-->
+<!--								</tr>-->
+<!--								{{#each rowTd}}-->
+<!--								<tr class="quChenRowTr" checkNameInTr="{{id}}">-->
+<!--									<td class="quChenRowTd">-->
+<!--										<label class="editAble quCoOptionEdit">{{optionName}}</label>-->
+<!--										<div class="quItemInputCase">-->
+<!--											<input type="hidden" name="quItemId" value="{{id}}">-->
+<!--											<input type="hidden" name="quItemSaveTag" value="{{quItemSaveTag}}">-->
+<!--										</div>-->
+<!--									</td>-->
+<!--									{{#each ../columnTd}}-->
+<!--									<td><input type="radio" class="chenRadioInput" name="row_{{../id}}"></td>-->
+<!--									{{/each}}-->
+<!--								</tr>-->
+<!--								{{/each}}-->
+<!--							</table>-->
+<!--						</div>-->
 
-					</div>
-					<div style="clear: both;"></div>
+<!--					</div>-->
+<!--					<div style="clear: both;"></div>-->
 
 
-				</div>
-			</div>
-		</script>
+<!--				</div>-->
+<!--			</div>-->
+<!--		</script>-->
 
 		<!-- 13矩阵多选题chen-checkbox -->
 		<script type="text/x-handlebars-template" id="chenCheckboxTemplate">
@@ -604,7 +603,7 @@
 				</div>
 			</div>
 		</script>
-		
+
 		<!-- 18矩阵评分题chen-score -->
 		<script type="text/x-handlebars-template" id="chenScoreTemplate">
 			<div class="surveyQuItem">
@@ -1489,6 +1488,7 @@
 									}
 								});
 							} else if(quType === "CHENSCORE") {
+								console.log("矩阵评分")
 								var quChenScores = quItemBody.find(".quChenScoreSelect");
 								validateStatus = true;
 								$.each(quChenScores, function() {
@@ -1527,14 +1527,22 @@
 
 					/** 单选与多选条件触发 自定义单选多选效果 操作结束后得调用逻辑判断 **/
 					$("body").on("click", ".dwQuOptionItemContent", function(e) {
+						console.log("单选按钮点击事件触发");
+
 						var thObj = $(this);
 						var quItemBody = thObj.parents(".li_surveyQuItemBody");
 						var quType = quItemBody.find(".quType").val();
+
+						console.log("问题类型:", quType);
+
 						var dwQuInputLabel = thObj.find(".dwQuInputLabel");
+
 						if("RADIO" === quType) {
+							console.log("确认是单选类型，开始处理选中逻辑");
 							//单选题
 							quItemBody.find(".dwQuInputLabel").removeClass("checked");
 							quItemBody.find("input[type='radio']").prop("checked", false);
+							console.log("选中状态设置完成");
 							dwQuInputLabel.addClass("checked");
 							thObj.find("input[type='radio']").prop("checked", true);
 							runlogic(thObj.find("input[type='radio']"));
@@ -1576,7 +1584,6 @@
 						answerProgressbar(thObj);
 						validateCheck(quItemBody, false);
 					});
-
 
 					//只要触发事件
 					function runlogic(thFormElementObj) {
@@ -1867,7 +1874,6 @@
 							if (thObj.val() != "") {
 								// 使用 quItemBody 而非 mFillblankTableTr 来设置 answerTag
 								quItemBody.find(".answerTag").val(1);
-								console.log("设置后 answerTag 的值：", quItemBody.find(".answerTag").val());
 							} else {
 								// 检查同一题目中是否还有其他已填写的填空项
 								var otherInputs = quItemBody.find(".dwMFillblankInput").not(thObj);
@@ -1896,7 +1902,6 @@
 							if (thObj.val() != "") {
 								// 使用 quItemBody 而非 dwQuCoChenRowTr 来设置 answerTag
 								quItemBody.find(".answerTag").val(1);
-								console.log("设置后 answerTag 的值：", quItemBody.find(".answerTag").val());
 							} else {
 								// 检查同一题目中是否还有其他已填写的填空项
 								var otherInputs = quItemBody.find(".dwChenInputTemp").not(thObj);
@@ -1928,10 +1933,12 @@
 							}
 						} else if (quType === "CHENSCORE") {
 							var dwQuScoreOptionItemContent = thObj.parents(".dwQuScoreOptionItemContent");
+							var quItemBody = thObj.parents(".li_surveyQuItemBody");
+
 							if (thObj.val() != "0") {
-								dwQuScoreOptionItemContent.find(".answerTag").val(1);
+								quItemBody.find(".answerTag").val(1);
 							} else {
-								dwQuScoreOptionItemContent.find(".answerTag").val(0);
+								quItemBody.find(".answerTag").val(0);
 							}
 						} else if (quType === "CHENFBK") {
 							var dwQuChenFbkOptionItemContent = thObj.parents(".dwQuChenFbkOptionItemContent");
