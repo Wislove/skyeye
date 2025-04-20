@@ -761,7 +761,6 @@ li.knowledgeQuLogic .dwQuIcon .quKnowledgeInfo{
     width: 40px;
 }
 .surveyQuItemContent .quCoBottomTools ul li .dwQuIcon{
-    /* background: transparent url("../../../../images/toolbar.png") 0px 0px no-repeat; */
     width: 25px;
     height: 25px;
     margin: 0px auto;
@@ -1609,7 +1608,7 @@ table.quCoChenTable tr td label{
 .dwQuOptionItemContent label {
     cursor: pointer; /* 确保标签可点击 */
 }
-/* ********************************************************************** */
+
 .dwQuOptionItemContent .dwRedioStyle {
     background: transparent url(../../../../images/answer-icon-1.png) no-repeat center top;
     vertical-align: middle;
@@ -1637,43 +1636,6 @@ table.quCoChenTable tr td label{
 .dwQuOptionItemContent input[type='radio'], .dwQuOptionItemContent input[type='checkbox'] {
     display: none;
 }
-
-/* ******************************************************** */
-/* 隐藏原来的图片样式 */
-/*.dwRedioStyle, .dwCheckboxStyle {*/
-/*    display: none;*/
-/*}*/
-
-/*!* 自定义单选框样式 *!*/
-/*.custom-radio {*/
-/*    margin-right: 10px; !* 调整与文字的间距 *!*/
-/*}*/
-
-/*.custom-radio {*/
-/*    appearance: none; !* 去掉默认样式 *!*/
-/*    width: 20px;*/
-/*    height: 20px;*/
-/*    border: 1px solid #ccc;*/
-/*    border-radius: 50%;*/
-/*    position: relative;*/
-/*    margin-right: 10px;*/
-/*}*/
-
-/*.custom-radio:checked::before {*/
-/*    content: "";*/
-/*    position: absolute;*/
-/*    top: 50%;*/
-/*    left: 50%;*/
-/*    transform: translate(-50%, -50%);*/
-/*    width: 12px;*/
-/*    height: 12px;*/
-/*    background-color: #83AE00! important;*/
-/*    border-radius: 50%;*/
-/*} */
-/* ******************************************************** */
-
-
-
 
 .ui-progressbar .ui-progressbar-value {
     margin: 0px;

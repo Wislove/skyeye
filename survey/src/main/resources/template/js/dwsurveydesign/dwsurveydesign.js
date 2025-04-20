@@ -526,6 +526,7 @@ layui.config({
 				type: 'json',
 				callback: function (json) {
 					if (json.bean) {
+						parent.refreshCode = '0'; // 设置刷新码
 						winui.window.msg("保存成功", { icon: 1, time: 2000 });
 					} else {
 						winui.window.msg("保存失败：" + json.message, { icon: 2, time: 2000 });

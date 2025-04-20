@@ -225,6 +225,7 @@ layui.define(["jquery", "form", "element"], function (exports) {
 
         // 逻辑设置
         $("body").on("click", ".dwQuLogic", function () {
+            console.log("点击逻辑")
             showDialog($(this));
             var quItemBody = $(this).parents(".surveyQuItemBody");
             var quType = quItemBody.find("input[name='quType']").val();
@@ -254,7 +255,7 @@ layui.define(["jquery", "form", "element"], function (exports) {
                         // 设置分数 geLe scoreNum
                         var geLe = "";
                         var scoreNum = "";
-                        if (quType === "SCORE") {
+                        if (quType === "SCORE"||quType==='8') {
                             geLe = $(this).find("input[name='geLe']").val();
                             scoreNum = $(this).find("input[name='scoreNum']").val();
                         }
@@ -272,7 +273,7 @@ layui.define(["jquery", "form", "element"], function (exports) {
                             lastTr.find(".logicQuOptionSel").change();
                             lastTr.find(".logicQuSel").change();
                             // 设置分数 geLe scoreNum
-                            if (quType === "SCORE") {
+                            if (quType === "SCORE"||quType==='8') {
                                 lastTr.find(".logicScoreGtLt").val(geLe);
                                 lastTr.find(".logicScoreNum").val(scoreNum);
                             }
@@ -601,7 +602,7 @@ layui.define(["jquery", "form", "element"], function (exports) {
             var quItemBody = $(curEditObj).parents(".surveyQuItemBody");
             var quType = quItemBody.find("input[name='quType']").val();
             var curEditClass = $(curEditObj).attr("class");
-            if (quType == "RADIO" || quType == "CHECKBOX") {
+            if (quType == "RADIO" || quType == "CHECKBOX"||quType==='1'||quType==='2') {
                 if (curEditClass.indexOf("quCoTitleEdit") < 0) {
                     $(".dwComEditMenuUl .option_Set_Li").show();
                 } else {
@@ -1498,7 +1499,7 @@ function showDialog(thDialogObj) {
             }
         }
     } else if (thObjClass.indexOf("dwQuLogic") >= 0) {
-        $("#dwCommonDialog .dwQuDialogLoad").show();
+        $("#dwCommonDialog .dwQuDialogLogic").show();
     } else if (thObjClass.indexOf("dwFbMenuBtn") >= 0) {
         $("#dwCommonDialog .dwQuFillDataTypeOption").show();
         var checkType_val = quItemBody.find("input[name='checkType']").val();
@@ -1915,15 +1916,15 @@ function addQuDialogLogicTr(autoClass, trueCallback, falseCallback) {
             return false;
         }
     });
-
+console.log("executeTag:",executeTag)
     if (executeTag) {
         var appendTrHtml = $("#setQuLogicItemTrModel").html();
-        if (quType === "SCORE") {
+        if (quType === "SCORE"||quType==='8') {
             appendTrHtml = $("#setQuLogicItemTrModel_score").html();
         }
         $("#dwQuLogicTable").append("<tr>" + appendTrHtml + "</tr>");
         var lastTr = $("#dwQuLogicTable").find("tr").last();
-        if (quType === "FILLBLANK") {
+        if (quType === "FILLBLANK"|| quType === '3' ) {
             lastTr.find(".ifSpanText1").text("如果回答");
         }
         if (autoClass) {
@@ -1935,7 +1936,7 @@ function addQuDialogLogicTr(autoClass, trueCallback, falseCallback) {
         }
         var dwQuOptionSel = lastTr.find(".logicQuOptionSel");
         var eachTag = true;
-        if (quType === "CHENRADIO" || quType === "CHENCHECKBOX" || quType === "CHENSCORE" || quType === "CHENFBK") {
+        if (quType === "CHENRADIO" || quType === "CHENCHECKBOX" || quType === "CHENSCORE" || quType === "CHENFBK"||quType ==='11'||quType ==='13'||quType ==='18'||quType ==='12') {
             var quChenColumnTds = quItemBody.find(".quChenColumnTd");
             var quChenRowTds = quItemBody.find(".quChenRowTd");
             $.each(quChenRowTds, function () {
@@ -1980,7 +1981,7 @@ function addQuDialogLogicTr(autoClass, trueCallback, falseCallback) {
         } else {
             $("#dwQuLogicTable").find(".logicQuOptionSel option[value='0']").remove();
         }
-        if (quType === "FILLBLANK") {
+        if (quType === "FILLBLANK"||quType ==='3') {
             dwQuOptionSel.val("0");
         }
         var logicQuSel = lastTr.find(".logicQuSel");
@@ -2009,13 +2010,13 @@ function addQuDialogLogicTr(autoClass, trueCallback, falseCallback) {
             }
         });
         logicQuSel.append("<option value='1'>正常结束（计入结果）</option><option value='2'>提前结束（不计入结果）</option>");
-        if (quType === "SCORE") {
+        if (quType === "SCORE"||quType ==='8') {
             var logicScoreNum = lastTr.find(".logicScoreNum");
             logicScoreNum.empty();
             for (var i = 1; i <= 10; i++) {
                 logicScoreNum.append("<option value=\"" + i + "\">" + i + "</option>");
             }
-        } else if (quType === "ORDERBY") {
+        } else if (quType === "ORDERBY"||quType ==='9') {
             dwQuOptionSel.empty();
             dwQuOptionSel.append("<option value='0'>回答完成</option>");
             lastTr.find(".ifSpanText1").text("如果本题");

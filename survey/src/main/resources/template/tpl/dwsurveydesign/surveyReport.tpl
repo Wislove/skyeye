@@ -10,7 +10,7 @@
 				<span class="collectInfoSpan">{{answerNum}}</span>
 			</span>
 			<span class="surveyCollectInfoRight">
-				开始时间：<span class="collectInfoSpan">{{startTime}}</span>
+				开始时间：<span class="collectInfoSpan">{{createTime}}</span>
 			</span>
 		</div>
 	</div>

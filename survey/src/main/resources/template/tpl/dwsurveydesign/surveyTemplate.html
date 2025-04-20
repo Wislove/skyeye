@@ -705,6 +705,7 @@
 					var $ = layui.$,
 						form = layui.form;
 					bgAnDate = getFormatDate();
+
 					AjaxPostUtil.request({url: sysMainMation.surveyBasePath + "takeExam", params: {id: getUrlParam("rowId")}, type: 'json', callback: function (json) {
 						showGrid({
 							id: "wrap",
@@ -911,6 +912,32 @@
 								loadModel();
 							}
 						});
+
+						// ********************************************************************************************************
+							AjaxPostUtil.request({
+								url: sysMainMation.surveyBasePath + "querySurveyAnswerById",
+								params: {id: getUrlParam("rowId")},
+								type: 'json',
+								callback: function(json) {
+									console.log("API response:", json);
+									if(json.returnCode === 0) {
+										// 保存回答信息以便后续使用
+										var answerData = json.bean;
+
+										// 2. 然后获取问卷基本信息
+										loadSurvey(answerData);
+									} else {
+										// 如果获取回答信息失败，仍然加载问卷
+										loadSurvey(null);
+									}
+								},
+								errorCallback: function() {
+									// 出错时仍然加载问卷
+									loadSurvey(null);
+								}
+							});
+
+						// ************************************************************************************************
 						ruleCode = json.bean.ruleCode;
 						if(json.bean.rule == '3'){
 							_openNewWindows({
@@ -1172,9 +1199,22 @@
 						//填空题
 						$(".fillblankInput,.dwMFillblankInput,.dwChenMFillblankInput").blur(function() {
 							var thVal = $(this).val();
+							var quItemBody = $(this).parents(".li_surveyQuItemBody");
+							var quId = quItemBody.find(".quId").val();
+							var quType = quItemBody.find(".quType").val();
+
+							console.log("调用 saveFillblankAnswer 函数", { quId: quId, quType: quType, answer: thVal });
+
+							// 保存答案
+							saveFillblankAnswer({
+								quId: quId,
+								quType: quType,
+								answer: thVal
+							});
+
 							runlogic($(this));
 							answerProgressbar($(this));
-							validateCheck($(this).parents(".li_surveyQuItemBody"), false);
+							validateCheck(quItemBody, false);
 						});
 
 						$(".quChenScoreSelect").change(function() {
@@ -1197,13 +1237,15 @@
 				    }
 
 					$("body").on("click", ".submitSurvey", function(e) {
-
+						console.log("点击提交")
 						if(!validateForms()) {
 							return false;
 						}
 						if(validateForms()) {
 							var endAnDate = getFormatDate();
 							var params = {
+								id: getUrlParam("rowId"),
+
 								jsonData: JSON.stringify($("#surveyForm").serializeJson()),
 								bgAnDate: bgAnDate,
 								handleState: "0",
@@ -1527,17 +1569,13 @@
 
 					/** 单选与多选条件触发 自定义单选多选效果 操作结束后得调用逻辑判断 **/
 					$("body").on("click", ".dwQuOptionItemContent", function(e) {
-						console.log("单选按钮点击事件触发");
-
 						var thObj = $(this);
 						var quItemBody = thObj.parents(".li_surveyQuItemBody");
 						var quType = quItemBody.find(".quType").val();
 
-						console.log("问题类型:", quType);
-
 						var dwQuInputLabel = thObj.find(".dwQuInputLabel");
 
-						if("RADIO" === quType) {
+						if("RADIO" === quType||'1'===quType) {
 							console.log("确认是单选类型，开始处理选中逻辑");
 							//单选题
 							quItemBody.find(".dwQuInputLabel").removeClass("checked");
@@ -1546,7 +1584,7 @@
 							dwQuInputLabel.addClass("checked");
 							thObj.find("input[type='radio']").prop("checked", true);
 							runlogic(thObj.find("input[type='radio']"));
-						} else if("CHECKBOX" === quType) {
+						} else if("CHECKBOX" === quType||'2'===quType) {
 							//多选题
 							var quInputLabelClass = dwQuInputLabel.attr("class");
 							if(quInputLabelClass.indexOf("checked") > 0) {
@@ -1557,7 +1595,7 @@
 								thObj.find("input[type='checkbox']").prop("checked", true);
 							}
 							runlogic(thObj.find("input[type='checkbox']"));
-						} else if("CHENRADIO" === quType) {
+						} else if("CHENRADIO" === quType||'11'===quType) {
 							//矩陈单选
 							var chenRow = thObj.parents("tr");
 							chenRow.find(".dwQuInputLabel").removeClass("checked");
@@ -1569,7 +1607,7 @@
 						}
 
 
-						else if("CHENCHECKBOX" === quType) {
+						else if("CHENCHECKBOX" === quType||'13'===quType) {
 							//矩陈多选
 							var quInputLabelClass = dwQuInputLabel.attr("class");
 							if(quInputLabelClass.indexOf("checked") > 0) {
@@ -1593,20 +1631,20 @@
 							var quInputCase = quItemBody.find(".quInputCase");
 							var quId = quInputCase.find(".quId").val();
 							var quType = quInputCase.find(".quType").val();
-							if(quType === "RADIO" || quType === "CHECKBOX" || quType === "SCORE" || quType === "MULTIFILLBLANK" || quType === "CHENRADIO" || quType === "CHENCHECKBOX" || quType === "CHENSCORE" || quType === "CHENFBK") {
+							if(quType === "RADIO" || quType === "CHECKBOX" || quType === "SCORE" || quType === "MULTIFILLBLANK" || quType === "CHENRADIO" || quType === "CHENCHECKBOX" || quType === "CHENSCORE" || quType === "CHENFBK"|| quType ==='1'|| quType ==='2'||quType==='8'||quType==='4'||quType==='11'||quType==='13'||quType==='18'||quType==='12') {
 								//判断是否选中
 								var quLgoicItem = null;
 								//遍历每个逻辑设置
 								var quOptionItems = null;
-								if(quType === "RADIO" || quType === "CHECKBOX") {
+								if(quType === "RADIO" || quType === "CHECKBOX"||quType==='1'||quType==='2') {
 									quOptionItems = quItemBody.find(".dwQuOptionItemContent");
-								} else if(quType === "SCORE") {
+								} else if(quType === "SCORE"||quType==='8') {
 									quOptionItems = quItemBody.find(".quScoreOptionTr");
-								} else if(quType === "MULTIFILLBLANK") {
+								} else if(quType === "MULTIFILLBLANK"||quType==='4') {
 									quOptionItems = quItemBody.find(".mFillblankTableTr");
-								} else if(quType === "CHENRADIO" || quType === "CHENCHECKBOX") {
+								} else if(quType === "CHENRADIO" || quType === "CHENCHECKBOX"||quType==='11'||quType==='13') {
 									quOptionItems = quItemBody.find(".dwQuOptionItemContent");
-								} else if(quType === "CHENFBK") {
+								} else if(quType === "CHENFBK"||quType==='12') {
 									quOptionItems = quItemBody.find(".dwQuChenFbkOptionItemContent");
 								}
 								$.each(quLogicItems, function() {
@@ -1617,7 +1655,7 @@
 									var logicType = loginItem.find(".logicType").val();
 									var geLe = null;
 									var scoreNum = null;
-									if(quType === "SCORE") {
+									if(quType === "SCORE"||quType==='8') {
 										geLe = loginItem.find(".geLe").val();
 										scoreNum = loginItem.find(".scoreNum").val();
 									}
@@ -1628,34 +1666,34 @@
 										var quInput = null;
 										var logicStatus = false;
 										var curQuItemId = null;
-										if(quType === "RADIO") {
+										if(quType === "RADIO"||quType==='1') {
 											quInput = quCoItem.find("input[type='radio']");
 											logicStatus = quInput.prop("checked");
 											curQuItemId = quInput.val();
-										} else if(quType === "CHECKBOX") {
+										} else if(quType === "CHECKBOX"||quType==='2') {
 											quInput = quCoItem.find("input[type='checkbox']");
 											logicStatus = quInput.prop("checked");
 											curQuItemId = quInput.val();
-										} else if(quType === "SCORE") {
+										} else if(quType === "SCORE"||quType==='8') {
 											quInput = quCoItem.find(".dwScoreOptionId");
 											var curScore = quCoItem.find(".scoreNumInput").val();
 											if(curScore != "") {
 												logicStatus = (geLe === "le" && curScore <= scoreNum) || (geLe === "ge" && curScore >= scoreNum);
 											}
 											curQuItemId = quInput.val();
-										} else if(quType === "MULTIFILLBLANK") {
+										} else if(quType === "MULTIFILLBLANK"||quType==='4') {
 											quInput = quCoItem.find(".dwMFillblankOptionId");
 											logicStatus = quCoItem.find(".dwMFillblankInput").val() != "";
 											curQuItemId = quInput.val();
-										} else if(quType === "CHENRADIO") {
+										} else if(quType === "CHENRADIO"||quType==='11') {
 											quInput = quCoItem.find("input[type='radio']");
 											logicStatus = quInput.prop("checked");
 											curQuItemId = quCoItem.find(".dwChenInputTemp").val();
-										} else if(quType === "CHENCHECKBOX") {
+										} else if(quType === "CHENCHECKBOX"||quType==='13') {
 											quInput = quCoItem.find("input[type='checkbox']");
 											logicStatus = quInput.prop("checked");
 											curQuItemId = quCoItem.find(".dwChenInputTemp").val();
-										} else if(quType === "CHENFBK") {
+										} else if(quType === "CHENFBK"||quType==='12') {
 											quInput = quCoItem.find(".dwChenMFillblankInput");
 											logicStatus = quInput.val() != "";
 											curQuItemId = quCoItem.find(".dwChenInputTemp").val();
@@ -1711,7 +1749,7 @@
 										return false;
 									}
 								});
-							} else if(quType === "FILLBLANK") {
+							} else if(quType === "FILLBLANK"||quType=='3') {
 								//遍历每个逻辑设置
 								var quOptionItems = quItemBody.find(".dwQuOptionItemContent");
 								var thVal = thFormElementObj.val();
@@ -1769,6 +1807,53 @@
 								});
 							}
 						}
+					}
+
+					/**
+					 * 保存填空题答案
+					 * @param {Object} params 包含以下参数：
+					 *   - quId: 题目ID
+					 *   - quType: 题目类型(3-填空题,4-多项填空题)
+					 *   - answer: 答案内容
+					 */
+					function saveFillblankAnswer(params) {
+						console.log("调用 saveFillblankAnswer 函数", params);
+						console.log("保存填空")
+						// 构建请求数据
+						var requestData = {
+							quId: params.quId,
+							quType: params.quType,
+							answer: params.answer,
+							belongAnswerId:params.answerRecordId,
+							bgAnDate: bgAnDate, // 使用全局变量bgAnDate
+							handleState: "0",
+							dataSource: "0"
+						};
+
+						if (params.surveyAnswerId) {
+							requestData.belongAnswerId = params.answerRecordId;
+						}
+
+						// 调用接口保存答案
+						AjaxPostUtil.request({
+							url: sysMainMation.surveyBasePath + "writeDwAnFillblank",
+							params: requestData,
+							type: 'json',
+							callback: function(json) {
+								if (json.returnCode === 0) {
+									console.log('填空题答案保存成功');
+									// 如果需要返回surveyAnswerId给调用方
+									if (json.bean && json.bean.surveyAnswerId) {
+										return json.bean.surveyAnswerId;
+									}
+								} else {
+									console.error('填空题答案保存失败：' + json.returnMessage);
+								}
+							},
+							error: function(xhr, status, error) {
+								console.error('保存填空题答案时发生错误：', error);
+							}
+						});
 					}
 
 					function skQuestion(nextQuItemBody, skQuId, logicId, callback) {
