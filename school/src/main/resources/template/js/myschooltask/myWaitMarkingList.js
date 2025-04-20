@@ -1,5 +1,5 @@
 var rowId = "";
-
+var state=1
 layui.config({
 	base: basePath,
 	version: skyeyeVersion
@@ -144,7 +144,7 @@ layui.config({
 		table.on('tool(messageTable)', function (obj) {
 			var data = obj.data;
 			var layEvent = obj.event;
-			if (layEvent === 'examMarkingDetail') { // 阅卷
+			if (layEvent === 'examMarkingDetail') {
 				examMarkingDetail(data);
 			} else if (layEvent === 'details') { // 详情
 				details(data);
@@ -154,19 +154,16 @@ layui.config({
 		form.render();
 	}
 
-	// 阅卷
 	function examMarkingDetail(data) {
-		rowId = data.answerId;
-		_openNewWindows({
-			url: "../../tpl/myschooltask/waitingMarkingStudentsList.html?id=" + data.id, // 修改为新的页面路径
-			title: "批阅",
+		parent._openNewWindows({
+			url: "../../tpl/myschooltask/waitingMarkingStudentsList.html?surveyId=" + data.surveyId + '&companyId=' + data?.surveyMation?.classId + '&state=' + state + '&objectId=' + data?.surveyMation?.subjectId,
+			title: "待批阅学生列表",
 			pageId: "waitingMarkingStudentsList",
 			area: ['90vw', '90vh'],
 			callBack: function (refreshCode) {
 				winui.window.msg(systemLanguage["com.skyeye.successfulOperation"][languageType], {icon: 1, time: 2000});
 				loadTable();
-			}
-		});
+			}});
 	}
 
 	// 详情
@@ -205,7 +202,7 @@ layui.config({
 		return {
 			keyword: $("#surveyName").val(),
 			holderId: $("#facultyId").val(),
-			state: 1 // 确保传递 state 参数
+			state: state // 确保传递 state 参数
 		};
 	}
 

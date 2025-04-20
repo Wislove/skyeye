@@ -2,28 +2,60 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title></title>
+    <title>待批阅试卷</title>
     <link href="../../assets/lib/layui/css/layui.css" rel="stylesheet" />
     <link href="../../assets/lib/winui/css/winui.css" rel="stylesheet" />
+    <style>
+        .exam-container {
+            padding: 20px;
+            border: 1px solid #e2e2e2;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .exam-header {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .exam-info {
+            margin-bottom: 20px;
+        }
+        .exam-question {
+            margin-bottom: 20px;
+        }
+        .exam-score {
+            margin-top: 20px;
+        }
+        .exam-score input {
+            width: 50px;
+        }
+        .exam-actions {
+            text-align: right;
+        }
+        .exam-actions button {
+            margin-left: 10px;
+        }
+    </style>
 </head>
 <body>
-<div class="winui-toolbar">
-    <div class="winui-tool">
-        <button id="reloadTable" class="winui-toolbtn search-table-btn-right"><i class="fa fa-refresh" aria-hidden="true"></i><language showName="com.skyeye.refreshDataBtn"></language></button>
-        <button id="addBean" class="winui-toolbtn search-table-btn-right" auth="add"><i class="fa fa-plus" aria-hidden="true"></i><language showName="com.skyeye.addBtn"></language></button>
+<div class="exam-container">
+    <div class="exam-header" id="examTitle">重生之我在大学逆天改命888_副本</div>
+    <div class="exam-info">学号：<span id="studentId">2305050234</span></div>
+    <div class="exam-question">
+        <div>1. 重生的生存准则 [多项填空题] (5分)</div>
+        <textarea rows="4" cols="50" id="answer"></textarea>
     </div>
-</div>
-<div style="margin:auto 10px;">
-    <table id="messageTable" lay-filter="messageTable"></table>
-    <script type="text/html" id="tableBar">
-        <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="edit"><language showName="com.skyeye.editBtn"></language></a>
-        <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del"><language showName="com.skyeye.deleteBtn"></language></a>
-    </script>
+    <div class="exam-score">
+        <label>评分:</label>
+        <input type="text" id="score" placeholder="请输入" />
+    </div>
+    <div class="exam-actions">
+        <button class="layui-btn layui-btn-primary" id="cancel">取消</button>
+        <button class="layui-btn" id="submit">提交</button>
+    </div>
 </div>
 <script src="../../assets/lib/layui/layui.js"></script>
 <script src="../../assets/lib/layui/custom.js"></script>
-<script type="text/javascript">
-    layui.config({base: '../../js/chapter/'}).use('chapterList');
-</script>
+<script src="examDesignAdd.js"></script>
 </body>
 </html>
