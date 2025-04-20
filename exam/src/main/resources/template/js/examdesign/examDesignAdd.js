@@ -244,6 +244,15 @@ layui.config({
 																$("input[type='checkbox'][rowId='" + classId + "']").prop("checked", true);
 															});
 														}
+														
+														// 在编辑模式下禁用字段
+														// 禁用所属学校、所属院系、考试专业、考试科目、考试班级字段
+														$("#schoolId").prop("disabled", true);
+														$("#facultyId").prop("disabled", true);
+														$("#majorId").prop("disabled", true);
+														$("#subjectId").prop("disabled", true);
+														$("#classList input[type='checkbox']").prop("disabled", true);
+														
 														form.render('checkbox');
 													}
 												});
@@ -308,20 +317,38 @@ layui.config({
 
 	        	//获取选中的班级信息
 	        	var propertyIds = "";
-	        	$.each($('input:checkbox:checked'),function(){
-	        		propertyIds = propertyIds + $(this).attr("rowId") + ",";
-	            });
-	            if(isNull(propertyIds)){
-	            	winui.window.msg('请选择班级', {icon: 2, time: 2000});
-	            	return false;
-	            }
+	        	if (!isNull(parent.rowId)) {
+	        		// 如果是编辑模式，直接使用原始班级ID值
+	        		AjaxPostUtil.request({
+	        			url: schoolBasePath + "queryDirectoryById",
+	        			params: {id: parent.rowId},
+	        			type: 'json',
+	        			async: false, // 同步请求，确保在提交前获取到值
+	        			callback: function (json) {
+	        				if(json.bean.classId) {
+	        					propertyIds = json.bean.classId;
+	        				}
+	        			}
+	        		});
+	        	} else {
+	        		// 新增模式，正常获取用户选择的班级
+	        		$.each($('input:checkbox:checked'),function(){
+	        			propertyIds = propertyIds + $(this).attr("rowId") + ",";
+	        		});
+	        		propertyIds = propertyIds.slice(0, -1); // 移除最后的逗号
+	        	}
+	        	
+	        	if(isNull(propertyIds)){
+	        		winui.window.msg('请选择班级', {icon: 2, time: 2000});
+	        		return false;
+	        	}
 
 	        	var params = {
                     id: parent.rowId || "",
         			surveyName: $("#surveyName").val(),
         			schoolId: $("#schoolId").val(),
         			semesterId: $("#semesterId").val(),
-					classId: propertyIds.slice(0, -1),  // 移除最后的逗号
+					classId: propertyIds,
         			subjectId: $("#subjectId").val(),
 					facultyId: $("#facultyId").val(),
 					majorId: $("#majorId").val(),

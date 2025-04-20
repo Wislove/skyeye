@@ -86,6 +86,9 @@
             <language showName="com.skyeye.deleteBtn"></language>
         </a>
         {{# } }}
+        {{# if(auth('1588645479233')){ }}
+        <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="markExam">编辑</a>
+        {{# } }}
         <!--执行中-->
         {{# } else if(d.surveyState == 1){ }}
         {{# if(auth('1586066307061')){ }}

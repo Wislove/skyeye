@@ -1,4 +1,8 @@
-var rowId = "";
+var surveyId = "";
+var objectId = "";
+var companyId = "";
+var state = "";
+
 layui.config({
     base: basePath,
     version: skyeyeVersion
@@ -9,9 +13,12 @@ layui.config({
     var $ = layui.$,
         form = layui.form,
         table = layui.table,
-        laydate = layui.laydate;
-
+        objectKey = GetUrlParam("objectKey");
+    laydate = layui.laydate;
     surveyId = GetUrlParam("surveyId");
+    objectId = GetUrlParam("objectId");
+    companyId = GetUrlParam("companyId");
+    state = GetUrlParam("state");
 
     if (isNull(surveyId)) {
         winui.window.msg("请传入适用对象信息", {icon: 2, time: 2000});
@@ -24,9 +31,10 @@ layui.config({
 
     function initTable(){
         table.render({
+            id: 'messageTable',
             elem: '#messageTable',
             method: 'post',
-            url: schoolBasePath + 'querySurveyAnswerBySurveyId',
+            url: schoolBasePath + 'queryAllSurveyAnswerListBySurveyId',
             where: getTableParams(),
             even: false,
             page: true,
@@ -35,8 +43,13 @@ layui.config({
             cols: [[
                 { title: systemLanguage["com.skyeye.serialNumber"][languageType], rowspan: '2', type: 'numbers' },
                 { field: 'studentName', rowspan: '2', width: 200, title: '姓名', templet: function (d) {
-                        return '<a lay-event="details" class="notice-title-click">' + d.stuMation?.studentName + '</a>';
-                    }}
+                        return getNotUndefinedVal(d.studentName)
+                    }},
+                { field: 'markEndTime', rowspan: '2', width: 150, align: 'center', title: '批阅结束时间', templet: function (d) {
+                        return d.markEndTime
+                    }},
+                { title: '答题信息', align: 'center', colspan: '3' },
+                { title: systemLanguage["com.skyeye.operation"][languageType], fixed: 'right', rowspan: '2', align: 'center', width: 100, toolbar: '#tableBar'}
             ],[
                 { field: 'bgAnDate', title: '开始时间', align: 'center', width: 120},
                 { field: 'endAnDate', title: '结束时间', align: 'center', width: 120},
@@ -51,8 +64,8 @@ layui.config({
         table.on('tool(messageTable)', function (obj) {
             var data = obj.data;
             var layEvent = obj.event;
-            if (layEvent === 'examMarkingDetail') { //阅卷
-                examMarkingDetail(data);
+            if (layEvent === 'marking') { //阅卷
+                marking(data);
             }
         });
 
@@ -60,33 +73,23 @@ layui.config({
     }
 
     // 阅卷
-    function examMarkingDetail(data) {
-        rowId = data.answerId;
+    function marking(data) {
+        var rowId = data.answerId;
         _openNewWindows({
-            url: "../../tpl/examMarkingDetail/examMarkingDetail.html",
+            url: '../../tpl/myschooltask/marking.html?id=' + data.id,
             title: "阅卷",
-            pageId: "examMarkingDetail",
-            area: ['100vw', '100vh'],
+            pageId: "marking",
+            area: ['90vw', '90vh'],
             callBack: function (refreshCode) {
                 winui.window.msg(systemLanguage["com.skyeye.successfulOperation"][languageType], {icon: 1, time: 2000});
                 loadTable();
-            }});
+            }
+        });
     }
-// 打开阅卷弹窗
+
     function _openNewWindows(params) {
         parent._openNewWindows(params);
     }
-
-    parent._openNewWindows({
-        url: "../../tpl/examMarkingDetail/examMarkingDetail.html",
-        title: "阅卷",
-        pageId: "examMarkingDetail",
-        area: ['100vw', '100vh'],
-        callBack: function (refreshCode) {
-            winui.window.msg(systemLanguage["com.skyeye.successfulOperation"][languageType], {icon: 1, time: 2000});
-            loadTable();
-        }
-    });
 
     function loadTable() {
         table.reload('messageTable', { // 使用表格的 ID 进行刷新
@@ -100,18 +103,22 @@ layui.config({
         loadTable();
     });
 
-    function loadTable() {
-        table.reload('messageTable', { // 使用表格的 ID 进行刷新
-            where: getTableParams(),
-            page: {curr: 1} // 刷新时从第一页开始
-        });
-    }
-
     function getTableParams() {
         return {
-            keyword: $("#surveyName").val()
+            keyword: $("#surveyName").val(),
+            surveyId: surveyId
         };
     }
 
-    exports('waitMarkingStudentsList', {});
+    function getTableParams() {
+        return $.extend(true, {
+            companyId: companyId,
+            state:state,
+            objectId: objectId,
+            holderId:surveyId
+            },
+            initTableSearchUtil.getSearchValue("messageTable"));
+    }
+
+    exports('waitingMarkingStudentsList', {});
 });

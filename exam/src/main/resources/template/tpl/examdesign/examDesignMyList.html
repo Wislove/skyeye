@@ -77,6 +77,9 @@
 				{{# if(auth('1587278577111')){ }}
           			<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><language showName="com.skyeye.deleteBtn"></language></a>
 				{{# } }}
+				{{# if(auth('1588645340287')){ }}
+				<a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="markExam">编辑</a>
+				{{# } }}
 			{{# } else if(d.surveyState == 1){ }}
 				{{# if(auth('1587278595493')){ }}
 					<a class="layui-btn layui-btn-xs" lay-event="endSurvey">结束考试</a>
