@@ -9,13 +9,13 @@ layui.config({
 	layui.use(['form'], function (form) {
 		var index = parent.layer.getFrameIndex(window.name);
 	    var $ = layui.$;
-	    
+
 	    //帖子信息展示
         AjaxPostUtil.request({url: sysMainMation.admBasePath + "queryForumContentById", params: {id : parent.forumId}, type: 'json', callback: function (json) {
-			$("#content").html(json.bean.content);
-			$("#title").html(json.bean.title);
+			$("#content").html(json.bean.forumContent);
+			$("#title").html(json.bean.forumTitle);
 			$("#createTime").html(json.bean.createTime);
-			$("#photo").html("<img userId=" + json.bean.userId + " alt='' src=" + json.bean.userPhoto + ">");
+			$("#photo").html("<img userId=" + json.bean.userId + " alt='' src=" + json.bean.createMation.userPhoto + ">");
 			$("#content").removeClass("layui-hide");
 			$("#showForm").removeClass("layui-hide");
 			matchingLanguage();
@@ -38,11 +38,11 @@ layui.config({
  	    form.on('submit(formAddBean)', function (data) {
  	        if (winui.verifyForm(data.elem)) {
  	        	var params = {
-        			rowId: parent.rowId,
- 	        		examineState: data.field.examineState,
-        			examineNopassReason: $("#examineNopassReason").val()
+        			id: parent.rowId,
+ 	        		state: data.field.examineState,
+        			reason: $("#examineNopassReason").val()
  	        	};
- 	        	AjaxPostUtil.request({url: sysMainMation.forumBasePath + "checkForumReport", params: params, type: 'json', callback: function (json) {
+ 	        	AjaxPostUtil.request({url: sysMainMation.admBasePath + "checkForumReport", params: params, type: 'json', callback: function (json) {
 					parent.layer.close(index);
 					parent.refreshCode = '0';
 	 	   		}});

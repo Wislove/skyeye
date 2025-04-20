@@ -20,7 +20,8 @@ layui.config({
         sysDictDataUtil.showDictDataListByDictTypeCode(sysDictData["bbsForumReportType"]["key"], 'select', "reportType", '', form);
         // 下拉框监听，如果类型是其他，则显示举报内容输入框
         form.on('select(reportType)', function (data) {
-            if (data.value == 'other') {
+            console.log(data);
+            if (data.value == 'fbcbb3f55c314981984bcc4a2f015b3f') {
                 $("#contentHide").removeClass("layui-hide");
             } else {
                 $("#contentHide").addClass("layui-hide");
