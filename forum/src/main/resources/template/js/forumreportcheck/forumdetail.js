@@ -10,10 +10,11 @@ layui.config({
 	
 	//帖子信息展示
 	AjaxPostUtil.request({url: sysMainMation.admBasePath + "queryForumContentById", params: {id: parent.forumId}, type: 'json', callback: function (json) {
-		$("#content").html(json.bean.content);
-		$("#title").html(json.bean.title);
+		console.log(json.bean.forumTitle);
+		$("#forumContent").html(json.bean.forumContent);
+		$("#forumTitle").html(json.bean.forumTitle);
 		$("#createTime").html(json.bean.createTime);
-		$("#photo").html("<img userId=" + json.bean.userId + " alt='' src=" + json.bean.userPhoto + ">");
+		$("#photo").html("<img userId=" + json.bean.userId + " alt='' src=" + json.bean.createMation.userPhoto + ">");
 		matchingLanguage();
 	}});
 	
