@@ -115,7 +115,9 @@ layui.config({
                         }
                     }
                 },
-                { field: 'createName', title: '举报人', align: 'center', width: 120 },
+                { field: 'createName', title: '举报人', align: 'center', width: 120 , templet: function (d) {
+                    return d.reportMation.name;
+                    }},
                 { field: 'reportTime', title: '举报时间', align: 'center', width: 200 },
                 { title: systemLanguage["com.skyeye.operation"][languageType], fixed: 'right', align: 'center', width: 250, toolbar: '#tableBar' }
             ]],
@@ -274,7 +276,9 @@ layui.config({
                         return sysDictDataUtil.getDictDataNameByCodeAndKey("BBS_FORUM_REPORT_TYPE", d.reportTypeId);
                     }
                 },
-                { field: 'createName', title: '举报人', align: 'center', width: 120 },
+                { field: 'createName', title: '举报人', align: 'center', width: 120 , templet: function (d) {
+                        return d.reportMation.name;
+                    }},
                 { field: 'reportTime', title: '举报时间', align: 'center', width: 200 },
                 {
                     field: 'examineState', title: '状态', width: 100, align: 'center', templet: function (d) {
@@ -289,7 +293,9 @@ layui.config({
                         }
                     }
                 },
-                { field: 'examineUser', title: '审核人', align: 'center', width: 180 },
+                { field: 'examineUser', title: '审核人', align: 'center', width: 180 , templet: function (d) {
+                        return d.examineMation.name;
+                    }},
                 { field: 'examineTime', title: '审核时间', align: 'center', width: 200 },
                 { title: systemLanguage["com.skyeye.operation"][languageType], fixed: 'right', align: 'center', width: 250, toolbar: '#checkedTableBar' }
             ]],
