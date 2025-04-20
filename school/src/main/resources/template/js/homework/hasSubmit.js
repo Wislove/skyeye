@@ -26,7 +26,10 @@ layui.config({
             { field: 'name', title: '姓名', align: 'left', width: 150, templet: function(d) {
                 return getNotUndefinedVal(d.createMation?.realName);
             }},
-            { field: 'accountNumber', title: '学号', align: 'left', width: 180, templet: function(d) {
+            { field: 'studentNumber', title: '学号', align: 'left', width: 180, templet: function(d) {
+                    return getNotUndefinedVal(d.createMation?.studentNumber);
+                }},
+            { field: 'accountNumber', title: '账号', align: 'left', width: 180, templet: function(d) {
                 return getNotUndefinedVal(d.createMation?.accountNumber);
             }},
             { field: 'content', title: '内容', align: 'left', width: 180, templet: function (d) {
