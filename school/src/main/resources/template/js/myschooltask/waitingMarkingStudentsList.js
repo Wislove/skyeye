@@ -43,8 +43,12 @@ layui.config({
             cols: [[
                 { title: systemLanguage["com.skyeye.serialNumber"][languageType], rowspan: '2', type: 'numbers' },
                 { field: 'studentName', rowspan: '2', width: 200, title: '姓名', templet: function (d) {
-                        return '<a lay-event="details" class="notice-title-click">' + d.stuMation?.studentName + '</a>';
+                        return getNotUndefinedVal(d.studentName)
                     }},
+                { field: 'markEndTime', rowspan: '2', width: 150, align: 'center', title: '批阅结束时间', templet: function (d) {
+                        return d.markEndTime
+                    }},
+                { title: '答题信息', align: 'center', colspan: '3' },
                 { title: systemLanguage["com.skyeye.operation"][languageType], fixed: 'right', rowspan: '2', align: 'center', width: 100, toolbar: '#tableBar'}
             ],[
                 { field: 'bgAnDate', title: '开始时间', align: 'center', width: 120},
@@ -60,8 +64,8 @@ layui.config({
         table.on('tool(messageTable)', function (obj) {
             var data = obj.data;
             var layEvent = obj.event;
-            if (layEvent === 'examMarkingDetail') { //阅卷
-                examMarkingDetail(data);
+            if (layEvent === 'marking') { //阅卷
+                marking(data);
             }
         });
 
@@ -69,12 +73,12 @@ layui.config({
     }
 
     // 阅卷
-    function examMarkingDetail(data) {
+    function marking(data) {
         var rowId = data.answerId;
         _openNewWindows({
             url: '../../tpl/myschooltask/marking.html?id=' + data.id,
             title: "阅卷",
-            pageId: "examMarkingDetail",
+            pageId: "marking",
             area: ['90vw', '90vh'],
             callBack: function (refreshCode) {
                 winui.window.msg(systemLanguage["com.skyeye.successfulOperation"][languageType], {icon: 1, time: 2000});

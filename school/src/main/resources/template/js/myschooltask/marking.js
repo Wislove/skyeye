@@ -1,37 +1,51 @@
+var id="";
+var state="";
 layui.config({
-    base: basePath, // 基础路径，根据实际情况设置
+    base: basePath,
     version: skyeyeVersion
 }).extend({
     window: 'js/winui.window'
-}).define(['window', 'jquery', 'winui'], function (exports) {
+}).define(['window', 'table', 'jquery', 'winui', 'form', 'laydate'], function (exports) {
     winui.renderColor();
-    var $ = layui.jquery,
+    var $ = layui.$,
         form = layui.form;
+    id = GetUrlParam("id");
+    if (isNull(id)) {
+        winui.window.msg("请传入适用对象信息", {icon: 2, time: 2000});
+        return false;
+    }
 
     // 获取试卷信息
     function getExamInfo() {
-        $.ajax({
+        AjaxPostUtil.request({
             url: schoolBasePath + "querySurveyAnswerById",
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                surveyId: surveyId,
-                objectId: objectId,
-                companyId: companyId,
+            params: {
+                id: id,
                 state: state
-            }),
-            success: function (response) {
-                if (response.code === 200) {
-                    var data = response.data;
+            },
+            type: 'json',
+            method: 'GET',
+            callback: function (json) {
+                if (json.code === 200) {
+                    var data = json.bean;
                     $("#examTitle").text(data.title);
                     $("#studentId").text(data.studentId);
                     $("#answer").val(data.answer);
+
+                    // 遍历questionMation
+                    if (data.surveyMation && data.surveyMation.questionMation) {
+                        data.surveyMation.questionMation.forEach(function(question, index) {
+                            $("#questionList").append(
+                                "<div class='exam-question'>" +
+                                "<h3>" + (index + 1) + ". " + question.quTitle + "</h3>" +
+                                "<div>" + question.content + "</div>" +
+                                "</div>"
+                            );
+                        });
+                    }
                 } else {
-                    winui.window.msg(response.message, {icon: 2, time: 2000});
+                    winui.window.msg(json.message, {icon: 2, time: 2000});
                 }
-            },
-            error: function (xhr, status, error) {
-                winui.window.msg("请求失败，请重试", {icon: 2, time: 2000});
             }
         });
     }
@@ -43,27 +57,24 @@ layui.config({
             winui.window.msg('请评分', {icon: 2});
             return;
         }
-        $.ajax({
-            url: schoolBasePath + "updateSurveyAnswer",
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({
+        AjaxPostUtil.request({
+            url: schoolBasePath + "writeExamSurveyQuAnswer",
+            params: {
                 surveyId: surveyId,
                 objectId: objectId,
                 companyId: companyId,
                 state: state,
                 score: score
-            }),
-            success: function (response) {
-                if (response.code === 200) {
+            },
+            type: 'json',
+            method: 'POST',
+            callback: function (json) {
+                if (json.code === 200) {
                     winui.window.msg('提交成功', {icon: 1});
                     layer.closeAll(); // 关闭所有弹窗
                 } else {
-                    winui.window.msg(response.message, {icon: 2, time: 2000});
+                    winui.window.msg(json.message, {icon: 2, time: 2000});
                 }
-            },
-            error: function (xhr, status, error) {
-                winui.window.msg("请求失败，请重试", {icon: 2, time: 2000});
             }
         });
     });
@@ -76,5 +87,5 @@ layui.config({
     // 初始化
     getExamInfo();
 
-    exports('waitingMarkingStudentsList', {});
+    exports('marking', {});
 });

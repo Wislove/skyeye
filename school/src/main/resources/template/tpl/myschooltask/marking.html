@@ -22,6 +22,10 @@
         }
         .exam-question {
             margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #d9d9d9;
+            border-radius: 5px;
+            background-color: #ffffff;
         }
         .exam-score {
             margin-top: 20px;
@@ -39,23 +43,161 @@
 </head>
 <body>
 <div class="exam-container">
-    <div class="exam-header" id="examTitle">重生之我在大学逆天改命888_副本</div>
-    <div class="exam-info">学号：<span id="studentId">2305050234</span></div>
-    <div class="exam-question">
-        <div>1. 重生的生存准则 [多项填空题] (5分)</div>
-        <textarea rows="4" cols="50" id="answer"></textarea>
+    <!-- 试卷标题 -->
+    <div class="exam-header" id="examTitle">试卷标题</div>
+
+    <!-- 学号信息 -->
+    <div class="exam-info">学号：<span id="studentId">学号</span></div>
+
+    <!-- 动态生成的问题列表 -->
+    <div id="questionList">
+        <!-- 示例：如果需要默认提示，可以加一行提示 -->
+        <!-- <p>加载问题中...</p> -->
     </div>
+
+    <!-- 评分输入 -->
     <div class="exam-score">
         <label>评分:</label>
         <input type="text" id="score" placeholder="请输入" />
     </div>
+
+    <!-- 操作按钮 -->
     <div class="exam-actions">
         <button class="layui-btn layui-btn-primary" id="cancel">取消</button>
         <button class="layui-btn" id="submit">提交</button>
     </div>
 </div>
+
+<!-- 引入 Layui 和其他依赖脚本 -->
 <script src="../../assets/lib/layui/layui.js"></script>
-<script src="../../assets/lib/layui/custom.js"></script>
-<script src="examDesignAdd.js"></script>
+<script src="../../assets/lib/jquery/jquery.min.js"></script> <!-- 确保引入 jQuery，因为 JS 使用了它 -->
+<script type="text/javascript">
+    // 模拟 GetUrlParam 函数（如果未定义，可以提供一个简单的实现）
+    function GetUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return decodeURIComponent(r[2]);
+        return null;
+    }
+
+    // 模拟 isNull 函数
+    function isNull(value) {
+        return value === null || value === undefined || value === '';
+    }
+
+    // 模拟 AjaxPostUtil 工具类（根据 JS 的逻辑补充）
+    var AjaxPostUtil = {
+        request: function (options) {
+            var xhr = new XMLHttpRequest();
+            xhr.open(options.method, options.url, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        var json = JSON.parse(xhr.responseText);
+                        if (options.callback) {
+                            options.callback(json);
+                        }
+                    } else {
+                        console.error("请求失败", xhr.statusText);
+                    }
+                }
+            };
+            xhr.send(options.method === 'POST' ? JSON.stringify(options.params) : null);
+        }
+    };
+
+    // 模拟其他变量（根据你的 JS 逻辑补充）
+    var basePath = "../../js/";
+    var skyeyeVersion = "1.0.0";
+    var schoolBasePath = "/school/api/"; // 示例路径
+    var surveyId = "123"; // 示例值
+    var objectId = "456"; // 示例值
+    var companyId = "789"; // 示例值
+
+    // 模拟 winui 对象（根据 JS 逻辑补充）
+    var winui = {
+        renderColor: function () {},
+        window: {
+            msg: function (message, options) {
+                layer.msg(message, options); // 使用 Layui 的 layer 提示
+            }
+        }
+    };
+
+    // 模拟 layer 对象（Layui 弹窗组件）
+    var layer = {
+        msg: function (message, options) {
+            alert(message); // 简单模拟，可替换为实际实现
+        },
+        closeAll: function () {
+            console.log("关闭所有弹窗");
+        }
+    };
+
+    // 模拟 layui 配置和模块加载
+    layui.config({
+        base: basePath,
+        version: skyeyeVersion
+    }).extend({
+        window: 'js/winui.window'
+    }).define(['window', 'table', 'jquery', 'winui', 'form', 'laydate'], function (exports) {
+        var $ = layui.$,
+            form = layui.form;
+        var id = GetUrlParam("id");
+        if (isNull(id)) {
+            winui.window.msg("请传入适用对象信息", {icon: 2, time: 2000});
+            return false;
+        }
+
+        // 获取试卷信息（与 JS 逻辑一致）
+        function getExamInfo() {
+            AjaxPostUtil.request({
+                url: schoolBasePath + "querySurveyAnswerById",
+                params: {id: id, state: ""},
+                type: 'json',
+                method: 'GET',
+                callback: function (json) {
+                    if (json.code === 200) {
+                        var data = json.bean;
+                        $("#examTitle").text(data.title);
+                        $("#studentId").text(data.studentId);
+                        if (data.surveyMation && data.surveyMation.questionMation) {
+                            data.surveyMation.questionMation.forEach(function(question, index) {
+                                $("#questionList").append(
+                                    "<div class='exam-question'>" +
+                                    "<h3>" + (index + 1) + ". " + question.quTitle + "</h3>" +
+                                    "<div>" + question.content + "</div>" +
+                                    "</div>"
+                                );
+                            });
+                        }
+                    } else {
+                        winui.window.msg(json.message, {icon: 2, time: 2000});
+                    }
+                }
+            });
+        }
+
+        // 提交评分
+        $("#submit").on('click', function() {
+            var score = $("#score").val();
+            if (!score) {
+                winui.window.msg('请评分', {icon: 2});
+                return;
+            }
+            // 提交逻辑...
+        });
+
+        // 取消操作
+        $("#cancel").on('click', function() {
+            layer.closeAll();
+        });
+
+        // 初始化
+        getExamInfo();
+
+        exports('marking', {});
+    });
+</script>
 </body>
 </html>
