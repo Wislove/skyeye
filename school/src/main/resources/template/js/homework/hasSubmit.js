@@ -24,7 +24,7 @@ layui.config({
         cols: [[
             { title: systemLanguage["com.skyeye.serialNumber"][languageType], type: 'numbers' },
             { field: 'name', title: '姓名', align: 'left', width: 150, templet: function(d) {
-                return getNotUndefinedVal(d.createMation?.realName);
+                return '<a lay-event="details" class="notice-title-click">' + d.createMation?.realName+ '</a>';
             }},
             { field: 'studentNumber', title: '学号', align: 'left', width: 180, templet: function(d) {
                     return getNotUndefinedVal(d.createMation?.studentNumber);
@@ -33,7 +33,7 @@ layui.config({
                 return getNotUndefinedVal(d.createMation?.accountNumber);
             }},
             { field: 'content', title: '内容', align: 'left', width: 180, templet: function (d) {
-                return '<a lay-event="details" class="notice-title-click">' + d.content + '</a>';
+                return getNotUndefinedVal(d.content );
             }},
             { field: 'state', title: '状态', align: 'left',width: 150, templet: function(d) {
                 var str = '';
