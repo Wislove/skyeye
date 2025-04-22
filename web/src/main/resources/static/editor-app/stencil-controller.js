@@ -261,6 +261,8 @@ angular.module('activitiModeler')
 
                     // Gather properties of selected item
                     var properties = stencil.properties();
+
+                    const findProcessId = properties.find(property => property.id() === "process_id")?.id();
                     for (var i = 0; i < properties.length; i++) {
                         var property = properties[i];
                         if (property.popular() == false) continue;
@@ -294,7 +296,7 @@ angular.module('activitiModeler')
                                 'mode': 'read',
                                 'hidden': property.isHidden(),
                                 'description': property.description(),
-                                'readOnly': isNull(property.readOnly()) ? false : property.readOnly(),
+                                'readOnly': (findProcessId && !isNull(property.readOnly())) ? true : false,
                                 'value': selectedShape.properties[key]
                             };
 
